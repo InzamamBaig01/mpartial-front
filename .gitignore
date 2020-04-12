@@ -8,7 +8,6 @@
 *.coverage
 *.DS_Store
 *.mo
-*.mp4
 *.out
 *.log
 .tox/
