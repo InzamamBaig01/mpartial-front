@@ -1,0 +1,450 @@
+{
+    "personal": [
+        {
+            "name": "PERSONAL IDENTIFICATION INFORMATION",
+            "label": "PERSONAL IDENTIFICATION INFORMATION",
+            "subHeading": "",
+            "type": "heading",
+            "required": false,
+            "isPublic": true,
+            "iconType": "",
+            "id": " "
+        },
+        {
+            "name": "PH First Name",
+            "label": "PH First Name",
+            "subHeading": "Policyholder First Name",
+            "type": "text",
+            "required": false,
+            "isPublic": true,
+            "iconType": "text",
+            "id": " "
+        },
+        {
+            "name": "PH Last Name",
+            "label": "PH Last Name",
+            "subHeading": "Policyholder Last Name",
+            "type": "text",
+            "required": false,
+            "isPublic": true,
+            "iconType": "text",
+            "id": " "
+        },
+        {
+            "name": "PH Cell#",
+            "label": "PH Cell#",
+            "subHeading": "Ex. 619-986-9383",
+            "type": "phone",
+            "required": false,
+            "isPublic": true,
+            "iconType": "cell",
+            "id": " "
+        },
+        {
+            "name": "PH Email",
+            "label": "PH Email",
+            "subHeading": "Ex. tina.fey@juno.com",
+            "type": "email",
+            "required": true,
+            "isPublic": true,
+            "iconType": "email",
+            "id": " "
+        },
+        {
+            "name": "Loss Address",
+            "label": "Loss Address",
+            "subHeading": "1234 Divorce Ct. San Diego, CA 92037",
+            "type": "address",
+            "required": false,
+            "isPublic": true,
+            "iconType": "address",
+            "id": " "
+        },
+        {
+            "name": "PH Main POC & Preferred Method of Contact Details",
+            "label": "PH Main POC & Preferred Method of Contact Details",
+            "subHeading": "Ex. Mrs. Fey is currently on tour, she has assigned Nick Kroll (property manager) to function in an Owner's Agent capacity (POA on File) | kroll@krollmanagement.com",
+            "type": "text",
+            "required": false,
+            "isPublic": true,
+            "iconType": "documents",
+            "id": " "
+        }
+    ],
+    "claim": [
+        {
+            "name": "Date of Loss:",
+            "label": "Date of Loss:",
+            "subHeading": "",
+            "type": "date",
+            "required": false,
+            "isPublic": true,
+            "iconType": "date",
+            "id": " "
+        },
+        {
+            "name": "Claim #",
+            "label": "Claim #",
+            "subHeading": "",
+            "type": "text",
+            "required": true,
+            "isPublic": true,
+            "iconType": "text",
+            "id": " "
+        },
+        {
+            "name": "Policy #",
+            "label": "Policy #",
+            "subHeading": "",
+            "type": "text",
+            "required": false,
+            "isPublic": true,
+            "iconType": "text",
+            "id": " "
+        },
+        {
+            "name": "Special Handling Instructions",
+            "label": "Special Handling Instructions",
+            "subHeading": "Ex. PH was not in town at the time of the loss, Mrs. Fey was on tour. She will remain on tour for the duration of the open claim - see Main POC details. ",
+            "type": "textarea",
+            "required": false,
+            "isPublic": true,
+            "iconType": "text",
+            "id": " "
+        },
+        {
+            "name": "Loss Type",
+            "label": "Loss Type",
+            "subHeading": "",
+            "type": "checkbox",
+            "options": [
+                {
+                    "name": "Water",
+                    "label": "Water"
+                },
+                {
+                    "name": "Fire",
+                    "label": "Fire"
+                },
+                {
+                    "name": "Vandalism",
+                    "label": "Vandalism"
+                },
+                {
+                    "name": "Wind",
+                    "label": "Wind"
+                },
+                {
+                    "name": "Mold",
+                    "label": "Mold"
+                },
+                {
+                    "name": "Personal Property",
+                    "label": "Personal Property"
+                },
+                {
+                    "name": "Environmental",
+                    "label": "Environmental"
+                },
+                {
+                    "name": "Other",
+                    "label": "Other"
+                }
+            ],
+            "required": false,
+            "isPublic": true,
+            "iconType": "checkbox",
+            "id": " "
+        },
+        {
+            "name": "Loss Snapshot",
+            "label": "Loss Snapshot",
+            "subHeading": "Ex. A range fire spread to the upper kitchen cabinets and was extinguished in short order by household staff members...",
+            "type": "textarea",
+            "required": false,
+            "isPublic": true,
+            "iconType": "documents",
+            "id": " "
+        },
+        {
+            "name": "Reporting Individual First & Last Name",
+            "label": "Reporting Individual First & Last Name",
+            "subHeading": "Name of the individual that is reporting the claim e.g., Amy Poehler",
+            "type": "text",
+            "required": false,
+            "isPublic": true,
+            "iconType": "text",
+            "id": " "
+        },
+        {
+            "name": "Reporting Individual Email",
+            "label": "Reporting Individual Email",
+            "subHeading": "Ex. amy.poehler@snl.com",
+            "type": "text",
+            "required": false,
+            "isPublic": true,
+            "iconType": "email",
+            "id": " "
+        },
+        {
+            "name": "Handling Adjuster First & Last Name",
+            "label": "Handling Adjuster First & Last Name",
+            "subHeading": "Jennifer Lawrence",
+            "type": "text",
+            "required": false,
+            "isPublic": true,
+            "iconType": "text",
+            "id": " "
+        },
+        {
+            "name": "Handling Adjuster Email",
+            "label": "Handling Adjuster Email",
+            "subHeading": "Ex. jennifer.lawrence@go.com",
+            "type": "email",
+            "required": false,
+            "isPublic": true,
+            "iconType": "email",
+            "id": " "
+        },
+        {
+            "name": "Handling Adjuster Cell",
+            "label": "Handling Adjuster Cell",
+            "subHeading": "Ex. 619-238-3793",
+            "type": "phone",
+            "required": false,
+            "isPublic": true,
+            "iconType": "cell",
+            "id": " "
+        },
+        {
+            "name": "Matterport URL",
+            "label": "Matterport URL",
+            "subHeading": "Ex. Risk Engineering Scan, Pre-Mitigation Scan, Post Mitigation Scan etc.",
+            "type": "text",
+            "required": false,
+            "isPublic": true,
+            "iconType": "link",
+            "id": " "
+        },
+        {
+            "name": "Deductible Amount",
+            "label": "Deductible Amount",
+            "subHeading": "Ex. $10,000",
+            "type": "price",
+            "required": false,
+            "isPublic": true,
+            "iconType": "price",
+            "id": " "
+        },
+        {
+            "name": "Other Relative Claim Documents",
+            "label": "Other Relative Claim Documents",
+            "subHeading": "Mitigation Invoice(s), Itel Report(s), Environmental Report(s), TrueSketch Plus, EagleView, COREpak etc.  Permitted File Types: PDF, ESX, SKX, JPEG, PNG, XLS, XLSX, DOC, DOCX, RTF, XML, DWG, ZIP  Max Size: 50MB",
+            "type": "file",
+            "required": false,
+            "isPublic": true,
+            "iconType": "file",
+            "id": " "
+        },
+        {
+            "name": "card Members",
+            "label": "card Members",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "outlink",
+            "type": "button"
+        },
+        {
+            "name": "ALE limits and other relevant details",
+            "label": "ALE limits and other relevant details",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "documents",
+            "type": "textarea"
+        },
+        {
+            "name": "Dwelling coverage limit(s)",
+            "label": "Dwelling coverage limit(s)",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "price",
+            "type": "price"
+        },
+        {
+            "name": "Personal property coverage limit(s)",
+            "label": "Personal property coverage limit(s)",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "price",
+            "type": "price"
+        },
+        {
+            "name": "Other structures coverage limit(s)",
+            "label": "Other structures coverage limit(s)",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "price",
+            "type": "price"
+        },
+        {
+            "name": "Code upgrades, landscaping etc. coverage limit(s) Details",
+            "label": "Code upgrades, landscaping etc. coverage limit(s) Details",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "documents",
+            "type": "textarea"
+        },
+        {
+            "name": "Mitigation Adjusterbot rcv",
+            "label": "Mitigation Adjusterbot rcv",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "price",
+            "type": "price"
+        },
+        {
+            "name": "Repair Adjusterbot RCv",
+            "label": "Repair Adjusterbot RCv",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "price",
+            "type": "price"
+        },
+        {
+            "name": "packout/packback/storage adjusterbot rcv",
+            "label": "packout/packback/storage adjusterbot rcv",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "price",
+            "type": "price"
+        },
+        {
+            "name": "Variance Details",
+            "label": "Variance Details",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "text",
+            "type": "textarea"
+        },
+        {
+            "name": "Ph requested cash out",
+            "label": "Ph requested cash out",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "checkbox",
+            "type": "selfcheckbox"
+        },
+        {
+            "name": "Cash out Details",
+            "label": "Cash out Details",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "text",
+            "type": "textarea"
+        },
+        {
+            "name": "pre-mitigation scan url",
+            "label": "pre-mitigation scan url",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "link",
+            "type": "url"
+        },
+        {
+            "name": "trueplan skx",
+            "label": "trueplan skx",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "file",
+            "type": "file"
+        },
+        {
+            "name": "post-mitigation scan url",
+            "label": "post-mitigation scan url",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "link",
+            "type": "url"
+        },
+        {
+            "name": "adjusterBOT",
+            "label": "adjusterBOT",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "file",
+            "type": "file"
+        },
+        {
+            "name": "POST-REPAIR SCAN",
+            "label": "POST-REPAIR SCAN",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "link",
+            "type": "url"
+        },
+        {
+            "name": "Request",
+            "label": "Request",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "noicon",
+            "type": "buttons-set"
+        },
+        {
+            "name": "Mortgage company(s) Details",
+            "label": "Mortgage company(s) Details",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "documents",
+            "type": "textarea"
+        },
+        {
+            "name": "Corepak requested by carrier",
+            "label": "Corepak requested by carrier",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "checkbox",
+            "type": "selfcheckbox"
+        },
+        {
+            "name": "Core fee(s) Details",
+            "label": "Core fee(s) Details",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "documents",
+            "type": "textarea"
+        },
+        {
+            "name": "duplicate & link card into new board",
+            "label": "duplicate & link card into new board",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "noicon",
+            "type": "selfbutton"
+        },
+        {
+            "name": "trueroof skx (exterior)",
+            "label": "trueroof skx (exterior)",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "file",
+            "type": "file"
+        },
+        {
+            "name": "Mortgage co signed poa(s)",
+            "label": "Mortgage co signed poa(s)",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "file",
+            "type": "file"
+        },
+        {
+            "name": "Corepak zip",
+            "label": "Corepak zip",
+            "subHeading": "",
+            "isPublic": false,
+            "iconType": "file",
+            "type": "file"
+        }
+    ]
+}

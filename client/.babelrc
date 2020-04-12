@@ -1,0 +1,16 @@
+{
+  "presets": [
+    ["@babel/env", { "modules": false }],
+    ["@babel/typescript", { "isTSX": true, "allExtensions": true }],
+    "@babel/react",
+    "@emotion/css-prop",
+  ],
+
+  "plugins": [
+    "react-hot-loader/babel",
+    "@babel/transform-runtime",
+    "@babel/syntax-dynamic-import",
+    ["@babel/proposal-decorators", { "legacy": true }],
+    ["@babel/proposal-class-properties", { "loose": true }],
+  ],
+}

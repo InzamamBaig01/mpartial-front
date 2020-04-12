@@ -1,0 +1,16 @@
+{
+  "extends": "tslint-config-airbnb",
+  "rules": {
+    "import-name": [
+      false
+    ],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case",
+      "allow-snake-case"
+    ]
+  }
+}

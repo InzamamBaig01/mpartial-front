@@ -1,1 +1,4 @@
-# mpartial-frontend
+# corevoyant-frontend
+```shell
+npm run build
+```
