@@ -21,7 +21,7 @@ export const Slider: React.FC<SliderProps> = ({ }) => {
           className={"background_video"}
           containerWidth={window.innerWidth}
           containerHeight={window.innerHeight}
-          src="background.mp4"
+          src="/static/background.mp4"
           muted={true}
           loop={true}
           autoPlay={true}
