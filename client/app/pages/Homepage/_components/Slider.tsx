@@ -3,7 +3,7 @@ import { withRouter, Link } from "react-router-dom";
 import { Carousel } from 'react-responsive-carousel';
 import BackgroundVideo from 'react-background-video-player';
 import {css} from '@emotion/core';
-
+import videofile from "../../../../assets/background.mp4";
 interface SliderProps {
 
 }
@@ -21,7 +21,7 @@ export const Slider: React.FC<SliderProps> = ({ }) => {
           className={"background_video"}
           containerWidth={window.innerWidth}
           containerHeight={window.innerHeight}
-          src="../../../../assets/background.mp4"
+          src="background.mp4"
           muted={true}
           loop={true}
           autoPlay={true}

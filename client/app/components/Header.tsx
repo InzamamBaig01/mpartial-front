@@ -42,7 +42,7 @@ const Header = (props) => {
         <Navbar expand="md">
           <div className="container">
             <NavbarBrand href="/" className="mpartial_logo">
-              <img src={'../../assets/logo.png'} alt="logo" />
+              <img src={logo} alt="logo" />
             </NavbarBrand>
             <NavbarToggler onClick={toggle} />
             <Collapse isOpen={isOpen} navbar>
