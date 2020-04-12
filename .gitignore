@@ -16,7 +16,7 @@ __pycache__
 MANIFEST
 .idea/
 .vs*
-build/
+
 dist/
 .idea/
 /env/

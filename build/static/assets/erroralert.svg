@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20.346" height="18" viewBox="0 0 20.346 18">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#fff}
+        </style>
+    </defs>
+    <g id="prefix__warning_1_" data-name="warning (1)" transform="translate(0 -29.519)">
+        <g id="prefix__Group_319" data-name="Group 319" transform="translate(0 29.519)">
+            <g id="prefix__Group_318" data-name="Group 318">
+                <path id="prefix__Path_304" d="M20.152 45.37l-8.739-15.135a1.432 1.432 0 00-2.481 0L.194 45.37a1.432 1.432 0 001.24 2.148h17.477a1.432 1.432 0 001.24-2.148zm-1.034.836a.231.231 0 01-.207.119H1.435a.239.239 0 01-.207-.358l8.738-15.135a.239.239 0 01.413 0l8.738 15.135a.231.231 0 01.001.239z" class="prefix__cls-1" data-name="Path 304" transform="translate(0 -29.519)"/>
+                <path id="prefix__Rectangle_307" d="M0 0H1.194V6.366H0z" class="prefix__cls-1" data-name="Rectangle 307" transform="translate(9.576 5.427)"/>
+                <circle id="prefix__Ellipse_32" cx=".796" cy=".796" r=".796" class="prefix__cls-1" data-name="Ellipse 32" transform="translate(9.377 12.987)"/>
+            </g>
+        </g>
+    </g>
+</svg>

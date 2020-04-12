@@ -1,0 +1,18 @@
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="Kanban">
+   <rect fill="#d54949" rx="2" height="32" width="32" id="Rectangle_7"/>
+   <g id="Group_8">
+    <rect x="4" y="5" fill="#fff" rx="1" height="15" width="5" id="Rectangle_8"/>
+    <rect x="11" y="5" fill="#fff" rx="1" height="10" width="5" id="Rectangle_9"/>
+    <rect x="18" y="5" fill="#fff" rx="1" height="18" width="5" id="Rectangle_10"/>
+   </g>
+  </g>
+ </g>
+</svg>

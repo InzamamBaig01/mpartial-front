@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+    <defs>
+        <clipPath id="prefix__clip-path">
+            <path id="prefix__Rectangle_511" d="M0 0H20V20H0z" data-name="Rectangle 511" transform="translate(918.772 2465.772)" style="fill:#fff;stroke:#707070"/>
+        </clipPath>
+        <style>
+            .prefix__cls-3{fill:#4d4d4d}
+        </style>
+    </defs>
+    <g id="prefix__text" transform="translate(-918.772 -2465.772)">
+        <g id="prefix__text-font" transform="translate(919.122 2469.273)">
+            <path id="prefix__Path_561" d="M7.651 3.508a1.5 1.5 0 00-1.438-1.06H4.58a1.506 1.506 0 00-1.44 1.066L.063 13.583a1.443 1.443 0 102.77.807l.633-2.28h3.722l.681 2.266a1.505 1.505 0 102.879-.88zm-3.76 6.4l.77-2.758c.212-.752.406-1.735.6-2.507H5.3c.193.772.426 1.736.657 2.507l.81 2.758z" class="prefix__cls-3" data-name="Path 561" transform="translate(0 -2.449)"/>
+            <path id="prefix__Path_562" d="M16.515 12.3V9.611c0-1.816-.822-3.332-3.4-3.332a7 7 0 00-2.331.382.774.774 0 00-.484.939l.008.026a.788.788 0 001.009.529 4.4 4.4 0 011.373-.237c1.185 0 1.406.585 1.406 1v.111c-2.733-.016-4.533.947-4.533 2.953a2.367 2.367 0 002.5 2.369 2.783 2.783 0 002.21-.948h.047l.062.338a.534.534 0 00.524.436h1.119a.534.534 0 00.532-.573c-.03-.382-.042-.839-.042-1.304zm-2.339-.932a1.688 1.688 0 01-.047.411 1.311 1.311 0 01-1.247.884.862.862 0 01-.948-.916c0-.932.98-1.232 2.242-1.216z" class="prefix__cls-3" data-name="Path 562" transform="translate(2.742 -1.351)"/>
+        </g>
+    </g>
+</svg>
