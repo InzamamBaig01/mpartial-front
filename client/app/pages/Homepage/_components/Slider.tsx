@@ -13,7 +13,7 @@ export const Slider: React.FC<SliderProps> = ({ }) => {
       <div className="home_video_background">
         <BackgroundVideo
           playsInline={true}            // play inline on iPhone. avoid triggering native video player
-          disableBackgroundCover={true}  // do not apply cover effect (e.g. disable it for specific screen resolution or aspect ratio)
+          // disableBackgroundCover={true} s // do not apply cover effect (e.g. disable it for specific screen resolution or aspect ratio)
           css={{
           'video':{
             width:'100%',

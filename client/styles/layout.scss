@@ -9,7 +9,13 @@
   color: #ffffff;
   opacity: 1;
 }
-
+.btn-green{
+  width: 159px;
+  height: 40px;
+  background: #3AC280;
+  border-radius: 20px;
+  opacity: 1;
+}
 .home_video_background {
   width: 100%;
   height: 100vh;
@@ -163,7 +169,7 @@
       padding-top: 0;
       padding-left: 0;
       background-position: center center;
-      padding: 7%;
+      padding: 12%;
     }
   }
 }
@@ -446,5 +452,111 @@
     /* margin: 0 auto; */
     display: inline-block;
     
+  }
+}
+.deliver_widget_container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+
+  section{
+    margin:15px 0;
+    img {
+      width:100%;
+      height:auto;
+    }
+  }
+}
+h3.widget-title{
+  color:#0A5169;
+  font-size: 40px;
+}
+span.numeric-character {
+  font-size: 40px;
+  font-weight: 600;
+  display: inline-block;
+  margin: 10px;
+}
+.deliver-slider{
+  margin: 15px 0;
+}
+.carousel {
+  padding: 15px 0 60px 0;
+}
+.carousel-control-prev-icon{
+  background-image: url(../assets/arrow-left.png);
+}
+.carousel-control-next-icon{
+  background-image: url(../assets/arrow-right.png);
+}
+.carousel-control-next-icon, .carousel-control-prev-icon{
+  width:80px;
+  height: 80px;
+}
+.carousel-control-next, .carousel-control-prev{
+  opacity: 1;
+}
+
+.carousel-control-prev{
+  justify-content: left;
+}
+.carousel-control-next{
+  justify-content: flex-end;
+}
+.carousel-item img{
+  max-width: 900px;
+  width: 100%;
+}
+.carousel-indicators li{
+  width: 11px;
+  height: 11px !important;
+  border-radius: 50%;
+  border: none;
+  background: #CBCBCB;
+}
+.carousel-indicators li.active{
+  background: #3AC280;
+}
+.sketch-widget{
+  margin: 80px 0;
+}
+.sketch-container{
+  display: flex;
+  margin: 80px 0;
+  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 49%;
+  }
+}
+.form-holder{
+  margin-top: 100px;
+  .row{
+    margin-bottom: 30px;
+  }
+  input,
+  textarea{
+    font-size: 14px;
+    width: 100%;
+    border: 1px solid rgba(10,81,105,0.5);
+    border-radius: 10px;
+    padding: 12px 15px;
+  }
+  textarea{
+    height: 188px;
+    resize: none;
+  }
+  input{
+    margin-bottom: 24px;
+  }
+  input[type='submit']{
+    width: 159px;
+    height: 40px;
+    background: #3AC280 0% 0% no-repeat padding-box;
+    border-radius: 20px;
+    opacity: 1;
+    border:none;
   }
 }

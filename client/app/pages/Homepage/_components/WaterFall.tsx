@@ -16,7 +16,7 @@ export const WaterFall: React.FC<WaterFallProps> = ({ }) => {
   }
   return (
     <>
-      <div className="mpartial_section howitworks" css={{backgroundColor:'#FFFFFF',justifyContent:'center',textAlign:'center',color:'#0A5169'}}>
+      <div className="mpartial_section" css={{backgroundColor:'#FFFFFF',justifyContent:'center',textAlign:'center',color:'#0A5169',paddingBottom:'20px'}}>
         <div className="container">
           <SectionTitle
             title={"mpartial Waterfall Fee Structure"}
