@@ -3,7 +3,11 @@ import { withRouter, Link } from "react-router-dom";
 import SectionTitle from 'app/components/SectionTitle';
 import {DeliverablesBox} from './deliverablesBoxWidget';
 import {DeliverSlider} from './DelieverSlider';
+import mitigation from '../../../../assets/deliverable-1.png';
+import mitigation2 from '../../../../assets/deliverable-2.png';
 
+import sketch from '../../../../assets/sketch-1.png';
+import sketch2 from '../../../../assets/sketch2.png';
 interface DeliverablesProps {
 
 }
@@ -20,12 +24,12 @@ export const Deliverables: React.FC<DeliverablesProps>  = ({}) => {
           <div className={'deliver_widget_container'}>
             <DeliverablesBox
               title={'Pre-Mitigation'}
-              imgUrl={'../../../../assets/deliverable-1.png'}
+              imgUrl={mitigation}
             />
             <span className={'numeric-character'}>+</span>
             <DeliverablesBox
             title={'Post-Mitigation'}
-            imgUrl={'../../../../assets/deliverable-2.png'}
+            imgUrl={mitigation2}
             />
           </div>
           <span className={'numeric-character'}>=</span>
@@ -36,8 +40,8 @@ export const Deliverables: React.FC<DeliverablesProps>  = ({}) => {
           <div className={'sketch-widget'}>
             <h3 className={'widget-title'}>TrueSketch PLUS [SKX]</h3>
             <section className={'sketch-container'}>
-              <img src={'../../../../assets/sketch-1.png'} />
-              <img src={'../../../../assets/sketch2.png'}/>
+              <img src={sketch} />
+              <img src={sketch2}/>
               <div></div>
             </section>
           </div>
