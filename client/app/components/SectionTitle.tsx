@@ -8,14 +8,14 @@ const SectionTitle = (props) => {
                 props.type === "left" ? (
                     <div className="title left">
                         <div className="row">
-                            <div className="col">
+                            <div className="col-md-6 col-sm-12">
                                 <div className="section_title_text">
                                     {
                                         props.title
                                     }
                                 </div>
                             </div>
-                            <div className="col">
+                            <div className="col-md-6 col-sm-12">
                                 <div className="section_title_description">
                                     {
                                         props.description

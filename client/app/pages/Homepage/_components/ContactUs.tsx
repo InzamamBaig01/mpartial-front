@@ -7,7 +7,7 @@ interface ConatctUsProps {
 export const ContactUs: React.FC<ConatctUsProps>  = ({}) => {
   return(
     <>
-      <div className="mpartial_section contact_us" css={{backgroundColor:'#FFFFFF',justifyContent:'center',textAlign:'center',color:'#0A5169',padding:'15px 0'}}>
+      <div className="mpartial_section contact_us" css={{backgroundColor:'#FFFFFF',justifyContent:'center',textAlign:'center',color:'#0A5169',padding:' 0'}}>
         <div className={'container'}>
         <SectionTitle
           title={"Contact Us"}
@@ -15,15 +15,17 @@ export const ContactUs: React.FC<ConatctUsProps>  = ({}) => {
           type="center"
         ></SectionTitle>
           <div className={'form-holder'}>
-            <form>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+            }}>
               <div className={'row'}>
-              <div className={'col'}>
-                <input type={'text'} placeholder={'Your Name'} name={'name'}/>
-                <input type={'text'} placeholder={'Email'} name={'email'}/>
-                <input type={'text'} placeholder={'Phone Number'} name={'phone'}/>
+              <div className={'col-md-6 col-sm-12'}>
+                <input type={'text'} placeholder={'Your Name'} name={'name'} required/>
+                <input type={'text'} placeholder={'Email'} name={'email'} required/>
+                <input type={'text'} placeholder={'Phone Number'} name={'phone'} required/>
               </div>
-              <div className={'col'}>
-              <textarea placeholder={'Write your message...'}></textarea>
+              <div className={'col-md-6 col-sm-12'}>
+              <textarea placeholder={'Write your message...'} required></textarea>
              </div>
               </div>
               <input type={'submit'} className="btn btn-green" value={'Submit'} />

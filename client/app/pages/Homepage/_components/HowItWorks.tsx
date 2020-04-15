@@ -26,7 +26,7 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ }) => {
               {
                 dataPoints.map((point, index) => {
                   return (
-                    <div className="col" key={index}>
+                    <div className="col-md-4 col-sm-12" key={index}>
                       <DataPoint point={{
                         point: point,
                         number: index + 1

@@ -11,53 +11,41 @@ import Header from "app/components/Header";
 import { HowItWorks } from "./_components/HowItWorks";
 
 interface IRef {
-  home: HTMLDivElement | null;
-  hero: HTMLDivElement | null;
-  hIW: HTMLDivElement | null;
-  wFall: HTMLDivElement | null;
-  Deli: HTMLDivElement | null;
-  cont: HTMLDivElement | null;
+  home: any;
+  hero: any;
+  hIW: any;
+  wFall: any;
+  Deli: any;
+  cont: any;
 }
-export const HomePage: React.FC<any>  = React.memo(() => {
+export const HomePage: React.FC<any> = React.memo(() => {
   const [sectionRef, setSectionref] = useState<IRef>({
-    home: null,
-    hero: null,
-    hIW: null,
-    wFall: null,
-    Deli: null,
-    cont: null
+    home: React.createRef(),
+    hero: React.createRef(),
+    hIW: React.createRef(),
+    wFall: React.createRef(),
+    Deli: React.createRef(),
+    cont: React.createRef()
   })
-  let refs = {
-    home: null,
-    hero: null,
-    hIW: null,
-    wFall: null,
-    Deli: null,
-    cont: null
-  };
-  const setRef = (ref,obj,isApply) => {
-    refs[ref] = obj;
-    // if(isApply) setSectionref(refs);
-  }
   return (
     <>
       <Header sectionRef={sectionRef}></Header>
-
-      <div ref={(R) => setRef('home', R, false)}>
-        <Slider />
+      <div ref={sectionRef.home}>
+        <Slider nextSection={sectionRef.hero} />
       </div>
-      <div ref={(R) => setRef('hero', R, false)}>
-        <HeroSection />      </div>
-      <div ref={(R) => setRef('hIW', R, false)}>
+      <div ref={sectionRef.hero}>
+        <HeroSection />
+      </div>
+      <div ref={sectionRef.hIW}>
         <HowItWorks />
       </div>
-      <div ref={(R) => setRef('wFall', R, false)}>
+      <div ref={sectionRef.wFall}>
         <WaterFall />
       </div>
-      <div ref={(R) => setRef('Deli', R, false)}>
+      <div ref={sectionRef.Deli}>
         <Deliverables />
       </div>
-      <div ref={(R) => setRef('cont', R, true)}>
+      <div ref={sectionRef.cont}>
         <ContactUs />
       </div>
     </>

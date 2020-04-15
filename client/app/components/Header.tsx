@@ -29,7 +29,8 @@ const Header = (props) => {
     setheaderClass(window.pageYOffset > 300 ? "scrolled" : "");
   }
   const scrollToRef = (ref) => {
-    // window.scrollTo(0, ref.current.offsetTop)
+    // console.log(props.sectionRef);
+    window.scrollTo({ top: ref.current.offsetTop, behavior: 'smooth' })
   }
 
   useEffect(() => {
@@ -44,12 +45,14 @@ const Header = (props) => {
             <NavbarBrand href="/" className="mpartial_logo">
               <img src={logo} alt="logo" />
             </NavbarBrand>
-            <NavbarToggler onClick={toggle} />
+            {/* <NavbarToggler onClick={toggle} /> */}
+            <NavbarToggler onClick={toggle} className="mr-2" />
+
             <Collapse isOpen={isOpen} navbar>
               <Nav className="ml-auto main_navbar" navbar>
 
                 <NavItem>
-                  <NavLink href="javascript:;" onClick={() => scrollToRef(props.sectionRef.home)}>Approach</NavLink>
+                  <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.home)}>Approach</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.hero)}>Ground-Truth Data</NavLink>

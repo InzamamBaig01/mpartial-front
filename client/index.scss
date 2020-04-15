@@ -1,17 +1,16 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
 @import "../node_modules/react-datepicker/dist/react-datepicker.css";
 
-@import 'styles/index';
+@import "styles/index";
 
 body {
 	margin: 0;
-	font-family: 'Montserrat', sans-serif;
+	font-family: "Gilroy";
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 code {
-	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 .navbar-light {
 	background-color: #ffffff;
