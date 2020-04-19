@@ -44,7 +44,7 @@ const LocalApp = props => {
         isAuthenticated: props.isAuthenticated,
         deep: false
       })}
-      <Route component={() => <Redirect to="/dashboard/" />} />
+      <Route component={() => <Redirect to="/" />} />
     </Switch>
   );
 };

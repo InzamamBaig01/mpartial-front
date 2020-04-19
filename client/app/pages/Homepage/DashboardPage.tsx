@@ -9,6 +9,7 @@ import { Deliverables } from './_components/Deliverables';
 import { ContactUs } from './_components/ContactUs';
 import Header from "app/components/Header";
 import { HowItWorks } from "./_components/HowItWorks";
+import {Footer} from '../../components/Footer';
 
 interface IRef {
   home: any;
@@ -48,6 +49,7 @@ export const HomePage: React.FC<any> = React.memo(() => {
       <div ref={sectionRef.cont}>
         <ContactUs />
       </div>
+      <Footer/>
     </>
   );
 });

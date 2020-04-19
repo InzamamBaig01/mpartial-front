@@ -1,9 +1,11 @@
-
 // vars
-@import './vars';
-@import './font/font.scss';
-
+@import "./vars";
+@import "./font/font.scss";
 
 // Common
-@import './layout';
-@import './responsive/responsive';
+@import "./layout";
+
+@import "./pages/profile.scss";
+@import "./pages/login.scss";
+
+@import "./responsive/responsive";

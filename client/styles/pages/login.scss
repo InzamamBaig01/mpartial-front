@@ -1,0 +1,116 @@
+.login_page {
+  width: 100%;
+  height: 100vh;
+  padding-top: 90px;
+  background: rgba(242, 246, 247, 0.7) 0% 0% no-repeat padding-box;
+  .login_container {
+    .title {
+      margin: 5% 0;
+      text-align: center;
+      font-weight: 400;
+      font-size: 45px;
+      line-height: 60px;
+      letter-spacing: 0px;
+      color: #000000;
+      opacity: 1;
+      text-align: center;
+      display: block;
+    }
+    .login_inner_Container {
+      max-width: 450px;
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+
+
+      .forgotP_container {
+        text-align: right;
+        margin-top: 15px;
+        margin-bottom: 30px;
+        a {
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 16px;
+          letter-spacing: 0px;
+          color: #0a5169;
+          opacity: 1;
+        }
+      }
+
+      .login_devider {
+        width: 100%;
+        height: 1px;
+        margin: 32px 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        span {
+          text-align: center;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 16px;
+          letter-spacing: 0px;
+          color: rgba(0, 0, 0, 0.5);
+          display: inline-block;
+          vertical-align: top;
+          background-color: #f2f6f7;
+          padding: 0 23px;
+          margin-top: -8px;
+        }
+      }
+
+      .create_account {
+        height: 50px;
+        background: transparent 0% 0% no-repeat padding-box;
+        border: 2px solid #3ac280;
+        border-radius: 25px;
+        opacity: 1;
+        text-align: center;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 21px;
+        letter-spacing: 0px;
+        color: #3ac280;
+        text-transform: uppercase;
+        opacity: 1;
+        max-width: 257px;
+      }
+    }
+  }
+}
+
+.input-group {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #7fa3b0;
+  border-radius: 10px;
+  opacity: 1;
+  display: flex;
+  .input_icon {
+    background: rgba(10, 81, 105, 0.2) 0% 0% no-repeat padding-box;
+    border-radius: 8px;
+    width: 35px;
+    height: 35px;
+    padding: 10px;
+    margin: 5px;
+  }
+  input {
+    border: none;
+    background-color: transparent;
+    text-align: left;
+    font-weight: Regular;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0px;
+    color: rgba(0, 0, 0, 0.5);
+    height: 47px;
+  }
+}
+.container .submit,.container submit:hover {
+  height: 50px;
+  background: #3ac280 0% 0% no-repeat padding-box !important;
+  border-color:  #3ac280 !important;
+  border-radius: 25px;
+  opacity: 1;
+  display: inline-block;
+  max-width: 257px;
+  text-transform: uppercase;
+  margin: 0 auto;
+}

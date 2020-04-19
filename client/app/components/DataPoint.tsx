@@ -8,7 +8,14 @@ const DataPoint = (props) => {
                     {props.point.number}
                 </div>
                 <div className="data_text col-md-8 col-sm-12">
-                    {props.point.point}
+                    {
+                        props.point.number == 1 ? (
+                            <a href="https://www.getinsights.org/matterport-standards/" >{props.point.point}</a>
+                        ) : (
+                                <span>{props.point.point}</span>
+                            )
+                    }
+
                 </div>
             </div>
         </>

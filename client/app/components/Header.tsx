@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import {
   Collapse,
@@ -13,26 +11,35 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarText
+  NavbarText,
+  Dropdown
 } from 'reactstrap';
 
 import logo from '../../assets/logo.png';
 import Loader from './Loader';
+import { Link } from 'react-router-dom';
 const Header = (props) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
-  const [headerClass, setheaderClass] = useState("");
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const dropdowntoggle = () => setDropdownOpen(!dropdownOpen);
+
+
+  const [headerClass, setheaderClass] = useState(props.isFixedColor ? "scrolled" : "");
 
   const handleScroll = () => {
-    setheaderClass(window.pageYOffset > 300 ? "scrolled" : "");
+    if (!props.isFixedColor) setheaderClass(window.pageYOffset > 300 ? "scrolled" : "");
   }
   const scrollToRef = (ref) => {
     // console.log(props.sectionRef);
+    if (window.innerWidth <= 770) toggle();
+
     window.scrollTo({ top: ref.current.offsetTop, behavior: 'smooth' })
   }
-
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
 
@@ -64,14 +71,26 @@ const Header = (props) => {
                   <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.wFall)}>Fee Structure</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.Deli)}>Example Deliverables</NavLink>
+
+                  <Dropdown nav isOpen={dropdownOpen} toggle={dropdowntoggle}>
+                    <DropdownToggle nav>
+                      <NavLink href="#" >Example Deliverables</NavLink>
+                      <DropdownMenu>
+                        <DropdownItem onClick={() => scrollToRef(props.sectionRef.Deli)}>Immaculate. Impartial. [ESX & PDF]</DropdownItem>
+                        <DropdownItem onClick={() => scrollToRef(props.sectionRef.Deli)}>TrueSketch PLUS [SKX]</DropdownItem>
+                      </DropdownMenu>
+                    </DropdownToggle>
+
+                  </Dropdown>
                 </NavItem>
                 <NavItem>
                   <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.cont)}>Contact Us</NavLink>
                 </NavItem >
               </Nav >
               <NavbarText>
-                <button className="btn btn-primary login_btn">Login</button>
+                <Link to="/login">
+                  <button className="btn btn-primary login_btn">Login</button>
+                </Link>
               </NavbarText>
             </Collapse >
 

@@ -113,7 +113,7 @@ const priceRanges = [
 export const WaterFall: React.FC<WaterFallProps> = ({ }) => {
 
   const [volume, setVolume] = React.useState(0);
-  const [commission, setCommission] = React.useState("0");
+  const [commission, setCommission] = React.useState("7.50");
 
   const onChangeRange = (v) => {
     setVolume(v);
@@ -154,7 +154,7 @@ export const WaterFall: React.FC<WaterFallProps> = ({ }) => {
             />
             <ul css={{
               listStyle: 'none',
-              padding: '0 0 0 15px',
+              padding: '0 15px 0 15px',
               display: 'flex',
               justifyContent: 'space-between',
               'li': {
@@ -177,7 +177,7 @@ export const WaterFall: React.FC<WaterFallProps> = ({ }) => {
               <li>$250,000</li>
               <li>$500,000</li>
               <li>$750,000</li>
-              <li>$1,000,000+</li>
+              <li>$1M+</li>
             </ul>
           </div>
           <p css={{
