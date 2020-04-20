@@ -7,6 +7,10 @@ import MyOrders from "./users/MyOrders";
 import MyOrderDetails from "./users/MyOrderDetails";
 import UserOrder from "./UserOrder";
 import Checkout from "./Checkout";
+import Receipt from "./receipt";
+import AdminLogin from "./admin/AdminLogin";
+import AdminOrders from "./admin/AdminOrders";
+import AdminUserManagement from "./admin/AdminUserManagement";
 
 export const ROUTES = [
   {
@@ -73,6 +77,15 @@ export const ROUTES = [
     title: "checkout",
     isLogin: false,
     redirectTo: "/login",
+  }, {
+    component: Receipt,
+    isExact: true,
+    isPublic: true,
+    path: "/receipt",
+    slug: "receipt",
+    title: "receipt",
+    isLogin: false,
+    redirectTo: "/login",
   },
   {
     component: RedirectPage,
@@ -89,5 +102,29 @@ export const ROUTES = [
     slug: "dashboard",
     title: "dashboard",
     redirectTo: "/login",
+  }, {
+    component: AdminLogin,
+    isPublic: true,
+    path: "/admin",
+    slug: "admin",
+    title: "admin",
+    isLogin: false,
+    redirectTo: "/dashboard",
+  }, {
+    component: AdminOrders,
+    isPublic: true,
+    path: "/allorders",
+    slug: "admin/orders",
+    title: "admin/orders",
+    isLogin: false,
+    redirectTo: "/dashboard",
+  }, {
+    component: AdminUserManagement,
+    isPublic: true,
+    path: "/user-management",
+    slug: "admin/user-management",
+    title: "admin/user-management",
+    isLogin: false,
+    redirectTo: "/dashboard",
   },
 ];

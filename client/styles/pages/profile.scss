@@ -79,3 +79,12 @@
         margin: 20px 0 28px 0;
     }
 }
+@media(max-width:1024px){
+    .profile_left_sidebar{
+        margin: 0;
+        padding: 15px;
+    }
+    .profile_right_section{
+        margin: 0;
+    }
+}

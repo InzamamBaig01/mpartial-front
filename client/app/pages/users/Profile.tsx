@@ -50,7 +50,7 @@ const Profile = () => {
         //         }
         //       );
         // })
-        
+
     }, [])
 
     return (
@@ -60,7 +60,7 @@ const Profile = () => {
                 <h1 className="title text-center">My Account</h1>
                 <div className="container">
                     <div className="row">
-                        <div className="col-4">
+                        <div className="col-md-4 col-sm-12 col-xs-12">
                             <div className="profile_left_sidebar">
                                 <div className="profile_image">
                                     <img src={userProfile} alt="" />
@@ -93,10 +93,15 @@ const Profile = () => {
                                         <div className="col">Zip Code</div>
                                         <div className="col text-right">678765</div>
                                     </div>
+                                    <div className="row">
+                                        <div className="col text-center">
+                                            <button className="btn">Change Password</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="col-8">
+                        <div className="col-md-8 col-sm-12 col-xs-12">
                             <div className="profile_right_section">
                                 <div className="row">
                                     <div className="col">

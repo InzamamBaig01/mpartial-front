@@ -70,7 +70,7 @@ const Header = (props) => {
                 <NavItem>
                   <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.wFall)}>Fee Structure</NavLink>
                 </NavItem>
-                <NavItem>
+                <NavItem className="dropdown_desktop">
 
                   <Dropdown nav isOpen={dropdownOpen} toggle={dropdowntoggle}>
                     <DropdownToggle nav>
@@ -83,6 +83,18 @@ const Header = (props) => {
 
                   </Dropdown>
                 </NavItem>
+                <NavItem className="dropdown_mobile" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                  <NavLink href="#"  >Example Deliverables</NavLink>
+                  {
+                    dropdownOpen ? (
+                      <>
+                        <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.Deli)}>Immaculate. Impartial. [ESX & PDF]</NavLink>
+                        <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.Deli)}>TrueSketch PLUS [SKX]</NavLink>
+                      </>
+                    ) : ''
+                  }
+
+                </NavItem >
                 <NavItem>
                   <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.cont)}>Contact Us</NavLink>
                 </NavItem >

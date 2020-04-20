@@ -10,7 +10,7 @@ export const SignupStepTwo:React.FC<StepProps> = (props) => {
     <>
       <div className={'container'}>
         <h2>Thanks, What's your name?</h2>
-        <div className="form-group row justify-content-center">
+        <div className="form-group row justify-content-center step-two-field">
           <div className={'col-md-3 col-xs-12'}>
           <div className="input-group" css={{maxWidth:'283px'}}>
             <input
