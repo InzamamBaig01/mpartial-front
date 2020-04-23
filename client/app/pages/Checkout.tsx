@@ -36,7 +36,7 @@ const Checkout = () => {
                         </div>
                         <div className="row">
                             <div className={`form-group col-12`}>
-                                <label>ZipCode</label>
+                                <label>Zip Code</label>
                                 <input type="text" className="form-control" />
                             </div>
                         </div>
@@ -69,7 +69,7 @@ const Checkout = () => {
                                     <thead>
                                         <tr>
                                             <th>Service</th>
-                                            <th>total</th>
+                                            <th>Price</th>
                                         </tr>
                                     </thead>
                                     <tbody>

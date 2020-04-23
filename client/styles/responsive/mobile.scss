@@ -1,0 +1,126 @@
+
+@media (max-width: 768px) {
+  .dropdown_desktop {
+    display: none !important;
+  }
+  .dropdown_mobile {
+    display: block;
+  }
+  .deliver_widget_container section {
+    div {
+      min-width: auto;
+    }
+  }
+  .step-two-field {
+    .input-group {
+      max-width: inherit;
+      width: 100%;
+      margin: 15px 0;
+    }
+  }
+  .slider {
+    width: 90%;
+    margin: 130px auto 60px !important;
+  }
+  .home_video_background {
+    height: 325px;
+  }
+  .main_banner_text {
+    font-size: 21px;
+    top: 50%;
+    line-height: 28px;
+  }
+  .slider_down_btn {
+    display: none;
+  }
+  .main_header {
+    background: #fff;
+  }
+  .navbar-toggler {
+    // border-color: #3ac280;
+    outline: 0 !important;
+  }
+  .main_header .main_navbar li a {
+    color: #4a4848;
+  }
+  .navbar-text {
+    display: block;
+    text-align: center;
+    .login_btn {
+      margin: 0 auto;
+    }
+  }
+  .title.left .section_title_text,
+  .title.center .section_title_text {
+    padding: 25% 7%;
+    text-align: center;
+    background-position: center center;
+    font-size: 28px;
+    line-height: 32px;
+    margin: 5% 0;
+  }
+  .title.left .section_title_description {
+    text-align: center;
+    font-size: 14px;
+    line-height: 24px;
+    padding-top: 20px;
+  }
+  .data_points .data_point_item .data_number {
+    text-align: center;
+    background-position: 55% 0;
+  }
+  .data_points .data_point_item .data_text {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  .rangeslider .rangeslider__handle-tooltip {
+    width: 125px;
+    height: 75px;
+  }
+  .rangeslider-horizontal .rangeslider__handle-tooltip {
+    top: -100px;
+  }
+  .rangeslider .rangeslider__handle-tooltip span {
+    font-size: 18px;
+  }
+  .deliver_widget_container {
+    display: block;
+  }
+  .deliver_widget_container section {
+    width: 100%;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  h3.widget-title {
+    font-size: 26px;
+  }
+  .deliver-slider {
+    width: 93%;
+  }
+  .nav-link {
+    padding-top: 10px !important;
+  }
+  .mpartial_table th{
+    font-size: 14px;
+  }
+  .mpartial_table td{
+    font-size: 13px;
+  }
+  .order_form {
+    max-width: 375px;
+  }
+  .receipt_details{
+    max-width: 400px;
+    .receipt_data{
+      margin-top: 0 !important;
+      margin-bottom: 10px;
+    }
+  }
+  .admin_sidebar{
+    height: 100%;
+    min-height:350px;
+    margin: 15px;
+  }
+}

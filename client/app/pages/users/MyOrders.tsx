@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import Header from "app/components/Header";
 
-
+import viewicon from '../../../assets/view.svg';
 const MyOrders = () => {
     return (
         <>
@@ -17,7 +17,7 @@ const MyOrders = () => {
                                 <th>Email</th>
                                 <th>Order Date</th>
                                 <th>Total</th>
-                                <th>Action</th>
+                                <th className="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -26,7 +26,7 @@ const MyOrders = () => {
                                 <td>dummy.wmail@gmail.com</td>
                                 <td>Apr 02,2020</td>
                                 <td>$250</td>
-                                <td></td>
+                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                             </tr>
 
                             <tr>
@@ -34,7 +34,7 @@ const MyOrders = () => {
                                 <td>dummy.wmail@gmail.com</td>
                                 <td>Apr 02,2020</td>
                                 <td>$250</td>
-                                <td></td>
+                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                             </tr>
 
                             <tr>
@@ -42,7 +42,7 @@ const MyOrders = () => {
                                 <td>dummy.wmail@gmail.com</td>
                                 <td>Apr 02,2020</td>
                                 <td>$250</td>
-                                <td></td>
+                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                             </tr>
 
                             <tr>
@@ -50,7 +50,7 @@ const MyOrders = () => {
                                 <td>dummy.wmail@gmail.com</td>
                                 <td>Apr 02,2020</td>
                                 <td>$250</td>
-                                <td></td>
+                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                             </tr>
 
                             <tr>
@@ -58,7 +58,7 @@ const MyOrders = () => {
                                 <td>dummy.wmail@gmail.com</td>
                                 <td>Apr 02,2020</td>
                                 <td>$250</td>
-                                <td></td>
+                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                             </tr>
 
                             <tr>
@@ -66,7 +66,7 @@ const MyOrders = () => {
                                 <td>dummy.wmail@gmail.com</td>
                                 <td>Apr 02,2020</td>
                                 <td>$250</td>
-                                <td></td>
+                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                             </tr>
 
                             <tr>
@@ -74,7 +74,7 @@ const MyOrders = () => {
                                 <td>dummy.wmail@gmail.com</td>
                                 <td>Apr 02,2020</td>
                                 <td>$250</td>
-                                <td></td>
+                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                             </tr>
 
                             <tr>
@@ -82,7 +82,7 @@ const MyOrders = () => {
                                 <td>dummy.wmail@gmail.com</td>
                                 <td>Apr 02,2020</td>
                                 <td>$250</td>
-                                <td></td>
+                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                             </tr>
 
                             <tr>
@@ -90,7 +90,7 @@ const MyOrders = () => {
                                 <td>dummy.wmail@gmail.com</td>
                                 <td>Apr 02,2020</td>
                                 <td>$250</td>
-                                <td></td>
+                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                             </tr>
 
                             <tr>
@@ -98,7 +98,7 @@ const MyOrders = () => {
                                 <td>dummy.wmail@gmail.com</td>
                                 <td>Apr 02,2020</td>
                                 <td>$250</td>
-                                <td></td>
+                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                             </tr>
 
                             <tr>
@@ -106,7 +106,7 @@ const MyOrders = () => {
                                 <td>dummy.wmail@gmail.com</td>
                                 <td>Apr 02,2020</td>
                                 <td>$250</td>
-                                <td></td>
+                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                             </tr>
 
                             <tr>
@@ -114,11 +114,11 @@ const MyOrders = () => {
                                 <td>dummy.wmail@gmail.com</td>
                                 <td>Apr 02,2020</td>
                                 <td>$250</td>
-                                <td></td>
+                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                             </tr>
                         </tbody>
                     </table>
-                    </div>
+                </div>
             </div>
         </>
     );

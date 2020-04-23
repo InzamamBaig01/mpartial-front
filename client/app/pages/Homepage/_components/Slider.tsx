@@ -25,7 +25,8 @@ export const Slider: React.FC<SliderProps> = ({ nextSection }) => {
           muted={true}
           loop={true}
           autoPlay={true}
-          src="/background.mp4"
+          // src="/background.mp4"
+          src={videofile}
         >
 
         </BackgroundVideo>

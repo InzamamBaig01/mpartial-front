@@ -29,7 +29,7 @@ const App: React.FC<RouteComponentProps<any>> = props => {
 
   return (
     <>
-      <LocalApp isAuthenticated={true}></LocalApp>
+      <LocalApp isAuthenticated={isUserAuthenticated()}></LocalApp>
     </>
   );
 };

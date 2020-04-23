@@ -19,6 +19,7 @@ interface IContextProps {
   logout: Function;
   setPageIsPublicValue: Function;
   pageIsPublic: any;
+  userDetails: Function;
 }
 
 export const AuthContext = React.createContext({} as IContextProps);
@@ -92,6 +93,14 @@ export default React.memo(({ children }) => {
     return false;
   };
 
+  const userDetails = () => {
+    const profile = JSON.parse(localStorage.getItem("profile"));
+    if (profile) {
+      return profile;
+    }
+    return false;
+  }
+
   const dispatchLogin = () => {
     setStatus("pending");
 
@@ -108,7 +117,7 @@ export default React.memo(({ children }) => {
           profile = response.response.objApplicationUserDTO;
           localStorage.setItem("profile", JSON.stringify(profile));
           localStorage.setItem("token", profile.token);
-          history.push("/");
+          history.push("/profile");
         }
         //console.log(status);
       },
@@ -152,6 +161,7 @@ export default React.memo(({ children }) => {
     isUserAuthenticated,
     logout,
     setPageIsPublicValue,
+    userDetails,
   };
 
   return (

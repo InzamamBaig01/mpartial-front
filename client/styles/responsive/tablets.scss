@@ -1,8 +1,48 @@
 @media screen and (min-width: 401px) and (max-width: 720px) {
-    
+
 }
 
 
 @media screen and (min-width: 721px) and (max-width: 1280px) {
-    
+
+}
+
+@media (max-width: 1024px) {
+  .data_points .data_point_item .data_number {
+    font-size: 100px;
+    line-height: 120px;
+    background-size: 100%;
+  }
+  .main_banner_text {
+    font-size: 28px;
+  }
+  .slider_down_btn {
+    top: 50%;
+  }
+  .deliver_widget_container {
+    display: block;
+  }
+  .deliver_widget_container section {
+    width: 100%;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  .carousel-item img {
+    width: 100%;
+  }
+  .carousel-control-next-icon,
+  .carousel-control-prev-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .sketch-container {
+    display: block;
+  }
+  .sketch-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
 }

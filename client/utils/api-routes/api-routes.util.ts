@@ -3,7 +3,7 @@ import { ajax } from 'rxjs/observable/dom/ajax';
 import { catchError } from 'rxjs/operators';
 import history from '../history';
 
-const baseURL = 'http://corevoyant.com:9000';
+const baseURL = 'http://dev.mpartial.io:9000';
 
 const requestHeader = () => {
   const headers = {

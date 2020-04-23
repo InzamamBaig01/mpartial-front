@@ -30,7 +30,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
 
   return (
     <>
-      <Header isFixedColor={true}></Header>
+      <Header isF ixedColor={true}></Header>
       <div className="login_page">
         <div className="login_container container">
           <span className="title">Sign In with your mpartial account.</span>
@@ -68,15 +68,13 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
               <div className="forgotP_container">
                 <Link to="/forgotpassword">Forgot Password?</Link>
               </div>
-              <Link to="/profile">
 
-                <button
-                  type="submit"
-                  className="btn btn-primary btn-block submit"
-                >
-                  Sign in
+              <button
+                type="submit"
+                className="btn btn-primary btn-block submit"
+              >
+                Sign in
               </button>
-              </Link>
 
             </form>
             <div className="login_devider">

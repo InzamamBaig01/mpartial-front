@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Collapse,
   Navbar,
@@ -18,15 +18,34 @@ import {
 import logo from '../../assets/logo.png';
 import Loader from './Loader';
 import { Link } from 'react-router-dom';
+import { AuthContext } from 'contexts/authContext';
+
+
+
+import usericon from '../../assets/usericon.svg';
+import cart from '../../assets/cart.svg';
+import logouticon from '../../assets/logout.svg';
+
+
+
 const Header = (props) => {
+  const { isUserAuthenticated, userDetails, logout } = useContext(AuthContext);
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const [userD, setUserD] = useState(false);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(isUserAuthenticated());
 
   const toggle = () => setIsOpen(!isOpen);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const dropdowntoggle = () => setDropdownOpen(!dropdownOpen);
+
+  const [userdropdownOpen, setuserDropdownOpen] = useState(false);
+
+  const userdropdowntoggle = () => setuserDropdownOpen(!userdropdownOpen);
 
 
   const [headerClass, setheaderClass] = useState(props.isFixedColor ? "scrolled" : "");
@@ -42,6 +61,7 @@ const Header = (props) => {
   }
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
+    setUserD(userDetails());
 
   }, [])
   return (
@@ -98,12 +118,45 @@ const Header = (props) => {
                 <NavItem>
                   <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.cont)}>Contact Us</NavLink>
                 </NavItem >
+
+                {isLoggedIn ? (
+                  <>
+                    <NavItem className="dropdown_desktop">
+                      <Dropdown nav isOpen={userdropdownOpen} toggle={userdropdowntoggle}>
+                        <DropdownToggle nav>
+                          <NavLink href="#" >Hi, {userD.name}</NavLink>
+                          <DropdownMenu className="profile_header_links">
+                            <DropdownItem><Link to="/profile"><img src={usericon} alt="" /> My Account</Link></DropdownItem>
+                            <DropdownItem><Link to="/orders"><img src={cart} alt="" /> My Orders</Link></DropdownItem>
+                            <DropdownItem onClick={logout}><img src={logouticon} alt="" /> Logout</DropdownItem>
+                          </DropdownMenu>
+                        </DropdownToggle>
+                      </Dropdown>
+                    </NavItem >
+                    <NavItem className="dropdown_mobile user_logged_link" onClick={() => setuserDropdownOpen(!userdropdownOpen)}>
+                      <NavLink href="#"  >Hi, {userD.name}</NavLink>
+                      {
+                        userdropdownOpen ? (
+                          <>
+                            <Link to="/profile"><img src={usericon} alt="" /> My Account</Link>
+                            <Link to="/orders"><img src={cart} alt="" /> My Orders</Link>
+                            <Link to="#" onClick={logout}><img src={logouticon} alt="" /> Logout</Link>
+                          </>
+                        ) : ''
+                      }
+
+                    </NavItem >
+                  </>
+                ) : (
+                    <NavItem>
+                      <Link to="/login">
+                        <button className="btn btn-primary login_btn">Login</button>
+                      </Link>
+                    </NavItem>
+                  )}
+
+
               </Nav >
-              <NavbarText>
-                <Link to="/login">
-                  <button className="btn btn-primary login_btn">Login</button>
-                </Link>
-              </NavbarText>
             </Collapse >
 
           </div>

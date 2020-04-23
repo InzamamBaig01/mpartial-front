@@ -19,8 +19,8 @@ export const ROUTES = [
     path: "/login",
     slug: "login",
     title: "Login",
-    isLogin: false,
-    redirectTo: "/dashboard",
+    isLogin: true,
+    redirectTo: "/profile",
   },
   {
     component: Signup,
@@ -28,13 +28,12 @@ export const ROUTES = [
     path: "/signup",
     slug: "signup",
     title: "Sign Up",
-    isLogin: false,
-    redirectTo: "/dashboard",
+    isLogin: true,
+    redirectTo: "/profile",
   },
   {
     component: Profile,
     isExact: true,
-    isPublic: true,
     path: "/profile",
     slug: "Profile",
     title: "Profile",
@@ -43,7 +42,6 @@ export const ROUTES = [
   {
     component: MyOrders,
     isExact: true,
-    isPublic: true,
     path: "/orders",
     slug: "Orders",
     title: "Orders",
@@ -52,7 +50,6 @@ export const ROUTES = [
   }, {
     component: MyOrderDetails,
     isExact: true,
-    isPublic: true,
     path: "/ordersdetails",
     slug: "ordersDetails",
     title: "ordersDetails",

@@ -5,8 +5,8 @@ import SectionTitle from 'app/components/SectionTitle';
 import BeforeAfterSlider from 'react-before-after-slider'
 import ReactCompareImage from 'react-compare-image';
 
-import after from '../../../../assets/exterior.jpg'
-import before from '../../../../assets/interior.jpg'
+import after from '../../../../assets/pre.jpg'
+import before from '../../../../assets/post.jpg'
 import handle from '../../../../assets/compare_handle.png'
 
 interface HeroSectionProps {

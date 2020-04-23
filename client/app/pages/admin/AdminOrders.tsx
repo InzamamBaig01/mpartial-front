@@ -132,10 +132,10 @@ const AdminOrders = () => {
             <div className="other_pages_container">
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-3 admin_sidebar">
+                        <div className="col-md-3 col-sm-4 col-xs-12 admin_sidebar">
                             <AdminSidebar></AdminSidebar>
                         </div>
-                        <div className="col-9 admin_orders">
+                        <div className="col-md-9 col-sm-8 col-xs-12 admin_orders">
                             <div className="row">
                                 <div className="col">
                                     <div className="admin_order_heading">

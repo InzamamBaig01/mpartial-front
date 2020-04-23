@@ -24,12 +24,12 @@ export const Deliverables: React.FC<DeliverablesProps> = ({ }) => {
           <div className={'deliver_widget_container'}>
             <DeliverablesBox
               title={'Pre-Mitigation'}
-              url={'https://my.matterport.com/show/?m=eCsvANPp7Dn&amp;brand=0'}
+              url={'https://my.matterport.com/show/?m=e5Wxtu8Arbx'}
             />
             <span className={'numeric-character'}>+</span>
             <DeliverablesBox
               title={'Post-Mitigation'}
-              url={'https://my.matterport.com/show/?m=S9X5VbMx8CU&amp;brand=0'}
+              url={'https://my.matterport.com/show/?m=DhqzGgT7M1E'}
             />
           </div>
           <span className={'numeric-character'}>=</span>

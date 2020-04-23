@@ -46,8 +46,8 @@ export const Signup: React.FC<IProps> = ({ ...props }) => {
           <div className={'container'}>
             <div className="signUp_actions">
               <ul>
-                <li><a onClick={() => setStepVal(stepVal > 1 ? stepVal -1 : 1)}><img src={left} /></a></li>
-                <li><a href={'#'}><img src={question} /></a></li>
+                <li><Link to="/"><img src={left} /></Link></li>
+                {/* <li><a href={'#'}><img src={question} /></a></li> */}
               </ul>
             </div>
           </div>
