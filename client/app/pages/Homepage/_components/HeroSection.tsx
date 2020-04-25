@@ -15,7 +15,7 @@ interface HeroSectionProps {
 const Handle = () => {
   return (
     <>
-    <img src={handle} alt="handle" />
+      <img src={handle} alt="handle" />
     </>
   )
 }
@@ -40,14 +40,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ }) => {
             description={"Matterport Geospatial Scans, TruePlan Sketches, Actionable Insights Compliance, Xactimate Price List. We bring the best industry technology and experience to bear while relieving you of the administrative burden. Produced with full transparency and clear documentation that champions rapid approval."}
             type="left"
           ></SectionTitle>
-          <div className="compare_images_section" ref={div}>
-            {/* <BeforeAfterSlider
-              before={before}
-              after={after}
-              width={width - 150}
-              height={400}
-              defaultProgress={0.5}
-            /> */}
+          <div className="compare_images_section" ref={div}>1
             <ReactCompareImage
               leftImage={before}
               rightImage={after}
@@ -56,9 +49,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ }) => {
 
           </div>
           <div className="try_now_btn">
-            <button className="btn">
-              Try Today
+            <Link to="/order">
+              <button className="btn">
+                Try Today
               </button>
+            </Link>
           </div>
         </div>
       </div>

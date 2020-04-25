@@ -1,5 +1,5 @@
 import * as React from "react";
-import { login, logoutAPI, auth } from "../utils/api-routes/api-routes.util";
+import { login, logoutAPI, auth, signup1, signup2, signup3, signup4, signup5 } from "../utils/api-routes/api-routes.util";
 import history from "../utils/history";
 import { useState } from "react";
 
@@ -20,6 +20,12 @@ interface IContextProps {
   setPageIsPublicValue: Function;
   pageIsPublic: any;
   userDetails: Function;
+  signupDetails: any;
+  step1: Function;
+  step2: Function;
+  step3: Function;
+  step4: Function;
+  step5: Function;
 }
 
 export const AuthContext = React.createContext({} as IContextProps);
@@ -37,6 +43,11 @@ export default React.memo(({ children }) => {
 
   let profile: ProfileStorage = { token: "" };
 
+
+  const [signupDetails, setSignupDetails] = useState({
+
+  });
+
   let payload = React.useMemo(() => {
     return { username: "", password: "" };
   }, []);
@@ -50,17 +61,17 @@ export default React.memo(({ children }) => {
   React.useEffect(() => {
     // console.log("pageIsPublic",pageIsPublic);
     if (pageIsPublic !== undefined && !pageIsPublic) {
-      auth().subscribe(
-        (response: any) => {
-          if (response.response.Requested_Action) {
-          } else {
-            logout();
-          }
-        },
-        response => {
-          logout();
-        }
-      );
+      // auth().subscribe(
+      //   (response: any) => {
+      //     if (response.response.Requested_Action) {
+      //     } else {
+      //       logout();
+      //     }
+      //   },
+      //   response => {
+      //     logout();
+      //   }
+      // );
     }
   }, [pageIsPublic]);
 
@@ -74,11 +85,7 @@ export default React.memo(({ children }) => {
     //  validateEmail();
   };
 
-  const validateEmail = () => {
-    const emailPatter = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-    const required = payload.username ? undefined : "Required";
-    //  emailError = required || (emailPatter.test(payload.username) ? undefined : 'Invalid email address');
-  };
+
 
   const passwordOnChange = (pwd: string) => {
     payload.password = pwd;
@@ -114,9 +121,9 @@ export default React.memo(({ children }) => {
           setIsAuthenticated(true);
           setStatus("success");
           //console.log(response)
-          profile = response.response.objApplicationUserDTO;
+          profile = response.response.data;
           localStorage.setItem("profile", JSON.stringify(profile));
-          localStorage.setItem("token", profile.token);
+          localStorage.setItem("token", response.response.message);
           history.push("/profile");
         }
         //console.log(status);
@@ -146,6 +153,55 @@ export default React.memo(({ children }) => {
     );
   };
 
+
+
+
+  const step1 = (data) => {
+    setSignupDetails({
+      ...signupDetails,
+      emailaddress: data.emailaddress
+    })
+    return signup1(data);
+  }
+
+  const step2 = (data) => {
+    setSignupDetails({
+      ...signupDetails,
+      firstname: data.firstname,
+      lastname: data.lastname
+    })
+    data.emailaddress = signupDetails.emailaddress;
+    return signup2(data);
+  }
+  const step3 = (data) => {
+    setSignupDetails({
+      ...signupDetails,
+      phonenumber: data.phonenumber,
+    })
+    data.emailaddress = signupDetails.emailaddress;
+    return signup3(data);
+  }
+  const step4 = (data) => {
+    setSignupDetails({
+      ...signupDetails,
+      role: data.role,
+    })
+    data.emailaddress = signupDetails.emailaddress;
+    return signup4(data);
+  }
+  const step5 = (data) => {
+    setSignupDetails({
+      ...signupDetails,
+      password: data.password,
+    })
+    data.emailaddress = signupDetails.emailaddress;
+    return signup5(data);
+  }
+
+
+
+
+
   const defaultContext = {
     profile,
     payload,
@@ -162,6 +218,12 @@ export default React.memo(({ children }) => {
     logout,
     setPageIsPublicValue,
     userDetails,
+    signupDetails,
+    step1,
+    step2,
+    step3,
+    step4,
+    step5,
   };
 
   return (

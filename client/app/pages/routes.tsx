@@ -58,7 +58,6 @@ export const ROUTES = [
   }, {
     component: UserOrder,
     isExact: true,
-    isPublic: true,
     path: "/order",
     slug: "userorder",
     title: "userorder",
@@ -96,6 +95,14 @@ export const ROUTES = [
     isExact: true,
     isPublic: true,
     path: "/",
+    slug: "dashboard",
+    title: "dashboard",
+    redirectTo: "/login",
+  },{
+    component: Homepage,
+    isExact: true,
+    isPublic: true,
+    path: "/#:sectionid?",
     slug: "dashboard",
     title: "dashboard",
     redirectTo: "/login",

@@ -1,6 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import Header from "app/components/Header";
+import MultiSelect from "react-multi-select-component";
+import { AuthContext } from "contexts/authContext";
+import { saveOrderData } from "utils/api-routes/api-routes.util";
 
 const fields = [
   {
@@ -8,19 +11,23 @@ const fields = [
     description: null,
     type: "text",
     required: true,
+    id: "projectName",
   },
   {
+    id: "projectZipCode",
     name: "Project Zip Code",
     description: "Informs the applied price list",
     type: "text",
     required: true,
   },
   {
+    id: "Carrier",
     name: "Insurance Carrier",
     description: null,
     type: "text",
   },
   {
+    id: "causeOfLoss",
     name: "Cause of Loss",
     description:
       "mpartial is fully compatible with interior water & fire losses",
@@ -34,6 +41,7 @@ const fields = [
     ],
   },
   {
+    id: "mitigationOrRepair",
     name: "Mitigation or Repair",
     description: null,
     required: true,
@@ -41,20 +49,23 @@ const fields = [
     options: ["Mitigation", "Repair"],
   },
   {
+    id: "category",
     name: "Category",
     description: "As defined by the IICRC S500/S520",
     type: "select",
     required: true,
-    options: ["blue", "cyan", "teal", "green"],
+    options: ["cat 1", "cat 2", "cat 3", "N/A"],
   },
   {
+    id: "residentialOrCommercial",
     name: "Residential or Commercial",
     description: null,
     type: "select",
     required: true,
-    options: ["blue", "yellowMedium"],
+    options: ["Residential", "Commercial"],
   },
   {
+    id: "preMitigationDemoModelURL",
     name: "Pre Mitigation/Demo Model URL",
     description: "e.g. https://my.matterport.com/show/?m=ggh5ffgbkrt",
     type: "text",
@@ -62,6 +73,7 @@ const fields = [
     typeOptions: {},
   },
   {
+    id: "postMitigationDemoModelURL",
     name: "Post Mitigation/Demo Model URL",
     description: "e.g. https://my.matterport.com/show/?m=gjdf56vbngf",
     type: "text",
@@ -69,6 +81,7 @@ const fields = [
     typeOptions: {},
   },
   {
+    id: "durationOfTheProject",
     name: "Duration of the Project",
     description: "Either known or projected",
     type: "select",
@@ -134,36 +147,38 @@ const fields = [
       "52 Weeks",
       'Other - Please inform in the "Additional Information" field',
     ],
-  },
-  {
+  }, {
+    id: "debrisDisposal",
     name: "Debris Disposal",
     description: null,
     required: true,
-
     type: "select",
-    options: ["blue", "cyan", "teal"],
+    options: ["Haul Debris", "Dumpster", "N/A"],
   },
   {
+    id: "temporaryActivities",
     name: "Temporary Activities",
     description:
       'Please describe the quantities in the "Additional Information" field',
     type: "multiSelect",
     required: true,
     options: [
-      "blue",
+      "Temp Toilet",
       "Temp Power",
       "N/A",
       'Other - Please describe in the "Additional Information" field',
     ],
   },
   {
+    id: "optionalTrades",
     name: "Specialty Trade Selection",
     description:
       "Specialty trades typically require in-depth inspections and will be omitted from your deliverables by default. Should you wish to include various specialty trades, be sure to select from the list below.",
     type: "multiSelect",
     options: [
-      "blue",
-      "cyan",
+      "Framing - Affected rooms only",
+      "Electrical - Affected rooms only",
+      "HVAC - Affected rooms only",
       "Framing - Affected rooms only",
       "Electrical - Entire property",
       "HVAC - Entire property",
@@ -172,36 +187,67 @@ const fields = [
     ],
   },
   {
+    id: "pPEsConcessions",
     name: "PPEs Concessions",
     description:
       'Please describe the PPE concessions required e.g.,: 3 Technician(s) x 2 Day(s); (if non-applicable write "n/a")',
     type: "textarea",
   },
   {
+    id: "dryOutMonitoringDuration",
     name: "Dry Out Monitoring Duration",
     description:
       "Please describe the type of equipment - for how many days - in what room (If applicable) / e.g.: 3 Dehumidifier(s) x 4 Day(s) - Living Room ",
     type: "textarea",
   },
   {
+    id: "projectDetails",
     name: "Additional Information / Project Details",
     description: "Please add any relevant and/or unknowable information here",
     type: "textarea",
   },
   {
+    id: "Potentially Relevant Digital Assets",
     name: "Potentially Relevant Digital Assets",
     description:
       "e.g., Additional Invoices, Relevant Images, Environmental Report etc.",
     type: "multipleAttachment",
   },
   {
+    id: "emailForDeliveryOfResults",
     name: "Email For Delivery of Results",
     description: null,
     required: true,
     type: "email",
     typeOptions: {},
+    value: ''
   },
 ];
+
+
+const MultipleSelectField = (props) => {
+  const [selected, setSelected] = useState([]);
+  const options = [];
+  props.field.options.map((option) => {
+    options.push({
+      "label": option,
+      "value": option
+    });
+  })
+
+  return (
+    <MultiSelect
+      options={options}
+      value={selected}
+      required={props.field.required ? true : false}
+      onChange={(value) => {
+        setSelected(value);
+        props.field.value = value;
+      }}
+      labelledBy={"Select"}
+    />
+  )
+}
 
 const DrawField = (props) => {
   const form = (field) => {
@@ -212,6 +258,7 @@ const DrawField = (props) => {
             type="text"
             required={field.required ? true : false}
             className="form-control"
+            onChange={(e) => { field.value = e.currentTarget.value }}
           />
         );
         break;
@@ -220,7 +267,9 @@ const DrawField = (props) => {
           <select
             className="form-control"
             required={field.required ? true : false}
+            onChange={(e) => { field.value = e.currentTarget.value }}
           >
+            <option value="">Please Select {field.name}</option>
             {Object.values(field.options).map((option, index) => {
               return (
                 <option value={option} key={index}>
@@ -231,21 +280,9 @@ const DrawField = (props) => {
           </select>
         );
         break;
-      case "multiselect":
+      case "multiSelect":
         return (
-          <select
-            className="form-control"
-            required={field.required ? true : false}
-            multiple
-          >
-            {Object.values(field.options).map((option, index) => {
-              return (
-                <option value={option} key={index}>
-                  {option}
-                </option>
-              );
-            })}
-          </select>
+          <MultipleSelectField field={field} />
         );
         break;
 
@@ -257,6 +294,7 @@ const DrawField = (props) => {
                 type="file"
                 multiple
                 required={field.required ? true : false}
+                onChange={(e) => { field.value = e.target.files }}
               />
             </div>
           </>
@@ -268,6 +306,7 @@ const DrawField = (props) => {
           <textarea
             required={field.required ? true : false}
             className="form-control"
+            onChange={(e) => { field.value = e.currentTarget.value }}
           ></textarea>
         );
         break;
@@ -277,6 +316,7 @@ const DrawField = (props) => {
             type="email"
             required={field.required ? true : false}
             className="form-control"
+            onChange={(e) => { field.value = e.currentTarget.value }}
           />
         );
         break;
@@ -286,6 +326,7 @@ const DrawField = (props) => {
             type="text"
             required={field.required ? true : false}
             className="form-control"
+            onChange={(e) => { field.value = e.currentTarget.value }}
           />
         );
         break;
@@ -295,13 +336,68 @@ const DrawField = (props) => {
   return form(field);
 };
 const UserOrder = () => {
+
+  const {
+    userDetails,
+  } = useContext(AuthContext);
+
+
+  const onSubmit = e => {
+    e.preventDefault();
+    const apiData = {
+      amountInCents: 250 * 100,
+      additionalFees: '',
+    };
+    const formData = new FormData();
+
+    fields.map(field => {
+      if (field.type === "multipleAttachment") {
+        // apiData.filesToUpload = field.value;
+      } else if (field.type === "multiSelect") {
+        apiData[field.id] = field.value ? field.value.map((v) => { return v.value }).join(",") : ""
+      } else {
+        apiData[field.id] = field.value;
+      }
+    });
+
+    // formData.append("filesToUpload", apiData.filesToUpload);
+
+    console.log(apiData);
+    saveOrderData(apiData, apiData).subscribe(
+      (response: any) => {
+        if (response.response.Requested_Action) {
+          console.log(response.response)
+          // dispatchGetBoardDetails();
+
+          // showAlert({
+          //   alertType: "success",
+          //   message: "Your Form has been successfully submitted",
+          //   isTimely: false
+          // });
+          // setFormSubmitted(true);
+        } else {
+          // showAlert({
+          //   alertType: "error",
+          //   message: "something wrong.",
+          //   isTimely: false
+          // });
+        }
+        // //console.log(response);
+      },
+      response => {
+        //console.log(response);
+      }
+    );
+  };
+
+
   return (
     <>
       <Header isFixedColor={true}></Header>
       <div className="other_pages_container">
         <h1 className="title text-center">mpartial Engine</h1>
         <div className="container">
-          <form className="order_form">
+          <form className="order_form" onSubmit={onSubmit}>
             <div className="row">
               {fields.map((field, index) => {
                 const gridCol =
@@ -327,7 +423,7 @@ const UserOrder = () => {
 
             <div className="form-group">
               <label className="terms">
-                <input type="checkbox" /> I’ve read and accept the mpartial
+                <input type="checkbox" required /> I’ve read and accept the mpartial
                 Terms & Conditions.*
               </label>
             </div>

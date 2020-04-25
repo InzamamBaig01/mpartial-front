@@ -16,7 +16,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
     emailOnChange,
     passwordOnChange,
   } = useContext(AuthContext);
-  const [loginStatus, setLoginStatus] = useState(loginError);
+  const [loginStatus, setLoginStatus] = useState(false);
   const handleEmailChange = (e: any) => emailOnChange(e.target.value);
   const handlePasswordChange = (e: any) => passwordOnChange(e.target.value);
   const handleSubmitForm = (e: any) => {
@@ -30,7 +30,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
 
   return (
     <>
-      <Header isF ixedColor={true}></Header>
+      <Header isFixedColor={true}></Header>
       <div className="login_page">
         <div className="login_container container">
           <span className="title">Sign In with your mpartial account.</span>
@@ -42,7 +42,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
                 <div className="input-group">
                   <img className="input_icon" src={Mail} alt="" />
                   <input
-                    type="text"
+                    type="email"
                     className="form-control"
                     placeholder="Email"
                     onChange={handleEmailChange}
@@ -87,6 +87,19 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
           </div>
         </div>
       </div>
+      {
+        loginStatus ? (
+          <div className="not_verified" onClick={() => {
+            setLoginStatus(false);
+          }}>
+            <div className="error_msg"  onClick={() => {
+            setLoginStatus(true);
+          }}>
+              You have not verified your email address. <a href="#">Click here</a> to receive a verification email.
+        </div>
+          </div>
+        ) : ''
+     }
     </>
   );
 };

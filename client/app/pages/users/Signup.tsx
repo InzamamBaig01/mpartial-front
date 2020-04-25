@@ -4,15 +4,17 @@ import { AuthContext } from "../../../contexts/authContext";
 import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import { SignupStepOne } from './_components/SignupStepOne';
-import {SignupStepTwo} from './_components/SignupStepTwo';
-import {SignupStepThree} from './_components/SignupStepThree';
-import {SignupStepFour} from './_components/SignupStepFour';
+import { SignupStepTwo } from './_components/SignupStepTwo';
+import { SignupStepThree } from './_components/SignupStepThree';
+import { SignupStepFour } from './_components/SignupStepFour';
+import { SignupStepMobile } from './_components/SignupStepMobile';
+import { SignupStepRole } from './_components/SignupStepRole';
 import Mail from "../../../assets/email.svg";
 import Lock from "../../../assets/lock.svg";
 import question from "../../../assets/question.svg";
 import left from "../../../assets/left.svg";
 
-interface IProps {}
+interface IProps { }
 export const Signup: React.FC<IProps> = ({ ...props }) => {
   const {
     loginError,
@@ -34,7 +36,7 @@ export const Signup: React.FC<IProps> = ({ ...props }) => {
     setLoginStatus(loginError);
   }, [status, loginError]);
 
-  const [stepVal,setStepVal] = React.useState(1);
+  const [stepVal, setStepVal] = React.useState(1);
   const changeValue = (val) => {
     setStepVal(val);
   };
@@ -46,8 +48,8 @@ export const Signup: React.FC<IProps> = ({ ...props }) => {
           <div className={'container'}>
             <div className="signUp_actions">
               <ul>
-                <li><Link to="/"><img src={left} /></Link></li>
-                {/* <li><a href={'#'}><img src={question} /></a></li> */}
+                {/*<li><Link to="/"><img src={left} /></Link></li>*/}
+                <li><a href={'#'}><img src={question} /></a></li>
               </ul>
             </div>
           </div>
@@ -56,24 +58,34 @@ export const Signup: React.FC<IProps> = ({ ...props }) => {
         <div className="container">
           <div className="signup_holder">
             {stepVal === 1 &&
-            <SignupStepOne
-            step={stepVal}
-            setStep={changeValue}/>
+              <SignupStepOne
+                step={stepVal}
+                setStep={changeValue} />
             }
             {stepVal === 2 &&
-            <SignupStepTwo
+              <SignupStepTwo
                 setStep={changeValue}
-                step={stepVal}/>
+                step={stepVal} />
             }
             {stepVal === 3 &&
-            <SignupStepThree
+              <SignupStepMobile
                 setStep={changeValue}
-                step={stepVal}/>
+                step={stepVal} />
             }
             {stepVal === 4 &&
-            <SignupStepFour
+              <SignupStepRole
                 setStep={changeValue}
-                step={stepVal}/>
+                step={stepVal} />
+            }
+            {stepVal === 5 &&
+              <SignupStepThree
+                setStep={changeValue}
+                step={stepVal} />
+            }
+            {stepVal === 6 &&
+              <SignupStepFour
+                setStep={changeValue}
+                step={stepVal} />
             }
           </div>
         </div>

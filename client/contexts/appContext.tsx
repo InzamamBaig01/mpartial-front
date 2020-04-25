@@ -65,20 +65,20 @@ export default ({ children }) => {
 
   useEffect(() => {
 
-    getServerTime().subscribe(
-      (response: any) => {
-        if (response.response.Requested_Action) {
-        //  setServerTime(moment.utc(response.response.Message));
-        setServerTime(moment(Number(response.response.Message)).utc());
-        } else {
-          //console.log(response);
-        }
-        // //console.log(response);
-      },
-      response => {
-        //console.log(response);
-      }
-    );
+    // getServerTime().subscribe(
+    //   (response: any) => {
+    //     if (response.response.Requested_Action) {
+    //     //  setServerTime(moment.utc(response.response.Message));
+    //     setServerTime(moment(Number(response.response.Message)).utc());
+    //     } else {
+    //       //console.log(response);
+    //     }
+    //     // //console.log(response);
+    //   },
+    //   response => {
+    //     //console.log(response);
+    //   }
+    // );
   }, [])
 
   // useEffect(() => {
@@ -86,7 +86,7 @@ export default ({ children }) => {
   //     setCurrentCard()
   //   }
   // });
-  
+
 
   useEffect(() => {
     if (currentBoardId && boards.length) {
@@ -109,8 +109,8 @@ export default ({ children }) => {
     return filteredBoard.length
       ? filteredBoard[0]
       : {
-          lanes: []
-        };
+        lanes: []
+      };
   };
 
   const setDashboardSidebarActive = key => {
@@ -124,8 +124,8 @@ export default ({ children }) => {
     const boardsData = data.map(d => {
       dispatchUpdateBoardDetails({
         newBoardData: JSON.stringify(d),
-        oldBoardData:  JSON.stringify(d),
-      },d.id);
+        oldBoardData: JSON.stringify(d),
+      }, d.id);
       // console.log(d);
 
       d.orignaldata = JSON.stringify(d);
@@ -134,9 +134,9 @@ export default ({ children }) => {
         // l.cards = l.card ? l.cards : [];
         l.cards = l.cards
           ? l.cards.map(card => {
-              card.draggable = true;
-              return card;
-            })
+            card.draggable = true;
+            return card;
+          })
           : [];
         return l;
       });
@@ -145,7 +145,7 @@ export default ({ children }) => {
       // TODO: fix this
       return d;
     });
-   
+
     return boardsData;
   };
 
@@ -209,7 +209,7 @@ export default ({ children }) => {
   };
 
 
-  const getBoardbyid = (data,id) => {
+  const getBoardbyid = (data, id) => {
     const filteredBoard = data.filter(board => {
       return board.id == id;
     });
@@ -219,7 +219,7 @@ export default ({ children }) => {
   }
 
   const onBoardDataChange = newData => {
-    if (JSON.stringify(newData) !==   currentBoard.orignaldata) {
+    if (JSON.stringify(newData) !== currentBoard.orignaldata) {
       newData.lanes = newData.lanes.map((lane, i) => {
         if (lane.cards === undefined) {
           lane.cards = [];
@@ -242,11 +242,11 @@ export default ({ children }) => {
       getBoardData({}).subscribe(
         (response: any) => {
           if (response.response.Requested_Action) {
-            const board = getBoardbyid(response.response.data,currentBoard.id);
-            if(board){
+            const board = getBoardbyid(response.response.data, currentBoard.id);
+            if (board) {
               dispatchUpdateBoardDetails({
                 newBoardData: JSON.stringify(boardData),
-                oldBoardData:  JSON.stringify(board)
+                oldBoardData: JSON.stringify(board)
               }, currentBoard.id);
             }
           } else {

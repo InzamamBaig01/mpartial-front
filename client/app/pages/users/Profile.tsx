@@ -1,17 +1,134 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import Header from "app/components/Header";
 import userProfile from "../../../assets/userProfile.svg";
-import stripe from  'stripe';
+import stripe from 'stripe';
 
 // console.log(stripe);
 
-import { CardElement, Elements } from '@stripe/react-stripe-js';
+import { CardElement, Elements, CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { Dropdown, Modal, Button } from "react-bootstrap";
 
+
+
+const createOptions = (fontSize: string, padding?: string) => {
+    return {
+        style: {
+            base: {
+                fontSize,
+                color: '#424770',
+                letterSpacing: '0.025em',
+                fontFamily: 'Source Code Pro, monospace',
+                '::placeholder': {
+                    color: '#aab7c4',
+                },
+                ...(padding ? { padding } : {}),
+            },
+            invalid: {
+                color: '#9e2146',
+            },
+        },
+    };
+};
+
+
+const AddNewCard = props => {
+    const stripePromise = loadStripe('pk_test_BVYHeMmpLalkw9ro9W2IkTFJ');
+    const handleSubmit = (ev) => {
+        ev.preventDefault();
+        // if (this.props.stripe) {
+        //     this.props.stripe
+        //         .createToken()
+        //         .then((payload) => console.log('[token]', payload));
+        // } else {
+        //     console.log("Stripe.js hasn't loaded yet.");
+        // }
+    };
+
+
+    const handleBlur = () => {
+        console.log('[blur]');
+    };
+    const handleChange = (change) => {
+        console.log('[change]', change);
+    };
+    const handleClick = () => {
+        console.log('[click]');
+    };
+    const handleFocus = () => {
+        console.log('[focus]');
+    };
+    const handleReady = () => {
+        console.log('[ready]');
+    };
+    return (
+        <>
+            <Modal
+                show={props.show}
+                onHide={props.handleClose}
+                className="Add_card"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title className="add_card_title">
+                        Add Payment Option
+            </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="support_body">
+                    <form onSubmit={props.onStackSubmit}>
+                        <Elements stripe={stripePromise}>
+                            <form onSubmit={handleSubmit}>
+                                <label>
+                                    Card number
+          <CardNumberElement
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        onFocus={handleFocus}
+                                        onReady={handleReady}
+                                        {...createOptions("14")}
+                                    />
+                                </label>
+                                <label>
+                                    Expiration date
+          <CardExpiryElement
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        onFocus={handleFocus}
+                                        onReady={handleReady}
+                                        {...createOptions("14")}
+                                    />
+                                </label>
+                                <label>
+                                    CVC
+          <CardCvcElement
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        onFocus={handleFocus}
+                                        onReady={handleReady}
+                                        {...createOptions("14")}
+                                    />
+                                </label>
+                                <button>Pay</button>
+                            </form>
+                        </Elements>
+                    </form>
+                </Modal.Body>
+            </Modal>
+        </>
+    );
+};
 
 
 const Profile = () => {
+
+
+    const [addcardpopupshow, setaddcardpopupshow] = useState(true);
+
+
+    const handlecardclose = () => setaddcardpopupshow(false);
+    const handlecardshow = () => setaddcardpopupshow(true);
+
+
 
     const stripePromise = loadStripe('pk_test_BVYHeMmpLalkw9ro9W2IkTFJ');
     // const stripe = Stripe('pk_test_BVYHeMmpLalkw9ro9W2IkTFJ');
@@ -24,32 +141,44 @@ const Profile = () => {
     }
     useEffect(() => {
         // console.log(stripePromise);
-        // const stripe  = initStripe();
+        // const stripe = initStripe();
         // // console.log(stripe);
         // // return;
+
         // stripe.then((d) => {
+        //     console.log(d);
+        //     d.customers.list().then((response) => {
+        //         console.log("customers list", response);
+        //     })
+        //     d.customers.create(
+        //         {
+        //             email: 'qualitybits1@gmail.com',
+        //         }
+        //     ).then((response) => {
+        //         console.log("customers list", response);
+        //     })
         //     // console.log();
         //     // d.customers.list().then((ddd)=>{console.log(ddd)})
-        //    const cc =  d.customers.listSources(
-        //         'cus_C7kp9txX7uPYx4',
-        //       ).then((dd) =>{
-        //           console.log(dd)
-        //       })
+        //     //    const cc =  d.customers.listSources(
+        //     //         'cus_C7kp9txX7uPYx4',
+        //     //       ).then((dd) =>{
+        //     //           console.log(dd)
+        //     //       })
         // })
         // return;
-        // stripePromise.then((d) => {
-        //     console.log(Object.keys(d), d);
-        //     return;
-        //     // cus_C7kp9txX7uPYx4
-        //     d.accounts.list(
-        //         {limit: 3},
-        //         function(err, accounts) {
-        //             console.log(accounts);
+        stripePromise.then((d) => {
+            console.log(d);
+            return;
+            // cus_C7kp9txX7uPYx4
+            d.accounts.list(
+                { limit: 3 },
+                function (err, accounts) {
+                    console.log(accounts);
 
-        //             // asynchronously called
-        //         }
-        //       );
-        // })
+                    // asynchronously called
+                }
+            );
+        })
 
     }, [])
 
@@ -108,35 +237,26 @@ const Profile = () => {
                                         <div className="profile_title">Payment Options</div>
                                     </div>
                                     <div className="col text-right">
-                                        <button className="btn">ADD</button>
+
+                                        <button className="btn" onClick={handlecardshow}>ADD</button>
                                     </div>
                                 </div>
                                 <div className="divider"></div>
                                 <div className="cards">
-                                    {/* <Elements stripe={stripePromise}>
-                                            <CardElement
-                                            options={{
-                                                style: {
-                                                    base: {
-                                                        fontSize: '16px',
-                                                        color: '#424770',
-                                                        '::placeholder': {
-                                                            color: '#aab7c4',
-                                                        },
-                                                    },
-                                                    invalid: {
-                                                        color: '#9e2146',
-                                                    },
-                                                },
-                                            }}
-                                        />
-                                    </Elements> */}
+                                    {/* */}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <AddNewCard
+                value={''}
+                onChange={() => { }}
+                onStackSubmit={() => { }}
+                show={addcardpopupshow}
+                handleClose={handlecardclose}
+            />
         </>
     );
 }

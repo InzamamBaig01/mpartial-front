@@ -3,7 +3,7 @@ import { ajax } from 'rxjs/observable/dom/ajax';
 import { catchError } from 'rxjs/operators';
 import history from '../history';
 
-const baseURL = 'http://dev.mpartial.io:9000';
+const baseURL = 'http://dev.mpartial.io:8080';
 
 const requestHeader = () => {
   const headers = {
@@ -17,7 +17,7 @@ const requestHeader = () => {
   }
   if (token) {
     headers['authString'] = localStorage.token;
-  }else {
+  } else {
     headers['authString'] = '17d26ca06932e52bbac7f1e0be00227d';
   }
 
@@ -55,8 +55,64 @@ export const login = payload =>
   ajax({
     headers: requestHeader(),
     method: 'POST',
-    url: `${baseURL}/AdminLogin?username=${payload.username}&password=${payload.password}`,
+    url: `${baseURL}/Client/loginWithEmailAndPassword?emailaddress=${payload.username}&password=${payload.password}`,
   }).pipe(catchError(handleError('login')));
+
+
+
+
+export const signup1 = payload =>
+  ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/RegisterNewCustomerStep1?emailaddress=${payload.emailaddress}`,
+  }).pipe(catchError(handleError('login')));
+
+
+export const signup2 = payload =>
+  ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/RegisterNewCustomerStep2?emailaddress=${payload.emailaddress}&firstname=${payload.firstname}&lastname=${payload.lastname}`,
+  }).pipe(catchError(handleError('login')));
+
+
+export const signup3 = payload =>
+  ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/RegisterNewCustomerStep3?emailaddress=${payload.emailaddress}&phonenumber=${payload.phonenumber}`,
+  }).pipe(catchError(handleError('login')));
+
+
+export const signup4 = payload =>
+  ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/RegisterNewCustomerStep4?emailaddress=${payload.emailaddress}&role=${payload.role}`,
+  }).pipe(catchError(handleError('login')));
+
+
+export const signup5 = payload =>
+  ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/RegisterNewCustomerStep5?emailaddress=${payload.emailaddress}&password=${payload.password}`,
+  }).pipe(catchError(handleError('login')));
+
+
+
+
+export const saveOrderData = (payload, apiData) =>
+  ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/saveOrderData?thetoken=${localStorage.token}&projectName=${apiData.projectName}&preMitigationDemoModelURL=${apiData.preMitigationDemoModelURL}&emailForDeliveryOfResults=${apiData.emailForDeliveryOfResults}&causeOfLoss=${apiData.causeOfLoss}&projectDetails=${apiData.projectDetails}&postMitigationDemoModelURL=${apiData.postMitigationDemoModelURL}&mitigationOrRepair=${apiData.mitigationOrRepair}&category=${apiData.category}&projectZipCode=${apiData.projectZipCode}&residentialOrCommercial=${apiData.residentialOrCommercial}&durationOfTheProject=${apiData.durationOfTheProject}&debrisDisposal=${apiData.debrisDisposal}&temporaryActivities=${apiData.temporaryActivities}&pPEsConcessions=${apiData.pPEsConcessions}&additionalFees=${apiData.additionalFees}&dryOutMonitoringDuration=${apiData.dryOutMonitoringDuration}&optionalTrades=${apiData.optionalTrades}`,
+    body: payload,
+  }).pipe(catchError(handleError('claimForm')));
+
+
+
 
 export const logoutAPI = () =>
   ajax({
@@ -89,7 +145,7 @@ export const updateBoardData = (payload, id) =>
   }).pipe(catchError(handleError('getBoardData')));
 
 
-  export const getUsers = payload =>
+export const getUsers = payload =>
   ajax({
     headers: requestHeader(),
     method: 'POST',
@@ -97,7 +153,7 @@ export const updateBoardData = (payload, id) =>
     body: payload,
   }).pipe(catchError(handleError('GetAllUsers')));
 
-  export const GetAllRoles = payload =>
+export const GetAllRoles = payload =>
   ajax({
     headers: requestHeader(),
     method: 'POST',
@@ -106,7 +162,7 @@ export const updateBoardData = (payload, id) =>
   }).pipe(catchError(handleError('GetAllUsers')));
 
 
-  export const GetAllPrivileges = payload =>
+export const GetAllPrivileges = payload =>
   ajax({
     headers: requestHeader(),
     method: 'POST',
@@ -117,7 +173,7 @@ export const updateBoardData = (payload, id) =>
 
 
 
-  export const claimForm = (payload, apiData) =>
+export const claimForm = (payload, apiData) =>
   ajax({
     headers: requestHeader(),
     method: 'POST',
@@ -127,7 +183,7 @@ export const updateBoardData = (payload, id) =>
 
 
 
-  export const getServerTime = () =>
+export const getServerTime = () =>
   ajax({
     headers: requestHeader(),
     method: 'POST',
@@ -135,5 +191,4 @@ export const updateBoardData = (payload, id) =>
   }).pipe(catchError(handleError('getServerTime')));
 
 
-  
-  
+

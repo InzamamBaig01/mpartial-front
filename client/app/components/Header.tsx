@@ -6,7 +6,6 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -17,7 +16,7 @@ import {
 
 import logo from '../../assets/logo.png';
 import Loader from './Loader';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { AuthContext } from 'contexts/authContext';
 
 
@@ -79,22 +78,22 @@ const Header = (props) => {
               <Nav className="ml-auto main_navbar" navbar>
 
                 <NavItem>
-                  <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.home)}>Approach</NavLink>
+                  <NavLink className="nav-link" to="/#Approach" onClick={() => scrollToRef(props.sectionRef.home)}>Approach</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.hero)}>Ground-Truth Data</NavLink>
+                  <NavLink className="nav-link" to="/#Ground-Truth-Data" onClick={() => scrollToRef(props.sectionRef.hero)}>Ground-Truth Data</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.hIW)}>How It Works</NavLink>
+                  <NavLink className="nav-link" to="/#How-It-Works" onClick={() => scrollToRef(props.sectionRef.hIW)}>How It Works</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.wFall)}>Fee Structure</NavLink>
+                  <NavLink className="nav-link" to="/#Fee-Structure" onClick={() => scrollToRef(props.sectionRef.wFall)}>Fee Structure</NavLink>
                 </NavItem>
                 <NavItem className="dropdown_desktop">
 
                   <Dropdown nav isOpen={dropdownOpen} toggle={dropdowntoggle}>
                     <DropdownToggle nav>
-                      <NavLink href="#" >Example Deliverables</NavLink>
+                      <NavLink className="nav-link" to="/" >Example Deliverables</NavLink>
                       <DropdownMenu>
                         <DropdownItem onClick={() => scrollToRef(props.sectionRef.Deli)}>Immaculate. Impartial. [ESX & PDF]</DropdownItem>
                         <DropdownItem onClick={() => scrollToRef(props.sectionRef.Deli)}>TrueSketch PLUS [SKX]</DropdownItem>
@@ -104,19 +103,19 @@ const Header = (props) => {
                   </Dropdown>
                 </NavItem>
                 <NavItem className="dropdown_mobile" onClick={() => setDropdownOpen(!dropdownOpen)}>
-                  <NavLink href="#"  >Example Deliverables</NavLink>
+                  <NavLink className="nav-link" to="#"  >Example Deliverables</NavLink>
                   {
                     dropdownOpen ? (
                       <>
-                        <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.Deli)}>Immaculate. Impartial. [ESX & PDF]</NavLink>
-                        <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.Deli)}>TrueSketch PLUS [SKX]</NavLink>
+                        <NavLink className="nav-link" to="#" onClick={() => scrollToRef(props.sectionRef.Deli)}>Immaculate. Impartial. [ESX & PDF]</NavLink>
+                        <NavLink className="nav-link" to="#" onClick={() => scrollToRef(props.sectionRef.Deli)}>TrueSketch PLUS [SKX]</NavLink>
                       </>
                     ) : ''
                   }
 
                 </NavItem >
                 <NavItem>
-                  <NavLink href="#" onClick={() => scrollToRef(props.sectionRef.cont)}>Contact Us</NavLink>
+                  <NavLink className="nav-link" to="#" onClick={() => scrollToRef(props.sectionRef.cont)}>Contact Us</NavLink>
                 </NavItem >
 
                 {isLoggedIn ? (
@@ -124,7 +123,7 @@ const Header = (props) => {
                     <NavItem className="dropdown_desktop">
                       <Dropdown nav isOpen={userdropdownOpen} toggle={userdropdowntoggle}>
                         <DropdownToggle nav>
-                          <NavLink href="#" >Hi, {userD.name}</NavLink>
+                          <NavLink className="nav-link" to="#" >Hi, {userD.lastName}</NavLink>
                           <DropdownMenu className="profile_header_links">
                             <DropdownItem><Link to="/profile"><img src={usericon} alt="" /> My Account</Link></DropdownItem>
                             <DropdownItem><Link to="/orders"><img src={cart} alt="" /> My Orders</Link></DropdownItem>
@@ -134,7 +133,7 @@ const Header = (props) => {
                       </Dropdown>
                     </NavItem >
                     <NavItem className="dropdown_mobile user_logged_link" onClick={() => setuserDropdownOpen(!userdropdownOpen)}>
-                      <NavLink href="#"  >Hi, {userD.name}</NavLink>
+                      <NavLink className="nav-link" to="#"  >Hi, {userD.lastName}</NavLink>
                       {
                         userdropdownOpen ? (
                           <>
