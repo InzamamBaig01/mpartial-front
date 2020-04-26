@@ -4,6 +4,7 @@ import Header from "app/components/Header";
 import MultiSelect from "react-multi-select-component";
 import { AuthContext } from "contexts/authContext";
 import { saveOrderData } from "utils/api-routes/api-routes.util";
+import history from '../../utils/history';
 
 const fields = [
   {
@@ -354,7 +355,7 @@ const UserOrder = () => {
       if (field.type === "multipleAttachment") {
         // apiData.filesToUpload = field.value;
       } else if (field.type === "multiSelect") {
-        apiData[field.id] = field.value ? field.value.map((v) => { return v.value }).join(",") : ""
+        apiData[field.id] = field.value ? field.value.map((v) => { return v.value }) : ""
       } else {
         apiData[field.id] = field.value;
       }
@@ -367,6 +368,7 @@ const UserOrder = () => {
       (response: any) => {
         if (response.response.Requested_Action) {
           console.log(response.response)
+          history.push(`/checkout/${response.response.data.id}`);
           // dispatchGetBoardDetails();
 
           // showAlert({

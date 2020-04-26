@@ -4,6 +4,8 @@ import Header from "app/components/Header";
 import StripeCheckout from "react-stripe-checkout";
 import { ajax } from 'rxjs/observable/dom/ajax';
 import { AuthContext } from "contexts/authContext";
+import { payOrder } from "utils/api-routes/api-routes.util";
+import history from "utils/history";
 
 const requestHeader = () => {
     const headers = {
@@ -24,7 +26,7 @@ const requestHeader = () => {
     return headers;
 };
 
-const Checkout = () => {
+const Checkout = (props) => {
     const {
         userDetails,
     } = useContext(AuthContext);
@@ -33,36 +35,25 @@ const Checkout = () => {
         price: 250,
         description: ""
     });
-    console.log(userDetails);
+    const orderid = props.match.params.orderid;
+
     const [checkoutInfo, setCheckoutInfo] = useState({
         firstName: userDetails().firstName,
         lastName: userDetails().lastName,
         emailAddress: userDetails().emailAddress,
-        zipCode: userDetails().zipCode,
+        zipCode: '',
     })
 
     const handleToken = async (token, addresses) => {
-        console.log(token)
-        // const response = await axios.post(
-        //     "https://ry7v05l6on.sse.codesandbox.io/checkout",
-        //     { token, product }
-        // );
-        // const { status } = response.data;
-        // console.log("Response:", response.data);
-        // if (status === "success") {
-        //     // toast("Success! Check email for details", { type: "success" });
-        // } else {
-        //     // toast("Something went wrong", { type: "error" });
-        // }
-
-        ajax({
-            headers: requestHeader(),
-            method: 'POST',
-            url: `http://117.20.29.192:8080/Client/saveOrderData?stripeToken=${token.id}&amountInCents=${product.price * 100}&thetoken=${localStorage.token}`,
-        }).subscribe((res) => {
-            console.log(res);
+        payOrder({
+            stripeToken: token.id,
+            orderId: orderid,
+            price: product.price * 100
+        }).subscribe((response) => {
+            if(response.response.Requested_Action) {
+                history.push(`/receipt/${orderid}`);
+            }
         })
-
     }
     const onChangeValue = (value, key) => {
         const oldValues = Object.assign({}, checkoutInfo);
@@ -170,7 +161,7 @@ const Checkout = () => {
                                 >
                                     <button className="btn"
                                         disabled={(checkoutInfo.firstName == '' || checkoutInfo.lastName == '' || checkoutInfo.emailAddress == '' || checkoutInfo.zipCode == '') ? true : false}
-                                    > {(checkoutInfo.firstName == '' || checkoutInfo.lastName == '' || checkoutInfo.emailAddress == '' || checkoutInfo.zipCode == '') ? "true" : "false"} Checkout</button>
+                                    > Checkout</button>
                                 </StripeCheckout>
                             </div>
                         </div>

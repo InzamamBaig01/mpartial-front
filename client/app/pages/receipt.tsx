@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 
 
@@ -66,7 +66,9 @@ const Receipt = () => {
                     </div>
                     <div className="row">
                         <div className="col text-center">
+                            <Link to="/orders">
                             <button className="btn">My Orders</button>
+                            </Link>
                         </div>
                     </div>
                 </div>

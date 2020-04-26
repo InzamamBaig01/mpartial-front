@@ -107,11 +107,17 @@ export const saveOrderData = (payload, apiData) =>
   ajax({
     headers: requestHeader(),
     method: 'POST',
-    url: `${baseURL}/Client/saveOrderData?thetoken=${localStorage.token}&projectName=${apiData.projectName}&preMitigationDemoModelURL=${apiData.preMitigationDemoModelURL}&emailForDeliveryOfResults=${apiData.emailForDeliveryOfResults}&causeOfLoss=${apiData.causeOfLoss}&projectDetails=${apiData.projectDetails}&postMitigationDemoModelURL=${apiData.postMitigationDemoModelURL}&mitigationOrRepair=${apiData.mitigationOrRepair}&category=${apiData.category}&projectZipCode=${apiData.projectZipCode}&residentialOrCommercial=${apiData.residentialOrCommercial}&durationOfTheProject=${apiData.durationOfTheProject}&debrisDisposal=${apiData.debrisDisposal}&temporaryActivities=${apiData.temporaryActivities}&pPEsConcessions=${apiData.pPEsConcessions}&additionalFees=${apiData.additionalFees}&dryOutMonitoringDuration=${apiData.dryOutMonitoringDuration}&optionalTrades=${apiData.optionalTrades}`,
+    url: `${baseURL}/Client/saveOrderData?thetoken=${localStorage.token}&projectName=${apiData.projectName}&amountInCents=${apiData.amountInCents}&preMitigationDemoModelURL=${apiData.preMitigationDemoModelURL}&emailForDeliveryOfResults=${apiData.emailForDeliveryOfResults}&causeOfLoss=${apiData.causeOfLoss}&projectDetails=${apiData.projectDetails}&postMitigationDemoModelURL=${apiData.postMitigationDemoModelURL}&mitigationOrRepair=${apiData.mitigationOrRepair}&category=${apiData.category}&projectZipCode=${apiData.projectZipCode}&residentialOrCommercial=${apiData.residentialOrCommercial}&durationOfTheProject=${apiData.durationOfTheProject}&debrisDisposal=${apiData.debrisDisposal}&temporaryActivities=${apiData.temporaryActivities}&pPEsConcessions=${apiData.pPEsConcessions}&additionalFees=${apiData.additionalFees}&dryOutMonitoringDuration=${apiData.dryOutMonitoringDuration}&optionalTrades=${apiData.optionalTrades}`,
     body: payload,
   }).pipe(catchError(handleError('claimForm')));
 
 
+export const payOrder = (payload) =>
+  ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/payForOrder?stripeToken=${payload.stripeToken}&orderId=${payload.orderId}&amountInCents=${payload.price}&thetoken=${localStorage.token}`,
+  })
 
 
 export const logoutAPI = () =>
@@ -177,7 +183,7 @@ export const claimForm = (payload, apiData) =>
   ajax({
     headers: requestHeader(),
     method: 'POST',
-    url: `${baseURL}/addCardFromForm?boardId=${apiData.boardId}&cardTitle=${apiData.cardTitle}&description=${apiData.description}&otherData=${encodeURIComponent(JSON.stringify(apiData.otherData))}&label=${JSON.stringify(apiData.label)}`,
+    url: `${baseURL}/addCardFromForm?boardId=${apiData.boardId}&cardTitle=${apiData.cardTitle}&description=${apiData.description}&otherData=${JSON.stringify(apiData.otherData)}&label=${JSON.stringify(apiData.label)}`,
     body: payload,
   }).pipe(catchError(handleError('claimForm')));
 
