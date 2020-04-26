@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css } from 'emotion';
 import Mail from '../../../../assets/email.svg';
 import { AuthContext } from 'contexts/authContext';
+import InputMask from 'react-input-mask';
 
 interface StepProps {
   step?: number;
@@ -17,9 +18,7 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
     signupDetails,
   } = React.useContext(AuthContext);
   const onSubmit = (e) => {
-    // props.setStep(2)
     e.preventDefault();
-
     step3({
       phonenumber: phonenumber,
     }).subscribe((response) => {
@@ -39,14 +38,18 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
 
           <div className="form-group" css={{ maxWidth: '464px', margin: '30px auto' }}>
             <div className="input-group">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Mobile"
-                autoComplete="off"
-                required
-                onChange={(e) => { setphonenumber(e.currentTarget.value) }}
-              />
+
+
+              <InputMask mask="999-999-9999" onChange={(e) => { setphonenumber(e.currentTarget.value) }} value={phonenumber}>
+                {(inputProps) => <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Mobile"
+                  min="1"
+                  required
+                  step="any"
+                />}
+              </InputMask>
             </div>
           </div>
           <button

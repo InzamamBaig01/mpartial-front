@@ -61,17 +61,17 @@ export default React.memo(({ children }) => {
   React.useEffect(() => {
     // console.log("pageIsPublic",pageIsPublic);
     if (pageIsPublic !== undefined && !pageIsPublic) {
-      // auth().subscribe(
-      //   (response: any) => {
-      //     if (response.response.Requested_Action) {
-      //     } else {
-      //       logout();
-      //     }
-      //   },
-      //   response => {
-      //     logout();
-      //   }
-      // );
+      auth().subscribe(
+        (response: any) => {
+          if (response.response.Requested_Action) {
+          } else {
+            // logout();
+          }
+        },
+        response => {
+          // logout();
+        }
+      );
     }
   }, [pageIsPublic]);
 

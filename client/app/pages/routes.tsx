@@ -11,6 +11,7 @@ import Receipt from "./receipt";
 import AdminLogin from "./admin/AdminLogin";
 import AdminOrders from "./admin/AdminOrders";
 import AdminUserManagement from "./admin/AdminUserManagement";
+import {ForgotPassword} from './users/ForgotPassword';
 
 export const ROUTES = [
   {
@@ -130,5 +131,14 @@ export const ROUTES = [
     title: "admin/user-management",
     isLogin: false,
     redirectTo: "/dashboard",
+  },
+  {
+    component: ForgotPassword,
+    isPublic: true,
+    path: "/forgot-password",
+    slug: "forgot-password",
+    title: "forgot-password",
+    isLogin: false,
+    redirectTo: "/forgot-password",
   },
 ];

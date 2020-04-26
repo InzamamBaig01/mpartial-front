@@ -40,9 +40,11 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ }) => {
             </div>
           </div>
           <div className="try_now_btn">
+            <Link to="/login">
             <button className="btn">
               Get Started
               </button>
+            </Link>
           </div>
         </div>
       </div>

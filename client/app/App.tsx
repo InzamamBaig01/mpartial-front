@@ -10,6 +10,8 @@ import {
 import { ROUTES } from "./pages/routes";
 import { hot } from "react-hot-loader";
 import { AuthContext } from "../contexts/authContext";
+import SEO from 'react-seo-component';
+
 
 const App: React.FC<RouteComponentProps<any>> = props => {
   const { isUserAuthenticated, setPageIsPublicValue } = useContext(AuthContext);
@@ -29,6 +31,16 @@ const App: React.FC<RouteComponentProps<any>> = props => {
 
   return (
     <>
+      <SEO
+        title={'mpartial - Keep Building'}
+        titleTemplate={'mpartial - Keep Building'}
+        description={'Together we can be collectively more productive when we are provided the space to double down on what we are great at!'}
+        image={'image'}
+        pathname={'siteUrl'}
+        siteLanguage={'siteLanguage'}
+        siteLocale={'siteLocale'}
+        twitterUsername={'twitterUsername'}
+      />
       <LocalApp isAuthenticated={isUserAuthenticated()}></LocalApp>
     </>
   );

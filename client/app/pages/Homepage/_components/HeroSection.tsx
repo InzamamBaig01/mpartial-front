@@ -40,7 +40,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ }) => {
             description={"Matterport Geospatial Scans, TruePlan Sketches, Actionable Insights Compliance, Xactimate Price List. We bring the best industry technology and experience to bear while relieving you of the administrative burden. Produced with full transparency and clear documentation that champions rapid approval."}
             type="left"
           ></SectionTitle>
-          <div className="compare_images_section" ref={div}>1
+          <div className="compare_images_section" ref={div}>
             <ReactCompareImage
               leftImage={before}
               rightImage={after}

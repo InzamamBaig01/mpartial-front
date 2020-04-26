@@ -15,9 +15,11 @@ import AppAlertsContext from "./contexts/appAlertsContext";
 ReactDOM.render(
   <AuthContext>
     <AppContext>
-      <Router history={history}>
-        <App />
-      </Router>
+      <AppAlertsContext>
+        <Router history={history}>
+          <App />
+        </Router>
+      </AppAlertsContext>
     </AppContext>
   </AuthContext>,
   document.getElementById("root")

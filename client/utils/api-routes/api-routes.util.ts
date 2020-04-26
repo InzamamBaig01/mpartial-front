@@ -16,9 +16,7 @@ const requestHeader = () => {
     token = localStorage.token;
   }
   if (token) {
-    headers['authString'] = localStorage.token;
-  } else {
-    headers['authString'] = '17d26ca06932e52bbac7f1e0be00227d';
+    // headers['thetoken'] = localStorage.token;
   }
 
   return headers;
@@ -48,7 +46,7 @@ export const auth = () =>
   ajax({
     headers: requestHeader(),
     method: 'POST',
-    url: `${baseURL}/GIServer/isValidToken`,
+    url: `${baseURL}/GIServer/isValidToken?authToken=${localStorage.token}`,
   }).pipe(catchError(handleError('auth')));
 
 export const login = payload =>
@@ -124,8 +122,19 @@ export const logoutAPI = () =>
   ajax({
     headers: requestHeader(),
     method: 'POST',
-    url: `${baseURL}/GIServer/logout`,
+    url: `${baseURL}/Client/logout?thetoken=${localStorage.token}`,
   }).pipe(catchError(handleError('logout')));
+
+
+
+
+export const getMyOrdersAPI = () =>
+ajax({
+  headers: requestHeader(),
+  method: 'POST',
+  url: `${baseURL}/Client/getOrders?thetoken=${localStorage.token}`,
+}).pipe(catchError(handleError('logout')));
+
 
 export const resetPassword = payload =>
   ajax({

@@ -71,7 +71,8 @@
         color: #3ac280;
         text-transform: uppercase;
         opacity: 1;
-        max-width: 257px;
+        padding:0px 20px;
+        min-width: 257px;
       }
     }
   }
@@ -110,7 +111,7 @@
   border-radius: 25px;
   opacity: 1;
   display: inline-block;
-  max-width: 257px;
+  max-width: 150px;
   text-transform: uppercase;
   margin: 0 auto;
 }

@@ -28,6 +28,12 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
     setLoginStatus(loginError);
   }, [status, loginError]);
 
+  useEffect(() => {
+    return () => {
+      setLoginStatus(false);
+    }
+  }, []);
+
   return (
     <>
       <Header isFixedColor={true}></Header>
@@ -66,7 +72,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
                 </div>
               </div>
               <div className="forgotP_container">
-                <Link to="/forgotpassword">Forgot Password?</Link>
+                <Link to="/forgot-password">Forgot Password?</Link>
               </div>
 
               <button
@@ -95,7 +101,8 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
             <div className="error_msg"  onClick={() => {
             setLoginStatus(true);
           }}>
-              You have not verified your email address. <a href="#">Click here</a> to receive a verification email.
+            {loginStatus}
+              {/* You have not verified your email address. <a href="#">Click here</a> to receive a verification email. */}
         </div>
           </div>
         ) : ''

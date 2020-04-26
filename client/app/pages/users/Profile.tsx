@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import Header from "app/components/Header";
 import userProfile from "../../../assets/userProfile.svg";
@@ -9,6 +9,7 @@ import stripe from 'stripe';
 import { CardElement, Elements, CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Dropdown, Modal, Button } from "react-bootstrap";
+import { AuthContext } from "contexts/authContext";
 
 
 
@@ -122,9 +123,13 @@ const AddNewCard = props => {
 const Profile = () => {
 
 
-    const [addcardpopupshow, setaddcardpopupshow] = useState(true);
+    const [addcardpopupshow, setaddcardpopupshow] = useState(false);
 
+    const {
+        userDetails,
+    } = useContext(AuthContext);
 
+    const [userData, setUserData] = useState(userDetails())
     const handlecardclose = () => setaddcardpopupshow(false);
     const handlecardshow = () => setaddcardpopupshow(true);
 
@@ -191,31 +196,32 @@ const Profile = () => {
                     <div className="row">
                         <div className="col-md-4 col-sm-12 col-xs-12">
                             <div className="profile_left_sidebar">
+                                <div className="edit_profile-icon "></div>
                                 <div className="profile_image">
                                     <img src={userProfile} alt="" />
                                 </div>
-                                <div className="profile_name">John Wick</div>
-                                <div className="profile_email">johnwick@gmail.com</div>
+                                <div className="profile_name">{userData.firstName} {userData.lastName}</div>
+                                <div className="profile_email">{userData.emailAddress}</div>
                                 <div className="divider"></div>
                                 <div className="profile_info">
                                     <div className="row">
                                         <div className="col">First Name</div>
-                                        <div className="col text-right">Jhon</div>
+                                        <div className="col text-right">{userData.firstName}</div>
                                     </div>
 
                                     <div className="row">
                                         <div className="col">Last Name</div>
-                                        <div className="col text-right">wick</div>
+                                        <div className="col text-right">{userData.lastName}</div>
                                     </div>
 
                                     <div className="row">
                                         <div className="col">Email</div>
-                                        <div className="col text-right">JhonWick@gmail.com</div>
+                                        <div className="col text-right">{userData.emailAddress}</div>
                                     </div>
 
                                     <div className="row">
                                         <div className="col">Phone</div>
-                                        <div className="col text-right">878-778-9877</div>
+                                        <div className="col text-right">{userData.phone}</div>
                                     </div>
 
                                     <div className="row">

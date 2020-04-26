@@ -180,7 +180,6 @@ const fields = [
       "Framing - Affected rooms only",
       "Electrical - Affected rooms only",
       "HVAC - Affected rooms only",
-      "Framing - Affected rooms only",
       "Electrical - Entire property",
       "HVAC - Entire property",
       "Framing - Entire property",
@@ -316,6 +315,7 @@ const DrawField = (props) => {
           <input
             type="email"
             required={field.required ? true : false}
+            value={field.value}
             className="form-control"
             onChange={(e) => { field.value = e.currentTarget.value }}
           />
@@ -341,19 +341,20 @@ const UserOrder = () => {
   const {
     userDetails,
   } = useContext(AuthContext);
-
+  fields[fields.length - 1].value = userDetails().emailAddress;
 
   const onSubmit = e => {
     e.preventDefault();
     const apiData = {
       amountInCents: 250 * 100,
       additionalFees: '',
+      potentiallyRelevantDigitalAssets: ''
     };
     const formData = new FormData();
 
     fields.map(field => {
       if (field.type === "multipleAttachment") {
-        // apiData.filesToUpload = field.value;
+        apiData.potentiallyRelevantDigitalAssets = field.value;
       } else if (field.type === "multiSelect") {
         apiData[field.id] = field.value ? field.value.map((v) => { return v.value }) : ""
       } else {
@@ -361,13 +362,14 @@ const UserOrder = () => {
       }
     });
 
-    // formData.append("filesToUpload", apiData.filesToUpload);
+    formData.append("potentiallyRelevantDigitalAssets", apiData.potentiallyRelevantDigitalAssets);
 
     console.log(apiData);
-    saveOrderData(apiData, apiData).subscribe(
+    saveOrderData(formData, apiData).subscribe(
       (response: any) => {
         if (response.response.Requested_Action) {
           console.log(response.response)
+          localStorage.setItem("sessipn", response.response.message )
           history.push(`/checkout/${response.response.data.id}`);
           // dispatchGetBoardDetails();
 
@@ -426,7 +428,7 @@ const UserOrder = () => {
             <div className="form-group">
               <label className="terms">
                 <input type="checkbox" required /> I’ve read and accept the mpartial
-                Terms & Conditions.*
+                 &nbsp; <span className="underline">Terms & Conditions.*</span>
               </label>
             </div>
             <div className="form-group">

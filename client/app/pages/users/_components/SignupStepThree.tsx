@@ -67,9 +67,15 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
               />
             </div>
             {
-              !validPassword ? (<span className="red">Password not match</span>) : ''
+              !validPassword ? (<span className="password_not_matched">Password did not match</span>) : ''
             }
 
+          </div>
+          <div className="form-group">
+            <label className="terms">
+              <input type="checkbox" required /> I’ve read and accept the mpartial 
+                <span className="underline">Terms & Conditions.*</span>
+              </label>
           </div>
           <button
             css={{ maxWidth: '257px', marginTop: '30px' }}

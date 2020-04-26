@@ -6,25 +6,130 @@ import { ajax } from 'rxjs/observable/dom/ajax';
 import { AuthContext } from "contexts/authContext";
 import { payOrder } from "utils/api-routes/api-routes.util";
 import history from "utils/history";
+import { loadStripe } from '@stripe/stripe-js';
+import {
+    CardElement,
+    Elements,
+    useElements,
+    useStripe
+} from '@stripe/react-stripe-js';
 
-const requestHeader = () => {
-    const headers = {
-        'Content-Type': 'application/json',
+// Custom styling can be passed to options when creating an Element.
+const CARD_ELEMENT_OPTIONS = {
+    style: {
+        base: {
+            color: '#32325d',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+                color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+        }
+    }
+};
+
+const CheckoutForm = (props) => {
+    const [error, setError] = useState(null);
+    const stripe = useStripe();
+    const elements = useElements();
+    const {
+        userDetails,
+    } = useContext(AuthContext);
+
+
+    const [sendNow, setSendNow] = useState(false)
+
+    // Handle real-time validation errors from the card Element.
+    const handleChange = (event) => {
+        if (event.error) {
+            setError(event.error.message);
+        } else {
+            setError(null);
+            // props.setIsFormSubmitted(true);
+        }
+    }
+
+
+    useEffect(() => {
+        if(props.isFormSubmitted) {
+            handleSubmit({});
+        }
+    }, [props.isFormSubmitted]);
+
+    // Handle form submission.
+    const handleSubmit = async (event) => {
+        // event.preventDefault();
+        const card = elements.getElement(CardElement);
+
+
+        stripe.confirmCardPayment(localStorage.getItem("sessipn"), {
+            payment_method: {
+                card: card,
+                billing_details: {
+                    name: 'Jenny Rosen'
+                }
+            },
+            setup_future_usage: 'off_session'
+        }).then(async function (result) {
+            if (result.error) {
+                // Show error to your customer
+                console.log(result.error.message);
+                props.setIsFormSubmitted(false);
+            } else {
+                console.log(result)
+                if (result.paymentIntent.status === 'succeeded') {
+                    const token = await stripe.createToken(card)
+                    if (token.error) {
+                        // Inform the user if there was an error.
+                        setError(result.error.message);
+                    } else {
+                        setError(null);
+                        // Send the token to your server.
+                        //   stripeTokenHandler(result.token);
+                        console.log(token)
+                        payOrder({
+                            stripeToken: token.token.id,
+                            orderId: props.orderid,
+                            price: 250 * 100
+                        }).subscribe((response) => {
+                            if (response.response.Requested_Action) {
+                                history.push(`/receipt/${props.orderid}`);
+                            }
+                        })
+                    }
+                }
+
+            }
+        });
+
     };
 
-    let token: string | boolean = false;
+    return (
+        <>
 
-    if (localStorage.token) {
-        token = localStorage.token;
-    }
-    if (token) {
-        // headers['thetoken'] = localStorage.token;
-    } else {
-        // headers['thetoken'] = '17d26ca06932e52bbac7f1e0be00227d';
-    }
+        {/* <form onSubmit={handleSubmit}> */}
+            <div className="">
+                <label htmlFor="card-element">
+                    Credit or debit card
+        </label>
+                <CardElement
+                    id="card-element"
+                    className="form-control"
+                    onChange={handleChange}
+                />
+                <div className="card-errors" role="alert">{error}</div>
+            </div>
+            {/* <button type="submit">Submit Payment</button> */}
+         {/* </form> */}
+        </>
+    );
+}
 
-    return headers;
-};
 
 const Checkout = (props) => {
     const {
@@ -36,6 +141,9 @@ const Checkout = (props) => {
         description: ""
     });
     const orderid = props.match.params.orderid;
+
+
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
     const [checkoutInfo, setCheckoutInfo] = useState({
         firstName: userDetails().firstName,
@@ -50,7 +158,7 @@ const Checkout = (props) => {
             orderId: orderid,
             price: product.price * 100
         }).subscribe((response) => {
-            if(response.response.Requested_Action) {
+            if (response.response.Requested_Action) {
                 history.push(`/receipt/${orderid}`);
             }
         })
@@ -60,13 +168,14 @@ const Checkout = (props) => {
         oldValues[key] = value;
         setCheckoutInfo(oldValues);
     }
+    const stripePromise = loadStripe('pk_test_qtQYQAflfKikPJB9y8Y1H8fY00dcOIegPx');
     return (
         <>
             <Header isFixedColor={true}></Header>
             <div className="other_pages_container">
                 <h1 className="title text-center">Checkout</h1>
                 <div className="container">
-                    <form className="order_form" onSubmit={(e) => { e.preventDefault() }}>
+                    <form className="order_form" onSubmit={(e) => { e.preventDefault(); setIsFormSubmitted(true); }}>
                         <div className="row">
                             <div className="col sub_titles">
                                 Billing Details
@@ -97,7 +206,7 @@ const Checkout = (props) => {
                             </div>
                         </div>
 
-                        {/* <div className="row">
+                        <div className="row">
                             <div className="col sub_titles">
                                 Payment Method
                             </div>
@@ -105,13 +214,16 @@ const Checkout = (props) => {
 
                         <div className="row">
                             <div className={`form-group col-12`}>
-                                <input type="checkbox" /> Card Ending 7878
+                                <Elements stripe={stripePromise}>
+                                    <CheckoutForm orderid={orderid} isFormSubmitted={isFormSubmitted} setIsFormSubmitted={setIsFormSubmitted} />
+                                </Elements>
+                                {/* <input type="checkbox" /> Card Ending 7878 */}
                             </div>
 
-                            <div className={`form-group col-12`}>
+                            {/* <div className={`form-group col-12`}>
                                 <input type="checkbox" /> Card Ending 2345
-                            </div>
-                        </div> */}
+                            </div> */}
+                        </div>
 
                         <div className="row">
                             <div className="col sub_titles">
@@ -148,9 +260,10 @@ const Checkout = (props) => {
                             </div>
                         </div>
 
+
                         <div className="row">
                             <div className="col ">
-                                <StripeCheckout
+                                {/* <StripeCheckout
                                     stripeKey="pk_test_qtQYQAflfKikPJB9y8Y1H8fY00dcOIegPx"
                                     token={handleToken}
                                     amount={product.price * 100}
@@ -158,11 +271,11 @@ const Checkout = (props) => {
                                     email="qualitybits1@gmail.com"
                                 // billingAddress
                                 // shippingAddress
-                                >
-                                    <button className="btn"
-                                        disabled={(checkoutInfo.firstName == '' || checkoutInfo.lastName == '' || checkoutInfo.emailAddress == '' || checkoutInfo.zipCode == '') ? true : false}
-                                    > Checkout</button>
-                                </StripeCheckout>
+                                > */}
+                                <button className="btn" type="submit"
+                                    disabled={(checkoutInfo.firstName == '' || checkoutInfo.lastName == '' || checkoutInfo.emailAddress == '' || checkoutInfo.zipCode == '') ? true : false}
+                                > Checkout</button>
+                                {/* </StripeCheckout> */}
                             </div>
                         </div>
                     </form>

@@ -1,9 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { withRouter } from "react-router-dom";
 import Header from "app/components/Header";
 
 import viewicon from '../../../assets/view.svg';
+import { AppContext } from "contexts/appContext";
 const MyOrders = () => {
+
+    const {
+        getMyOrders,
+        myOrders,
+    } = useContext(AppContext);
+
+
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        getMyOrders();
+    }, []);
+
+
+    useEffect(() => {
+        setOrders(myOrders);
+    }, [myOrders])
+
     return (
         <>
             <Header isFixedColor={true}></Header>
@@ -21,101 +40,25 @@ const MyOrders = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>0215</td>
-                                <td>dummy.wmail@gmail.com</td>
-                                <td>Apr 02,2020</td>
-                                <td>$250</td>
-                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
-                            </tr>
+                            {
+                                orders.length ? orders.map((order, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{order.id}</td>
+                                            <td>{order.emailForDeliveryOfResults}</td>
+                                            <td>Apr 02,2020</td>
+                                            <td>${order.amountInCents / 100}</td>
+                                            <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
+                                        </tr>
+                                    )
+                                }) : (
+                                    <tr>
+                                        <td colSpan="5">No Order Available.</td>
+                                       
+                                    </tr>
+                                )
+                            }
 
-                            <tr>
-                                <td>0215</td>
-                                <td>dummy.wmail@gmail.com</td>
-                                <td>Apr 02,2020</td>
-                                <td>$250</td>
-                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
-                            </tr>
-
-                            <tr>
-                                <td>0215</td>
-                                <td>dummy.wmail@gmail.com</td>
-                                <td>Apr 02,2020</td>
-                                <td>$250</td>
-                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
-                            </tr>
-
-                            <tr>
-                                <td>0215</td>
-                                <td>dummy.wmail@gmail.com</td>
-                                <td>Apr 02,2020</td>
-                                <td>$250</td>
-                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
-                            </tr>
-
-                            <tr>
-                                <td>0215</td>
-                                <td>dummy.wmail@gmail.com</td>
-                                <td>Apr 02,2020</td>
-                                <td>$250</td>
-                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
-                            </tr>
-
-                            <tr>
-                                <td>0215</td>
-                                <td>dummy.wmail@gmail.com</td>
-                                <td>Apr 02,2020</td>
-                                <td>$250</td>
-                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
-                            </tr>
-
-                            <tr>
-                                <td>0215</td>
-                                <td>dummy.wmail@gmail.com</td>
-                                <td>Apr 02,2020</td>
-                                <td>$250</td>
-                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
-                            </tr>
-
-                            <tr>
-                                <td>0215</td>
-                                <td>dummy.wmail@gmail.com</td>
-                                <td>Apr 02,2020</td>
-                                <td>$250</td>
-                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
-                            </tr>
-
-                            <tr>
-                                <td>0215</td>
-                                <td>dummy.wmail@gmail.com</td>
-                                <td>Apr 02,2020</td>
-                                <td>$250</td>
-                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
-                            </tr>
-
-                            <tr>
-                                <td>0215</td>
-                                <td>dummy.wmail@gmail.com</td>
-                                <td>Apr 02,2020</td>
-                                <td>$250</td>
-                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
-                            </tr>
-
-                            <tr>
-                                <td>0215</td>
-                                <td>dummy.wmail@gmail.com</td>
-                                <td>Apr 02,2020</td>
-                                <td>$250</td>
-                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
-                            </tr>
-
-                            <tr>
-                                <td>0215</td>
-                                <td>dummy.wmail@gmail.com</td>
-                                <td>Apr 02,2020</td>
-                                <td>$250</td>
-                                <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>

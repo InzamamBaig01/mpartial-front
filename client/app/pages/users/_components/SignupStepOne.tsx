@@ -15,7 +15,6 @@ export const SignupStepOne: React.FC<StepProps> = (props) => {
    step1
   } = React.useContext(AuthContext);
   const onSubmit = (e) => {
-    // props.setStep(2)
     e.preventDefault();
     step1({
       emailaddress: value,
