@@ -239,6 +239,13 @@ const Checkout = (props) => {
     }
   }, [myInfo]);
 
+
+  useEffect(() => {
+      if(localStorage.getItem("sessipn") == null){
+        history.push("/orders")
+      }
+  }, []);
+
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const [checkoutInfo, setCheckoutInfo] = useState({
@@ -255,6 +262,7 @@ const Checkout = (props) => {
       price: product.price * 100,
     }).subscribe((response) => {
       if (response.response.Requested_Action) {
+          localStorage.removeItem("sessipn");
         history.push(`/receipt/${orderid}`);
       }
     });

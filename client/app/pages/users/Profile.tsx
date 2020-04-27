@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 import Header from "app/components/Header";
 import userProfile from "../../../assets/userProfile.svg";
@@ -12,60 +12,92 @@ import {
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement,
+  useStripe,
+  useElements,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Dropdown, Modal, Button } from "react-bootstrap";
 import { AuthContext } from "contexts/authContext";
 import { AppContext } from "contexts/appContext";
+import profile_edit from "../../../assets/profile_edit.svg";
+import dragimage from "../../../assets/drag.png";
+import { useDropzone } from "react-dropzone";
+import queryString from "query-string";
+import { profileUpdate, changePassword } from "utils/api-routes/api-routes.util";
 
 const createOptions = (fontSize: string, padding?: string) => {
   return {
     style: {
       base: {
-        fontSize,
-        color: "#424770",
-        letterSpacing: "0.025em",
-        fontFamily: "Source Code Pro, monospace",
+        color: "#303238",
+        fontSize: "16px",
+        padding: "10px",
+        fontFamily: '"Open Sans", sans-serif',
+        fontSmoothing: "antialiased",
         "::placeholder": {
-          color: "#aab7c4",
+          color: "#CFD7DF",
         },
-        ...(padding ? { padding } : {}),
       },
       invalid: {
-        color: "#9e2146",
+        color: "#e5424d",
+        ":focus": {
+          color: "#303238",
+        },
       },
     },
   };
 };
 
-const AddNewCard = (props) => {
-  const stripePromise = loadStripe("pk_test_BVYHeMmpLalkw9ro9W2IkTFJ");
+const FormElement = () => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const { getMyInfo, myInfo } = useContext(AppContext);
+
+  const [name, setName] = useState("");
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    // if (this.props.stripe) {
-    //     this.props.stripe
-    //         .createToken()
-    //         .then((payload) => console.log('[token]', payload));
-    // } else {
-    //     console.log("Stripe.js hasn't loaded yet.");
-    // }
+
+    const card = elements.getElement(CardElement);
+
+    stripe
+      .createPaymentMethod({
+        type: "card",
+        card: card,
+        billing_details: {
+          name: name,
+        },
+      })
+      .then(function (result) {
+        console.log(result);
+        if (result.paymentMethod) {
+          getMyInfo();
+        }
+        // Handle result.error or result.paymentMethod
+      });
   };
 
-  const handleBlur = () => {
-    console.log("[blur]");
-  };
-  const handleChange = (change) => {
-    console.log("[change]", change);
-  };
-  const handleClick = () => {
-    console.log("[click]");
-  };
-  const handleFocus = () => {
-    console.log("[focus]");
-  };
-  const handleReady = () => {
-    console.log("[ready]");
-  };
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          className="form-control"
+          onChange={(e) => setName(e.currentTarget.value)}
+          required
+          placeholder="Name on card"
+        />
+        <CardElement className="card_element_form"></CardElement>
+        <button type="submit" className="btn btn-lg">
+          Add
+        </button>
+      </form>
+    </>
+  );
+};
+
+const AddNewCard = (props) => {
+  const stripePromise = loadStripe("pk_test_BVYHeMmpLalkw9ro9W2IkTFJ");
+
   return (
     <>
       <Modal show={props.show} onHide={props.handleClose} className="Add_card">
@@ -75,42 +107,298 @@ const AddNewCard = (props) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="support_body">
-          <form onSubmit={props.onStackSubmit}>
-            <Elements stripe={stripePromise}>
-              <form onSubmit={handleSubmit}>
-                <label>
-                  Card number
-                  <CardNumberElement
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                    onReady={handleReady}
-                    {...createOptions("14")}
-                  />
-                </label>
-                <label>
-                  Expiration date
-                  <CardExpiryElement
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                    onReady={handleReady}
-                    {...createOptions("14")}
-                  />
-                </label>
-                <label>
-                  CVC
-                  <CardCvcElement
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                    onReady={handleReady}
-                    {...createOptions("14")}
-                  />
-                </label>
-                <button>Pay</button>
-              </form>
-            </Elements>
+          <Elements stripe={stripePromise}>
+            <FormElement></FormElement>
+          </Elements>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+};
+
+const EditProfile = (props) => {
+  const [data, setData] = useState({
+    firstName: "",
+    lastName: "",
+    phonenumber: "",
+    role: "",
+    thetoken: localStorage.token,
+  });
+
+  const [profileImage, setProfileImage] = useState({
+    profilepicture: false,
+    profileImage: false,
+  });
+  const onDrop = useCallback((acceptedFiles) => {
+    // Do something with the files
+    setProfileImage({
+      profilepicture: acceptedFiles[0],
+      profileImage: URL.createObjectURL(acceptedFiles[0]),
+    });
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  useEffect(() => {
+    setData({
+      firstName: props.info.firstName,
+      lastName: props.info.lastName,
+      phonenumber: props.info.phone,
+      role: props.info.role,
+      profilepicture: false,
+      profileImage: false,
+      thetoken: localStorage.token,
+    });
+  }, [props.info]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    const stringified = queryString.stringify(data);
+
+    formData.append("profilepicture", profileImage.profilepicture);
+
+    profileUpdate(formData, stringified).subscribe((response) => {
+      if (response.response.Requested_Action) {
+        props.onSubmitSuccess();
+        setProfileImage({
+          profilepicture: false,
+          profileImage: false,
+        });
+      }
+    });
+  };
+  return (
+    <>
+      <Modal
+        show={props.show}
+        onHide={props.handleClose}
+        className="edit_profile"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title className="add_card_title">Edit Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="support_body">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>First Name</label>
+              <input
+                type="text"
+                className="form-control"
+                value={data.firstName}
+                required
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    firstName: e.currentTarget.value,
+                  })
+                }
+              />
+            </div>
+            <div className="form-group">
+              <label>Last Name</label>
+              <input
+                type="text"
+                className="form-control"
+                value={data.lastName}
+                required
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    lastName: e.currentTarget.value,
+                  })
+                }
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Phone</label>
+              <input
+                type="text"
+                className="form-control"
+                value={data.phonenumber}
+                required
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    phonenumber: e.currentTarget.value,
+                  })
+                }
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Role</label>
+              <input
+                type="text"
+                className="form-control"
+                value={data.role}
+                required
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    role: e.currentTarget.value,
+                  })
+                }
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Profile Picture</label>
+              {profileImage.profileImage ? (
+                <div className="profile_image_preview">
+                  <div
+                    className="cross_icon"
+                    onClick={() =>
+                      setProfileImage({
+                        profilepicture: false,
+                        profileImage: false,
+                      })
+                    }
+                  >
+                    &times;
+                  </div>
+                  <img src={profileImage.profileImage} alt="" />
+                </div>
+              ) : (
+                <>
+                  <div {...getRootProps()} className="upload_profile_picture">
+                    <input {...getInputProps()} />
+                    {isDragActive ? (
+                      <p>
+                        <img src={dragimage} alt="" />
+                      </p>
+                    ) : (
+                      <p>
+                        <img src={dragimage} alt="" />
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="form-group">
+              <button className="btn" type="submit">
+                Change
+              </button>
+            </div>
+          </form>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+};
+
+const EditPassword = (props) => {
+  const [passwords, setPasswords] = useState({
+    oldPassword: "",
+    newPassword: "",
+    confirm: "",
+    thetoken: localStorage.token,
+  });
+  const [validPassword, setValidPassword] = React.useState(true);
+
+  const confirmPassword = (cp) => {
+    setValidPassword(cp == passwords.newPassword);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+
+    const stringified = queryString.stringify(passwords);
+
+
+    changePassword(stringified).subscribe((response) => {
+      if (response.response.Requested_Action) {
+        props.onEditPasswordSuccess();
+        setPasswords({
+          oldPassword: "",
+          newPassword: "",
+          confirm: "",
+          thetoken: localStorage.token,
+        });
+      }
+    });
+  };
+  return (
+    <>
+      <Modal
+        show={props.show}
+        onHide={props.handleClose}
+        className="edit_profile"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title className="add_card_title">Edit Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="support_body">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Current Password</label>
+              <input
+                type="password"
+                className="form-control"
+                value={passwords.oldPassword}
+                required
+                onChange={(e) =>
+                  setPasswords({
+                    ...passwords,
+                    oldPassword: e.currentTarget.value,
+                  })
+                }
+              />
+            </div>
+            <div className="form-group">
+              <label>New Password</label>
+              <input
+                type="password"
+                className="form-control"
+                value={passwords.newPassword}
+                required
+                onChange={(e) =>
+                  setPasswords({
+                    ...passwords,
+                    newPassword: e.currentTarget.value,
+                  })
+                }
+              />
+            </div>
+
+            <div className="form-group">
+              <label>New Confirm Password</label>
+              <input
+                type="password"
+                className="form-control"
+                value={passwords.confirm}
+                required
+                onChange={(e) => {
+                  setPasswords({
+                    ...passwords,
+                    confirm: e.currentTarget.value,
+                  });
+                  confirmPassword(e.currentTarget.value);
+                }}
+              />
+              {!validPassword ? (
+                <span className="password_not_matched">
+                  Passwords does not match
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+
+            <div className="form-group">
+              <button
+                className="btn"
+                type="submit"
+                id="formButton"
+                disabled={!validPassword || passwords.newPassword.length==0}
+              >
+                Change
+              </button>
+            </div>
           </form>
         </Modal.Body>
       </Modal>
@@ -135,6 +423,14 @@ const Profile = () => {
   }, [myInfo]);
 
   const [addcardpopupshow, setaddcardpopupshow] = useState(false);
+  const [editProfileShow, setEditProfileShow] = useState(false);
+  const [editPasswordShow, setEditPasswordShow] = useState(false);
+
+  const handleEditProfileclose = () => setEditProfileShow(false);
+  const handleEditProfileShow = () => setEditProfileShow(true);
+
+  const handleEditPasswordclose = () => setEditPasswordShow(false);
+  const handleEditPasswordShow = () => setEditPasswordShow(true);
 
   const { userDetails } = useContext(AuthContext);
 
@@ -143,51 +439,15 @@ const Profile = () => {
   const handlecardshow = () => setaddcardpopupshow(true);
 
   const stripePromise = loadStripe("pk_test_BVYHeMmpLalkw9ro9W2IkTFJ");
-  // const stripe = Stripe('pk_test_BVYHeMmpLalkw9ro9W2IkTFJ');
 
-  const initStripe = async () => {
-    return new stripe("pk_test_BVYHeMmpLalkw9ro9W2IkTFJ", {
-      apiVersion: "2020-03-02",
-    });
+  const onSubmitSuccess = () => {
+    getMyInfo();
+    handleEditProfileclose();
   };
-  useEffect(() => {
-    // console.log(stripePromise);
-    // const stripe = initStripe();
-    // // console.log(stripe);
-    // // return;
 
-    // stripe.then((d) => {
-    //     console.log(d);
-    //     d.customers.list().then((response) => {
-    //         console.log("customers list", response);
-    //     })
-    //     d.customers.create(
-    //         {
-    //             email: 'qualitybits1@gmail.com',
-    //         }
-    //     ).then((response) => {
-    //         console.log("customers list", response);
-    //     })
-    //     // console.log();
-    //     // d.customers.list().then((ddd)=>{console.log(ddd)})
-    //     //    const cc =  d.customers.listSources(
-    //     //         'cus_C7kp9txX7uPYx4',
-    //     //       ).then((dd) =>{
-    //     //           console.log(dd)
-    //     //       })
-    // })
-    // return;
-    stripePromise.then((d) => {
-      console.log(d);
-      return;
-      // cus_C7kp9txX7uPYx4
-      d.accounts.list({ limit: 3 }, function (err, accounts) {
-        console.log(accounts);
-
-        // asynchronously called
-      });
-    });
-  }, []);
+  const onSubmitPasswordSuccess = () => {
+    handleEditPasswordclose();
+  }
 
   return (
     <>
@@ -198,9 +458,19 @@ const Profile = () => {
           <div className="row">
             <div className="col-md-4 col-sm-12 col-xs-12">
               <div className="profile_left_sidebar">
-                <div className="edit_profile-icon "></div>
+                <div
+                  className="edit_profile_icon "
+                  onClick={handleEditProfileShow}
+                >
+                  <img src={profile_edit} alt="" />
+                </div>
                 <div className="profile_image">
-                  <img src={userProfile} alt="" />
+                  <img
+                    src={
+                      info.profilePicture ? info.profilePicture : userProfile
+                    }
+                    alt=""
+                  />
                 </div>
                 <div className="profile_name">
                   {info ? info.firstName : ""} {info ? info.lastName : ""}
@@ -234,7 +504,9 @@ const Profile = () => {
                   </div>
                   <div className="row">
                     <div className="col text-center">
-                      <button className="btn">Change Password</button>
+                      <button className="btn" onClick={handleEditPasswordShow}>
+                        Change Password
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -267,9 +539,11 @@ const Profile = () => {
                         ? info.stripeCustomerCard.map((card, index) => {
                             return (
                               <tr>
-                                  <td key={index}>{card.brand}</td>
-                                  <td>XXXX XXXX XXXX {card.last4}</td>
-                                  <td>{card.exp_month}/{card.exp_year}</td>
+                                <td key={index}>{card.brand}</td>
+                                <td>XXXX XXXX XXXX {card.last4}</td>
+                                <td>
+                                  {card.exp_month}/{card.exp_year}
+                                </td>
                               </tr>
                             );
                           })
@@ -289,6 +563,26 @@ const Profile = () => {
         show={addcardpopupshow}
         handleClose={handlecardclose}
       />
+
+      {editProfileShow && (
+        <EditProfile
+          value={""}
+          onSubmitSuccess={onSubmitSuccess}
+          show={editProfileShow}
+          handleClose={handleEditProfileclose}
+          info={info}
+        />
+      )}
+
+      {editPasswordShow && (
+        <EditPassword
+          value={""}
+          onEditPasswordSuccess={onSubmitPasswordSuccess}
+          show={editPasswordShow}
+          handleClose={handleEditPasswordclose}
+          info={info}
+        />
+      )}
     </>
   );
 };

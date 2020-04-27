@@ -3,18 +3,18 @@ import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../../contexts/authContext";
 import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
-import { SignupStepOne } from './_components/SignupStepOne';
-import { SignupStepTwo } from './_components/SignupStepTwo';
-import { SignupStepThree } from './_components/SignupStepThree';
-import { SignupStepFour } from './_components/SignupStepFour';
-import { SignupStepMobile } from './_components/SignupStepMobile';
-import { SignupStepRole } from './_components/SignupStepRole';
+import { SignupStepOne } from "./_components/SignupStepOne";
+import { SignupStepTwo } from "./_components/SignupStepTwo";
+import { SignupStepThree } from "./_components/SignupStepThree";
+import { SignupStepFour } from "./_components/SignupStepFour";
+import { SignupStepMobile } from "./_components/SignupStepMobile";
+import { SignupStepRole } from "./_components/SignupStepRole";
 import Mail from "../../../assets/email.svg";
 import Lock from "../../../assets/lock.svg";
 import question from "../../../assets/question.svg";
 import left from "../../../assets/left.svg";
 
-interface IProps { }
+interface IProps {}
 export const Signup: React.FC<IProps> = ({ ...props }) => {
   const {
     loginError,
@@ -37,6 +37,13 @@ export const Signup: React.FC<IProps> = ({ ...props }) => {
   }, [status, loginError]);
 
   const [stepVal, setStepVal] = React.useState(1);
+  const [formData, setFormData] = React.useState({
+    email: '',
+    firstname: '',
+    lastname: '',
+    role: '',
+    phone: '',
+  });
   const changeValue = (val) => {
     setStepVal(val);
   };
@@ -44,12 +51,19 @@ export const Signup: React.FC<IProps> = ({ ...props }) => {
     <>
       <Header isFixedColor={true}></Header>
       <div className="login_page ">
-        <div className={'signup_header'}>
-          <div className={'container'}>
+        <div className={"signup_header"}>
+          <div className={"container"}>
             <div className="signUp_actions">
               <ul>
-                {/*<li><Link to="/"><img src={left} /></Link></li>*/}
-                <li><a href={'#'}><img src={question} /></a></li>
+                {stepVal != 1 && stepVal != 6 ? (
+                  <li onClick={() => setStepVal(stepVal - 1)}>
+                    <img src={left} />
+                  </li>
+                ) : (
+                  ""
+                )}
+
+                {/* <li><a href={'#'}><img src={question} /></a></li> */}
               </ul>
             </div>
           </div>
@@ -57,36 +71,24 @@ export const Signup: React.FC<IProps> = ({ ...props }) => {
 
         <div className="container">
           <div className="signup_holder">
-            {stepVal === 1 &&
-              <SignupStepOne
-                step={stepVal}
-                setStep={changeValue} />
-            }
-            {stepVal === 2 &&
-              <SignupStepTwo
-                setStep={changeValue}
-                step={stepVal} />
-            }
-            {stepVal === 3 &&
-              <SignupStepMobile
-                setStep={changeValue}
-                step={stepVal} />
-            }
-            {stepVal === 4 &&
-              <SignupStepRole
-                setStep={changeValue}
-                step={stepVal} />
-            }
-            {stepVal === 5 &&
-              <SignupStepThree
-                setStep={changeValue}
-                step={stepVal} />
-            }
-            {stepVal === 6 &&
-              <SignupStepFour
-                setStep={changeValue}
-                step={stepVal} />
-            }
+            {stepVal === 1 && (
+              <SignupStepOne step={stepVal} setStep={changeValue} formData={formData} setFormData={setFormData} />
+            )}
+            {stepVal === 2 && (
+              <SignupStepTwo setStep={changeValue} step={stepVal} formData={formData} setFormData={setFormData} />
+            )}
+            {stepVal === 3 && (
+              <SignupStepMobile setStep={changeValue} step={stepVal} formData={formData} setFormData={setFormData} />
+            )}
+            {stepVal === 4 && (
+              <SignupStepRole setStep={changeValue} step={stepVal} formData={formData} setFormData={setFormData} />
+            )}
+            {stepVal === 5 && (
+              <SignupStepThree setStep={changeValue} step={stepVal} formData={formData} setFormData={setFormData} />
+            )}
+            {stepVal === 6 && (
+              <SignupStepFour setStep={changeValue} step={stepVal} />
+            )}
           </div>
         </div>
       </div>
@@ -95,5 +97,3 @@ export const Signup: React.FC<IProps> = ({ ...props }) => {
 };
 
 export default withRouter(Signup);
-
-

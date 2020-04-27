@@ -1,21 +1,19 @@
-import * as React from 'react';
-import { css } from 'emotion';
-import Password from '../../../../assets/password.svg';
-import { AuthContext } from 'contexts/authContext';
+import * as React from "react";
+import { css } from "emotion";
+import Password from "../../../../assets/password.svg";
+import { AuthContext } from "contexts/authContext";
+import { Link } from "react-router-dom";
 interface StepProps {
   step?: number;
   setStep?: Function;
+  formData: any;
+  setFormData: Function;
 }
 export const SignupStepThree: React.FC<StepProps> = (props) => {
-
-
-  const [password, setpassword] = React.useState('');
+  const [password, setpassword] = React.useState("");
   const [validPassword, setValidPassword] = React.useState(true);
 
-
-  const {
-    step5
-  } = React.useContext(AuthContext);
+  const { step5 } = React.useContext(AuthContext);
   const onSubmit = (e) => {
     // props.setStep(2)
     e.preventDefault();
@@ -28,19 +26,20 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
         console.log(response);
       }
     });
-  }
-
+  };
 
   const confirmPassword = (cp) => {
-    setValidPassword(cp == password)
-  }
+    setValidPassword(cp == password);
+  };
   return (
     <>
-      <div className={'container'}>
+      <div className={"container"}>
         <h2>Final Step! Please Enter Your Password</h2>
         <form onSubmit={onSubmit}>
-
-          <div className="form-group" css={{ maxWidth: '464px', margin: '30px auto' }}>
+          <div
+            className="form-group"
+            css={{ maxWidth: "464px", margin: "30px auto" }}
+          >
             <div className="input-group">
               <img className="input_icon" src={Password} alt="" />
               <input
@@ -49,12 +48,16 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
                 placeholder="Password"
                 autoComplete="off"
                 required
-                onChange={(e) => { setpassword(e.currentTarget.value) }}
-
+                onChange={(e) => {
+                  setpassword(e.currentTarget.value);
+                }}
               />
             </div>
           </div>
-          <div className="form-group" css={{ maxWidth: '464px', margin: '30px auto' }}>
+          <div
+            className="form-group"
+            css={{ maxWidth: "464px", margin: "30px auto" }}
+          >
             <div className="input-group">
               <img className="input_icon" src={Password} alt="" />
               <input
@@ -63,30 +66,39 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
                 placeholder="Confirm Password"
                 autoComplete="off"
                 required
-                onChange={(e) => { confirmPassword(e.currentTarget.value) }}
+                onChange={(e) => {
+                  confirmPassword(e.currentTarget.value);
+                }}
               />
             </div>
-            {
-              !validPassword ? (<span className="password_not_matched">Password did not match</span>) : ''
-            }
-
+            {!validPassword ? (
+              <span className="password_not_matched">
+                Passwords does not match
+              </span>
+            ) : (
+              ""
+            )}
           </div>
           <div className="form-group">
+            <input type="checkbox" required />{" "}
             <label className="terms">
-              <input type="checkbox" required /> I’ve read and accept the mpartial 
-                <span className="underline">Terms & Conditions.*</span>
-              </label>
+              I’ve read and accept the mpartial{" "}
+              <Link to="/terms" className="underline" target="_blank">
+                Terms & Conditions.<span className="red">*</span>
+              </Link>
+            </label>
           </div>
           <button
-            css={{ maxWidth: '257px', marginTop: '30px' }}
+            css={{ maxWidth: "257px", marginTop: "30px" }}
             type="submit"
-            disabled={!validPassword}
+            id="formButton"
+            disabled={!validPassword || password.length==0 }
             className="btn btn-primary btn-block submit"
           >
             Create
-        </button>
+          </button>
         </form>
       </div>
     </>
-  )
-}
+  );
+};

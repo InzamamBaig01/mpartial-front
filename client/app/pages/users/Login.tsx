@@ -6,7 +6,11 @@ import Header from "app/components/Header";
 
 import Mail from "../../../assets/email.svg";
 import Lock from "../../../assets/lock.svg";
-interface IProps { }
+import {
+  resetPassword,
+  forgotPasswordAPI,
+} from "utils/api-routes/api-routes.util";
+interface IProps {}
 
 export const Login: React.FC<IProps> = ({ ...props }) => {
   const {
@@ -15,6 +19,8 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
     dispatchLogin,
     emailOnChange,
     passwordOnChange,
+    setLoginError,
+    payload,
   } = useContext(AuthContext);
   const [loginStatus, setLoginStatus] = useState(false);
   const handleEmailChange = (e: any) => emailOnChange(e.target.value);
@@ -25,14 +31,28 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
   };
 
   useEffect(() => {
-    setLoginStatus(loginError);
+    console.log(loginError);
+    if(loginError) setLoginStatus(loginError == "A user could not be found with this email address." ? "Email or password invalid" : loginError);
   }, [status, loginError]);
 
   useEffect(() => {
     return () => {
       setLoginStatus(false);
-    }
+      setLoginError(false);
+    };
   }, []);
+
+  const resendEmail = () => {
+    forgotPasswordAPI({
+      emailaddress: payload.username,
+    }).subscribe((response) => {
+      if (response.response.Requested_Action) {
+        setLoginStatus(
+          "Verification link has been sent. Please check your email."
+        );
+      }
+    });
+  };
 
   return (
     <>
@@ -81,7 +101,6 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
               >
                 Sign in
               </button>
-
             </form>
             <div className="login_devider">
               <span>New to mpartial?</span>
@@ -93,20 +112,39 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
           </div>
         </div>
       </div>
-      {
-        loginStatus ? (
-          <div className="not_verified" onClick={() => {
-            setLoginStatus(false);
-          }}>
-            <div className="error_msg"  onClick={() => {
-            setLoginStatus(true);
-          }}>
-            {loginStatus}
-              {/* You have not verified your email address. <a href="#">Click here</a> to receive a verification email. */}
-        </div>
+      {loginStatus ? (
+        <div className="not_verified">
+          <div className="error_msg">
+            <div
+              className="close_verification_popup"
+              onClick={() => {
+                setLoginStatus(false);
+              }}
+            >
+              &times;
+            </div>
+            {loginStatus ==
+            "This user is not allowed to login. Please verify your email address first." ? (
+              <>
+                You have not verified your email address.{" "}
+                <a
+                  href="#"
+                  onClick={() => {
+                    resendEmail();
+                  }}
+                >
+                  Click here
+                </a>{" "}
+                to receive a verification email.
+              </>
+            ) : 
+              loginStatus
+            }
           </div>
-        ) : ''
-     }
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 };

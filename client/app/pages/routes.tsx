@@ -11,7 +11,9 @@ import Receipt from "./receipt";
 import AdminLogin from "./admin/AdminLogin";
 import AdminOrders from "./admin/AdminOrders";
 import AdminUserManagement from "./admin/AdminUserManagement";
-import {ForgotPassword} from './users/ForgotPassword';
+import { ForgotPassword } from "./users/ForgotPassword";
+import TermsCondition from "./TermsCondition";
+import Changepasswordwithtoken from "./Changepasswordwithtoken";
 
 export const ROUTES = [
   {
@@ -33,6 +35,20 @@ export const ROUTES = [
     redirectTo: "/profile",
   },
   {
+    component: TermsCondition,
+    isPublic: true,
+    path: "/terms",
+    slug: "terms",
+    title: "terms",
+  },
+  {
+    component: Changepasswordwithtoken,
+    isPublic: true,
+    path: "/changepasswordwithtoken",
+    slug: "changepasswordwithtoken",
+    title: "changepasswordwithtoken",
+  },
+  {
     component: Profile,
     isExact: true,
     path: "/profile",
@@ -48,15 +64,17 @@ export const ROUTES = [
     title: "Orders",
     isLogin: false,
     redirectTo: "/login",
-  }, {
+  },
+  {
     component: MyOrderDetails,
     isExact: true,
-    path: "/ordersdetails",
+    path: "/ordersdetails/:orderid",
     slug: "ordersDetails",
     title: "ordersDetails",
     isLogin: false,
     redirectTo: "/login",
-  }, {
+  },
+  {
     component: UserOrder,
     isExact: true,
     path: "/order",
@@ -68,16 +86,15 @@ export const ROUTES = [
   {
     component: Checkout,
     isExact: true,
-    isPublic: true,
     path: "/checkout/:orderid",
     slug: "checkout",
     title: "checkout",
     isLogin: false,
     redirectTo: "/login",
-  }, {
+  },
+  {
     component: Receipt,
     isExact: true,
-    isPublic: true,
     path: "/receipt/:orderid",
     slug: "receipt",
     title: "receipt",
@@ -99,7 +116,8 @@ export const ROUTES = [
     slug: "dashboard",
     title: "dashboard",
     redirectTo: "/login",
-  },{
+  },
+  {
     component: Homepage,
     isExact: true,
     isPublic: true,
@@ -107,7 +125,8 @@ export const ROUTES = [
     slug: "dashboard",
     title: "dashboard",
     redirectTo: "/login",
-  }, {
+  },
+  {
     component: AdminLogin,
     isPublic: true,
     path: "/admin",
@@ -115,7 +134,8 @@ export const ROUTES = [
     title: "admin",
     isLogin: false,
     redirectTo: "/dashboard",
-  }, {
+  },
+  {
     component: AdminOrders,
     isPublic: true,
     path: "/allorders",
@@ -123,7 +143,8 @@ export const ROUTES = [
     title: "admin/orders",
     isLogin: false,
     redirectTo: "/dashboard",
-  }, {
+  },
+  {
     component: AdminUserManagement,
     isPublic: true,
     path: "/user-management",

@@ -4,7 +4,8 @@ import Header from "app/components/Header";
 import MultiSelect from "react-multi-select-component";
 import { AuthContext } from "contexts/authContext";
 import { saveOrderData } from "utils/api-routes/api-routes.util";
-import history from '../../utils/history';
+import history from "../../utils/history";
+import queryString from "query-string";
 
 const fields = [
   {
@@ -148,7 +149,8 @@ const fields = [
       "52 Weeks",
       'Other - Please inform in the "Additional Information" field',
     ],
-  }, {
+  },
+  {
     id: "debrisDisposal",
     name: "Debris Disposal",
     description: null,
@@ -171,7 +173,7 @@ const fields = [
     ],
   },
   {
-    id: "optionalTrades",
+    id: "specialtyTradeSelection",
     name: "Specialty Trade Selection",
     description:
       "Specialty trades typically require in-depth inspections and will be omitted from your deliverables by default. Should you wish to include various specialty trades, be sure to select from the list below.",
@@ -220,20 +222,19 @@ const fields = [
     required: true,
     type: "email",
     typeOptions: {},
-    value: ''
+    value: "",
   },
 ];
-
 
 const MultipleSelectField = (props) => {
   const [selected, setSelected] = useState([]);
   const options = [];
   props.field.options.map((option) => {
     options.push({
-      "label": option,
-      "value": option
+      label: option,
+      value: option,
     });
-  })
+  });
 
   return (
     <MultiSelect
@@ -246,8 +247,8 @@ const MultipleSelectField = (props) => {
       }}
       labelledBy={"Select"}
     />
-  )
-}
+  );
+};
 
 const DrawField = (props) => {
   const form = (field) => {
@@ -258,7 +259,9 @@ const DrawField = (props) => {
             type="text"
             required={field.required ? true : false}
             className="form-control"
-            onChange={(e) => { field.value = e.currentTarget.value }}
+            onChange={(e) => {
+              field.value = e.currentTarget.value;
+            }}
           />
         );
         break;
@@ -267,7 +270,9 @@ const DrawField = (props) => {
           <select
             className="form-control"
             required={field.required ? true : false}
-            onChange={(e) => { field.value = e.currentTarget.value }}
+            onChange={(e) => {
+              field.value = e.currentTarget.value;
+            }}
           >
             <option value="">Please Select {field.name}</option>
             {Object.values(field.options).map((option, index) => {
@@ -281,9 +286,7 @@ const DrawField = (props) => {
         );
         break;
       case "multiSelect":
-        return (
-          <MultipleSelectField field={field} />
-        );
+        return <MultipleSelectField field={field} />;
         break;
 
       case "multipleAttachment":
@@ -292,9 +295,10 @@ const DrawField = (props) => {
             <div>
               <input
                 type="file"
-                multiple
                 required={field.required ? true : false}
-                onChange={(e) => { field.value = e.target.files }}
+                onChange={(e) => {
+                  field.value = e.target.files;
+                }}
               />
             </div>
           </>
@@ -306,7 +310,9 @@ const DrawField = (props) => {
           <textarea
             required={field.required ? true : false}
             className="form-control"
-            onChange={(e) => { field.value = e.currentTarget.value }}
+            onChange={(e) => {
+              field.value = e.currentTarget.value;
+            }}
           ></textarea>
         );
         break;
@@ -317,7 +323,9 @@ const DrawField = (props) => {
             required={field.required ? true : false}
             value={field.value}
             className="form-control"
-            onChange={(e) => { field.value = e.currentTarget.value }}
+            onChange={(e) => {
+              field.value = e.currentTarget.value;
+            }}
           />
         );
         break;
@@ -327,7 +335,9 @@ const DrawField = (props) => {
             type="text"
             required={field.required ? true : false}
             className="form-control"
-            onChange={(e) => { field.value = e.currentTarget.value }}
+            onChange={(e) => {
+              field.value = e.currentTarget.value;
+            }}
           />
         );
         break;
@@ -337,39 +347,47 @@ const DrawField = (props) => {
   return form(field);
 };
 const UserOrder = () => {
-
-  const {
-    userDetails,
-  } = useContext(AuthContext);
+  const { userDetails } = useContext(AuthContext);
   fields[fields.length - 1].value = userDetails().emailAddress;
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
     const apiData = {
       amountInCents: 250 * 100,
-      additionalFees: '',
-      potentiallyRelevantDigitalAssets: ''
+      additionalFees: "",
+      thetoken: localStorage.token,
     };
+    let fileToUpload;
     const formData = new FormData();
 
-    fields.map(field => {
+    fields.map((field) => {
       if (field.type === "multipleAttachment") {
-        apiData.potentiallyRelevantDigitalAssets = field.value;
+        fileToUpload = field.value;
       } else if (field.type === "multiSelect") {
-        apiData[field.id] = field.value ? field.value.map((v) => { return v.value }) : ""
+        apiData[field.id] = field.value
+          ? field.value.map((v) => {
+              return v.value;
+            })
+          : "";
       } else {
         apiData[field.id] = field.value;
       }
     });
 
-    formData.append("potentiallyRelevantDigitalAssets", apiData.potentiallyRelevantDigitalAssets);
+    const stringified = queryString.stringify(apiData);
+    // console.log(stringified);
+    console.log(fileToUpload);
+    // return;
+    formData.append(
+      "potentiallyRelevantDigitalAssets",
+      fileToUpload[0]
+    );
 
-    console.log(apiData);
-    saveOrderData(formData, apiData).subscribe(
+    saveOrderData(formData, stringified).subscribe(
       (response: any) => {
         if (response.response.Requested_Action) {
-          console.log(response.response)
-          localStorage.setItem("sessipn", response.response.message )
+          console.log(response.response);
+          localStorage.setItem("sessipn", response.response.message);
           history.push(`/checkout/${response.response.data.id}`);
           // dispatchGetBoardDetails();
 
@@ -388,12 +406,11 @@ const UserOrder = () => {
         }
         // //console.log(response);
       },
-      response => {
+      (response) => {
         //console.log(response);
       }
     );
   };
-
 
   return (
     <>
@@ -427,12 +444,15 @@ const UserOrder = () => {
 
             <div className="form-group">
               <label className="terms">
-                <input type="checkbox" required /> I’ve read and accept the mpartial
-                 &nbsp; <span className="underline">Terms & Conditions.*</span>
+                <input type="checkbox" required /> I’ve read and accept the
+                mpartial &nbsp;{" "}
+                <span className="underline">Terms & Conditions.*</span>
               </label>
             </div>
             <div className="form-group">
-              <button className="btn" type="submit">CHECKOUT</button>
+              <button className="btn" type="submit">
+                CHECKOUT
+              </button>
             </div>
           </form>
         </div>

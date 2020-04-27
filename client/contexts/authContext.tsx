@@ -26,6 +26,7 @@ interface IContextProps {
   step3: Function;
   step4: Function;
   step5: Function;
+  setLoginError: Function;
 }
 
 export const AuthContext = React.createContext({} as IContextProps);
@@ -65,11 +66,11 @@ export default React.memo(({ children }) => {
         (response: any) => {
           if (response.response.Requested_Action) {
           } else {
-            // logout();
+            logout();
           }
         },
         response => {
-          // logout();
+          logout();
         }
       );
     }
@@ -110,7 +111,7 @@ export default React.memo(({ children }) => {
 
   const dispatchLogin = () => {
     setStatus("pending");
-
+    setLoginError(false);
     login(payload).subscribe(
       (response: any) => {
         if (!response.response.Requested_Action) {
@@ -224,6 +225,7 @@ export default React.memo(({ children }) => {
     step3,
     step4,
     step5,
+    setLoginError,
   };
 
   return (

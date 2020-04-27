@@ -63,6 +63,11 @@
       }
     }
   }
+  .dropdown-menu {
+    a {
+      color: #4a4848 !important;
+    }
+  }
   .login_btn {
     background: #3ac280 0% 0% no-repeat padding-box;
     border-color: #3ac280;
@@ -734,6 +739,9 @@ span.numeric-character {
   padding-top: 63px;
   background: rgba(242, 246, 247, 0.7) 0% 0% no-repeat padding-box;
   min-height: 100%;
+  &.full_height {
+    min-height: calc(100vh);
+  }
   .title {
     padding-top: 5%;
     text-align: center;
@@ -831,7 +839,7 @@ span.numeric-character {
   color: #000000;
   opacity: 1;
 }
-.dropdown-item:active{
+.dropdown-item:active {
   background: #f8f9fa;
   color: #000000;
 }
@@ -839,7 +847,14 @@ span.numeric-character {
   .nav-link {
     padding-top: 0;
     padding-bottom: 0;
+    img {
+      width: 11px;
+      height: 11px;
+    }
   }
+}
+#toBold {
+  font-weight: 600;
 }
 
 .sub_titles {
@@ -1039,6 +1054,15 @@ span.numeric-character {
     max-width: 510px;
     margin: 0 auto;
     margin-top: 13%;
+    position: relative;
+    .close_verification_popup {
+      position: absolute;
+      right: 4%;
+      top: 4%;
+      z-index: 9999999999999;
+      font-size: 34px;
+      cursor: pointer;
+    }
   }
 }
 .Add_card {
@@ -1060,13 +1084,19 @@ span.numeric-character {
 }
 
 
-.role_holder{
+
+.role_holder {
   max-width: 525px;
-  display: flex;
+  // display: flex;
   width: 100%;
-  justify-content: space-between;
+  // justify-content: space-between;
   text-align: left;
   margin: 30px auto;
+  .form-group {
+    display: inline-block;
+    vertical-align: text-bottom;
+    width: 50%;
+  }
 }
 [type="radio"]:checked,
 [type="radio"]:not(:checked) {
@@ -1074,8 +1104,7 @@ span.numeric-character {
   left: -9999px;
 }
 [type="radio"]:checked + label,
-[type="radio"]:not(:checked) + label
-{
+[type="radio"]:not(:checked) + label {
   position: relative;
   padding-left: 28px;
   cursor: pointer;
@@ -1085,7 +1114,7 @@ span.numeric-character {
 }
 [type="radio"]:checked + label:before,
 [type="radio"]:not(:checked) + label:before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -1097,10 +1126,10 @@ span.numeric-character {
 }
 [type="radio"]:checked + label:after,
 [type="radio"]:not(:checked) + label:after {
-  content: '';
+  content: "";
   width: 10px;
   height: 10px;
-  background: #3AC280;
+  background: #3ac280;
   position: absolute;
   top: 5px;
   left: 5px;
@@ -1119,8 +1148,8 @@ span.numeric-character {
   transform: scale(1);
 }
 
-
-input, textarea {
+input,
+textarea {
   outline: none !important;
 }
 
@@ -1144,3 +1173,60 @@ span.password_not_matched {
 #card-element {
   padding: 15px;
 }
+
+#formButton {
+  &:disabled,
+  &[disabled] {
+    border-color: #a6a6a6 !important;
+    background: #a6a6a6 !important;
+    cursor: not-allowed;
+  }
+}
+
+.red {
+  color: red;
+}
+
+.Add_card {
+  text-align: center;
+  .form-control {
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border: 1px solid #7fa3b0;
+    border-radius: 10px;
+    opacity: 1;
+    padding: 20px;
+  }
+  .card_element_form {
+    padding: 20px;
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border: 1px solid #7fa3b0;
+    border-radius: 10px;
+    opacity: 1;
+    margin: 10px 0;
+  }
+  .btn {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 50%;
+    height: 50px;
+  }
+}
+.order_detail_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  li {
+    padding: 5px 10px;
+    border: 1px rgba(0, 0, 0, 0.5) solid;
+    margin-bottom: 5px;
+    border-radius: 10px;
+  }
+}
+
+.terms_page {
+  width: 100%;
+  height: 100vh;
+  padding-top: 90px;
+  background: rgba(242, 246, 247, 0.7) 0% 0% no-repeat padding-box;
+}
+

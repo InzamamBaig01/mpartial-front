@@ -6,9 +6,32 @@ import Header from "app/components/Header";
 
 import Mail from "../../../assets/email.svg";
 import Lock from "../../../assets/lock.svg";
+import { forgotPasswordAPI } from "utils/api-routes/api-routes.util";
 interface IProps { }
 
 export const ForgotPassword: React.FC<IProps> = ({ ...props }) => {
+
+  const [email, setEmail] = useState("");
+  const [loginStatus, setLoginStatus] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      console.log("cleaned up");
+      setLoginStatus(false);
+    };
+  }, []);
+
+
+  const resendEmail = (e) => {
+    e.preventDefault();
+    forgotPasswordAPI({
+      emailaddress: email,
+    }).subscribe((response) => {
+      if (response.response.Requested_Action) {
+        setLoginStatus("A password recovery email has been sent");
+      }
+    });
+  };
 
   return (
     <>
@@ -18,7 +41,7 @@ export const ForgotPassword: React.FC<IProps> = ({ ...props }) => {
           <span className="title">Forgot your Password?</span>
 
           <div className="login_inner_Container">
-            <form>
+            <form onSubmit={resendEmail}>
               {/* <a href="#" className="forget_link">Forgot password?</a> */}
               <div className="form-group">
                 <div className="input-group">
@@ -27,7 +50,7 @@ export const ForgotPassword: React.FC<IProps> = ({ ...props }) => {
                     type="email"
                     className="form-control"
                     placeholder="Enter your email "
-                    autocomplete="off"
+                    onChange={(e) => setEmail(e.currentTarget.value)}
                     required
                   />
                 </div>
@@ -49,6 +72,26 @@ export const ForgotPassword: React.FC<IProps> = ({ ...props }) => {
           </div>
         </div>
       </div>
+      {loginStatus ? (
+        <div className="not_verified">
+          <div className="error_msg">
+            <div
+              className="close_verification_popup"
+              onClick={() => {
+                setLoginStatus(false);
+              }}
+            >
+              &times;
+            </div>
+            {
+            loginStatus ? loginStatus : ''
+            }
+            {/*  */}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 };
