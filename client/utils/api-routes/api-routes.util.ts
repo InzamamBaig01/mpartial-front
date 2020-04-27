@@ -114,7 +114,7 @@ export const payOrder = (payload) =>
   ajax({
     headers: requestHeader(),
     method: 'POST',
-    url: `${baseURL}/Client/payForOrder?stripeToken=${payload.stripeToken}&orderId=${payload.orderId}&amountInCents=${payload.price}&thetoken=${localStorage.token}`,
+    url: `${baseURL}/Client/payForOrder?status=${payload.status}&orderId=${payload.orderId}&fullresponse=${encodeURIComponent(payload.fullresponse)}&thetoken=${localStorage.token}`,
   })
 
 
@@ -134,6 +134,15 @@ ajax({
   method: 'POST',
   url: `${baseURL}/Client/getOrders?thetoken=${localStorage.token}`,
 }).pipe(catchError(handleError('logout')));
+
+
+export const getMyInfoAPI = () =>
+ajax({
+  headers: requestHeader(),
+  method: 'POST',
+  url: `${baseURL}/Client/getCustomerInfo?thetoken=${localStorage.token}`,
+}).pipe(catchError(handleError('logout')));
+
 
 
 export const resetPassword = payload =>

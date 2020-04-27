@@ -20,7 +20,10 @@ const MyOrders = () => {
 
 
     useEffect(() => {
-        setOrders(myOrders);
+        const allOrders = myOrders.sort((a, b) => {
+            return Number(a.id) - Number(b.id);
+        })
+        setOrders(allOrders);
     }, [myOrders])
 
     return (
@@ -36,6 +39,7 @@ const MyOrders = () => {
                                 <th>Email</th>
                                 <th>Order Date</th>
                                 <th>Total</th>
+                                <th>paymentStatus</th>
                                 <th className="text-center">Action</th>
                             </tr>
                         </thead>
@@ -48,6 +52,7 @@ const MyOrders = () => {
                                             <td>{order.emailForDeliveryOfResults}</td>
                                             <td>Apr 02,2020</td>
                                             <td>${order.amountInCents / 100}</td>
+                                            <td>{order.paymentStatus}</td>
                                             <td className="text-center order_view_icon"><img src={viewicon} alt="" /></td>
                                         </tr>
                                     )
