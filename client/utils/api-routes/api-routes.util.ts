@@ -125,7 +125,7 @@ export const resetPasswordWithToken = (payload) =>
   export const ActivateAccountAPI = (payload) =>
   ajax({
     headers: requestHeader(),
-    method: "GET",
+    method: "POST",
     url: `${baseURL}/Client/ConfirmEmail?${payload}`,
   });
 
