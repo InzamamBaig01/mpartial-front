@@ -121,6 +121,14 @@ export const resetPasswordWithToken = (payload) =>
     url: `${baseURL}/Client/ResetPasswordWithToken?${payload}`,
   });
 
+
+  export const ActivateAccountAPI = (payload) =>
+  ajax({
+    headers: requestHeader(),
+    method: "GET",
+    url: `${baseURL}/Client/ConfirmEmail?${payload}`,
+  });
+
 export const payOrder = (payload) =>
   ajax({
     headers: requestHeader(),

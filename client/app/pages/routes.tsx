@@ -14,6 +14,7 @@ import AdminUserManagement from "./admin/AdminUserManagement";
 import { ForgotPassword } from "./users/ForgotPassword";
 import TermsCondition from "./TermsCondition";
 import Changepasswordwithtoken from "./Changepasswordwithtoken";
+import ActivateAccount from "./ActivateAccount";
 
 export const ROUTES = [
   {
@@ -47,6 +48,12 @@ export const ROUTES = [
     path: "/changepasswordwithtoken",
     slug: "changepasswordwithtoken",
     title: "changepasswordwithtoken",
+  },{
+    component: ActivateAccount,
+    isPublic: true,
+    path: "/emailverification",
+    slug: "emailverification",
+    title: "emailverification",
   },
   {
     component: Profile,
