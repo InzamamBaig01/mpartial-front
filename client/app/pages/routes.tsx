@@ -51,7 +51,7 @@ export const ROUTES = [
   },{
     component: ActivateAccount,
     isPublic: true,
-    path: "/emailverification",
+    path: "/Client/ConfirmEmail",
     slug: "emailverification",
     title: "emailverification",
   },
