@@ -17,21 +17,28 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
   const [validPassword, setValidPassword] = React.useState(false);
   const [validCheckbox, setValidCheckbox] = React.useState(false);
 
-  const stringified = queryString.stringify({
-    password: password,
-    emailaddress: props.formData.email,
-    firstname:props.formData.firstname,
-    lastname:props.formData.lastname,
-    phonenumber:props.formData.phone,
-    role:props.formData.role,
-  });
-  console.log(stringified);
+  // const stringified = queryString.stringify({
+  //   password: password,
+  //   emailaddress: props.formData.email,
+  //   firstname: props.formData.firstname,
+  //   lastname: props.formData.lastname,
+  //   phonenumber: props.formData.phone,
+  //   role: props.formData.role,
+  // });
+  // console.log(stringified);
   // return;
   const { step5 } = React.useContext(AuthContext);
   const onSubmit = (e) => {
     // props.setStep(2)
     e.preventDefault();
-    step5(stringified).subscribe((response) => {
+    step5({
+      password: password,
+      emailaddress: props.formData.email,
+      firstname: props.formData.firstname,
+      lastname: props.formData.lastname,
+      phonenumber: props.formData.phone,
+      role: props.formData.role,
+    }).subscribe((response) => {
       if (response.response.Requested_Action) {
         props.setStep(6);
       } else {
