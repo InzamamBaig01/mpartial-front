@@ -32,7 +32,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
 
   useEffect(() => {
     console.log(loginError);
-    if(loginError) setLoginStatus(loginError == "A user could not be found with this email address." ? "Email or password invalid" : loginError);
+    if(loginError) setLoginStatus(loginError);
   }, [status, loginError]);
 
   useEffect(() => {

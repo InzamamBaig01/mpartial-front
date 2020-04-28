@@ -1038,6 +1038,7 @@ span.numeric-character {
   width: 100%;
   height: 100vh;
   text-align: center;
+  z-index: 999999999999;
   .error_msg {
     background: #ffffff 0% 0% no-repeat padding-box;
     box-shadow: 0px 0px 6px #00000029;

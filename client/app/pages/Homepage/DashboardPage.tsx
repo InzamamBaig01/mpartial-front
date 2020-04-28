@@ -19,6 +19,7 @@ interface IRef {
   wFall: any;
   Deli: any;
   cont: any;
+  footer: any;
 }
 export const HomePage: React.FC<any> = React.memo((props) => {
   const values = queryString.parse(props.location.hash);
@@ -29,7 +30,7 @@ export const HomePage: React.FC<any> = React.memo((props) => {
     "How-It-Works": "hIW",
     "Fee-Structure": "wFall",
     "Example-Deliverables": "Deli",
-    "Contact-US": "cont",
+    "Contact-US": "footer",
   };
   const [sectionRef, setSectionref] = useState<IRef>({
     home: React.createRef(),
@@ -38,18 +39,32 @@ export const HomePage: React.FC<any> = React.memo((props) => {
     wFall: React.createRef(),
     Deli: React.createRef(),
     cont: React.createRef(),
+    footer: React.createRef(),
   });
 
-  const scrollToRef = (ref) => {
+  const scrollToRef = (ref, to) => {
     // console.log(props.sectionRef);
     if (window.innerWidth <= 770) toggle();
 
-   if(ref) window.scrollTo({ top: ref.current.offsetTop, behavior: "smooth" });
+    setTimeout(() => {
+      if (ref) {
+        window.scrollTo({
+          top:
+            to == "footer"
+              ? ref.current.offsetTop + 1000
+              : ref.current.offsetTop,
+          behavior: "smooth",
+        });
+      }
+    }, 500);
   };
 
   useEffect(() => {
     if (Object.keys(values).length) {
-      scrollToRef(sectionRef[sectionMap[gotoSection[0]]]);
+      scrollToRef(
+        sectionRef[sectionMap[gotoSection[0]]],
+        sectionMap[gotoSection[0]]
+      );
     }
   }, []);
   return (
@@ -73,7 +88,9 @@ export const HomePage: React.FC<any> = React.memo((props) => {
       <div ref={sectionRef.cont}>
         <ContactUs />
       </div>
-      <Footer />
+      <div ref={sectionRef.footer}>
+        <Footer />
+      </div>
     </>
   );
 });
