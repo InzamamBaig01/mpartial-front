@@ -232,21 +232,7 @@ const EditProfile = (props) => {
               />
             </div>
 
-            <div className="form-group">
-              <label>Role</label>
-              <input
-                type="text"
-                className="form-control"
-                value={data.role}
-                required
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    role: e.currentTarget.value,
-                  })
-                }
-              />
-            </div>
+          
 
             <div className="form-group">
               <label>Profile Picture</label>

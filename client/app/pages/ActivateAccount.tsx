@@ -40,13 +40,13 @@ const ActivateAccount = (props) => {
             <h4>
               {success == "true" ? (
                 <>
-                  <img src={successicon} alt="" />
+                  <img src={successicon} className="verif_image" alt="" />
                   Your email address is confirmed.
                   <Link to="/login"> Click here</Link> to Sign In
                 </>
               ) : success != "false" ? (
                 <>
-                  <img src={erroricon} alt="" />
+                  <img src={erroricon} className="verif_image" alt="" />
                   The link has expired. Please try again.
                 </>
               ) : (
