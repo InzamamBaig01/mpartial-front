@@ -125,7 +125,7 @@ export default React.memo(({ children }) => {
           profile = response.response.data;
           localStorage.setItem("profile", JSON.stringify(profile));
           localStorage.setItem("token", response.response.message);
-          history.push("/profile");
+          history.push("/");
         }
         //console.log(status);
       },

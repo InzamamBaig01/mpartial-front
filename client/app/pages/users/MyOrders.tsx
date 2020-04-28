@@ -33,7 +33,7 @@ const MyOrders = () => {
                 <th>Email</th>
                 <th>Order Date</th>
                 <th>Total</th>
-                <th>paymentStatus</th>
+                <th>Payment Status</th>
                 <th className="text-center">Action</th>
               </tr>
             </thead>
@@ -46,7 +46,7 @@ const MyOrders = () => {
                       <td>{order.emailForDeliveryOfResults}</td>
                       <td>Apr 02,2020</td>
                       <td>${order.amountInCents / 100}</td>
-                      <td>{order.paymentStatus}</td>
+                      <td className="orders_payment_status">{order.paymentStatus.toLowerCase()}</td>
                       <td className="text-center order_view_icon">
                         <Link to={`/ordersdetails/${order.id}`}>
                         <img src={viewicon} alt="" />

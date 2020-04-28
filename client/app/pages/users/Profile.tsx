@@ -23,7 +23,10 @@ import profile_edit from "../../../assets/profile_edit.svg";
 import dragimage from "../../../assets/drag.png";
 import { useDropzone } from "react-dropzone";
 import queryString from "query-string";
-import { profileUpdate, changePassword } from "utils/api-routes/api-routes.util";
+import {
+  profileUpdate,
+  changePassword,
+} from "utils/api-routes/api-routes.util";
 
 const createOptions = (fontSize: string, padding?: string) => {
   return {
@@ -88,7 +91,7 @@ const FormElement = () => {
         />
         <CardElement className="card_element_form"></CardElement>
         <button type="submit" className="btn btn-lg">
-          Add
+          Save
         </button>
       </form>
     </>
@@ -306,9 +309,7 @@ const EditPassword = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-
     const stringified = queryString.stringify(passwords);
-
 
     changePassword(stringified).subscribe((response) => {
       if (response.response.Requested_Action) {
@@ -394,7 +395,7 @@ const EditPassword = (props) => {
                 className="btn"
                 type="submit"
                 id="formButton"
-                disabled={!validPassword || passwords.newPassword.length==0}
+                disabled={!validPassword || passwords.newPassword.length == 0}
               >
                 Change
               </button>
@@ -447,7 +448,7 @@ const Profile = () => {
 
   const onSubmitPasswordSuccess = () => {
     handleEditPasswordclose();
-  }
+  };
 
   return (
     <>
@@ -498,10 +499,7 @@ const Profile = () => {
                     <div className="col text-right">{info.phone}</div>
                   </div>
 
-                  <div className="row">
-                    <div className="col">Zip Code</div>
-                    <div className="col text-right">678765</div>
-                  </div>
+                 
                   <div className="row">
                     <div className="col text-center">
                       <button className="btn" onClick={handleEditPasswordShow}>

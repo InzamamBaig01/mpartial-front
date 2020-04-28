@@ -124,6 +124,25 @@ export const WaterFall: React.FC<WaterFallProps> = ({ }) => {
     })
   }
 
+  const convertToStr =   (labelValue) => {
+
+    // Nine Zeroes for Billions
+    return Math.abs(Number(labelValue)) >= 1.0e+9
+
+    ? Math.abs(Number(labelValue)) / 1.0e+9 + "B"
+    // Six Zeroes for Millions 
+    : Math.abs(Number(labelValue)) >= 1.0e+6
+
+    ? Math.abs(Number(labelValue)) / 1.0e+6 + "M"
+    // Three Zeroes for Thousands
+    : Math.abs(Number(labelValue)) >= 1.0e+3
+
+    ? Math.abs(Number(labelValue)) / 1.0e+3 + "K"
+
+    : Math.abs(Number(labelValue));
+
+}
+
   return (
     <>
       <div className="mpartial_section" css={{ backgroundColor: '#FFFFFF', justifyContent: 'center', textAlign: 'center', color: '#0A5169', paddingBottom: '20px' }}>
@@ -144,7 +163,7 @@ export const WaterFall: React.FC<WaterFallProps> = ({ }) => {
               format={(v) => {
                 return (
                   <>
-                    <div className="slider_tooltip_price">${v}</div>
+                    <div className="slider_tooltip_price">${convertToStr(v)}</div>
                     <div className="slider_tooltip_text">Estimate Grand Total</div>
                   </>
                 )

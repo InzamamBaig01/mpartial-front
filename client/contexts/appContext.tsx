@@ -34,7 +34,7 @@ export default ({ children }) => {
 
   const getMyInfo = () => {
     getMyInfoAPI().subscribe((response) => {
-      console.log(response.response);
+      // console.log(response.response);
       setMyInfo(response.response.data);
       localStorage.setItem("profile", JSON.stringify(response.response.data));
     });

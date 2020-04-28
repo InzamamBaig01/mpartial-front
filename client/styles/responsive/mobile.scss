@@ -73,14 +73,18 @@
     margin-bottom: 15px;
   }
   .rangeslider .rangeslider__handle-tooltip {
-    width: 125px;
-    height: 75px;
+    width: 71px;
+    height: 59px;
   }
   .rangeslider-horizontal .rangeslider__handle-tooltip {
-    top: -100px;
+    top: -74px;
   }
   .rangeslider .rangeslider__handle-tooltip span {
-    font-size: 18px;
+    margin-top: 5px;
+    font-size: 14px;
+    .slider_tooltip_text {
+      font-size: 11px;
+    }
   }
   .deliver_widget_container {
     display: block;
@@ -131,7 +135,31 @@
   }
 
   .my_order_container {
-    width:99vw;
+    width: 99vw;
     overflow: auto;
+  }
+
+  .not_verified {
+    .error_msg {
+      padding: 60px 40px;
+      margin-top: 21%;
+    }
+  }
+  .modal {
+    top: 3% !important;
+    .modal-dialog {
+      margin-left: 0px !important;
+      margin-right: 0px !important;
+    }
+  }
+
+  .profile_left_sidebar {
+    margin-bottom: 20px;
+  }
+
+  .signup_holder {
+    .terms {
+      display: inline;
+    }
   }
 }

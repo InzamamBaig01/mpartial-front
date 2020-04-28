@@ -5,7 +5,7 @@ interface FooterProps {
 }
 import fb from '../../assets/facebook-logo.svg';
 import inst from '../../assets/instagram.svg';
-import twt from '../../assets/twitter.svg';
+import twt from '../../assets/linkedin.svg';
 export const Footer: React.FC<FooterProps> = () => {
   return(
     <div className={'footer'}>
@@ -16,9 +16,9 @@ export const Footer: React.FC<FooterProps> = () => {
         </div>
         <div className={'col-md-6 col-sm-12'}>
           <ul className={'social-links'}>
-            <li><a href='#'><img src={ fb }/> </a> </li>
-            <li><a href='#'><img src={ inst }/> </a></li>
-            <li><a href='#'><img src={ twt }/></a> </li>
+            <li><a target="_blank" href='https://www.facebook.com/mpartial1/'><img src={ fb }/> </a> </li>
+            <li><a target="_blank" href='https://www.instagram.com/mpartial_/'><img src={ inst }/> </a></li>
+            <li><a target="_blank" href='https://www.linkedin.com/company/mpartial-keep-building'><img src={ twt }/></a> </li>
           </ul>
         </div>
       </div>

@@ -79,7 +79,9 @@ const Header = (props) => {
                   <NavLink
                     className="nav-link"
                     to="/#Approach"
-                    onClick={() => scrollToRef(props.sectionRef.home)}
+                    onClick={() => {
+                      if (props.sectionRef) scrollToRef(props.sectionRef.home);
+                    }}
                   >
                     Approach
                   </NavLink>
@@ -88,7 +90,9 @@ const Header = (props) => {
                   <NavLink
                     className="nav-link"
                     to="/#Ground-Truth-Data"
-                    onClick={() => scrollToRef(props.sectionRef.hero)}
+                    onClick={() => {
+                      if (props.sectionRef) scrollToRef(props.sectionRef.hero);
+                    }}
                   >
                     Ground-Truth Data
                   </NavLink>
@@ -97,7 +101,9 @@ const Header = (props) => {
                   <NavLink
                     className="nav-link"
                     to="/#How-It-Works"
-                    onClick={() => scrollToRef(props.sectionRef.hIW)}
+                    onClick={() => {
+                      if (props.sectionRef) scrollToRef(props.sectionRef.hIW);
+                    }}
                   >
                     How It Works
                   </NavLink>
@@ -106,7 +112,9 @@ const Header = (props) => {
                   <NavLink
                     className="nav-link"
                     to="/#Fee-Structure"
-                    onClick={() => scrollToRef(props.sectionRef.wFall)}
+                    onClick={() => {
+                      if (props.sectionRef) scrollToRef(props.sectionRef.wFall);
+                    }}
                   >
                     Fee Structure
                   </NavLink>
@@ -123,15 +131,29 @@ const Header = (props) => {
                     </span>
                   </DropdownToggle>
                   <DropdownMenu right>
-                    <DropdownItem
-                      onClick={() => scrollToRef(props.sectionRef.Deli)}
-                    >
-                      Immaculate. Impartial. [ESX & PDF]
+                    <DropdownItem>
+                      <NavLink
+                        className="nav-link"
+                        to="/#Example-Deliverables"
+                        onClick={() => {
+                          if (props.sectionRef)
+                            scrollToRef(props.sectionRef.Deli);
+                        }}
+                      >
+                        Immaculate. Impartial. [ESX & PDF]
+                      </NavLink>
                     </DropdownItem>
-                    <DropdownItem
-                      onClick={() => scrollToRef(props.sectionRef.Deli)}
-                    >
-                      TrueSketch PLUS [SKX]
+                    <DropdownItem>
+                      <NavLink
+                        className="nav-link"
+                        to="/#Example-Deliverables"
+                        onClick={() => {
+                          if (props.sectionRef)
+                            scrollToRef(props.sectionRef.Deli);
+                        }}
+                      >
+                        TrueSketch PLUS [SKX]
+                      </NavLink>
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
@@ -139,8 +161,10 @@ const Header = (props) => {
                 <NavItem>
                   <NavLink
                     className="nav-link"
-                    to="/#"
-                    onClick={() => scrollToRef(props.sectionRef.cont)}
+                    to="/#Contact-US"
+                    onClick={() => {
+                      if (props.sectionRef) scrollToRef(props.sectionRef.cont);
+                    }}
                   >
                     Contact Us
                   </NavLink>
@@ -171,7 +195,7 @@ const Header = (props) => {
                           </Link>
                         </DropdownItem>
                         <DropdownItem onClick={logout}>
-                          <img src={logouticon} alt="" /> Logout
+                          <img src={logouticon} alt="" /> Sign Out
                         </DropdownItem>
                       </DropdownMenu>
                     </UncontrolledDropdown>
@@ -180,7 +204,7 @@ const Header = (props) => {
                   <NavItem>
                     <Link to="/login">
                       <button className="btn btn-primary login_btn">
-                        Login
+                        Sign In
                       </button>
                     </Link>
                   </NavItem>

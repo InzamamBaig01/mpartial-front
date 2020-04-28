@@ -12,16 +12,19 @@ const items = [
     src: slideimg,
     altText: 'Slide 1',
     caption: 'Slide 1',
+    key: 0,
   },
   {
     src: slideimg,
     altText: 'Slide 2',
-    caption: 'Slide 2',
+    key: 'Slide 2',
+    caption: 1,
   },
   {
     src: slideimg,
     altText: 'Slide 3',
     caption: 'Slide 3',
+    key: 2,
   }
 ];
 
@@ -51,7 +54,7 @@ export const DeliverSlider = (props) => {
       <CarouselItem
         onExiting={() => setAnimating(true)}
         onExited={() => setAnimating(false)}
-        key={item.src}
+        key={item.key}
       >
         <img src={item.src} alt={item.altText} />
         <CarouselCaption captionText={item.caption} captionHeader={item.caption} />

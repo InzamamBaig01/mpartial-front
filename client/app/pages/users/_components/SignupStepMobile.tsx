@@ -32,6 +32,7 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
       }
     });
   };
+  const phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
   return (
     <>
@@ -50,6 +51,7 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
                 mask="999-999-9999"
                 onChange={(e) => {
                   setphonenumber(e.currentTarget.value);
+                  console.log();
                 }}
                 value={phonenumber}
               >
@@ -71,7 +73,7 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
             css={{ maxWidth: "257px", marginTop: "30px" }}
             type="submit"
             id="formButton"
-            disabled={phonenumber.length == 0}
+            disabled={phonenumber.length == 0 || phonenumber.match(phoneno)  == null}
             className="btn btn-primary btn-block submit"
           >
             Next

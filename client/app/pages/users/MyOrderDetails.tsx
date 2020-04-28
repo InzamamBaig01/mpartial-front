@@ -264,7 +264,7 @@ const DrawFieldData = (props) => {
           <>
             {props.order[props.field.id]
               ? props.order[props.field.id]
-              : "Not availble"}
+              : "Not Available"}
           </>
         );
       };
@@ -305,7 +305,7 @@ const MyOrderDetails = (props) => {
               <div className="row order_details_info">
                 {fields.map((field) => {
                   return (
-                    <div className={`col-4 field_${field.type}`}>
+                    <div className={`col-md-4 col-sm-6 col-xs-6 field_${field.type}`}>
                       <label>{field.name}</label>
                       <div className="order_details_value">
                         <DrawFieldData

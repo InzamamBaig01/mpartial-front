@@ -44,47 +44,46 @@ const CheckoutForm = (props) => {
   const [selectedCard, setSelectedCard] = useState(false);
 
   const cardObj = {
-    "id": "pm_1GcSOiGnXIZN763FSI0tl0Ik",
-    "object": "payment_method",
-    "billing_details": {
-      "address": {
-        "city": null,
-        "country": null,
-        "line1": null,
-        "line2": null,
-        "postal_code": "54000",
-        "state": null
+    id: "pm_1GcSOiGnXIZN763FSI0tl0Ik",
+    object: "payment_method",
+    billing_details: {
+      address: {
+        city: null,
+        country: null,
+        line1: null,
+        line2: null,
+        postal_code: "54000",
+        state: null,
       },
-      "email": null,
-      "name": "Jenny Rosen",
-      "phone": null
+      email: null,
+      name: "Jenny Rosen",
+      phone: null,
     },
-    "card": {
-      "brand": "visa",
-      "checks": {
-        "address_line1_check": null,
-        "address_postal_code_check": "pass",
-        "cvc_check": "pass"
+    card: {
+      brand: "visa",
+      checks: {
+        address_line1_check: null,
+        address_postal_code_check: "pass",
+        cvc_check: "pass",
       },
-      "country": "US",
-      "exp_month": 4,
-      "exp_year": 2033,
-      "fingerprint": "iDWPsLwNujxEW7UL",
-      "funding": "credit",
-      "generated_from": null,
-      "last4": "4242",
-      "three_d_secure_usage": {
-        "supported": true
+      country: "US",
+      exp_month: 4,
+      exp_year: 2033,
+      fingerprint: "iDWPsLwNujxEW7UL",
+      funding: "credit",
+      generated_from: null,
+      last4: "4242",
+      three_d_secure_usage: {
+        supported: true,
       },
-      "wallet": null
+      wallet: null,
     },
-    "created": 1587976384,
-    "customer": "cus_HAWqhNZK8JYLET",
-    "livemode": false,
-    "metadata": {
-    },
-    "type": "card"
-  }
+    created: 1587976384,
+    customer: "cus_HAWqhNZK8JYLET",
+    livemode: false,
+    metadata: {},
+    type: "card",
+  };
 
   // Handle real-time validation errors from the card Element.
   const handleChange = (event) => {
@@ -106,15 +105,15 @@ const CheckoutForm = (props) => {
   const handleSubmit = async (event) => {
     // event.preventDefault();
     const card = elements.getElement(CardElement);
-    console.log(card);
-    if(selectedCard) {
-        // cardObj.id = selectedCard.paymentMethodId;
-        // cardObj.card.exp_month = selectedCard.exp_month;
-        // cardObj.card.exp_year = selectedCard.exp_year;
-        // cardObj.card.last4 = selectedCard.last4;
-        // cardObj.card.country = selectedCard.country;
-        // cardObj.card.funding = selectedCard.funding;
-        // cardObj.card.brand = selectedCard.brand;
+    // console.log(card);
+    if (selectedCard) {
+      // cardObj.id = selectedCard.paymentMethodId;
+      // cardObj.card.exp_month = selectedCard.exp_month;
+      // cardObj.card.exp_year = selectedCard.exp_year;
+      // cardObj.card.last4 = selectedCard.last4;
+      // cardObj.card.country = selectedCard.country;
+      // cardObj.card.funding = selectedCard.funding;
+      // cardObj.card.brand = selectedCard.brand;
     }
     stripe
       .confirmCardPayment(
@@ -136,22 +135,20 @@ const CheckoutForm = (props) => {
       .then(async function (result) {
         if (result.error) {
           // Show error to your customer
-          console.log(result.error.message);
+          // console.log(result.error.message);
           props.setIsFormSubmitted(false);
         } else {
-          console.log(result);
+          // console.log(result);
           if (result.paymentIntent.status === "succeeded") {
-
             payOrder({
-                status: result.paymentIntent.status,
-                orderId: props.orderid,
-                fullresponse: JSON.stringify(result.paymentIntent),
-              }).subscribe((response) => {
-                if (response.response.Requested_Action) {
-                  history.push(`/receipt/${props.orderid}`);
-                }
-              });
-
+              status: result.paymentIntent.status,
+              orderId: props.orderid,
+              fullresponse: JSON.stringify(result.paymentIntent),
+            }).subscribe((response) => {
+              if (response.response.Requested_Action) {
+                history.push(`/receipt/${props.orderid}`);
+              }
+            });
 
             // const token = await stripe.createToken(selectedCard ? cardObj : card);
             // if (token.error) {
@@ -227,23 +224,27 @@ const Checkout = (props) => {
   const { getMyInfo, myInfo } = useContext(AppContext);
 
   const [info, setInfo] = useState(false);
+  const [validation, setvalidation] = useState({
+    fname: userDetails().firstName.length == 0,
+    lname: userDetails().lastName.length == 0,
+    email: userDetails().emailAddress.length == 0,
+  });
 
   useEffect(() => {
     getMyInfo();
   }, []);
 
   useEffect(() => {
-    console.log(myInfo);
+    // console.log(myInfo);
     if (myInfo) {
       setInfo(myInfo);
     }
   }, [myInfo]);
 
-
   useEffect(() => {
-      if(localStorage.getItem("sessipn") == null){
-        history.push("/orders")
-      }
+    if (localStorage.getItem("sessipn") == null) {
+      history.push("/orders");
+    }
   }, []);
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -252,8 +253,11 @@ const Checkout = (props) => {
     firstName: userDetails().firstName,
     lastName: userDetails().lastName,
     emailAddress: userDetails().emailAddress,
-    zipCode: "",
   });
+
+  useEffect(() => {
+    checkValidation();
+  }, [checkoutInfo]);
 
   const handleToken = async (token, addresses) => {
     payOrder({
@@ -262,7 +266,7 @@ const Checkout = (props) => {
       price: product.price * 100,
     }).subscribe((response) => {
       if (response.response.Requested_Action) {
-          localStorage.removeItem("sessipn");
+        localStorage.removeItem("sessipn");
         history.push(`/receipt/${orderid}`);
       }
     });
@@ -275,6 +279,14 @@ const Checkout = (props) => {
   const stripePromise = loadStripe(
     "pk_test_qtQYQAflfKikPJB9y8Y1H8fY00dcOIegPx"
   );
+
+  const checkValidation = () => {
+    setvalidation({
+      fname: checkoutInfo.firstName.length == 0,
+      lname: checkoutInfo.lastName.length == 0,
+      email: checkoutInfo.emailAddress.length == 0,
+    });
+  };
   return (
     <>
       <Header isFixedColor={true}></Header>
@@ -293,54 +305,71 @@ const Checkout = (props) => {
             </div>
             <div className="row">
               <div className={`form-group col-12`}>
-                <label>First Name</label>
+                <label>
+                  First Name <span className="red">*</span>
+                </label>
                 <input
                   type="text"
                   className="form-control"
                   value={checkoutInfo.firstName}
+                  required
                   onChange={(e) =>
                     onChangeValue(e.currentTarget.value, "firstName")
                   }
                 />
+                {validation.fname ? (
+                  <span className="password_not_matched">
+                    First Name Is Required.
+                  </span>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
             <div className="row">
               <div className={`form-group col-12`}>
-                <label>Last Name</label>
+                <label>
+                  Last Name <span className="red">*</span>
+                </label>
                 <input
                   type="text"
                   className="form-control"
                   value={checkoutInfo.lastName}
+                  required
                   onChange={(e) =>
                     onChangeValue(e.currentTarget.value, "lastName")
                   }
                 />
+                {validation.lname ? (
+                  <span className="password_not_matched">
+                    Last Name Is Required.
+                  </span>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
             <div className="row">
               <div className={`form-group col-12`}>
-                <label>Email Address</label>
+                <label>
+                  Email Address <span className="red">*</span>
+                </label>
                 <input
                   type="text"
                   className="form-control"
                   value={checkoutInfo.emailAddress}
+                  required
                   onChange={(e) =>
                     onChangeValue(e.currentTarget.value, "emailAddress")
                   }
                 />
-              </div>
-            </div>
-            <div className="row">
-              <div className={`form-group col-12`}>
-                <label>Zip Code</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={checkoutInfo.zipCode}
-                  onChange={(e) =>
-                    onChangeValue(e.currentTarget.value, "zipCode")
-                  }
-                />
+                {validation.email ? (
+                  <span className="password_not_matched">
+                    Email Address Is Required.
+                  </span>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
 
@@ -409,11 +438,12 @@ const Checkout = (props) => {
                 <button
                   className="btn"
                   type="submit"
+                  id="formButton"
+                  onClick={checkValidation}
                   disabled={
                     checkoutInfo.firstName == "" ||
                     checkoutInfo.lastName == "" ||
-                    checkoutInfo.emailAddress == "" ||
-                    checkoutInfo.zipCode == ""
+                    checkoutInfo.emailAddress == ""
                       ? true
                       : false
                   }

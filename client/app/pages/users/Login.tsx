@@ -72,7 +72,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
                     className="form-control"
                     placeholder="Email"
                     onChange={handleEmailChange}
-                    autocomplete="off"
+                    autoComplete="off"
                     required
                   />
                 </div>
@@ -86,7 +86,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
                     className="form-control"
                     placeholder="Password"
                     onChange={handlePasswordChange}
-                    autocomplete="off"
+                    autoComplete="off"
                     required
                   />
                 </div>

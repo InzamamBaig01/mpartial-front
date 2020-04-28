@@ -43,7 +43,7 @@ const Receipt = (props) => {
                 <thead>
                   <tr>
                     <th>Service</th>
-                    <th>total</th>
+                    <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import MultiSelect from "react-multi-select-component";
 import { AuthContext } from "contexts/authContext";
@@ -378,10 +378,7 @@ const UserOrder = () => {
     // console.log(stringified);
     console.log(fileToUpload);
     // return;
-    formData.append(
-      "potentiallyRelevantDigitalAssets",
-      fileToUpload[0]
-    );
+    formData.append("potentiallyRelevantDigitalAssets", fileToUpload[0]);
 
     saveOrderData(formData, stringified).subscribe(
       (response: any) => {
@@ -445,8 +442,10 @@ const UserOrder = () => {
             <div className="form-group">
               <label className="terms">
                 <input type="checkbox" required /> I’ve read and accept the
-                mpartial &nbsp;{" "}
-                <span className="underline">Terms & Conditions.*</span>
+                mpartial{" "}
+                <Link to="/terms">
+                  <span className="underline">Terms & Conditions.*</span>
+                </Link>
               </label>
             </div>
             <div className="form-group">

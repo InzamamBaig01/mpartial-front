@@ -78,7 +78,7 @@ export const SignupStepTwo: React.FC<StepProps> = (props) => {
             css={{ maxWidth: "257px", marginTop: "30px" }}
             type="submit"
             id="formButton"
-            disabled={firstname.length == 0 && lastname.length == 0}
+            disabled={firstname.length == 0 || lastname.length == 0}
             className="btn btn-primary btn-block submit"
           >
             Next

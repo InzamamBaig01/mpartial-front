@@ -90,7 +90,7 @@ export const signup5 = (payload) =>
   ajax({
     headers: requestHeader(),
     method: "POST",
-    url: `${baseURL}/Client/RegisterNewCustomerStep5?emailaddress=${payload.emailaddress}&password=${payload.password}`,
+    url: `${baseURL}/Client/RegisterNewCustomerStep5?${payload}`,
   }).pipe(catchError(handleError("login")));
 
 export const saveOrderData = (payload, apiData) =>
