@@ -176,7 +176,7 @@ const CheckoutForm = (props) => {
 
   return (
     <>
-      {props.info ? (
+      {props.info.stripeCustomerCard.length ? (
         props.info.stripeCustomerCard.map((card, index) => {
           return (
             <div className={`form-group col-12`} key={index}>
