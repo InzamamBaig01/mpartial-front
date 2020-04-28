@@ -26,7 +26,7 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
     role:props.formData.role,
   });
   console.log(stringified);
-  return;
+  // return;
   const { step5 } = React.useContext(AuthContext);
   const onSubmit = (e) => {
     // props.setStep(2)
