@@ -20,7 +20,7 @@ import { Dropdown, Modal, Button } from "react-bootstrap";
 import { AuthContext } from "contexts/authContext";
 import { AppContext } from "contexts/appContext";
 import profile_edit from "../../../assets/profile_edit.svg";
-import dragimage from "../../../assets/drag.png";
+import dragimage from "../../../assets/upload.svg";
 import { useDropzone } from "react-dropzone";
 import queryString from "query-string";
 import {
@@ -503,9 +503,9 @@ const Profile = () => {
                     <div className="profile_title">Payment Options</div>
                   </div>
                   <div className="col text-right">
-                    <button className="btn" onClick={handlecardshow}>
+                    {/* <button className="btn" onClick={handlecardshow}>
                       ADD
-                    </button>
+                    </button> */}
                   </div>
                 </div>
                 <div className="divider"></div>
@@ -514,7 +514,7 @@ const Profile = () => {
                     <thead>
                       <tr>
                         <th>Brand</th>
-                        <th>Card NO</th>
+                        <th>Card No.</th>
                         <th>Exp</th>
                       </tr>
                     </thead>

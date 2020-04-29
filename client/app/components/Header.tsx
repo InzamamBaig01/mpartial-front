@@ -214,7 +214,6 @@ const Header = (props) => {
           </div>
         </Navbar>
       </header>
-      <Loader></Loader>
     </>
   );
 };

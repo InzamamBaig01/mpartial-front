@@ -24,7 +24,6 @@ export const ROUTES = [
     slug: "login",
     title: "Login",
     isLogin: true,
-    redirectTo: "/profile",
   },
   {
     component: Signup,
@@ -33,7 +32,6 @@ export const ROUTES = [
     slug: "signup",
     title: "Sign Up",
     isLogin: true,
-    redirectTo: "/profile",
   },
   {
     component: TermsCondition,

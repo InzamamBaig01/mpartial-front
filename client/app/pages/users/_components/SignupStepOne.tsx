@@ -2,6 +2,8 @@ import * as React from "react";
 import { css } from "emotion";
 import Mail from "../../../../assets/email.svg";
 import { AuthContext } from "contexts/authContext";
+import Loader from "app/components/Loader";
+import { AppAlertsContext } from "contexts/appAlertsContext";
 
 interface StepProps {
   step?: number;
@@ -12,10 +14,12 @@ interface StepProps {
 export const SignupStepOne: React.FC<StepProps> = (props) => {
   const [value, setValue] = React.useState(props.formData.email);
   const [error, setError] = React.useState(false);
+  const { showLoader,hideLoader } = React.useContext(AppAlertsContext);
 
   const { step1 } = React.useContext(AuthContext);
   const onSubmit = (e) => {
     e.preventDefault();
+    showLoader();
     step1({
       emailaddress: value,
     }).subscribe((response) => {
@@ -25,8 +29,10 @@ export const SignupStepOne: React.FC<StepProps> = (props) => {
           email: value,
         });
         props.setStep(2);
+
+        hideLoader();
       } else {
-        console.log(response);
+        hideLoader();
         setError(response.response.Message);
       }
     });
@@ -67,6 +73,7 @@ export const SignupStepOne: React.FC<StepProps> = (props) => {
             className="btn btn-primary btn-block submit"
           >
             Lets Do This
+            <Loader></Loader>
           </button>
         </form>
       </div>

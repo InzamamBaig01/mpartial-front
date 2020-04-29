@@ -2,6 +2,7 @@ import * as React from "react";
 import { login, logoutAPI, auth, signup1, signup2, signup3, signup4, signup5 } from "../utils/api-routes/api-routes.util";
 import history from "../utils/history";
 import { useState } from "react";
+import { AppAlertsContext } from "./appAlertsContext";
 
 interface IContextProps {
   profile: object;
@@ -41,7 +42,8 @@ export default React.memo(({ children }) => {
   const [status, setStatus] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pageIsPublic, setPageIsPublic] = useState(undefined);
-
+  const { showLoader,hideLoader } = React.useContext(AppAlertsContext);
+  // console.log(showLoader);
   let profile: ProfileStorage = { token: "" };
 
 
@@ -111,6 +113,7 @@ export default React.memo(({ children }) => {
 
   const dispatchLogin = () => {
     setStatus("pending");
+    showLoader();
     setLoginError(false);
     login(payload).subscribe(
       (response: any) => {
@@ -127,17 +130,20 @@ export default React.memo(({ children }) => {
           localStorage.setItem("token", response.response.message);
           history.push("/");
         }
+        hideLoader();
         //console.log(status);
       },
       response => {
         setIsAuthenticated(false);
         setLoginError(response.response.Message);
         setStatus("error");
+        hideLoader();
       }
     );
   };
 
   const logout = () => {
+    showLoader();
     logoutAPI().subscribe(
       (response: any) => {
         setStatus("success");
@@ -145,11 +151,13 @@ export default React.memo(({ children }) => {
         localStorage.removeItem("profile");
         localStorage.removeItem("token");
         history.push("/login");
+        hideLoader();
       },
       response => {
         setIsAuthenticated(false);
         setLoginError(response.response.Message);
         setStatus("error");
+        hideLoader();
       }
     );
   };

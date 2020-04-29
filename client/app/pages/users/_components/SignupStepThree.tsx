@@ -4,7 +4,9 @@ import Password from "../../../../assets/password.svg";
 import { AuthContext } from "contexts/authContext";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
+import Loader from "app/components/Loader";
 
+import { AppAlertsContext } from "contexts/appAlertsContext";
 interface StepProps {
   step?: number;
   setStep?: Function;
@@ -17,6 +19,7 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
   const [validPassword, setValidPassword] = React.useState(false);
   const [validCheckbox, setValidCheckbox] = React.useState(false);
 
+  const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
   // const stringified = queryString.stringify({
   //   password: password,
   //   emailaddress: props.formData.email,
@@ -31,6 +34,7 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
   const onSubmit = (e) => {
     // props.setStep(2)
     e.preventDefault();
+    showLoader();
     step5({
       password: password,
       emailaddress: props.formData.email,
@@ -41,8 +45,10 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
     }).subscribe((response) => {
       if (response.response.Requested_Action) {
         props.setStep(6);
+        hideLoader();
       } else {
         console.log(response);
+        hideLoader();
       }
     });
   };
@@ -121,6 +127,7 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
             className="btn btn-primary btn-block submit"
           >
             Create
+            <Loader></Loader>
           </button>
         </form>
       </div>

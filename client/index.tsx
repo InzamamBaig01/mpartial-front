@@ -13,15 +13,15 @@ import SocketContext from "./contexts/SocketContext";
 import AppAlertsContext from "./contexts/appAlertsContext";
 
 ReactDOM.render(
-  <AuthContext>
-    <AppContext>
-      <AppAlertsContext>
+  <AppAlertsContext>
+    <AuthContext>
+      <AppContext>
         <Router history={history}>
           <App />
         </Router>
-      </AppAlertsContext>
-    </AppContext>
-  </AuthContext>,
+      </AppContext>
+    </AuthContext>
+  </AppAlertsContext>,
   document.getElementById("root")
 );
 

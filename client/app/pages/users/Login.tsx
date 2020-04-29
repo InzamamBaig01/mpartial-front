@@ -10,6 +10,7 @@ import {
   resetPassword,
   forgotPasswordAPI,
 } from "utils/api-routes/api-routes.util";
+import Loader from "app/components/Loader";
 interface IProps {}
 
 export const Login: React.FC<IProps> = ({ ...props }) => {
@@ -32,7 +33,12 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
 
   useEffect(() => {
     console.log(loginError);
-    if(loginError) setLoginStatus(loginError);
+    if (loginError)
+      setLoginStatus(
+        loginError == "A user could not be found with this email address."
+          ? "Sorry, we couldn't find an account with that username or the password you entered isn't right"
+          : loginError
+      );
   }, [status, loginError]);
 
   useEffect(() => {
@@ -100,6 +106,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
                 className="btn btn-primary btn-block submit"
               >
                 Sign in
+                <Loader></Loader>
               </button>
             </form>
             <div className="login_devider">
@@ -137,9 +144,9 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
                 </a>{" "}
                 to receive a verification email.
               </>
-            ) : 
+            ) : (
               loginStatus
-            }
+            )}
           </div>
         </div>
       ) : (

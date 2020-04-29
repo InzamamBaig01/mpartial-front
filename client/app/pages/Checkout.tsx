@@ -1,8 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { withRouter } from "react-router-dom";
 import Header from "app/components/Header";
-import StripeCheckout from "react-stripe-checkout";
-import { ajax } from "rxjs/observable/dom/ajax";
 import { AuthContext } from "contexts/authContext";
 import { payOrder } from "utils/api-routes/api-routes.util";
 import history from "utils/history";
@@ -14,32 +12,16 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { AppContext } from "contexts/appContext";
-import { Info } from "luxon";
+import { AppAlertsContext } from "contexts/appAlertsContext";
+import Loader from "app/components/Loader";
 
-// Custom styling can be passed to options when creating an Element.
-const CARD_ELEMENT_OPTIONS = {
-  style: {
-    base: {
-      color: "#32325d",
-      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-      fontSmoothing: "antialiased",
-      fontSize: "16px",
-      "::placeholder": {
-        color: "#aab7c4",
-      },
-    },
-    invalid: {
-      color: "#fa755a",
-      iconColor: "#fa755a",
-    },
-  },
-};
 
 const CheckoutForm = (props) => {
   const [error, setError] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
   const { userDetails } = useContext(AuthContext);
+  const { showLoader, hideLoader } = useContext(AppAlertsContext);
 
   const [selectedCard, setSelectedCard] = useState(false);
 
@@ -104,17 +86,9 @@ const CheckoutForm = (props) => {
   // Handle form submission.
   const handleSubmit = async (event) => {
     // event.preventDefault();
+    showLoader();
     const card = elements.getElement(CardElement);
-    // console.log(card);
-    if (selectedCard) {
-      // cardObj.id = selectedCard.paymentMethodId;
-      // cardObj.card.exp_month = selectedCard.exp_month;
-      // cardObj.card.exp_year = selectedCard.exp_year;
-      // cardObj.card.last4 = selectedCard.last4;
-      // cardObj.card.country = selectedCard.country;
-      // cardObj.card.funding = selectedCard.funding;
-      // cardObj.card.brand = selectedCard.brand;
-    }
+   
     stripe
       .confirmCardPayment(
         localStorage.getItem("sessipn"),
@@ -134,11 +108,8 @@ const CheckoutForm = (props) => {
       )
       .then(async function (result) {
         if (result.error) {
-          // Show error to your customer
-          // console.log(result.error.message);
           props.setIsFormSubmitted(false);
         } else {
-          // console.log(result);
           if (result.paymentIntent.status === "succeeded") {
             payOrder({
               status: result.paymentIntent.status,
@@ -146,29 +117,11 @@ const CheckoutForm = (props) => {
               fullresponse: JSON.stringify(result.paymentIntent),
             }).subscribe((response) => {
               if (response.response.Requested_Action) {
+                localStorage.removeItem("sessipn")
+                hideLoader();
                 history.push(`/receipt/${props.orderid}`);
               }
             });
-
-            // const token = await stripe.createToken(selectedCard ? cardObj : card);
-            // if (token.error) {
-            //   // Inform the user if there was an error.
-            //   setError(result.error.message);
-            // } else {
-            //   setError(null);
-            //   // Send the token to your server.
-            //   //   stripeTokenHandler(result.token);
-            //   console.log(token);
-            //   payOrder({
-            //     stripeToken: token.token.id,
-            //     orderId: props.orderid,
-            //     price: 250 * 100,
-            //   }).subscribe((response) => {
-            //     if (response.response.Requested_Action) {
-            //       history.push(`/receipt/${props.orderid}`);
-            //     }
-            //   });
-            // }
           }
         }
       });
@@ -214,14 +167,15 @@ const CheckoutForm = (props) => {
 
 const Checkout = (props) => {
   const { userDetails } = useContext(AuthContext);
+  const { getMyInfo, myInfo, price } = useContext(AppContext);
+
   const [product] = React.useState({
     name: "mpartial",
-    price: 250,
+    price: price,
     description: "",
   });
   const orderid = props.match.params.orderid;
 
-  const { getMyInfo, myInfo } = useContext(AppContext);
 
   const [info, setInfo] = useState(false);
   const [validation, setvalidation] = useState({
@@ -235,7 +189,6 @@ const Checkout = (props) => {
   }, []);
 
   useEffect(() => {
-    // console.log(myInfo);
     if (myInfo) {
       setInfo(myInfo);
     }
@@ -259,18 +212,6 @@ const Checkout = (props) => {
     checkValidation();
   }, [checkoutInfo]);
 
-  const handleToken = async (token, addresses) => {
-    payOrder({
-      stripeToken: token.id,
-      orderId: orderid,
-      price: product.price * 100,
-    }).subscribe((response) => {
-      if (response.response.Requested_Action) {
-        localStorage.removeItem("sessipn");
-        history.push(`/receipt/${orderid}`);
-      }
-    });
-  };
   const onChangeValue = (value, key) => {
     const oldValues = Object.assign({}, checkoutInfo);
     oldValues[key] = value;
@@ -407,17 +348,17 @@ const Checkout = (props) => {
                   <tbody>
                     <tr>
                       <td>mpartial</td>
-                      <td>$250</td>
+                      <td>${price}</td>
                     </tr>
 
                     <tr>
                       <td>Subtotal</td>
-                      <td>$250</td>
+                      <td>${price}</td>
                     </tr>
 
                     <tr>
                       <td>Total</td>
-                      <td>$250</td>
+                      <td>${price}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -426,15 +367,6 @@ const Checkout = (props) => {
 
             <div className="row">
               <div className="col ">
-                {/* <StripeCheckout
-                                    stripeKey="pk_test_qtQYQAflfKikPJB9y8Y1H8fY00dcOIegPx"
-                                    token={handleToken}
-                                    amount={product.price * 100}
-                                    name="mpartial"
-                                    email="qualitybits1@gmail.com"
-                                // billingAddress
-                                // shippingAddress
-                                > */}
                 <button
                   className="btn"
                   type="submit"
@@ -450,8 +382,8 @@ const Checkout = (props) => {
                 >
                   {" "}
                   Checkout
+                  <Loader></Loader>
                 </button>
-                {/* </StripeCheckout> */}
               </div>
             </div>
           </form>

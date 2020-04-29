@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 
-import loader from '../../assets/loader.gif';
+import loadericon from "../../assets/loader.gif";
+import { AppAlertsContext } from "contexts/appAlertsContext";
 const Loader = () => {
-
-    return (
-        <>
-        <div className="site_loader">
-            <img src={loader} alt="" />
-        </div>
-        </>
-    );
-}
+  const { loader } = useContext(AppAlertsContext);
+  const [isLoader, setIsLoader] = useState(loader);
+  useEffect(() => {
+    setIsLoader(loader);
+  }, [loader]);
+  return (
+    <>
+      <div className={`loader show_${isLoader}`}></div>
+    </>
+  );
+};
 
 export default Loader;

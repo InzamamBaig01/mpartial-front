@@ -2,6 +2,8 @@ import * as React from "react";
 import { css } from "emotion";
 import Mail from "../../../../assets/email.svg";
 import { AuthContext } from "contexts/authContext";
+import { AppAlertsContext } from "contexts/appAlertsContext";
+import Loader from "app/components/Loader";
 interface StepProps {
   step?: number;
   setStep?: Function;
@@ -13,6 +15,7 @@ export const SignupStepTwo: React.FC<StepProps> = (props) => {
     props.formData.firstname ? props.formData.firstname : ""
   );
 
+  const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
   const [lastname, setlastname] = React.useState(
     props.formData.lastname ? props.formData.lastname : ""
   );
@@ -21,6 +24,7 @@ export const SignupStepTwo: React.FC<StepProps> = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
+    showLoader();
     step2({
       firstname: firstname,
       lastname: lastname,
@@ -32,8 +36,10 @@ export const SignupStepTwo: React.FC<StepProps> = (props) => {
           lastname: lastname,
         });
         props.setStep(3);
+        hideLoader();
       } else {
         console.log(response);
+        hideLoader();
       }
     });
   };
@@ -43,7 +49,7 @@ export const SignupStepTwo: React.FC<StepProps> = (props) => {
         <h2>Thanks, What's your name?</h2>
         <form onSubmit={onSubmit}>
           <div className="form-group row justify-content-center step-two-field">
-            <div className={"col-md-3 col-xs-12"}>
+            <div className={"col-md-4 col-sm-6 col-xs-12"}>
               <div className="input-group" css={{ maxWidth: "283px" }}>
                 <input
                   type="text"
@@ -58,7 +64,7 @@ export const SignupStepTwo: React.FC<StepProps> = (props) => {
                 />
               </div>
             </div>
-            <div className={"col-md-3 col-xs-12"}>
+            <div className={"col-md-4 col-sm-6 col-xs-12"}>
               <div className="input-group" css={{ maxWidth: "283px" }}>
                 <input
                   type="text"
@@ -82,6 +88,7 @@ export const SignupStepTwo: React.FC<StepProps> = (props) => {
             className="btn btn-primary btn-block submit"
           >
             Next
+            <Loader></Loader>
           </button>
         </form>
       </div>

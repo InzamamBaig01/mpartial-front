@@ -2,7 +2,9 @@ import * as React from "react";
 import { css } from "emotion";
 import Mail from "../../../../assets/email.svg";
 import { AuthContext } from "contexts/authContext";
+import Loader from "app/components/Loader";
 
+import { AppAlertsContext } from "contexts/appAlertsContext";
 interface StepProps {
   step?: number;
   setStep?: Function;
@@ -14,10 +16,12 @@ export const SignupStepRole: React.FC<StepProps> = (props) => {
     props.formData.role ? props.formData.role : ""
   );
 
+  const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
   const { step4 } = React.useContext(AuthContext);
   const onSubmit = (e) => {
     e.preventDefault();
 
+    showLoader();
     step4({
       role: role,
     }).subscribe((response) => {
@@ -27,8 +31,10 @@ export const SignupStepRole: React.FC<StepProps> = (props) => {
           role: role,
         });
         props.setStep(5);
+        hideLoader();
       } else {
         console.log(response);
+        hideLoader();
       }
     });
   };
@@ -110,6 +116,7 @@ export const SignupStepRole: React.FC<StepProps> = (props) => {
             className="btn btn-primary btn-block submit"
           >
             Next
+            <Loader></Loader>
           </button>
         </form>
       </div>

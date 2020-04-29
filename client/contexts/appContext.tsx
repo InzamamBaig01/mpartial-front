@@ -3,11 +3,12 @@ import {
   getMyOrdersAPI,
   getMyInfoAPI,
 } from "../utils/api-routes/api-routes.util";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import * as jsoncompare from "js-object-compare";
 import history from "../utils/history";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import { AppAlertsContext } from "./appAlertsContext";
 interface IContextProps {
   dashboard: boolean;
   getMyOrders: Function;
@@ -16,6 +17,7 @@ interface IContextProps {
   myInfo: any;
   getOrderById: Function;
   singleOrderDetails: any;
+  price: any;
 }
 
 export const AppContext = React.createContext({} as IContextProps);
@@ -25,17 +27,23 @@ export default ({ children }) => {
   const [myOrders, setMyOrders] = useState([]);
   const [myInfo, setMyInfo] = useState(false);
   const [singleOrderDetails, setSingleOrderDetails] = useState(false);
-
+  const [price, setPrice] = useState(750);
+  const { showLoader, hideLoader } = useContext(AppAlertsContext);
+  // console.log(showLoader);
   const getMyOrders = () => {
+    // showLoader();
     getMyOrdersAPI().subscribe((response) => {
       setMyOrders(response.response.data);
+      // hideLoader();
     });
   };
 
   const getMyInfo = () => {
+    // showLoader();
     getMyInfoAPI().subscribe((response) => {
       // console.log(response.response);
       setMyInfo(response.response.data);
+      // hideLoader();
       localStorage.setItem("profile", JSON.stringify(response.response.data));
     });
   };
@@ -45,8 +53,10 @@ export default ({ children }) => {
   };
 
   const getOrderById = (id) => {
+    // showLoader();
     getMyOrdersAPI().subscribe((response) => {
       setMyOrders(response.response.data);
+      // hideLoader();
       setSingleOrderDetails(getOrderByID(id, response.response.data));
     });
   };
@@ -59,6 +69,7 @@ export default ({ children }) => {
     getMyInfo,
     getOrderById,
     singleOrderDetails,
+    price,
   };
 
   return (

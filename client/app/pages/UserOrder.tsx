@@ -6,6 +6,9 @@ import { AuthContext } from "contexts/authContext";
 import { saveOrderData } from "utils/api-routes/api-routes.util";
 import history from "../../utils/history";
 import queryString from "query-string";
+import { AppContext } from "contexts/appContext";
+import { AppAlertsContext } from "contexts/appAlertsContext";
+import Loader from "app/components/Loader";
 
 const fields = [
   {
@@ -243,6 +246,7 @@ const MultipleSelectField = (props) => {
       required={props.field.required ? true : false}
       onChange={(value) => {
         setSelected(value);
+        props.onChange();
         props.field.value = value;
       }}
       labelledBy={"Select"}
@@ -260,6 +264,7 @@ const DrawField = (props) => {
             required={field.required ? true : false}
             className="form-control"
             onChange={(e) => {
+              props.onChange();
               field.value = e.currentTarget.value;
             }}
           />
@@ -271,6 +276,7 @@ const DrawField = (props) => {
             className="form-control"
             required={field.required ? true : false}
             onChange={(e) => {
+              props.onChange();
               field.value = e.currentTarget.value;
             }}
           >
@@ -286,7 +292,7 @@ const DrawField = (props) => {
         );
         break;
       case "multiSelect":
-        return <MultipleSelectField field={field} />;
+        return <MultipleSelectField field={field} onChange={props.onChange} />;
         break;
 
       case "multipleAttachment":
@@ -297,6 +303,7 @@ const DrawField = (props) => {
                 type="file"
                 required={field.required ? true : false}
                 onChange={(e) => {
+                  props.onChange();
                   field.value = e.target.files;
                 }}
               />
@@ -311,6 +318,7 @@ const DrawField = (props) => {
             required={field.required ? true : false}
             className="form-control"
             onChange={(e) => {
+              props.onChange();
               field.value = e.currentTarget.value;
             }}
           ></textarea>
@@ -324,6 +332,7 @@ const DrawField = (props) => {
             value={field.value}
             className="form-control"
             onChange={(e) => {
+              props.onChange();
               field.value = e.currentTarget.value;
             }}
           />
@@ -336,6 +345,7 @@ const DrawField = (props) => {
             required={field.required ? true : false}
             className="form-control"
             onChange={(e) => {
+              props.onChange();
               field.value = e.currentTarget.value;
             }}
           />
@@ -346,14 +356,19 @@ const DrawField = (props) => {
   const field = props.field;
   return form(field);
 };
+
 const UserOrder = () => {
   const { userDetails } = useContext(AuthContext);
   fields[fields.length - 1].value = userDetails().emailAddress;
+  const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
+  const { price } = useContext(AppContext);
+  const { showLoader, hideLoader } = useContext(AppAlertsContext);
 
   const onSubmit = (e) => {
     e.preventDefault();
+    showLoader();
     const apiData = {
-      amountInCents: 250 * 100,
+      amountInCents: price * 100,
       additionalFees: "",
       thetoken: localStorage.token,
     };
@@ -375,16 +390,17 @@ const UserOrder = () => {
     });
 
     const stringified = queryString.stringify(apiData);
-    // console.log(stringified);
-    console.log(fileToUpload);
-    // return;
-    formData.append("potentiallyRelevantDigitalAssets", fileToUpload[0]);
+
+    if (fileToUpload)
+      formData.append("potentiallyRelevantDigitalAssets", fileToUpload[0]);
 
     saveOrderData(formData, stringified).subscribe(
       (response: any) => {
         if (response.response.Requested_Action) {
-          console.log(response.response);
+          // console.log(response.response);
           localStorage.setItem("sessipn", response.response.message);
+
+          hideLoader();
           history.push(`/checkout/${response.response.data.id}`);
           // dispatchGetBoardDetails();
 
@@ -395,6 +411,7 @@ const UserOrder = () => {
           // });
           // setFormSubmitted(true);
         } else {
+          hideLoader();
           // showAlert({
           //   alertType: "error",
           //   message: "something wrong.",
@@ -409,13 +426,34 @@ const UserOrder = () => {
     );
   };
 
+  const form = React.createRef();
+
+  const checkFormValidation = () => {
+    if (form && form.current) {
+      setSubmitBtnDisabled(!form.current.checkValidity());
+    }
+  };
+
+  useEffect(() => {
+    checkFormValidation();
+  }, []);
+
+  useEffect(() => {
+    // console.log(fields);
+    checkFormValidation();
+  }, [fields]);
+
+  const handleChange = () => {
+    checkFormValidation();
+  };
+
   return (
     <>
       <Header isFixedColor={true}></Header>
       <div className="other_pages_container">
         <h1 className="title text-center">mpartial Engine</h1>
         <div className="container">
-          <form className="order_form" onSubmit={onSubmit}>
+          <form className="order_form" onSubmit={onSubmit} ref={form}>
             <div className="row">
               {fields.map((field, index) => {
                 const gridCol =
@@ -428,29 +466,40 @@ const UserOrder = () => {
                       {field.name}{" "}
                       {field.required ? <span className="red">*</span> : ""}
                     </label>
-                    {/* <div className="description">{field.description}</div> */}
-                    <DrawField field={field}></DrawField>
+                    <div className="description">{field.description}</div>
+                    <DrawField
+                      field={field}
+                      onChange={handleChange}
+                    ></DrawField>
                   </div>
                 );
               })}
             </div>
             <div className="form-group">
               <label>Price</label>
-              <div className="form_price">$250</div>
+              <div className="form_price">${price}</div>
             </div>
 
             <div className="form-group">
               <label className="terms">
-                <input type="checkbox" required /> I’ve read and accept the
-                mpartial{" "}
+                <input type="checkbox" required onClick={handleChange} /> I’ve
+                read and accept the mpartial{" "}
                 <Link to="/terms">
-                  <span className="underline">Terms & Conditions.*</span>
+                  <span className="underline">Terms & Conditions.</span>
                 </Link>
+                <span className="red">*</span>
               </label>
             </div>
             <div className="form-group">
-              <button className="btn" type="submit">
-                CHECKOUT
+              <button
+                className="btn"
+                type="submit"
+                onClick={checkFormValidation}
+                id="formButton"
+                disabled={submitBtnDisabled}
+              >
+                Proceed to Checkout
+                <Loader></Loader>
               </button>
             </div>
           </form>

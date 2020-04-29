@@ -3,6 +3,8 @@ import { css } from "emotion";
 import Mail from "../../../../assets/email.svg";
 import { AuthContext } from "contexts/authContext";
 import InputMask from "react-input-mask";
+import Loader from "app/components/Loader";
+import { AppAlertsContext } from "contexts/appAlertsContext";
 
 interface StepProps {
   step?: number;
@@ -15,9 +17,13 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
     props.formData.phone ? props.formData.phone : ""
   );
 
+  const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
+
   const { step3, signupDetails } = React.useContext(AuthContext);
   const onSubmit = (e) => {
     e.preventDefault();
+    showLoader();
+
     step3({
       phonenumber: phonenumber,
     }).subscribe((response) => {
@@ -27,7 +33,9 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
           phone: phonenumber,
         });
         props.setStep(4);
+        hideLoader();
       } else {
+        hideLoader();
         console.log(response);
       }
     });
@@ -73,10 +81,13 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
             css={{ maxWidth: "257px", marginTop: "30px" }}
             type="submit"
             id="formButton"
-            disabled={phonenumber.length == 0 || phonenumber.match(phoneno)  == null}
+            disabled={
+              phonenumber.length == 0 || phonenumber.match(phoneno) == null
+            }
             className="btn btn-primary btn-block submit"
           >
             Next
+            <Loader></Loader>
           </button>
         </form>
       </div>

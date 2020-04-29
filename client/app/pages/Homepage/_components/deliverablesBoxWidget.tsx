@@ -1,18 +1,27 @@
-import * as React from 'react';
+import * as React from "react";
 
 interface DeliverablesBoxProps {
-  title?:string;
-  url?:string;
+  title?: string;
+  url?: string;
 }
 
-export const DeliverablesBox:React.FC<DeliverablesBoxProps> = ({title,url}) => {
-  return(
+export const DeliverablesBox: React.FC<DeliverablesBoxProps> = ({
+  title,
+  url,
+}) => {
+  return (
     <>
       <section>
-        <h3 className={'widget-title'}>{title}</h3>
+        <h3 className={"widget-title"}>{title}</h3>
         <div>
-          <iframe width="100%" height="480" src={url}
-                  frameBorder="0" allowFullScreen=""></iframe>
+          <iframe
+            width="100%"
+            height="480"
+            src={url}
+            frameborder="0"
+            allowfullscreen
+            allow="vr"
+          ></iframe>
         </div>
       </section>
     </>

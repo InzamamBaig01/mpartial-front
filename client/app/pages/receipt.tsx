@@ -2,11 +2,16 @@ import React, { useEffect, useContext } from "react";
 import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
+import { AppContext } from "contexts/appContext";
 
 const Receipt = (props) => {
   const orderid = props.match.params.orderid;
   const { userDetails } = useContext(AuthContext);
+  const {  price } = useContext(AppContext);
 
+  useEffect(() => {
+    localStorage.removeItem("sessipn");
+  }, []);
   return (
     <>
       <Header isFixedColor={true}></Header>
@@ -31,7 +36,7 @@ const Receipt = (props) => {
             </div>
             <div className="col">
               <label>Total</label>
-              <div className="receipt_data">$250.00</div>
+              <div className="receipt_data">${price}.00</div>
             </div>
           </div>
           <div className="row">
@@ -49,17 +54,17 @@ const Receipt = (props) => {
                 <tbody>
                   <tr>
                     <td>mpartial</td>
-                    <td>$250</td>
+                    <td>${price}</td>
                   </tr>
 
                   <tr>
                     <td>Subtotal</td>
-                    <td>$250</td>
+                    <td>${price}</td>
                   </tr>
 
                   <tr>
                     <td>Total</td>
-                    <td>$250</td>
+                    <td>${price}</td>
                   </tr>
                 </tbody>
               </table>

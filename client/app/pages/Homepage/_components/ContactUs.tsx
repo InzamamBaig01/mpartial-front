@@ -1,36 +1,47 @@
 import * as React from "react";
 import { withRouter, Link } from "react-router-dom";
 import SectionTitle from "app/components/SectionTitle";
-
+import { AppAlertsContext } from "contexts/appAlertsContext";
 import InputMask from "react-input-mask";
 import { sendEmail, resetPassword } from "utils/api-routes/api-routes.util";
 import { useState } from "react";
-
+import Loader from "app/components/Loader";
 interface ConatctUsProps {}
 export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
-
-
+  const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
   const [contactDetails, setContactDetails] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
   });
+  const [messageDone, setMessageDone] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
+    showLoader();
+    setMessageDone(false);
     sendEmail({
-      // to : "support@mpartial.io",
-      to : "qualitybits1@gmail.com",
-      content: "A contact Mesage is "
+      yourname: contactDetails.name,
+      email: contactDetails.email,
+      phonenumber: contactDetails.phone,
+      message: contactDetails.message,
     }).subscribe((response) => {
-      console.log(response)
+      setMessageDone(true);
+      setContactDetails({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+      hideLoader();
     });
   };
 
   const onchange = (value, key) => {
     const details = Object.assign({}, contactDetails);
     details[key] = value;
-  }
+    setContactDetails(details);
+  };
   return (
     <>
       <div
@@ -58,16 +69,28 @@ export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
                     placeholder={"Your Name"}
                     name={"name"}
                     required
-                    onChange={(e) => {onchange(e.currentTarget.value, 'name')}}
+                    value={contactDetails.name}
+                    onChange={(e) => {
+                      onchange(e.currentTarget.value, "name");
+                    }}
                   />
                   <input
                     type={"email"}
                     placeholder={"Email"}
                     name={"email"}
                     required
-                    onChange={(e) => {onchange(e.currentTarget.value, 'email')}}
+                    value={contactDetails.email}
+                    onChange={(e) => {
+                      onchange(e.currentTarget.value, "email");
+                    }}
                   />
-                  <InputMask mask="999-999-9999"   onChange={(e) => {onchange(e.currentTarget.value, 'phone')}} >
+                  <InputMask
+                    mask="999-999-9999"
+                    value={contactDetails.phone}
+                    onChange={(e) => {
+                      onchange(e.currentTarget.value, "phone");
+                    }}
+                  >
                     {(inputProps) => (
                       <input
                         type="text"
@@ -82,17 +105,28 @@ export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
                 </div>
                 <div className={"col-md-6 col-sm-12"}>
                   <textarea
+                    value={contactDetails.message}
                     placeholder={"Write your message..."}
                     required
-                    onChange={(e) => {onchange(e.currentTarget.value, 'message')}}
+                    onChange={(e) => {
+                      onchange(e.currentTarget.value, "message");
+                    }}
                   ></textarea>
                 </div>
               </div>
-              <input
+              <p>
+                {messageDone
+                  ? "Your message has been sent to support team, you can expect a reply within 12 hours. "
+                  : ""}
+              </p>
+              <button
                 type={"submit"}
                 className="btn btn-green"
                 value={"Submit"}
-              />
+              >
+                Submit
+                <Loader></Loader>
+              </button>
             </form>
           </div>
         </div>
