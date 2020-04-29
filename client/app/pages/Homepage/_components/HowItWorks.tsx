@@ -2,10 +2,12 @@ import * as React from 'react';
 import { withRouter, Link } from "react-router-dom";
 import SectionTitle from 'app/components/SectionTitle';
 import DataPoint from 'app/components/DataPoint';
+import { AuthContext } from 'contexts/authContext';
 interface HowItWorksProps {
 
 }
 export const HowItWorks: React.FC<HowItWorksProps> = ({ }) => {
+  const { isUserAuthenticated } = React.useContext(AuthContext);
 
   const dataPoints = [
     "Perform pre-mitigation and post-mitigation scans with a Matterport Pro Series camera.",
@@ -40,7 +42,7 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ }) => {
             </div>
           </div>
           <div className="try_now_btn">
-            <Link to="/login">
+            <Link to={isUserAuthenticated() ? `/order` : `/login`}>
             <button className="btn">
               Get Started
               </button>
