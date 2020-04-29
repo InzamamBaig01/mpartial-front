@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
@@ -7,7 +7,19 @@ import { AppContext } from "contexts/appContext";
 const Receipt = (props) => {
   const orderid = props.match.params.orderid;
   const { userDetails } = useContext(AuthContext);
-  const {  price } = useContext(AppContext);
+  const { getOrderById, singleOrderDetails, price } = useContext(AppContext);
+
+  const [order, setOrder] = useState(false);
+
+  useEffect(() => {
+    getOrderById(orderid);
+  }, []);
+
+  useEffect(() => {
+    if (singleOrderDetails) {
+      setOrder(singleOrderDetails);
+    }
+  }, [singleOrderDetails]);
 
   useEffect(() => {
     localStorage.removeItem("sessipn");
@@ -28,7 +40,7 @@ const Receipt = (props) => {
             </div>
             <div className="col">
               <label>Date</label>
-              <div className="receipt_data">Apr 02,2020</div>
+              <div className="receipt_data">{order.createdAt}</div>
             </div>
             <div className="col">
               <label>Email</label>

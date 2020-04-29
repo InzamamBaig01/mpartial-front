@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "webpack-dev-server  --progress --config ./pack/webpack.dev.config.js",
+    "serve": "webpack-dev-server --https --progress --config ./pack/webpack.dev.config.js",
     "build": "webpack --progress --config ./pack/webpack.prod.config.js",
     "start": "yarn build && ts-node ./server/run.ts",
     "test": "jest --no-cache",

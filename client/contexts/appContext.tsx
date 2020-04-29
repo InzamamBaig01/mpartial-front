@@ -9,6 +9,7 @@ import history from "../utils/history";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import { AppAlertsContext } from "./appAlertsContext";
+import { AuthContext } from "./authContext";
 interface IContextProps {
   dashboard: boolean;
   getMyOrders: Function;
@@ -29,6 +30,7 @@ export default ({ children }) => {
   const [singleOrderDetails, setSingleOrderDetails] = useState(false);
   const [price, setPrice] = useState(750);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
+  const { logout } = useContext(AuthContext);
   // console.log(showLoader);
   const getMyOrders = () => {
     // showLoader();
@@ -42,9 +44,14 @@ export default ({ children }) => {
     // showLoader();
     getMyInfoAPI().subscribe((response) => {
       // console.log(response.response);
-      setMyInfo(response.response.data);
-      // hideLoader();
-      localStorage.setItem("profile", JSON.stringify(response.response.data));
+      if (response.response.Requested_Action) {
+        setMyInfo(response.response.data);
+        // hideLoader();
+
+        localStorage.setItem("profile", JSON.stringify(response.response.data));
+      } else {
+        logout();
+      }
     });
   };
 

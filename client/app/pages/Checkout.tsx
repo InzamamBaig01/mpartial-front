@@ -15,64 +15,23 @@ import { AppContext } from "contexts/appContext";
 import { AppAlertsContext } from "contexts/appAlertsContext";
 import Loader from "app/components/Loader";
 
-
 const CheckoutForm = (props) => {
   const [error, setError] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
   const { userDetails } = useContext(AuthContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
-
+  console.log("render", props);
   const [selectedCard, setSelectedCard] = useState(false);
-
-  const cardObj = {
-    id: "pm_1GcSOiGnXIZN763FSI0tl0Ik",
-    object: "payment_method",
-    billing_details: {
-      address: {
-        city: null,
-        country: null,
-        line1: null,
-        line2: null,
-        postal_code: "54000",
-        state: null,
-      },
-      email: null,
-      name: "Jenny Rosen",
-      phone: null,
-    },
-    card: {
-      brand: "visa",
-      checks: {
-        address_line1_check: null,
-        address_postal_code_check: "pass",
-        cvc_check: "pass",
-      },
-      country: "US",
-      exp_month: 4,
-      exp_year: 2033,
-      fingerprint: "iDWPsLwNujxEW7UL",
-      funding: "credit",
-      generated_from: null,
-      last4: "4242",
-      three_d_secure_usage: {
-        supported: true,
-      },
-      wallet: null,
-    },
-    created: 1587976384,
-    customer: "cus_HAWqhNZK8JYLET",
-    livemode: false,
-    metadata: {},
-    type: "card",
-  };
 
   // Handle real-time validation errors from the card Element.
   const handleChange = (event) => {
     if (event.error) {
       setError(event.error.message);
+      if (props.cardValidation) props.setCardValidation(false);
     } else {
       setError(null);
+      if (!props.cardValidation) props.setCardValidation(true);
       // props.setIsFormSubmitted(true);
     }
   };
@@ -88,7 +47,7 @@ const CheckoutForm = (props) => {
     // event.preventDefault();
     showLoader();
     const card = elements.getElement(CardElement);
-   
+
     stripe
       .confirmCardPayment(
         localStorage.getItem("sessipn"),
@@ -117,7 +76,7 @@ const CheckoutForm = (props) => {
               fullresponse: JSON.stringify(result.paymentIntent),
             }).subscribe((response) => {
               if (response.response.Requested_Action) {
-                localStorage.removeItem("sessipn")
+                localStorage.removeItem("sessipn");
                 hideLoader();
                 history.push(`/receipt/${props.orderid}`);
               }
@@ -129,19 +88,31 @@ const CheckoutForm = (props) => {
 
   return (
     <>
-      {props.info && props.info.stripeCustomerCard.length ? (
-        props.info.stripeCustomerCard.map((card, index) => {
+      {props.stripeCustomerCard.length ? (
+        props.stripeCustomerCard.map((card, index) => {
+          if (index == 0) {
+            // setSelectedCard(card);
+          }
           return (
             <div className={`form-group col-12`} key={index}>
               <input
                 type="radio"
                 id={`card_${index}`}
                 name="card"
-                onClick={() => setSelectedCard(card)}
+                defaultChecked={
+                  selectedCard.paymentMethodId == card.paymentMethodId
+                }
+                onClick={() => {
+                  if (!props.cardValidation) props.setCardValidation(true);
+                  setSelectedCard(card);
+                }}
               />{" "}
               <label
                 htmlFor={`card_${index}`}
-                onClick={() => setSelectedCard(card)}
+                onClick={() => {
+                  if (!props.cardValidation) props.setCardValidation(true);
+                  setSelectedCard(card);
+                }}
               >
                 Card Ending {card.last4} -- {card.exp_month}/{card.exp_year}
               </label>
@@ -176,14 +147,14 @@ const Checkout = (props) => {
   });
   const orderid = props.match.params.orderid;
 
-
   const [info, setInfo] = useState(false);
   const [validation, setvalidation] = useState({
     fname: userDetails().firstName.length == 0,
     lname: userDetails().lastName.length == 0,
     email: userDetails().emailAddress.length == 0,
   });
-
+  const [cardValidation, setCardValidation] = useState(false);
+  console.log("main_rendered");
   useEffect(() => {
     getMyInfo();
   }, []);
@@ -227,6 +198,13 @@ const Checkout = (props) => {
       lname: checkoutInfo.lastName.length == 0,
       email: checkoutInfo.emailAddress.length == 0,
     });
+  };
+
+  const handleCardAction = (bool) => {
+    setCardValidation(bool);
+  };
+  const handleFormSubmittion = (bool) => {
+    setIsFormSubmitted(bool);
   };
   return (
     <>
@@ -324,8 +302,10 @@ const Checkout = (props) => {
                   <CheckoutForm
                     orderid={orderid}
                     isFormSubmitted={isFormSubmitted}
-                    setIsFormSubmitted={setIsFormSubmitted}
-                    info={info}
+                    setIsFormSubmitted={handleFormSubmittion}
+                    stripeCustomerCard={info ? info.stripeCustomerCard : []}
+                    setCardValidation={handleCardAction}
+                    cardValidation={cardValidation}
                   />
                 </Elements>
                 {/* <input type="checkbox" /> Card Ending 7878 */}
@@ -375,7 +355,8 @@ const Checkout = (props) => {
                   disabled={
                     checkoutInfo.firstName == "" ||
                     checkoutInfo.lastName == "" ||
-                    checkoutInfo.emailAddress == ""
+                    checkoutInfo.emailAddress == "" ||
+                    !cardValidation
                       ? true
                       : false
                   }

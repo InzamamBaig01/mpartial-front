@@ -44,7 +44,7 @@ const MyOrders = () => {
                     <tr key={index}>
                       <td>{order.id}</td>
                       <td>{order.emailForDeliveryOfResults}</td>
-                      <td>Apr 02,2020</td>
+                      <td>{order.createdAt}</td>
                       <td>${order.amountInCents / 100}</td>
                       <td className="orders_payment_status">{order.paymentStatus.toLowerCase()}</td>
                       <td className="text-center order_view_icon">

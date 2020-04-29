@@ -119,44 +119,17 @@ const Header = (props) => {
                     Fee Structure
                   </NavLink>
                 </NavItem>
-                <UncontrolledDropdown nav inNavbar>
-                  <DropdownToggle nav caret>
-                    <span className="nav-link">
-                      Example Deliverables{" "}
-                      {headerClass == "" ? (
-                        <img src={rightarrow} alt="" />
-                      ) : (
-                        <img src={rightarrowdark} alt="" />
-                      )}{" "}
-                    </span>
-                  </DropdownToggle>
-                  <DropdownMenu right>
-                    <DropdownItem>
-                      <NavLink
-                        className="nav-link"
-                        to="/#Example-Deliverables"
-                        onClick={() => {
-                          if (props.sectionRef)
-                            scrollToRef(props.sectionRef.Deli);
-                        }}
-                      >
-                        Immaculate. Impartial. [ESX & PDF]
-                      </NavLink>
-                    </DropdownItem>
-                    <DropdownItem>
-                      <NavLink
-                        className="nav-link"
-                        to="/#Example-Deliverables"
-                        onClick={() => {
-                          if (props.sectionRef)
-                            scrollToRef(props.sectionRef.Deli);
-                        }}
-                      >
-                        TrueSketch PLUS [SKX]
-                      </NavLink>
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
+                <NavItem>
+                  <NavLink
+                    className="nav-link"
+                    to="/#Example-Deliverables"
+                    onClick={() => {
+                      if (props.sectionRef) scrollToRef(props.sectionRef.Deli);
+                    }}
+                  >
+                    Example Deliverables
+                  </NavLink>
+                </NavItem>
 
                 <NavItem>
                   <NavLink

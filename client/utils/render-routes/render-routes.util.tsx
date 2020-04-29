@@ -14,7 +14,7 @@ const PrivateRoute = ({
     <Route
       {...rest}
       render={(props) => {
-        console.log(redirectPath, props.history.location);
+        // console.log(redirectPath, props.history.location);
         return isAuthenticated ? (
           // * If user is authenticated, render the page
           <Component {...props} />

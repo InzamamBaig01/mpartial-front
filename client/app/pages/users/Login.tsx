@@ -32,7 +32,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
   };
 
   useEffect(() => {
-    console.log(loginError);
+    // console.log(loginError);
     if (loginError)
       setLoginStatus(
         loginError == "A user could not be found with this email address."
@@ -78,7 +78,6 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
                     className="form-control"
                     placeholder="Email"
                     onChange={handleEmailChange}
-                    autoComplete="off"
                     required
                   />
                 </div>
@@ -92,7 +91,6 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
                     className="form-control"
                     placeholder="Password"
                     onChange={handlePasswordChange}
-                    autoComplete="off"
                     required
                   />
                 </div>

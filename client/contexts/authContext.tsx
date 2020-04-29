@@ -1,5 +1,14 @@
 import * as React from "react";
-import { login, logoutAPI, auth, signup1, signup2, signup3, signup4, signup5 } from "../utils/api-routes/api-routes.util";
+import {
+  login,
+  logoutAPI,
+  auth,
+  signup1,
+  signup2,
+  signup3,
+  signup4,
+  signup5,
+} from "../utils/api-routes/api-routes.util";
 import history from "../utils/history";
 import { useState } from "react";
 import { AppAlertsContext } from "./appAlertsContext";
@@ -42,14 +51,11 @@ export default React.memo(({ children }) => {
   const [status, setStatus] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pageIsPublic, setPageIsPublic] = useState(undefined);
-  const { showLoader,hideLoader } = React.useContext(AppAlertsContext);
+  const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
   // console.log(showLoader);
   let profile: ProfileStorage = { token: "" };
 
-
-  const [signupDetails, setSignupDetails] = useState({
-
-  });
+  const [signupDetails, setSignupDetails] = useState({});
 
   let payload = React.useMemo(() => {
     return { username: "", password: "" };
@@ -71,24 +77,21 @@ export default React.memo(({ children }) => {
             logout();
           }
         },
-        response => {
+        (response) => {
           logout();
         }
       );
     }
   }, [pageIsPublic]);
 
-
   const setPageIsPublicValue = (value: boolean) => {
     setPageIsPublic(value);
-  }
+  };
 
   const emailOnChange = (id: string) => {
     payload.username = id;
     //  validateEmail();
   };
-
-
 
   const passwordOnChange = (pwd: string) => {
     payload.password = pwd;
@@ -104,12 +107,15 @@ export default React.memo(({ children }) => {
   };
 
   const userDetails = () => {
-    const profile = JSON.parse(localStorage.getItem("profile"));
-    if (profile) {
-      return profile;
+    const profile = localStorage.getItem("profile");
+    if (profile && profile!= "undefined") {
+      return JSON.parse(profile);
+    } else {
+      console.log(pageIsPublic);
+      if (pageIsPublic !== undefined && !pageIsPublic) logout();
     }
     return false;
-  }
+  };
 
   const dispatchLogin = () => {
     setStatus("pending");
@@ -133,7 +139,7 @@ export default React.memo(({ children }) => {
         hideLoader();
         //console.log(status);
       },
-      response => {
+      (response) => {
         setIsAuthenticated(false);
         setLoginError(response.response.Message);
         setStatus("error");
@@ -153,7 +159,7 @@ export default React.memo(({ children }) => {
         history.push("/login");
         hideLoader();
       },
-      response => {
+      (response) => {
         setIsAuthenticated(false);
         setLoginError(response.response.Message);
         setStatus("error");
@@ -162,54 +168,47 @@ export default React.memo(({ children }) => {
     );
   };
 
-
-
-
   const step1 = (data) => {
     setSignupDetails({
       ...signupDetails,
-      emailaddress: data.emailaddress
-    })
+      emailaddress: data.emailaddress,
+    });
     return signup1(data);
-  }
+  };
 
   const step2 = (data) => {
     setSignupDetails({
       ...signupDetails,
       firstname: data.firstname,
-      lastname: data.lastname
-    })
+      lastname: data.lastname,
+    });
     data.emailaddress = signupDetails.emailaddress;
     return signup2(data);
-  }
+  };
   const step3 = (data) => {
     setSignupDetails({
       ...signupDetails,
       phonenumber: data.phonenumber,
-    })
+    });
     data.emailaddress = signupDetails.emailaddress;
     return signup3(data);
-  }
+  };
   const step4 = (data) => {
     setSignupDetails({
       ...signupDetails,
       role: data.role,
-    })
+    });
     data.emailaddress = signupDetails.emailaddress;
     return signup4(data);
-  }
+  };
   const step5 = (data) => {
     setSignupDetails({
       ...signupDetails,
       password: data.password,
-    })
+    });
     data.emailaddress = signupDetails.emailaddress;
     return signup5(data);
-  }
-
-
-
-
+  };
 
   const defaultContext = {
     profile,

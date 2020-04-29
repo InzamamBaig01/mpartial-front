@@ -112,8 +112,8 @@ const priceRanges = [
 
 export const WaterFall: React.FC<WaterFallProps> = ({ }) => {
 
-  const [volume, setVolume] = React.useState(0);
-  const [commission, setCommission] = React.useState("7.50");
+  const [volume, setVolume] = React.useState(150000);
+  const [commission, setCommission] = React.useState("7.22");
 
   const onChangeRange = (v) => {
     setVolume(v);

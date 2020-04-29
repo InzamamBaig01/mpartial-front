@@ -470,7 +470,7 @@ const UserOrder = () => {
               {fields.map((field, index) => {
                 const gridCol =
                   (index > 2 && index < 7) || index == 9 || index == 10
-                    ? "col-6"
+                    ? "col-6 select_box_field"
                     : "col-12";
                 return (
                   <div className={`form-group ${gridCol}`} key={index}>
