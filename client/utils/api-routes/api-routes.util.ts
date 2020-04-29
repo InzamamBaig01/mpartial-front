@@ -3,7 +3,7 @@ import { ajax } from "rxjs/observable/dom/ajax";
 import { catchError, map } from "rxjs/operators";
 import history from "../history";
 
-const baseURL = "http://dev.mpartial.io:8080";
+const baseURL = "//dev.mpartial.io:8080";
 
 const requestHeader = () => {
   const headers = {

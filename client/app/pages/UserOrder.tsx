@@ -59,7 +59,7 @@ const fields = [
     description: "As defined by the IICRC S500/S520",
     type: "select",
     required: true,
-    options: ["cat 1", "cat 2", "cat 3", "N/A"],
+    options: ["Cat 1", "Cat 2", "Cat 3", "N/A"],
   },
   {
     id: "residentialOrCommercial",
@@ -182,9 +182,9 @@ const fields = [
       "Specialty trades typically require in-depth inspections and will be omitted from your deliverables by default. Should you wish to include various specialty trades, be sure to select from the list below.",
     type: "multiSelect",
     options: [
-      "Framing - Affected rooms only",
       "Electrical - Affected rooms only",
       "HVAC - Affected rooms only",
+      "Framing - Affected rooms only",
       "Electrical - Entire property",
       "HVAC - Entire property",
       "Framing - Entire property",
@@ -246,7 +246,7 @@ const MultipleSelectField = (props) => {
       required={props.field.required ? true : false}
       onChange={(value) => {
         setSelected(value);
-        props.onChange();
+        props.onChange(props.field, value);
         props.field.value = value;
       }}
       labelledBy={"Select"}
@@ -264,7 +264,7 @@ const DrawField = (props) => {
             required={field.required ? true : false}
             className="form-control"
             onChange={(e) => {
-              props.onChange();
+              props.onChange(field, e.currentTarget.value);
               field.value = e.currentTarget.value;
             }}
           />
@@ -276,7 +276,7 @@ const DrawField = (props) => {
             className="form-control"
             required={field.required ? true : false}
             onChange={(e) => {
-              props.onChange();
+              props.onChange(field, e.currentTarget.value);
               field.value = e.currentTarget.value;
             }}
           >
@@ -303,7 +303,7 @@ const DrawField = (props) => {
                 type="file"
                 required={field.required ? true : false}
                 onChange={(e) => {
-                  props.onChange();
+                  props.onChange(field, e.target.files);
                   field.value = e.target.files;
                 }}
               />
@@ -318,7 +318,7 @@ const DrawField = (props) => {
             required={field.required ? true : false}
             className="form-control"
             onChange={(e) => {
-              props.onChange();
+              props.onChange(field, e.currentTarget.value);
               field.value = e.currentTarget.value;
             }}
           ></textarea>
@@ -332,7 +332,7 @@ const DrawField = (props) => {
             value={field.value}
             className="form-control"
             onChange={(e) => {
-              props.onChange();
+              props.onChange(field, e.currentTarget.value);
               field.value = e.currentTarget.value;
             }}
           />
@@ -345,7 +345,7 @@ const DrawField = (props) => {
             required={field.required ? true : false}
             className="form-control"
             onChange={(e) => {
-              props.onChange();
+              props.onChange(field, e.currentTarget.value);
               field.value = e.currentTarget.value;
             }}
           />
@@ -360,6 +360,8 @@ const DrawField = (props) => {
 const UserOrder = () => {
   const { userDetails } = useContext(AuthContext);
   fields[fields.length - 1].value = userDetails().emailAddress;
+
+  const [allFields, setAllFields] = useState(fields);
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const { price } = useContext(AppContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
@@ -375,7 +377,7 @@ const UserOrder = () => {
     let fileToUpload;
     const formData = new FormData();
 
-    fields.map((field) => {
+    allFields.map((field) => {
       if (field.type === "multipleAttachment") {
         fileToUpload = field.value;
       } else if (field.type === "multiSelect") {
@@ -441,10 +443,20 @@ const UserOrder = () => {
   useEffect(() => {
     // console.log(fields);
     checkFormValidation();
-  }, [fields]);
+  }, [allFields]);
 
-  const handleChange = () => {
+  const handleChange = (field, value) => {
+    // console.log(allFields);
     checkFormValidation();
+    let fieldsData = Object.assign([], allFields);
+    fieldsData = fieldsData.map((f) => {
+      // console.log(f);
+      if (f.id == field.id) {
+        f.value = value;
+      }
+      return f;
+    });
+    setAllFields(fieldsData);
   };
 
   return (
