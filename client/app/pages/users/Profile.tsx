@@ -2,7 +2,8 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 import Header from "app/components/Header";
 import userProfile from "../../../assets/userProfile.svg";
-import stripe from "stripe";
+// import stripe from "stripe";
+import InputMask from "react-input-mask";
 
 // console.log(stripe);
 
@@ -185,92 +186,105 @@ const EditProfile = (props) => {
         </Modal.Header>
         <Modal.Body className="support_body">
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>First Name</label>
-              <input
-                type="text"
-                className="form-control"
-                value={data.firstName}
-                required
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    firstName: e.currentTarget.value,
-                  })
-                }
-              />
-            </div>
-            <div className="form-group">
-              <label>Last Name</label>
-              <input
-                type="text"
-                className="form-control"
-                value={data.lastName}
-                required
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    lastName: e.currentTarget.value,
-                  })
-                }
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Phone</label>
-              <input
-                type="text"
-                className="form-control"
-                value={data.phonenumber}
-                required
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    phonenumber: e.currentTarget.value,
-                  })
-                }
-              />
-            </div>
-
-          
-
-            <div className="form-group">
-              <label>Profile Picture</label>
-              {profileImage.profileImage ? (
-                <div className="profile_image_preview">
-                  <div
-                    className="cross_icon"
-                    onClick={() =>
-                      setProfileImage({
-                        profilepicture: false,
-                        profileImage: false,
+            <div className="row">
+              <div className="col">
+                <div className="form-group">
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={data.firstName}
+                    required
+                    onChange={(e) =>
+                      setData({
+                        ...data,
+                        firstName: e.currentTarget.value,
                       })
                     }
-                  >
-                    &times;
-                  </div>
-                  <img src={profileImage.profileImage} alt="" />
+                  />
                 </div>
-              ) : (
-                <>
-                  <div {...getRootProps()} className="upload_profile_picture">
-                    <input {...getInputProps()} />
-                    {isDragActive ? (
-                      <p>
-                        <img src={dragimage} alt="" />
-                      </p>
-                    ) : (
-                      <p>
-                        <img src={dragimage} alt="" />
-                      </p>
+                <div className="form-group">
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={data.lastName}
+                    required
+                    onChange={(e) =>
+                      setData({
+                        ...data,
+                        lastName: e.currentTarget.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Cell</label>
+
+                  <InputMask
+                    mask="999-999-9999"
+                    onChange={(e) =>
+                      setData({
+                        ...data,
+                        phonenumber: e.currentTarget.value,
+                      })
+                    }
+                    value={data.phonenumber}
+                  >
+                    {(inputProps) => (
+                      <input
+                        type="text"
+                        className="form-control"
+                        {...inputProps}
+                        required
+                      />
                     )}
-                  </div>
-                </>
-              )}
+                  </InputMask>
+                </div>
+              </div>
+              <div className="col">
+                <div className="form-group">
+                  <label>Profile Picture</label>
+                  {profileImage.profileImage ? (
+                    <div className="profile_image_preview">
+                      <div
+                        className="cross_icon"
+                        onClick={() =>
+                          setProfileImage({
+                            profilepicture: false,
+                            profileImage: false,
+                          })
+                        }
+                      >
+                        &times;
+                      </div>
+                      <img src={profileImage.profileImage} alt="" />
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        {...getRootProps()}
+                        className="upload_profile_picture"
+                      >
+                        <input {...getInputProps()} />
+                        {isDragActive ? (
+                          <p>
+                            <img src={dragimage} alt="" />
+                          </p>
+                        ) : (
+                          <p>
+                            <img src={dragimage} alt="" />
+                          </p>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
             </div>
-            <div className="form-group">
-              <button className="btn" type="submit">
-                Change
+            <div className="form-group edit_profile_submit_container">
+              <button className="btn edit_profile_submit" type="submit">
+                Update
               </button>
             </div>
           </form>
@@ -317,7 +331,7 @@ const EditPassword = (props) => {
         className="edit_profile"
       >
         <Modal.Header closeButton>
-          <Modal.Title className="add_card_title">Edit Profile</Modal.Title>
+          <Modal.Title className="add_card_title">Update Password</Modal.Title>
         </Modal.Header>
         <Modal.Body className="support_body">
           <form onSubmit={handleSubmit}>
@@ -383,7 +397,7 @@ const EditPassword = (props) => {
                 id="formButton"
                 disabled={!validPassword || passwords.newPassword.length == 0}
               >
-                Change
+                Update
               </button>
             </div>
           </form>
@@ -481,11 +495,10 @@ const Profile = () => {
                   </div>
 
                   <div className="row">
-                    <div className="col">Phone</div>
+                    <div className="col">Cell</div>
                     <div className="col text-right">{info.phone}</div>
                   </div>
 
-                 
                   <div className="row">
                     <div className="col text-center">
                       <button className="btn" onClick={handleEditPasswordShow}>
@@ -513,9 +526,9 @@ const Profile = () => {
                   <table className="table stable-stripe">
                     <thead>
                       <tr>
-                        <th>Brand</th>
-                        <th>Card No.</th>
-                        <th>Exp</th>
+                        <th></th>
+                        <th>Card Number</th>
+                        <th>Expiration Date</th>
                       </tr>
                     </thead>
                     <tbody>

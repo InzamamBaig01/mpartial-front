@@ -75,76 +75,27 @@ const Header = (props) => {
 
             <Collapse isOpen={isOpen} navbar>
               <Nav className="ml-auto main_navbar" navbar>
-                <NavItem>
-                  <NavLink
-                    className="nav-link"
-                    to="/#Approach"
-                    onClick={() => {
-                      if (props.sectionRef) scrollToRef(props.sectionRef.home);
-                    }}
-                  >
-                    Approach
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className="nav-link"
-                    to="/#Ground-Truth-Data"
-                    onClick={() => {
-                      if (props.sectionRef) scrollToRef(props.sectionRef.hero);
-                    }}
-                  >
-                    Ground-Truth Data
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className="nav-link"
-                    to="/#How-It-Works"
-                    onClick={() => {
-                      if (props.sectionRef) scrollToRef(props.sectionRef.hIW);
-                    }}
-                  >
-                    How It Works
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className="nav-link"
-                    to="/#Fee-Structure"
-                    onClick={() => {
-                      if (props.sectionRef) scrollToRef(props.sectionRef.wFall);
-                    }}
-                  >
-                    Fee Structure
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className="nav-link"
-                    to="/#Example-Deliverables"
-                    onClick={() => {
-                      if (props.sectionRef) scrollToRef(props.sectionRef.Deli);
-                    }}
-                  >
-                    Example Deliverables
-                  </NavLink>
-                </NavItem>
-
-                <NavItem>
-                  <NavLink
-                    className="nav-link"
-                    to="/#Contact-US"
-                    onClick={() => {
-                      if (props.sectionRef) scrollToRef(props.sectionRef.cont);
-                    }}
-                  >
-                    Contact Us
-                  </NavLink>
-                </NavItem>
-
                 {isLoggedIn ? (
                   <>
+                    <NavItem>
+                      <NavLink className="nav-link" to="/order">
+                        Submission Portal
+                      </NavLink>
+                    </NavItem>
+
+                    <NavItem>
+                      <NavLink
+                        className="nav-link"
+                        to="/#Contact-US"
+                        onClick={() => {
+                          if (props.sectionRef)
+                            scrollToRef(props.sectionRef.cont);
+                        }}
+                      >
+                        Contact Us
+                      </NavLink>
+                    </NavItem>
+
                     <UncontrolledDropdown nav inNavbar>
                       <DropdownToggle nav caret>
                         <span className="nav-link" id="toBold">
@@ -174,13 +125,81 @@ const Header = (props) => {
                     </UncontrolledDropdown>
                   </>
                 ) : (
-                  <NavItem>
-                    <Link to="/login">
-                      <button className="btn btn-primary login_btn">
-                        Sign In
-                      </button>
-                    </Link>
-                  </NavItem>
+                  <>
+                    <NavItem>
+                      <NavLink
+                        className="nav-link"
+                        to="/#Ground-Truth-Data"
+                        onClick={() => {
+                          if (props.sectionRef)
+                            scrollToRef(props.sectionRef.hero);
+                        }}
+                      >
+                        Ground-Truth Data
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className="nav-link"
+                        to="/#How-It-Works"
+                        onClick={() => {
+                          if (props.sectionRef)
+                            scrollToRef(props.sectionRef.hIW);
+                        }}
+                      >
+                        How It Works
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className="nav-link"
+                        to="/#Fee-Structure"
+                        onClick={() => {
+                          if (props.sectionRef)
+                            scrollToRef(props.sectionRef.wFall);
+                        }}
+                      >
+                        Fee Structure
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className="nav-link"
+                        to="/#Example-Deliverables"
+                        onClick={() => {
+                          if (props.sectionRef)
+                            scrollToRef(props.sectionRef.Deli);
+                        }}
+                      >
+                        Example Deliverables
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink className="nav-link" to="/order">
+                        Submission Portal
+                      </NavLink>
+                    </NavItem>
+
+                    <NavItem>
+                      <NavLink
+                        className="nav-link"
+                        to="/#Contact-US"
+                        onClick={() => {
+                          if (props.sectionRef)
+                            scrollToRef(props.sectionRef.cont);
+                        }}
+                      >
+                        Contact Us
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <Link to="/login">
+                        <button className="btn btn-primary login_btn">
+                          Sign In
+                        </button>
+                      </Link>
+                    </NavItem>
+                  </>
                 )}
               </Nav>
             </Collapse>

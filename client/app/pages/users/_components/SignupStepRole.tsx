@@ -42,7 +42,7 @@ export const SignupStepRole: React.FC<StepProps> = (props) => {
   return (
     <>
       <div className={"container"}>
-        <h2>Select your role:</h2>
+        <h2>What best describes you?</h2>
         <form onSubmit={onSubmit}>
           <div className={"row"}>
             <div className={"role_holder"}>
@@ -100,11 +100,11 @@ export const SignupStepRole: React.FC<StepProps> = (props) => {
                 <input
                   type="radio"
                   id="adjs"
-                  defaultChecked={role == "Other"}
+                  defaultChecked={role == "OTHER"}
                   name="radio-group"
-                  onClick={() => setrole("Other")}
+                  onClick={() => setrole("OTHER")}
                 />
-                <label htmlFor="adjs"> Other </label>
+                <label htmlFor="adjs"> OTHER </label>
               </div>
             </div>
           </div>

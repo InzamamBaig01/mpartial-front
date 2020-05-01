@@ -327,7 +327,7 @@ const Checkout = (props) => {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>mpartial</td>
+                      <td>Mpartial Deposit</td>
                       <td>${price}</td>
                     </tr>
 
@@ -346,7 +346,7 @@ const Checkout = (props) => {
             </div>
 
             <div className="row">
-              <div className="col ">
+              <div className="col submit_btn_container">
                 <button
                   className="btn"
                   type="submit"

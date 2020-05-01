@@ -8,6 +8,9 @@ import {
   signup3,
   signup4,
   signup5,
+  adAuth,
+  adLogoutAPI,
+  adLogin,
 } from "../utils/api-routes/api-routes.util";
 import history from "../utils/history";
 import { useState } from "react";
@@ -17,8 +20,9 @@ interface IContextProps {
   profile: object;
   payload: object;
   loginError: string | undefined;
+  ADloginError: string | undefined;
   isAuthenticated: boolean;
-  status: string | undefined;
+  ADstatus: string | undefined;
   emailError: string | undefined;
   passwordError: string | undefined;
   isValid: boolean;
@@ -26,6 +30,7 @@ interface IContextProps {
   emailOnChange: Function;
   passwordOnChange: Function;
   isUserAuthenticated: Function;
+  isADAuthenticated: Function;
   logout: Function;
   setPageIsPublicValue: Function;
   pageIsPublic: any;
@@ -37,6 +42,9 @@ interface IContextProps {
   step4: Function;
   step5: Function;
   setLoginError: Function;
+  dispatchADLogin: Function;
+  setPageIsAD: any;
+  adLogout: Function;
 }
 
 export const AuthContext = React.createContext({} as IContextProps);
@@ -48,9 +56,14 @@ interface ProfileStorage {
 
 export default React.memo(({ children }) => {
   const [loginError, setLoginError] = useState("");
+  const [ADloginError, ADsetLoginError] = useState("");
+
   const [status, setStatus] = useState("");
+  const [ADstatus, ADsetStatus] = useState("");
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pageIsPublic, setPageIsPublic] = useState(undefined);
+  const [pageIsAD, setPageIsAD] = useState(undefined);
   const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
   // console.log(showLoader);
   let profile: ProfileStorage = { token: "" };
@@ -84,8 +97,29 @@ export default React.memo(({ children }) => {
     }
   }, [pageIsPublic]);
 
+  React.useEffect(() => {
+    if (pageIsAD !== undefined && pageIsAD) {
+      console.log("pageIsAD",pageIsAD);
+      AdValid();
+    }
+  }, [pageIsAD]);
+
   const setPageIsPublicValue = (value: boolean) => {
     setPageIsPublic(value);
+  };
+
+  const AdValid = () => {
+    adAuth().subscribe(
+      (response: any) => {
+        if (response.response.Requested_Action) {
+        } else {
+          adLogout();
+        }
+      },
+      (response) => {
+        adLogout();
+      }
+    );
   };
 
   const emailOnChange = (id: string) => {
@@ -101,6 +135,15 @@ export default React.memo(({ children }) => {
   const isUserAuthenticated = () => {
     const token = localStorage.getItem("token");
     if (token) {
+      // AdValid();
+      return true;
+    }
+    return false;
+  };
+
+  const isADAuthenticated = () => {
+    const token = localStorage.getItem("topen");
+    if (token) {
       return true;
     }
     return false;
@@ -108,10 +151,10 @@ export default React.memo(({ children }) => {
 
   const userDetails = () => {
     const profile = localStorage.getItem("profile");
-    if (profile && profile!= "undefined") {
+    if (profile && profile != "undefined") {
       return JSON.parse(profile);
     } else {
-      console.log(pageIsPublic);
+      // console.log(pageIsPublic);
       if (pageIsPublic !== undefined && !pageIsPublic) logout();
     }
     return false;
@@ -148,6 +191,33 @@ export default React.memo(({ children }) => {
     );
   };
 
+  const dispatchADLogin = (payload) => {
+    ADsetStatus("pending");
+    showLoader();
+    ADsetLoginError(false);
+    adLogin(payload).subscribe(
+      (response: any) => {
+        if (!response.response.Requested_Action) {
+          ADsetLoginError(response.response.Message);
+          ADsetStatus("error");
+        } else {
+          ADsetStatus("success");
+          //console.log(response)
+          profile = response.response.objApplicationUserDTO;
+          localStorage.setItem("topen", profile.token);
+          history.push("/user-management");
+        }
+        hideLoader();
+        //console.log(status);
+      },
+      (response) => {
+        ADsetLoginError(response.response.Message);
+        ADsetStatus("error");
+        hideLoader();
+      }
+    );
+  };
+
   const logout = () => {
     showLoader();
     logoutAPI().subscribe(
@@ -165,6 +235,16 @@ export default React.memo(({ children }) => {
         setStatus("error");
         hideLoader();
       }
+    );
+  };
+
+  const adLogout = () => {
+    adLogoutAPI().subscribe(
+      (response: any) => {
+        localStorage.removeItem("topen");
+        history.push("/mpartialadmin");
+      },
+      (response) => {}
     );
   };
 
@@ -214,8 +294,10 @@ export default React.memo(({ children }) => {
     profile,
     payload,
     loginError,
+    ADloginError,
     isAuthenticated,
     status,
+    ADstatus,
     emailError,
     passwordError,
     isValid,
@@ -233,6 +315,11 @@ export default React.memo(({ children }) => {
     step4,
     step5,
     setLoginError,
+    ADsetLoginError,
+    isADAuthenticated,
+    dispatchADLogin,
+    setPageIsAD,
+    adLogout,
   };
 
   return (

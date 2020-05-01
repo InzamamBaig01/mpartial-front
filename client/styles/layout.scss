@@ -889,7 +889,7 @@ span.numeric-character {
   letter-spacing: 0px;
   color: #000000;
   opacity: 1;
-  margin-bottom: 40px;
+  margin-bottom: 15px;
 }
 
 .order_checkout_details {
@@ -985,8 +985,8 @@ span.numeric-character {
       font-weight: normal;
       font-size: 14px;
       line-height: 16px;
+      color: rgba(0, 0, 0, 1);
       letter-spacing: 0px;
-      color: rgba(0, 0, 0, 0.5);
       text-transform: uppercase;
     }
     .order_details_value {
@@ -995,7 +995,7 @@ span.numeric-character {
       font-size: 14px;
       line-height: 16px;
       letter-spacing: 0px;
-      color: rgba(0, 0, 0, 1);
+      color: rgba(0, 0, 0, 0.5);
       margin-top: 20px;
       margin-bottom: 40px;
       word-break: break-all;
@@ -1306,5 +1306,142 @@ span.password_not_matched {
 .select_box_field {
   .description {
     min-height: 60px;
+  }
+}
+
+a {
+  color: #0a5169;
+}
+
+.dropdown-menu a{
+  line-height: 14px !important;
+}
+.submit_btn_container {
+  text-align: center;
+}
+
+.admin-order-wrap{
+  display: flex;
+  aside{
+    width: 100%;
+    max-width:280px;
+    height:calc(100vh - 58px);
+    background: #fff;
+    ul{
+      margin: 30px;
+      padding: 0;
+      list-style: none;
+    }
+    ul li{
+      margin: 5px 0;
+      border-radius: 4px;
+    }
+    ul li:first-child{
+      background: url(../assets/order.svg) no-repeat 10px 8px;
+    }
+    ul li:first-child:hover{
+      background: url(../assets/order-hover.svg) no-repeat 10px 8px;
+    }
+    ul li:last-child{
+      background: url(../assets/user-admin.svg) no-repeat 10px 8px;
+    }
+    ul li:last-child:hover{
+      background: url(../assets/user-hover.svg) no-repeat 10px 8px;
+    }
+    ul li a,ul li a:hover{
+      padding: 5px 10px 5px 35px;
+      display: block;
+      color:#000;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    ul li a:hover{
+      color:#3AC280;
+      background: rgba(58,194,128,0.25);
+    }
+  }
+  section{
+    width: calc(100% - 280px);
+    margin: 30px;
+    h2{
+      font-size: 18px;
+      font-weight: bold;
+    }
+    header{
+      display: none;
+    }
+  }
+  .section-head{
+    display: flex;
+    justify-content: space-between;
+    .form-group{
+      min-width: 350px;
+    }
+    .input-group{
+      border:1px solid #3AC280;
+      border-radius: 20px;
+      input{
+        height: 30px;
+        border-radius: 20px;
+      }
+    }
+    .input-group .input_icon{
+      background: transparent;
+      width: 20px;
+      height: 15px;
+      padding: 0;
+      position: relative;
+      left: 5px;
+      top: 4px;
+    }
+  }
+}
+.table-pagination{
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  .pagination ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pagination ul li{
+    display: inline-block;
+    width: 29px;
+    height: 29px;
+    border-radius: 2px;
+    text-align: center;
+    margin-right: 5px;
+  }
+  .pagination ul li.first,
+  .pagination ul li.last,
+  .pagination ul li.next,
+  .pagination ul li.previous{
+    background-color: #D7F3E6;
+  }
+  .pagination ul li a{
+    display: block;
+    border-radius: 2px;
+    height: 100%;
+    text-decoration: none;
+    color: #49C78A;
+  }
+  .pagination ul li a:hover{
+    background-color: #49C78A;
+    color: #fff;
+  }
+  .pagination ul li.active a{
+    background-color: #49C78A;
+    color: #fff;
+  }
+  .pagination ul li.first a:hover,
+  .pagination ul li.last a:hover,
+  .pagination ul li.next a:hover,
+  .pagination ul li.previous a:hover{
+    background-color: #D7F3E6;
+  }
+  .pages .info{
+    color: #9FA2A1;
+    font-size: 14px;
   }
 }

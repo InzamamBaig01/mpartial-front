@@ -6,25 +6,48 @@ import {
   CarouselIndicators,
   CarouselCaption
 } from 'reactstrap';
-import slideimg from '../../../../assets/slide.png';
+import slide1 from '../../../../assets/slides/slide1.jpg';
+import slide2 from '../../../../assets/slides/slide2.jpg';
+import slide3 from '../../../../assets/slides/slide3.jpg';
+import slide4 from '../../../../assets/slides/slide4.jpg';
+import slide5 from '../../../../assets/slides/slide5.jpg';
+import slide6 from '../../../../assets/slides/slide6.jpg';
 const items = [
   {
-    src: slideimg,
+    src: slide1,
     altText: 'Slide 1',
     caption: 'Slide 1',
     key: 0,
   },
   {
-    src: slideimg,
+    src: slide2,
     altText: 'Slide 2',
-    key: 'Slide 2',
-    caption: 1,
+    key: '1',
+    caption: "",
   },
   {
-    src: slideimg,
+    src: slide3,
     altText: 'Slide 3',
     caption: 'Slide 3',
     key: 2,
+  },
+  {
+    src: slide4,
+    altText: 'Slide 3',
+    caption: 'Slide 3',
+    key: 3,
+  },
+  {
+    src: slide5,
+    altText: 'Slide 3',
+    caption: 'Slide 3',
+    key: 4,
+  },
+  {
+    src: slide6,
+    altText: 'Slide 3',
+    caption: 'Slide 3',
+    key: 5,
   }
 ];
 

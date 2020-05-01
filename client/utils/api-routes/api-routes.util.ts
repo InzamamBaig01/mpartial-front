@@ -57,6 +57,51 @@ export const auth = () => {
   );
 };
 
+
+export const adAuth = () => {
+  return ajax({
+    headers: {
+      authString: localStorage.topen,
+    },
+    method: "POST",
+    url: `${baseURL}//GIServer/isValidToken?authString=${
+      localStorage.topen
+    }&type=${"client"}`,
+  }).pipe(
+    catchError(handleError("auth")),
+    
+  );
+};
+
+
+export const allADOrders = () =>
+  ajax({
+    headers: {
+      authString: localStorage.topen
+    },
+    method: 'POST',
+    url: `${baseURL}/GIServer/getAllOrders`,
+  }).pipe(catchError(handleError('login')));
+
+  export const allADUsers = () =>
+  ajax({
+    headers: {
+      authString: localStorage.topen
+    },
+    method: 'POST',
+    url: `${baseURL}/GIServer/GetAllUsers`,
+  }).pipe(catchError(handleError('login')));
+
+  
+
+export const adLogin = payload =>
+ajax({
+  headers: requestHeader(),
+  method: 'POST',
+  url: `${baseURL}/AdminLogin?username=${payload.username}&password=${payload.password}`,
+}).pipe(catchError(handleError('login')));
+
+
 export const login = (payload) => {
   return ajax({
     headers: requestHeader(),
@@ -224,6 +269,20 @@ export const logoutAPI = () => {
     
   );
 };
+
+export const adLogoutAPI = () => {
+  return ajax({
+    headers: {
+      authString: localStorage.topen
+    },
+    method: "POST",
+    url: `${baseURL}/GIServer/logout?authString=${localStorage.topen}`,
+  }).pipe(
+    catchError(handleError("logout")),
+    
+  );
+};
+
 
 export const getMyOrdersAPI = () => {
   return ajax({

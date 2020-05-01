@@ -29,11 +29,11 @@ const MyOrders = () => {
           <table className="table mpartial_table">
             <thead>
               <tr>
-                <th>Order No.</th>
-                <th>Email</th>
+                <th>Project Name</th>
+                <th>Delivery Email</th>
                 <th>Order Date</th>
                 <th>Total</th>
-                <th>Payment Status</th>
+                <th>Status</th>
                 <th className="text-center">Action</th>
               </tr>
             </thead>
@@ -42,7 +42,7 @@ const MyOrders = () => {
                 orders.map((order, index) => {
                   return (
                     <tr key={index}>
-                      <td>{order.id}</td>
+                      <td>{order.projectName}</td>
                       <td>{order.emailForDeliveryOfResults}</td>
                       <td>{order.createdAt}</td>
                       <td>${order.amountInCents / 100}</td>

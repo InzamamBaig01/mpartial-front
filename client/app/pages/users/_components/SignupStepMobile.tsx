@@ -46,13 +46,13 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
     <>
       <div className={"container"}>
         <h2>
-          Nice to meet you {signupDetails.lastname}! What's your <br /> mobile
+          Nice to meet you {signupDetails.lastname}! What's your <br /> Cell
           number?
         </h2>
         <form onSubmit={onSubmit}>
           <div
             className="form-group"
-            css={{ maxWidth: "464px", margin: "30px auto" }}
+            css={{ maxWidth: "264px", margin: "30px auto" }}
           >
             <div className="input-group">
               <InputMask
@@ -67,7 +67,7 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Mobile"
+                    placeholder="Cell"
                     min="1"
                     value={phonenumber}
                     required

@@ -497,12 +497,12 @@ const UserOrder = () => {
                 <input type="checkbox" required onClick={handleChange} /> I’ve
                 read and accept the mpartial{" "}
                 <Link to="/terms">
-                  <span className="underline">Terms & Conditions.</span>
+                  <span className="underline">Terms & Conditions</span>
                 </Link>
-                <span className="red">*</span>
+                .<span className="red">*</span>
               </label>
             </div>
-            <div className="form-group">
+            <div className="form-group submit_btn_container">
               <button
                 className="btn"
                 type="submit"

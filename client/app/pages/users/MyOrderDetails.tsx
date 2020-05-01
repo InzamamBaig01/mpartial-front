@@ -5,11 +5,11 @@ import { AppContext } from "contexts/appContext";
 
 const fields = [
   {
-    name: "Project Name",
+    name: "Order ID",
     description: null,
     type: "text",
     required: true,
-    id: "projectName",
+    id: "id",
   },
   {
     id: "projectZipCode",
@@ -300,7 +300,7 @@ const MyOrderDetails = (props) => {
         <div className="container">
           {order ? (
             <div className="order_details">
-              <div className="order_details_header">Order No. {order.id}</div>
+              <div className="order_details_header">Project Name: {order.projectName}</div>
 
               <div className="row order_details_info">
                 {fields.map((field) => {

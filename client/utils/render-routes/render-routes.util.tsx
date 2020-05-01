@@ -7,23 +7,37 @@ import { Redirect, Route } from "react-router-dom";
 const PrivateRoute = ({
   component: Component,
   isAuthenticated,
+  isADAuthenticated,
   redirectPath,
+  isAD,
   ...rest
 }) => {
   return (
     <Route
       {...rest}
       render={(props) => {
-        // console.log(redirectPath, props.history.location);
-        return isAuthenticated ? (
-          // * If user is authenticated, render the page
-          <Component {...props} />
-        ) : (
-          // * If user is not authenticated, redirect to login
-          <Redirect
-            to={{ pathname: redirectPath, state: { from: props.location } }}
-          />
-        );
+        if(isAD) {
+          return isADAuthenticated ? (
+            // * If user is authenticated, render the page
+            <Component {...props} />
+          ) : (
+            // * If user is not authenticated, redirect to login
+            <Redirect
+              to={{ pathname: redirectPath, state: { from: props.location } }}
+            />
+          );
+        }else {
+          return isAuthenticated ? (
+            // * If user is authenticated, render the page
+            <Component {...props} />
+          ) : (
+            // * If user is not authenticated, redirect to login
+            <Redirect
+              to={{ pathname: redirectPath, state: { from: props.location } }}
+            />
+          );
+        }
+        
       }}
     />
   );
@@ -35,7 +49,7 @@ const PrivateRoute = ({
 //TODO: : RouteConfig[]
 export const renderRoutes = (
   routes,
-  opts: { deep: boolean; isAuthenticated: boolean }
+  opts: { deep: boolean; isAuthenticated: boolean; isADAuthenticated: boolean }
 ) =>
   routes.map((route) => {
     // * Recursively render nested child routes if 'deep=true'
@@ -56,7 +70,9 @@ export const renderRoutes = (
             path={route.path}
             component={route.component}
             isAuthenticated={!opts.isAuthenticated}
+            isADAuthenticated={!opts.isADAuthenticated}
             redirectPath={route.redirectTo}
+            isAD={route.isAD}
           />
         );
       } else {
@@ -78,7 +94,9 @@ export const renderRoutes = (
               path={route.path}
               component={route.component}
               isAuthenticated={opts.isAuthenticated}
+              isADAuthenticated={opts.isADAuthenticated}
               redirectPath={route.redirectTo}
+              isAD={route.isAD}
             />
           );
         }

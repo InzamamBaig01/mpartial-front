@@ -13,22 +13,33 @@ import { AuthContext } from "../contexts/authContext";
 import SEO from "react-seo-component";
 
 const App: React.FC<RouteComponentProps<any>> = (props) => {
-  const { isUserAuthenticated, setPageIsPublicValue } = useContext(AuthContext);
+  const {
+    isUserAuthenticated,
+    setPageIsPublicValue,
+    isADAuthenticated,
+    setPageIsAD,
+  } = useContext(AuthContext);
 
   useState(() => {
     isUserAuthenticated();
     // console.log(props);
     let isPublic = false;
+    let isAD = false;
     ROUTES.map((route) => {
       if (
         route.path.split("/").join("") ===
         props.location.pathname.split("/").join("")
       ) {
         isPublic = route.isPublic ? true : false;
+        isAD = route.isAD ? true : false;
       }
       return route;
     });
-    setPageIsPublicValue(isPublic);
+    if (isAD) {
+      setPageIsAD(isAD);
+    } else {
+      setPageIsPublicValue(isPublic);
+    }
   });
 
   return (
@@ -47,7 +58,10 @@ const App: React.FC<RouteComponentProps<any>> = (props) => {
         siteLocale={"US"}
         twitterUsername={"twitterUsername"}
       />
-      <LocalApp isAuthenticated={isUserAuthenticated()}></LocalApp>
+      <LocalApp
+        isAuthenticated={isUserAuthenticated()}
+        isADAuthenticated={isADAuthenticated()}
+      ></LocalApp>
     </>
   );
 };
@@ -55,11 +69,11 @@ const App: React.FC<RouteComponentProps<any>> = (props) => {
 export default withRouter(hot(module)(App));
 
 const LocalApp = (props) => {
-  const { isAuthenticated, isUserAuthenticated } = useContext(AuthContext);
   return (
     <Switch>
       {renderRoutes(ROUTES, {
         isAuthenticated: props.isAuthenticated,
+        isADAuthenticated: props.isADAuthenticated,
         deep: false,
       })}
       <Route component={() => <Redirect to="/" />} />

@@ -2,6 +2,8 @@ import * as React from "react";
 import {
   getMyOrdersAPI,
   getMyInfoAPI,
+  allADOrders,
+  allADUsers,
 } from "../utils/api-routes/api-routes.util";
 import { useState, useEffect, useContext } from "react";
 import * as jsoncompare from "js-object-compare";
@@ -19,6 +21,10 @@ interface IContextProps {
   getOrderById: Function;
   singleOrderDetails: any;
   price: any;
+  getallADOrders: Function;
+  AllOrders: any;
+  getallADUsers: Function;
+  AllUsers: any;
 }
 
 export const AppContext = React.createContext({} as IContextProps);
@@ -29,6 +35,8 @@ export default ({ children }) => {
   const [myInfo, setMyInfo] = useState(false);
   const [singleOrderDetails, setSingleOrderDetails] = useState(false);
   const [price, setPrice] = useState(750);
+  const [AllOrders, setAllOrders] = useState([]);
+  const [AllUsers, setAllUsers] = useState([]);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
   const { logout } = useContext(AuthContext);
   // console.log(showLoader);
@@ -68,6 +76,24 @@ export default ({ children }) => {
     });
   };
 
+  const getallADOrders = () => {
+    // showLoader();
+    allADOrders().subscribe((response) => {
+      setAllOrders(response.response.data);
+      console.log(response.response.data);
+      // hideLoader();
+    });
+  };
+
+  const getallADUsers = () => {
+    // showLoader();
+    allADUsers().subscribe((response) => {
+      setAllUsers(response.response.data);
+      console.log(response.response.data);
+      // hideLoader();
+    });
+  };
+
   const defaultContext = {
     dashboard,
     getMyOrders,
@@ -77,6 +103,10 @@ export default ({ children }) => {
     getOrderById,
     singleOrderDetails,
     price,
+    getallADOrders,
+    AllOrders,
+    getallADUsers,
+    AllUsers,
   };
 
   return (

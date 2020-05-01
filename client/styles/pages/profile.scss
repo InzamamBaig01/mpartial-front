@@ -114,6 +114,15 @@
       letter-spacing: 0px;
       color: #000000;
     }
+   
+    .edit_profile_submit_container {
+      text-align: center;
+      .edit_profile_submit{
+        min-width: 200px;
+        margin: 0 auto;
+        height:40px;
+      }
+    }
   }
 }
 

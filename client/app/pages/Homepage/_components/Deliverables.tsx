@@ -29,7 +29,7 @@ export const Deliverables: React.FC<DeliverablesProps> = ({}) => {
             type="center"
           ></SectionTitle>
           <h3 className={"widget-title sub mt-1"}>
-            Pre-Mitigation + Post-Mitigation = ESX & SKX (TrueSketchPLUS)
+            Pre-Mitigation Scan + Post-Mitigation Scan = ESX & SKX (TrueSketch PLUS)
           </h3>
           <div className={"deliver_widget_container"}>
             <DeliverablesBox
@@ -45,7 +45,7 @@ export const Deliverables: React.FC<DeliverablesProps> = ({}) => {
           <span className={"numeric-character"}></span>
           <div className={"deliver-slider"}>
             <h3 className={"widget-title"}>
-              Immaculate. Impartial. [ESX & PDF]
+              Immaculate. Impartial. [ESX]
             </h3>
             <DeliverSlider />
           </div>

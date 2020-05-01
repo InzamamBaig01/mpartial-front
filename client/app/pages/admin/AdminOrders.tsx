@@ -1,169 +1,143 @@
-import React, { useEffect } from "react";
-import { withRouter } from "react-router-dom";
-import Header from "app/components/Header";
+import React, { useEffect, useContext, useState } from "react";
+import { withRouter, Link } from "react-router-dom";
+import ADHeader from "app/components/ADHeader";
+import DataTable from "react-data-table-component";
+import Search from "../../../assets/search.svg";
+import First from "../../../assets/first.svg";
+import Last from "../../../assets/last.svg";
+import Next from "../../../assets/next.svg";
+import Previous from "../../../assets/previous.svg";
+import viewicon from "../../../assets/view.svg";
+
+import { AppContext } from "contexts/appContext";
 import AdminSidebar from "./_components/AdminSidebar";
-import DataTable, { createTheme } from 'react-data-table-component';
-
-createTheme('solarized', {
-    text: {
-        primary: '#000000',
-        secondary: '#000000',
-    },
-    background: {
-        default: '#ffffff',
-    },
-    context: {
-        background: '#cb4b16',
-        text: '#FFFFFF',
-    },
-    divider: {
-        default: '#073642',
-    },
-    action: {
-        button: 'rgba(0,0,0,.54)',
-        hover: 'rgba(0,0,0,.08)',
-        disabled: 'rgba(0,0,0,.12)',
-    },
-});
-
 const AdminOrders = () => {
+  const { getallADOrders, AllOrders } = useContext(AppContext);
+  const [orders, setOrders] = useState([]);
+  const columns = [
+    {
+      name: "Order No",
+      selector: "id",
+      sortable: false,
+      className: "header-col",
+    },
+    {
+      name: "Email",
+      selector: "emailForDeliveryOfResults",
+      sortable: false,
+      className: "header-col",
+    },
+    {
+      name: "Order Date",
+      selector: "createdAt",
+      sortable: false,
+      className: "header-col",
+    },
+    {
+      name: "Total",
+      selector: "amountInCents",
+      sortable: false,
+      className: "header-col",
+      format: (d) => `$${d.amountInCents / 100}`,
+    },
+    {
+      name: "Action",
+      selector: "action",
+      sortable: false,
+      className: "header-col",
+      format: (d) => (
+          <Link
+            to={`/orderdetails/${d.id}`}>
+             <img  src={viewicon} alt="" />
+          </Link>
+      ),
+    },
+  ];
 
-    const data = [{
-        "orderno": "Dummy Data",
-        "email": "Dummy Data",
-        "date": "Dummy Data",
-        "total": "Dummy Data",
-        "action": "Dummy Data",
-    }, {
-        "orderno": "Dummy Data",
-        "email": "Dummy Data",
-        "date": "Dummy Data",
-        "total": "Dummy Data",
-        "action": "Dummy Data",
-    }, {
-        "orderno": "Dummy Data",
-        "email": "Dummy Data",
-        "date": "Dummy Data",
-        "total": "Dummy Data",
-        "action": "Dummy Data",
-    }, {
-        "orderno": "Dummy Data",
-        "email": "Dummy Data",
-        "date": "Dummy Data",
-        "total": "Dummy Data",
-        "action": "Dummy Data",
-    }, {
-        "orderno": "Dummy Data",
-        "email": "Dummy Data",
-        "date": "Dummy Data",
-        "total": "Dummy Data",
-        "action": "Dummy Data",
-    }, {
-        "orderno": "Dummy Data",
-        "email": "Dummy Data",
-        "date": "Dummy Data",
-        "total": "Dummy Data",
-        "action": "Dummy Data",
-    }, {
-        "orderno": "Dummy Data",
-        "email": "Dummy Data",
-        "date": "Dummy Data",
-        "total": "Dummy Data",
-        "action": "Dummy Data",
-    }, {
-        "orderno": "Dummy Data",
-        "email": "Dummy Data",
-        "date": "Dummy Data",
-        "total": "Dummy Data",
-        "action": "Dummy Data",
-    }, {
-        "orderno": "Dummy Data",
-        "email": "Dummy Data",
-        "date": "Dummy Data",
-        "total": "Dummy Data",
-        "action": "Dummy Data",
-    }, {
-        "orderno": "Dummy Data",
-        "email": "Dummy Data",
-        "date": "Dummy Data",
-        "total": "Dummy Data",
-        "action": "Dummy Data",
-    }, {
-        "orderno": "Dummy Data",
-        "email": "Dummy Data",
-        "date": "Dummy Data",
-        "total": "Dummy Data",
-        "action": "Dummy Data",
-    },];
+  useEffect(() => {
+    getallADOrders();
+  }, []);
 
-    const columns = [
-        {
-            name: 'Order No.',
-            selector: 'orderno',
-            sortable: true,
-        },
-        {
-            name: 'Email',
-            selector: 'email',
-            sortable: true,
-            right: true,
-        }, {
-            name: 'Order Date',
-            selector: 'date',
-            sortable: true,
-            right: true,
-        }, {
-            name: 'Total',
-            selector: 'total',
-            sortable: true,
-            right: true,
-        }, {
-            name: 'Action',
-            selector: 'action',
-            sortable: true,
-            right: true,
-        },
-    ];
-
-
-    return (
-        <>
-            <Header isFixedColor={true}></Header>
-            <div className="other_pages_container">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-md-3 col-sm-4 col-xs-12 admin_sidebar">
-                            <AdminSidebar></AdminSidebar>
-                        </div>
-                        <div className="col-md-9 col-sm-8 col-xs-12 admin_orders">
-                            <div className="row">
-                                <div className="col">
-                                    <div className="admin_order_heading">
-                                        Orders
-                                    </div>
-                                </div>
-                                <div className="col text-right">
-                                    <input type="text" className="form-control admin_orders_search" />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col">
-                                    <DataTable
-                                        title=""
-                                        columns={columns}
-                                        data={data}
-                                        pagination={true}
-                                        theme="solarized"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  useEffect(() => {
+    if (AllOrders.length) {
+      setOrders(AllOrders);
+    }
+  }, [AllOrders]);
+  return (
+    <>
+      <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
+      <div className="other_pages_container">
+        <div className={"admin-order-wrap"}>
+          <AdminSidebar></AdminSidebar>
+          <section>
+            <div className={"section-head"}>
+              <div>
+                <h2>Orders</h2>
+              </div>
+              <div>
+                {/* <div className="form-group">
+                  <div className="input-group">
+                    <img className="input_icon" src={Search} alt="" />
+                    <input
+                      type="email"
+                      className="form-control"
+                      placeholder="Search"
+                      required
+                    />
+                  </div>
+                </div> */}
+              </div>
             </div>
-        </>
-    );
-}
-
+            <DataTable
+              columns={columns}
+              data={orders}
+              responsive={true}
+              pagination={true}
+            />
+            {/* <div className={"table-pagination"}>
+              <div className={"pagination"}>
+                <ul>
+                  <li className={"first"}>
+                    <a href="#">
+                      <img className="input_icon" src={First} alt="" />
+                    </a>
+                  </li>
+                  <li className={"previous"}>
+                    <a href="#">
+                      <img className="input_icon" src={Previous} alt="" />
+                    </a>
+                  </li>
+                  <li className={"active"}>
+                    <a href="#"> 1</a>
+                  </li>
+                  <li>
+                    <a href="#"> 2</a>
+                  </li>
+                  <li className={"next"}>
+                    <a href="#">
+                      <img className="input_icon" src={Next} alt="" />
+                    </a>{" "}
+                  </li>
+                  <li className={"last"}>
+                    <a href="#">
+                      <img className="input_icon" src={Last} alt="" />
+                    </a>{" "}
+                  </li>
+                </ul>
+              </div>
+              <div className={"pages"}>
+                <div></div>
+                <div className={"info"}>
+                  Showing <span>1</span> - <span>9</span> of <span>40</span>
+                </div>
+              </div>
+            </div>
+           */}
+          </section>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default withRouter(AdminOrders);

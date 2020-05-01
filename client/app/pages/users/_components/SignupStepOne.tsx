@@ -41,7 +41,7 @@ export const SignupStepOne: React.FC<StepProps> = (props) => {
     <>
       <div className={"container"}>
         <h2>
-          Hello! I'm Partial. I'll get you signed up in <br /> seconds. Ready to
+          Hello! I'm Joe. I'll get you signed up in <br /> seconds. Ready to
           go?
         </h2>
         <form onSubmit={onSubmit}>
