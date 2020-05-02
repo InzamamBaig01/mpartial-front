@@ -65,7 +65,7 @@ const Receipt = (props) => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>mpartial</td>
+                    <td>Mpartial Deposit	</td>
                     <td>${price}</td>
                   </tr>
 

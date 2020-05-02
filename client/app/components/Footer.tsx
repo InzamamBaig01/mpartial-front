@@ -12,7 +12,7 @@ export const Footer: React.FC<FooterProps> = () => {
       <div className={'container'}>
         <div className={'row'}>
         <div className={'col-md-6 col-sm-12'}>
-          <p>2020 © mparitial a 4D Schematics Company. All rights reserved.</p>
+          <p>mpartial, a 4D Schematics Company. Copyright 2020 all rights reserved.</p>
         </div>
         <div className={'col-md-6 col-sm-12'}>
           <ul className={'social-links'}>

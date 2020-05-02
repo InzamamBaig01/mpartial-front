@@ -116,7 +116,7 @@ export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
               </div>
               <p>
                 {messageDone
-                  ? "Your message has been sent to support team, you can expect a reply within 12 hours. "
+                  ? "Your message has been sent to the support team, you can expect a reply within 12 hours. "
                   : ""}
               </p>
               <button

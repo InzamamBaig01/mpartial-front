@@ -26,12 +26,12 @@ export const Slider: React.FC<SliderProps> = ({ nextSection }) => {
           loop={true}
           autoPlay={true}
           src="/background.mp4"
-          // src={videofile}
+        // src={videofile}
         >
 
         </BackgroundVideo>
         <div className="main_banner_text">
-          IMPARTIAL, remote, third-party <br /> estimating/adjusting
+          Impartial, Remote, 3rd-Party,<br/> Estimating Engine
           </div>
         <div className="slider_down_btn" onClick={() => {
           window.scrollTo({ top: nextSection.current.offsetTop, behavior: 'smooth' })

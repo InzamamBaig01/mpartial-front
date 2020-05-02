@@ -10,7 +10,6 @@ import {
 import { ROUTES } from "./pages/routes";
 import { hot } from "react-hot-loader";
 import { AuthContext } from "../contexts/authContext";
-import SEO from "react-seo-component";
 
 const App: React.FC<RouteComponentProps<any>> = (props) => {
   const {
@@ -35,29 +34,14 @@ const App: React.FC<RouteComponentProps<any>> = (props) => {
       }
       return route;
     });
-    if (isAD) {
-      setPageIsAD(isAD);
-    } else {
-      setPageIsPublicValue(isPublic);
-    }
+    setPageIsPublicValue(isPublic);
+
+    setPageIsAD(isAD);
   });
 
   return (
     <>
-      <SEO
-        title={"mpartial"}
-        titleTemplate={" - Keep Building"}
-        description={
-          "mpartial - unbiased 3rd-party remote estimating engine that leverages Matterport's geospatial data to generate Xactimate estimates that are Actionable Insights compliant, consistent and poised for approval without hesitation."
-        }
-        image={
-          "https://s3.amazonaws.com/getinsights-live/wp-content/uploads/2020/04/27225255/mpartial_logo.png"
-        }
-        pathname={"www.mpartial.io"}
-        siteLanguage={"English"}
-        siteLocale={"US"}
-        twitterUsername={"twitterUsername"}
-      />
+
       <LocalApp
         isAuthenticated={isUserAuthenticated()}
         isADAuthenticated={isADAuthenticated()}

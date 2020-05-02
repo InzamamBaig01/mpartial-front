@@ -25,7 +25,7 @@ import { Dropdown, Modal, Button } from "react-bootstrap";
 import { AuthContext } from "contexts/authContext";
 import { AppContext } from "contexts/appContext";
 import profile_edit from "../../../assets/profile_edit.svg";
-import dragimage from "../../../assets/upload.svg";
+import dragimage from "../../../assets/userProfile.svg";
 import { useDropzone } from "react-dropzone";
 import queryString from "query-string";
 import {

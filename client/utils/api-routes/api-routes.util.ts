@@ -89,7 +89,7 @@ export const allADOrders = () =>
       authString: localStorage.topen
     },
     method: 'POST',
-    url: `${baseURL}/GIServer/GetAllUsers`,
+    url: `${baseURL}/GIServer/getAllCustomers`,
   }).pipe(catchError(handleError('login')));
 
   export const updateStatus = (payload) =>
@@ -181,6 +181,17 @@ export const saveOrderData = (payload, apiData) => {
   return ajax({
     method: "POST",
     url: `${baseURL}/Client/saveOrderData?${apiData}`,
+    body: payload,
+  }).pipe(
+    catchError(handleError("claimForm")),
+    
+  );
+};
+
+export const saveFileOrderData = (payload, apiData) => {
+  return ajax({
+    method: "POST",
+    url: `${baseURL}/Client/addFileToOrder?orderId=${apiData.orderId}&thetoken=${localStorage.token}`,
     body: payload,
   }).pipe(
     catchError(handleError("claimForm")),

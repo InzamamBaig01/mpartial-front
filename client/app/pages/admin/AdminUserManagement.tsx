@@ -17,25 +17,25 @@ const AdminUserManagement = () => {
   const columns = [
     {
       name: "name",
-      selector: "name",
+      selector: "firstName",
       sortable: false,
       className: "header-col",
     },
     {
       name: "Email",
-      selector: "email",
+      selector: "emailAddress",
       sortable: false,
       className: "header-col",
     },
     {
       name: "No. of Orders",
-      selector: "name",
+      selector: "noOfOrders",
       sortable: false,
       className: "header-col",
     },
     {
       name: "Member Since",
-      selector: "name",
+      selector: "joinedOn",
       sortable: false,
       className: "header-col",
     },

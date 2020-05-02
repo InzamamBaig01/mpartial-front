@@ -3,6 +3,7 @@ import { withRouter, Link } from "react-router-dom";
 import SectionTitle from 'app/components/SectionTitle';
 import Slider from '../../../../utils/react-rangeslider/';
 import { css } from 'emotion';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 interface WaterFallProps {
 
@@ -124,24 +125,32 @@ export const WaterFall: React.FC<WaterFallProps> = ({ }) => {
     })
   }
 
-  const convertToStr =   (labelValue) => {
+  const convertToStr = (labelValue) => {
 
     // Nine Zeroes for Billions
     return Math.abs(Number(labelValue)) >= 1.0e+9
 
-    ? Math.abs(Number(labelValue)) / 1.0e+9 + "B"
-    // Six Zeroes for Millions 
-    : Math.abs(Number(labelValue)) >= 1.0e+6
+      ? Math.abs(Number(labelValue)) / 1.0e+9 + "B"
+      // Six Zeroes for Millions 
+      : Math.abs(Number(labelValue)) >= 1.0e+6
 
-    ? Math.abs(Number(labelValue)) / 1.0e+6 + "M"
-    // Three Zeroes for Thousands
-    : Math.abs(Number(labelValue)) >= 1.0e+3
+        ? Math.abs(Number(labelValue)) / 1.0e+6 + "M"
+        // Three Zeroes for Thousands
+        : Math.abs(Number(labelValue)) >= 1.0e+3
 
-    ? Math.abs(Number(labelValue)) / 1.0e+3 + "K"
+          ? Math.abs(Number(labelValue)) / 1.0e+3 + "K"
 
-    : Math.abs(Number(labelValue));
+          : Math.abs(Number(labelValue));
 
-}
+  }
+
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Content>
+        Fee Structure Example: An estimate grand total of $100k will result in a fee of $7,360. The $750 deposit will be collected upon submission and applied toward the overarching fee.
+      </Popover.Content>
+    </Popover>
+  );
 
   return (
     <>
@@ -204,9 +213,14 @@ export const WaterFall: React.FC<WaterFallProps> = ({ }) => {
             margin: '0 auto',
             textAlign: 'center',
             fontSize: '14px',
-          }} className={'section_title_description'}>Drag the slider around based on what do you think it will cost to repair the property;
-            Move forward based on the estimated fee structure below</p>
+          }} className={'section_title_description'}>
+            Drag the slider around based on what you think it will cost to repair the property. <br />
+            Move forward based on the estimated fee structure below.
+          </p>
           <div className="partial_fee_btn">
+            <OverlayTrigger trigger="click" placement="top" overlay={popover}>
+              <i className="info_popup">i</i>
+            </OverlayTrigger>
             <label>{commission}%</label>
             <span>mpartial Fee</span>
           </div>

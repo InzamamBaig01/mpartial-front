@@ -12,7 +12,7 @@ import {
   resendActivationEmail,
 } from "utils/api-routes/api-routes.util";
 import Loader from "app/components/Loader";
-interface IProps {}
+interface IProps { }
 
 export const Login: React.FC<IProps> = ({ ...props }) => {
   const {
@@ -130,27 +130,28 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
               &times;
             </div>
             {loginStatus ==
-            "This user is not allowed to login. Please verify your email address first." ? (
-              <>
-                You have not verified your email address.{" "}
-                <a
-                  href="#"
-                  onClick={() => {
-                    resendEmail();
-                  }}
-                >
-                  Click here
+              "This user is not allowed to login. Please verify your email address first." ? (
+                <>
+                  You have not verified your email address.{" "}
+                  <a
+                    href="#"
+                    onClick={() => {
+                      resendEmail();
+                    }}
+                  >
+                    Click here
                 </a>{" "}
-                to receive a verification email.
+                to resend verification email.
+
               </>
-            ) : (
-              loginStatus
-            )}
+              ) : (
+                loginStatus
+              )}
           </div>
         </div>
       ) : (
-        ""
-      )}
+          ""
+        )}
     </>
   );
 };

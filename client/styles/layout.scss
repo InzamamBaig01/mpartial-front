@@ -8,6 +8,7 @@
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
+  min-width: 159px;
 }
 .btn-green {
   width: 159px;
@@ -85,6 +86,7 @@
     line-height: 16px;
     margin-left: 7%;
     white-space: nowrap;
+    min-width: 20px;
   }
 }
 
@@ -185,7 +187,7 @@
 .compare_images_section {
   width: 100%;
   height: auto;
-  padding: 50px;
+  padding: 50px;  padding-bottom: 0;
   .styles_handle__33IZp {
     background: #3ac280;
     box-shadow: 0px 0px 19px 3px #3ac280;
@@ -209,11 +211,18 @@
 .try_now_btn {
   text-align: center;
   padding: 60px 0;
+  margin: 0 auto;
+  padding-top: 0;
 }
 
 .howitworks {
   background: rgba(10, 81, 105, 0.05) 0% 0% no-repeat padding-box;
   // padding-top: 4%;
+
+  .try_now_btn {
+    text-align: center;
+    padding: 60px 0;
+  }
 }
 .data_points {
   padding-top: 2%;
@@ -250,6 +259,21 @@
   text-align: center;
   background: #0a5169;
   border-radius: 10px;
+  position: relative;
+  .info_popup {
+    position: absolute;
+    right: 6%;
+    top: 5%;
+    font-size: 15px;
+    color: white;
+    font-style: normal;
+    border-radius: 50%;
+    border: 1px #fff solid;
+    width: 20px;
+    height: 20px;
+    line-height: 19px;
+    cursor: pointer;
+  }
   label {
     font-size: 28px;
     margin: 0;
@@ -1311,6 +1335,9 @@ span.password_not_matched {
 
 a {
   color: #0a5169;
+  &:hover {
+    color:#57C380;
+  }
 }
 
 .dropdown-menu a {
@@ -1462,4 +1489,9 @@ a {
   .status_select {
     padding: 0.375rem 0.75rem;
   }
+}
+
+
+.order_details_value a {
+  display: block;
 }

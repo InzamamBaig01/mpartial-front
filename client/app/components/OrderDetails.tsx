@@ -269,9 +269,9 @@ const OrderDetails = (props) => {
                 Data = () => {
                     return (
                         <>
-                            {props.order[props.field.id].map((d) => (
+                            {props.order[props.field.id].map((d, index) => (
                                 <a href={d} target="_blank" download>
-                                    Download
+                                    Asset {index+1}
                                 </a>
                             ))}
                         </>

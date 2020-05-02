@@ -3,7 +3,7 @@ import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import MultiSelect from "react-multi-select-component";
 import { AuthContext } from "contexts/authContext";
-import { saveOrderData } from "utils/api-routes/api-routes.util";
+import { saveOrderData, saveFileOrderData } from "utils/api-routes/api-routes.util";
 import history from "../../utils/history";
 import queryString from "query-string";
 import { AppContext } from "contexts/appContext";
@@ -302,6 +302,7 @@ const DrawField = (props) => {
               <input
                 type="file"
                 required={field.required ? true : false}
+                multiple
                 onChange={(e) => {
                   props.onChange(field, e.target.files);
                   field.value = e.target.files;
@@ -357,6 +358,7 @@ const DrawField = (props) => {
   return form(field);
 };
 
+
 const UserOrder = () => {
   const { userDetails } = useContext(AuthContext);
   fields[fields.length - 1].value = userDetails().emailAddress;
@@ -365,6 +367,23 @@ const UserOrder = () => {
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const { price } = useContext(AppContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
+
+  const uploadFiles = (id, files, index) => {
+    if (files[index]) {
+      const formData = new FormData();
+
+      formData.append("potentiallyRelevantDigitalAssets", files[index]);
+
+      saveFileOrderData(formData, {
+        orderId: id,
+      }).subscribe((response) => {
+        uploadFiles(id, files, index+1);
+      })
+    }else{
+      hideLoader();
+      history.push(`/checkout/${id}`);
+    }
+  }
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -383,18 +402,21 @@ const UserOrder = () => {
       } else if (field.type === "multiSelect") {
         apiData[field.id] = field.value
           ? field.value.map((v) => {
-              return v.value;
-            })
+            return v.value;
+          })
           : "";
       } else {
         apiData[field.id] = field.value;
       }
     });
 
+    console.log(fileToUpload)
+
+
     const stringified = queryString.stringify(apiData);
 
-    if (fileToUpload)
-      formData.append("potentiallyRelevantDigitalAssets", fileToUpload[0]);
+    // if (fileToUpload)
+    //   formData.append("potentiallyRelevantDigitalAssets", fileToUpload[0]);
 
     saveOrderData(formData, stringified).subscribe(
       (response: any) => {
@@ -402,25 +424,14 @@ const UserOrder = () => {
           // console.log(response.response);
           localStorage.setItem("sessipn", response.response.message);
 
-          hideLoader();
-          history.push(`/checkout/${response.response.data.id}`);
-          // dispatchGetBoardDetails();
+          console.log(response.response);
 
-          // showAlert({
-          //   alertType: "success",
-          //   message: "Your Form has been successfully submitted",
-          //   isTimely: false
-          // });
-          // setFormSubmitted(true);
+          uploadFiles(response.response.data.id, fileToUpload, 0);
+        
         } else {
           hideLoader();
-          // showAlert({
-          //   alertType: "error",
-          //   message: "something wrong.",
-          //   isTimely: false
-          // });
+          
         }
-        // //console.log(response);
       },
       (response) => {
         //console.log(response);
