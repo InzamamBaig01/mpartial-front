@@ -92,6 +92,15 @@ export const allADOrders = () =>
     url: `${baseURL}/GIServer/GetAllUsers`,
   }).pipe(catchError(handleError('login')));
 
+  export const updateStatus = (payload) =>
+  ajax({
+    headers: {
+      authString: localStorage.topen
+    },
+    method: 'POST',
+    url: `${baseURL}/GIServer/updateOrderStatus?orderId=${payload.orderId}&orderStatus=${payload.orderStatus}`,
+  }).pipe(catchError(handleError('login')));
+
   
 
 export const adLogin = payload =>
@@ -247,6 +256,16 @@ export const forgotPasswordAPI = (payload) => {
     
   );
 };
+export const resendActivationEmail = (payload) => {
+  return ajax({
+    headers: requestHeader(),
+    method: "POST",
+    url: `${baseURL}/Client/resendActivationEmail?emailaddress=${payload.emailaddress}`,
+  }).pipe(
+    catchError(handleError("logout")),
+    
+  );
+};
 
 export const sendEmail = (payload) => {
   return ajax({
@@ -314,92 +333,6 @@ export const resetPassword = (payload) => {
     body: payload,
   }).pipe(
     catchError(handleError("resetPassword")),
-    
-  );
-};
-
-export const getBoardData = (payload) => {
-  return ajax({
-    headers: requestHeader(),
-    method: "POST",
-    url: `${baseURL}/getAllBoards`,
-  }).pipe(
-    catchError(handleError("getBoardData")),
-    
-  );
-};
-
-export const updateBoardData = (payload, id) => {
-  return ajax({
-    headers: requestHeader(),
-    method: "POST",
-    url: `${baseURL}/GIServer/updateBoardData?boardId=${id}`,
-    body: payload,
-  }).pipe(
-    catchError(handleError("getBoardData")),
-    
-  );
-};
-
-export const getUsers = (payload) => {
-  return ajax({
-    headers: requestHeader(),
-    method: "POST",
-    url: `${baseURL}/GIServer/GetAllUsers`,
-    body: payload,
-  }).pipe(
-    catchError(handleError("GetAllUsers")),
-    
-  );
-};
-
-export const GetAllRoles = (payload) => {
-  return ajax({
-    headers: requestHeader(),
-    method: "POST",
-    url: `${baseURL}/GIServer/GetAllRoles`,
-    body: payload,
-  }).pipe(
-    catchError(handleError("GetAllUsers")),
-    
-  );
-};
-
-export const GetAllPrivileges = (payload) => {
-  return ajax({
-    headers: requestHeader(),
-    method: "POST",
-    url: `${baseURL}/GIServer/GetAllPrivileges`,
-    body: payload,
-  }).pipe(
-    catchError(handleError("GetAllUsers")),
-    
-  );
-};
-
-export const claimForm = (payload, apiData) => {
-  return ajax({
-    headers: requestHeader(),
-    method: "POST",
-    url: `${baseURL}/addCardFromForm?boardId=${apiData.boardId}&cardTitle=${
-      apiData.cardTitle
-    }&description=${apiData.description}&otherData=${JSON.stringify(
-      apiData.otherData
-    )}&label=${JSON.stringify(apiData.label)}`,
-    body: payload,
-  }).pipe(
-    catchError(handleError("claimForm")),
-    
-  );
-};
-
-export const getServerTime = () => {
-  return ajax({
-    headers: requestHeader(),
-    method: "POST",
-    url: `${baseURL}/GIServer/GetServerTime`,
-  }).pipe(
-    catchError(handleError("getServerTime")),
     
   );
 };

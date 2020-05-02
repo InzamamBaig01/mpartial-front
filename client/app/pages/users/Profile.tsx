@@ -2,6 +2,10 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 import Header from "app/components/Header";
 import userProfile from "../../../assets/userProfile.svg";
+import visa from "../../../assets/visa.png";
+import mastercard from "../../../assets/mastercard.png";
+import AmericanExpress from "../../../assets/American-Express.png";
+import discover from "../../../assets/discover.png";
 // import stripe from "stripe";
 import InputMask from "react-input-mask";
 
@@ -58,6 +62,8 @@ const FormElement = () => {
   const { getMyInfo, myInfo } = useContext(AppContext);
 
   const [name, setName] = useState("");
+
+
   const handleSubmit = (ev) => {
     ev.preventDefault();
 
@@ -411,7 +417,12 @@ const Profile = () => {
   const { getMyInfo, myInfo } = useContext(AppContext);
 
   const [info, setInfo] = useState(false);
-
+  const pmicons = {
+    mastercard: mastercard,
+    visa: visa,
+    discover: discover,
+    "american express": AmericanExpress,
+  }
   useEffect(() => {
     getMyInfo();
   }, []);
@@ -536,7 +547,7 @@ const Profile = () => {
                         ? info.stripeCustomerCard.map((card, index) => {
                             return (
                               <tr>
-                                <td key={index}>{card.brand}</td>
+                                <td key={index}><img src={pmicons[card.brand]} className="brand_icon" alt="" /></td>
                                 <td>XXXX XXXX XXXX {card.last4}</td>
                                 <td>
                                   {card.exp_month}/{card.exp_year}

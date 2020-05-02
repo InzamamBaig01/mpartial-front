@@ -9,6 +9,7 @@ import Lock from "../../../assets/lock.svg";
 import {
   resetPassword,
   forgotPasswordAPI,
+  resendActivationEmail,
 } from "utils/api-routes/api-routes.util";
 import Loader from "app/components/Loader";
 interface IProps {}
@@ -49,7 +50,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
   }, []);
 
   const resendEmail = () => {
-    forgotPasswordAPI({
+    resendActivationEmail({
       emailaddress: payload.username,
     }).subscribe((response) => {
       if (response.response.Requested_Action) {

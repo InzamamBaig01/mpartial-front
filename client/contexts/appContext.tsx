@@ -25,6 +25,8 @@ interface IContextProps {
   AllOrders: any;
   getallADUsers: Function;
   AllUsers: any;
+  getADOrderById: Function
+  singleADOrderDetails: any
 }
 
 export const AppContext = React.createContext({} as IContextProps);
@@ -34,6 +36,7 @@ export default ({ children }) => {
   const [myOrders, setMyOrders] = useState([]);
   const [myInfo, setMyInfo] = useState(false);
   const [singleOrderDetails, setSingleOrderDetails] = useState(false);
+  const [singleADOrderDetails, setSingleADOrderDetails] = useState(false);
   const [price, setPrice] = useState(750);
   const [AllOrders, setAllOrders] = useState([]);
   const [AllUsers, setAllUsers] = useState([]);
@@ -76,11 +79,25 @@ export default ({ children }) => {
     });
   };
 
+
+
+  const getADOrderByID = (id, orders?) => {
+    return orders.filter((order) => order.id == id)[0];
+  };
+
+  const getADOrderById = (id) => {
+    // showLoader();
+    allADOrders().subscribe((response) => {
+      setAllOrders(response.response.data);
+      // hideLoader();
+      setSingleADOrderDetails(getADOrderByID(id, response.response.data));
+    });
+  };
+
   const getallADOrders = () => {
     // showLoader();
     allADOrders().subscribe((response) => {
       setAllOrders(response.response.data);
-      console.log(response.response.data);
       // hideLoader();
     });
   };
@@ -107,6 +124,8 @@ export default ({ children }) => {
     AllOrders,
     getallADUsers,
     AllUsers,
+    getADOrderById,
+    singleADOrderDetails,
   };
 
   return (

@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import { AppContext } from "contexts/appContext";
+import OrderDetails from "app/components/OrderDetails";
 
 const fields = [
   {
@@ -228,54 +229,6 @@ fields.sort((a, b) => {
   return a.type > b.type;
 });
 
-const DrawFieldData = (props) => {
-  let Data;
-  switch (props.field.type) {
-    case "multiSelect":
-      Data = () => {
-        return (
-          <>
-            <ul className="order_detail_list">
-              {props.order[props.field.id].map((d) => (
-                <li>{d}</li>
-              ))}
-            </ul>
-          </>
-        );
-      };
-      break;
-
-    case "multipleAttachment":
-      Data = () => {
-        return (
-          <>
-            {props.order[props.field.id].map((d) => (
-              <a href={d} target="_blank" download>
-                Download
-              </a>
-            ))}
-          </>
-        );
-      };
-      break;
-    default:
-      Data = () => {
-        return (
-          <>
-            {props.order[props.field.id]
-              ? props.order[props.field.id]
-              : "Not Available"}
-          </>
-        );
-      };
-      break;
-  }
-  return (
-    <>
-      <Data></Data>
-    </>
-  );
-};
 
 const MyOrderDetails = (props) => {
   const { getOrderById, singleOrderDetails } = useContext(AppContext);
@@ -298,34 +251,9 @@ const MyOrderDetails = (props) => {
       <div className="other_pages_container">
         <h1 className="title text-center">Order Details</h1>
         <div className="container">
-          {order ? (
-            <div className="order_details">
-              <div className="order_details_header">Project Name: {order.projectName}</div>
-
-              <div className="row order_details_info">
-                {fields.map((field) => {
-                  return (
-                    <div className={`col-md-4 col-sm-6 col-xs-6 field_${field.type}`}>
-                      <label>{field.name}</label>
-                      <div className="order_details_value">
-                        <DrawFieldData
-                          order={order}
-                          field={field}
-                        ></DrawFieldData>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="order_details_footer">
-                <Link to="/orders">
-                  <button className="btn">Back</button>
-                </Link>
-              </div>
-            </div>
-          ) : (
-            ""
-          )}
+          <OrderDetails
+            order={order}
+          />
         </div>
       </div>
     </>

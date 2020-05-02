@@ -515,7 +515,7 @@ span.numeric-character {
 .deliver-slider {
   margin: 15px auto;
   // width:770px;
-  width: 60%;
+  width: 80%;
 }
 .carousel {
   padding: 15px 0 60px 0;
@@ -1313,79 +1313,80 @@ a {
   color: #0a5169;
 }
 
-.dropdown-menu a{
+.dropdown-menu a {
   line-height: 14px !important;
 }
 .submit_btn_container {
   text-align: center;
 }
 
-.admin-order-wrap{
+.admin-order-wrap {
   display: flex;
-  aside{
+  aside {
     width: 100%;
-    max-width:280px;
-    height:calc(100vh - 58px);
+    max-width: 280px;
+    height: calc(100vh - 58px);
     background: #fff;
-    ul{
+    ul {
       margin: 30px;
       padding: 0;
       list-style: none;
     }
-    ul li{
+    ul li {
       margin: 5px 0;
       border-radius: 4px;
     }
-    ul li:first-child{
+    ul li:first-child {
       background: url(../assets/order.svg) no-repeat 10px 8px;
     }
-    ul li:first-child:hover{
+    ul li:first-child:hover {
       background: url(../assets/order-hover.svg) no-repeat 10px 8px;
     }
-    ul li:last-child{
+    ul li:last-child {
       background: url(../assets/user-admin.svg) no-repeat 10px 8px;
     }
-    ul li:last-child:hover{
+    ul li:last-child:hover {
       background: url(../assets/user-hover.svg) no-repeat 10px 8px;
     }
-    ul li a,ul li a:hover{
+    ul li a,
+    ul li a:hover {
       padding: 5px 10px 5px 35px;
       display: block;
-      color:#000;
+      color: #000;
       text-decoration: none;
       border-radius: 4px;
     }
-    ul li a:hover{
-      color:#3AC280;
-      background: rgba(58,194,128,0.25);
+    ul li a:hover {
+      color: #3ac280;
+      background: rgba(58, 194, 128, 0.25);
     }
   }
-  section{
+  section {
     width: calc(100% - 280px);
     margin: 30px;
-    h2{
+    h2 {
       font-size: 18px;
       font-weight: bold;
     }
-    header{
+    header {
       display: none;
     }
   }
-  .section-head{
+  .section-head {
     display: flex;
     justify-content: space-between;
-    .form-group{
+    .form-group {
       min-width: 350px;
     }
-    .input-group{
-      border:1px solid #3AC280;
+    .input-group {
+      border: 1px solid #3ac280;
       border-radius: 20px;
-      input{
+      input {
         height: 30px;
         border-radius: 20px;
       }
     }
-    .input-group .input_icon{
+    .input-group .input_icon {
       background: transparent;
       width: 20px;
       height: 15px;
@@ -1396,16 +1397,16 @@ a {
     }
   }
 }
-.table-pagination{
+.table-pagination {
   margin-top: 30px;
   display: flex;
   justify-content: space-between;
-  .pagination ul{
+  .pagination ul {
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .pagination ul li{
+  .pagination ul li {
     display: inline-block;
     width: 29px;
     height: 29px;
@@ -1416,32 +1417,49 @@ a {
   .pagination ul li.first,
   .pagination ul li.last,
   .pagination ul li.next,
-  .pagination ul li.previous{
-    background-color: #D7F3E6;
+  .pagination ul li.previous {
+    background-color: #d7f3e6;
   }
-  .pagination ul li a{
+  .pagination ul li a {
     display: block;
     border-radius: 2px;
     height: 100%;
     text-decoration: none;
-    color: #49C78A;
+    color: #49c78a;
   }
-  .pagination ul li a:hover{
-    background-color: #49C78A;
+  .pagination ul li a:hover {
+    background-color: #49c78a;
     color: #fff;
   }
-  .pagination ul li.active a{
-    background-color: #49C78A;
+  .pagination ul li.active a {
+    background-color: #49c78a;
     color: #fff;
   }
   .pagination ul li.first a:hover,
   .pagination ul li.last a:hover,
   .pagination ul li.next a:hover,
-  .pagination ul li.previous a:hover{
-    background-color: #D7F3E6;
+  .pagination ul li.previous a:hover {
+    background-color: #d7f3e6;
   }
-  .pages .info{
-    color: #9FA2A1;
+  .pages .info {
+    color: #9fa2a1;
     font-size: 14px;
+  }
+}
+
+.compare_images_section > div > div {
+  height: 80% !important;
+}
+
+.admin-order-edit {
+  width: 20px;
+  height: auto;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.Add_card {
+  .status_select {
+    padding: 0.375rem 0.75rem;
   }
 }

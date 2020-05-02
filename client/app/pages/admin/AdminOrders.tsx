@@ -8,6 +8,7 @@ import Last from "../../../assets/last.svg";
 import Next from "../../../assets/next.svg";
 import Previous from "../../../assets/previous.svg";
 import viewicon from "../../../assets/view.svg";
+import editicon from "../../../assets/profile_edit.svg";
 
 import { AppContext } from "contexts/appContext";
 import AdminSidebar from "./_components/AdminSidebar";
@@ -34,6 +35,22 @@ const AdminOrders = () => {
       className: "header-col",
     },
     {
+      name: "Status",
+      selector: "paymentStatus",
+      sortable: false,
+      className: "header-col",
+      format: (d) => {
+        console.log(d)
+        return (
+          <>
+          {d.paymentStatus}
+          {/* <img  src={editicon} className="admin-order-edit" alt="" /> */}
+
+          </>
+        );
+      },
+    },
+    {
       name: "Total",
       selector: "amountInCents",
       sortable: false,
@@ -47,7 +64,7 @@ const AdminOrders = () => {
       className: "header-col",
       format: (d) => (
           <Link
-            to={`/orderdetails/${d.id}`}>
+            to={`/details/${d.id}`}>
              <img  src={viewicon} alt="" />
           </Link>
       ),

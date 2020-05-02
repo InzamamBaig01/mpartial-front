@@ -15,6 +15,7 @@ import { ForgotPassword } from "./users/ForgotPassword";
 import TermsCondition from "./TermsCondition";
 import Changepasswordwithtoken from "./Changepasswordwithtoken";
 import ActivateAccount from "./ActivateAccount";
+import AdminOrderDetails from "./admin/AdminOrderDetails";
 
 export const ROUTES = [
   {
@@ -149,8 +150,8 @@ export const ROUTES = [
     redirectTo: "/mpartialadmin",
     isAD: true,
   },{
-    component: AdminOrders,
-    path: "/orderdetails/:orderid",
+    component: AdminOrderDetails,
+    path: "/details/:orderid",
     slug: "admin/orders/details",
     title: "admin/orders/details",
     redirectTo: "/mpartialadmin",
