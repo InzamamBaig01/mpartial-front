@@ -115,6 +115,7 @@ const AdminOrderDetails = (props) => {
             </div>
             <OrderDetails
               order={order}
+              isAdmin={true}
             />
 
           </section>

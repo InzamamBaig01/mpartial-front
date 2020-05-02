@@ -322,7 +322,7 @@ const OrderDetails = (props) => {
                         })}
                     </div>
                     <div className="order_details_footer">
-                        <Link to="/allorders">
+                        <Link to={props.isAdmin ? `/allorders` : `/orders`}>
                             <button className="btn">Back</button>
                         </Link>
                     </div>
