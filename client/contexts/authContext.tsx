@@ -81,8 +81,8 @@ export default React.memo(({ children }) => {
   let isValid = false;
 
   React.useEffect(() => {
-    // console.log("pageIsPublic",pageIsPublic);
-    if (pageIsPublic !== undefined && !pageIsPublic) {
+    if (pageIsPublic === true) {
+      console.log("pageIsPublic",pageIsPublic);
       auth().subscribe(
         (response: any) => {
           if (response.response.Requested_Action) {
@@ -98,8 +98,10 @@ export default React.memo(({ children }) => {
   }, [pageIsPublic]);
 
   React.useEffect(() => {
-    if (pageIsAD !== undefined && pageIsAD) {
+
+    if (pageIsAD === true) {
       console.log("pageIsAD",pageIsAD);
+
       AdValid();
     }
   }, [pageIsAD]);
@@ -155,7 +157,6 @@ export default React.memo(({ children }) => {
       return JSON.parse(profile);
     } else {
       // console.log(pageIsPublic);
-      if (pageIsPublic !== undefined && !pageIsPublic) logout();
     }
     return false;
   };

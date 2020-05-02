@@ -29,12 +29,12 @@ const App: React.FC<RouteComponentProps<any>> = (props) => {
         route.path.split("/").join("") ===
         props.location.pathname.split("/").join("")
       ) {
-        isPublic = route.isPublic ? true : false;
-        isAD = route.isAD ? true : false;
+        isPublic = route.checkLogin ? true : false;
+        isAD = route.checkADLogin ? true : false;
       }
       return route;
     });
-    setPageIsPublicValue(isPublic);
+    setPageIsPublicValue(isAD ? undefined : isPublic);
 
     setPageIsAD(isAD);
   });

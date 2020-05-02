@@ -60,10 +60,7 @@ module.exports = {
       },
       {
         test: /\.(mp4)$/,
-        loader: 'file-loader',
-        query: {
-          publicPath: '/',
-        },
+        use: 'file-loader?name=static/[name].[ext]',
       },
       {
         test: /\.woff2(\?v=[0-9]\.[0-9]\.[0-9])?$/,

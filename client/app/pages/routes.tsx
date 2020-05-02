@@ -57,6 +57,7 @@ export const ROUTES = [
   {
     component: Profile,
     isExact: true,
+    checkLogin: true,
     path: "/profile",
     slug: "Profile",
     title: "Profile",
@@ -66,6 +67,7 @@ export const ROUTES = [
     component: MyOrders,
     isExact: true,
     path: "/orders",
+    checkLogin: true,
     slug: "Orders",
     title: "Orders",
     isLogin: false,
@@ -75,6 +77,7 @@ export const ROUTES = [
     component: MyOrderDetails,
     isExact: true,
     path: "/ordersdetails/:orderid",
+    checkLogin: true,
     slug: "ordersDetails",
     title: "ordersDetails",
     isLogin: false,
@@ -84,6 +87,7 @@ export const ROUTES = [
     component: UserOrder,
     isExact: true,
     path: "/order",
+    checkLogin: true,
     slug: "userorder",
     title: "userorder",
     isLogin: false,
@@ -93,6 +97,7 @@ export const ROUTES = [
     component: Checkout,
     isExact: true,
     path: "/checkout/:orderid",
+    checkLogin: true,
     slug: "checkout",
     title: "checkout",
     isLogin: false,
@@ -102,6 +107,7 @@ export const ROUTES = [
     component: Receipt,
     isExact: true,
     path: "/receipt/:orderid",
+    checkLogin: true,
     slug: "receipt",
     title: "receipt",
     isLogin: false,
@@ -148,6 +154,7 @@ export const ROUTES = [
     slug: "admin/orders",
     title: "admin/orders",
     redirectTo: "/mpartialadmin",
+    checkADLogin: true,
     isAD: true,
   },{
     component: AdminOrderDetails,
@@ -156,6 +163,8 @@ export const ROUTES = [
     title: "admin/orders/details",
     redirectTo: "/mpartialadmin",
     isAD: true,
+    checkADLogin: true,
+
   },
   {
     component: AdminUserManagement,
@@ -164,6 +173,7 @@ export const ROUTES = [
     title: "admin/user-management",
     redirectTo: "/mpartialadmin",
     isAD: true,
+    checkADLogin: true,
   },
   {
     component: ForgotPassword,
