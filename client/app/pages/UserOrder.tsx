@@ -399,7 +399,7 @@ const UserOrder = () => {
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
 
   const uploadFiles = (id, files, index) => {
-    if (files[index]) {
+    if (files && files[index]) {
       const formData = new FormData();
 
       formData.append("potentiallyRelevantDigitalAssets", files[index]);
