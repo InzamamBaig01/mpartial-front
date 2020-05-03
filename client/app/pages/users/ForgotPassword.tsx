@@ -16,7 +16,7 @@ export const ForgotPassword: React.FC<IProps> = ({ ...props }) => {
   const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
   useEffect(() => {
     return () => {
-      console.log("cleaned up");
+     // console.log("cleaned up");
       setLoginStatus(false);
     };
   }, []);

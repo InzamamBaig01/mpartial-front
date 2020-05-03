@@ -49,7 +49,7 @@ const AdminUserDetails = (props) => {
 
     useEffect(() => {
         if (singleUserDetails) {
-            console.log(singleUserDetails);
+           // console.log(singleUserDetails);
             setUser(singleUserDetails);
         }
     }, [singleUserDetails]);

@@ -40,7 +40,7 @@ const AdminOrders = () => {
       sortable: false,
       className: "header-col",
       format: (d) => {
-        console.log(d)
+        // console.log(d)
         return (
           <>
           {d.paymentStatus}

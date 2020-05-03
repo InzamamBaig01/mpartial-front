@@ -36,17 +36,17 @@ module.exports = merge(common, {
               importLoaders: 2,
               localIdentName: '[local]',
               modules: true,
-              sourceMap: true,
+              sourceMap: false,
             }
           },
           {
             loader: 'postcss-loader',
-            options: { sourceMap: true },
+            options: { sourceMap: false },
           },
           {
             loader: 'fast-sass-loader',
             options: {
-              sourceMap: true,
+              sourceMap: false,
             }
           },
         ],
@@ -58,7 +58,7 @@ module.exports = merge(common, {
       new TerserPlugin({
         cache: path.resolve(PATHS.cache, 'terser-webpack-plugin'),
         parallel: true,
-        sourceMap: true,
+        sourceMap: false,
       }),
       new OptimizeCSSAssetsPlugin({}),
     ]

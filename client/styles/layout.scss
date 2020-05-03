@@ -232,12 +232,14 @@
       background-image: url(../assets/datapoint.png);
       background-repeat: no-repeat;
       text-align: left;
+      background-position: bottom;
       font-weight: bold;
       font-size: 167px;
-      line-height: 217px;
+      line-height: 87px;
       letter-spacing: 0px;
       color: #0a5169;
       opacity: 1;
+      min-height: 143px;
     }
     .data_text {
       text-align: left;
@@ -679,7 +681,7 @@ span.numeric-character {
   }
   .description {
     color: rgba(0, 0, 0, 0.5);
-    padding:0 0 5px 0;
+    padding: 0 0 5px 0;
     font-size: 14px;
   }
   .form-control {
@@ -692,9 +694,8 @@ span.numeric-character {
     font-size: 14px;
     line-height: 16px;
     letter-spacing: 0px;
-    color: rgba(0, 0, 0, 0.4);
+    // color: rgba(0, 0, 0, 0.4);
     height: 47px;
-
   }
   input[type="file"] {
     display: none;
@@ -708,13 +709,13 @@ span.numeric-character {
     line-height: 28px;
     color: #fff;
   }
-  select{
+  select {
     background: url(../assets/up-arrow.svg) no-repeat right #fff !important;
-    -webkit-appearance: none;
-    background-position-x: 260px !important;
+    appearance: none;
+    background-position: 98% 50% !important;
     padding-right: 25px;
   }
-  .multi-select .dropdown-container{
+  .multi-select .dropdown-container {
     border: 1px solid #7fa3b0;
     border-radius: 10px;
     opacity: 1;
@@ -726,19 +727,19 @@ span.numeric-character {
     color: rgba(0, 0, 0, 0.4);
     height: 47px;
   }
-  .multi-select .dropdown-container .dropdown-heading{
+  .multi-select .dropdown-container .dropdown-heading {
     height: 47px;
   }
-  .dropdown-heading-dropdown-arrow{
+  .dropdown-heading-dropdown-arrow {
     background: url(../assets/up-arrow.svg) no-repeat right #fff !important;
     width: 20px;
     height: 20px;
   }
 
-  .dropdown-heading-dropdown-arrow svg{
+  .dropdown-heading-dropdown-arrow svg {
     display: none;
   }
-  input[type='email'] {
+  input[type="email"] {
     border: none;
     background: transparent;
   }
@@ -1379,7 +1380,10 @@ span.password_not_matched {
 
 .select_box_field {
   .description {
-    min-height: 60px;
+    min-height: 66px;
+    &.small_true {
+      min-height: 45px;
+    }
   }
 }
 

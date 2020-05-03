@@ -16,6 +16,7 @@ const fields = [
     name: "Project Name",
     description: "Anakin Skywalker Repair (required)",
     type: "text",
+    placeholder: 'Ex. Wick Mitigation',
     required: true,
     id: "projectName",
   },
@@ -36,11 +37,12 @@ const fields = [
     typeOptions: {},
   },
   {
-    id: "projectZipCode",
-    name: "Project Zip Code",
-    description: "Informs the applied price list",
-    type: "text",
+    id: "debrisDisposal",
+    name: "Debris Disposal",
+    description: "If progressive dumping is required, detail this in the Additional Information / Project Details field",
     required: true,
+    type: "select",
+    options: ["Haul Debris", "Dumpster", "N/A"],
   },
   {
     id: "causeOfLoss",
@@ -62,7 +64,7 @@ const fields = [
     description: "Select Mitigation, Repair or Both",
     required: true,
     type: "select",
-    options: ["Mitigation", "Repair"],
+    options: ["Mitigation", "Repair", "Both"],
   },
   {
     id: "category",
@@ -75,7 +77,7 @@ const fields = [
   {
     id: "residentialOrCommercial",
     name: "Residential or Commercial",
-    description: null,
+    description: "If you are uncertain, select Commercials",
     type: "select",
     required: true,
     options: ["Residential", "Commercial"],
@@ -149,14 +151,7 @@ const fields = [
       'Other - Please inform in the "Additional Information" field',
     ],
   },
-  {
-    id: "debrisDisposal",
-    name: "Debris Disposal",
-    description: "If progressive dumping is required, detail this in the Additional Information / Project Details field",
-    required: true,
-    type: "select",
-    options: ["Haul Debris", "Dumpster", "N/A"],
-  },
+
   {
     id: "temporaryActivities",
     name: "Temporary Activities",
@@ -172,9 +167,18 @@ const fields = [
     ],
   },
   {
+    id: "projectZipCode",
+    name: "Project Zip Code",
+    description: "Informs the applied price list",
+    type: "number",
+    placeholder: 'Ex. 92037',
+    required: true,
+  },
+  {
     id: "Carrier",
     name: "Insurance Carrier",
     description: null,
+    placeholder: 'Ex. Nat Gen Premier',
     type: "text",
   },
   {
@@ -265,6 +269,21 @@ const DrawField = (props) => {
             type="text"
             required={field.required ? true : false}
             className="form-control"
+            placeholder={field.placeholder}
+            onChange={(e) => {
+              props.onChange(field, e.currentTarget.value);
+              field.value = e.currentTarget.value;
+            }}
+          />
+        );
+        break;
+      case "number":
+        return (
+          <input
+            type="number"
+            required={field.required ? true : false}
+            className="form-control"
+            placeholder={field.placeholder}
             onChange={(e) => {
               props.onChange(field, e.currentTarget.value);
               field.value = e.currentTarget.value;
@@ -302,7 +321,7 @@ const DrawField = (props) => {
           <>
             <div>
               <label htmlFor="file-upload" className="custom-file-upload btn-green">
-                Choose File
+                Choose Files
               </label>
               <input
                 id="file-upload"
@@ -372,7 +391,7 @@ const DrawField = (props) => {
 
 const UserOrder = () => {
   const { userDetails } = useContext(AuthContext);
-  fields[fields.length - 1].value = userDetails().emailAddress;
+  fields[12].value = userDetails().emailAddress;
 
   const [allFields, setAllFields] = useState(fields);
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
@@ -421,7 +440,7 @@ const UserOrder = () => {
       }
     });
 
-    console.log(fileToUpload)
+    //console.log(fileToUpload)
 
 
     const stringified = queryString.stringify(apiData);
@@ -500,7 +519,7 @@ const UserOrder = () => {
                       {field.name}{" "}
                       {field.required ? <span className="red">*</span> : ""}
                     </label>
-                    <div className="description">{field.description}</div>
+                    <div className={`description small_${field.id != "projectZipCode" && field.description?.length <= 42}`}>{field.description}</div>
                     <DrawField
                       field={field}
                       onChange={handleChange}

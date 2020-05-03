@@ -19,7 +19,7 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ }) => {
       <div className="mpartial_section howitworks">
         <div className="container">
           <SectionTitle
-            title={"How it Works?"}
+            title={"How It Works"}
             description={""}
             type="center"
           ></SectionTitle>

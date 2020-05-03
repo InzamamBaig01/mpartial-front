@@ -59,7 +59,7 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
                 mask="999-999-9999"
                 onChange={(e) => {
                   setphonenumber(e.currentTarget.value);
-                  console.log();
+                //  console.log();
                 }}
                 value={phonenumber}
               >

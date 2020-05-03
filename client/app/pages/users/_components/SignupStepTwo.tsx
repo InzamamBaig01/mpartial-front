@@ -19,7 +19,7 @@ export const SignupStepTwo: React.FC<StepProps> = (props) => {
   const [lastname, setlastname] = React.useState(
     props.formData.lastname ? props.formData.lastname : ""
   );
-  console.log(props.formData);
+ // console.log(props.formData);
   const { step2 } = React.useContext(AuthContext);
   const onSubmit = (e) => {
     e.preventDefault();
@@ -38,7 +38,7 @@ export const SignupStepTwo: React.FC<StepProps> = (props) => {
         props.setStep(3);
         hideLoader();
       } else {
-        console.log(response);
+        //console.log(response);
         hideLoader();
       }
     });

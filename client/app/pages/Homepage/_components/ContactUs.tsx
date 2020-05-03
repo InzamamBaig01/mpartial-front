@@ -6,13 +6,17 @@ import InputMask from "react-input-mask";
 import { sendEmail, resetPassword } from "utils/api-routes/api-routes.util";
 import { useState } from "react";
 import Loader from "app/components/Loader";
-interface ConatctUsProps {}
-export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
+import { AuthContext } from "contexts/authContext";
+interface ConatctUsProps { }
+export const ContactUs: React.FC<ConatctUsProps> = ({ }) => {
   const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
+  const { userDetails } = React.useContext(AuthContext);
+
+  const userd = userDetails() ? userDetails() : false;
   const [contactDetails, setContactDetails] = useState({
-    name: "",
-    email: "",
-    phone: "",
+    name: userd ? `${userd.firstName} ${userd.lastName}` : "",
+    email: userd ? `${userd.emailAddress}` : "",
+    phone: userd ? `${userd.phone}` : "",
     message: "",
   });
   const [messageDone, setMessageDone] = useState(false);
@@ -28,9 +32,9 @@ export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
     }).subscribe((response) => {
       setMessageDone(true);
       setContactDetails({
-        name: "",
-        email: "",
-        phone: "",
+        name: userd ? `${userd.firstName} ${userd.lastName}` : "",
+        email: userd ? `${userd.emailAddress}` : "",
+        phone: userd ? `${userd.phone}` : "",
         message: "",
       });
       hideLoader();

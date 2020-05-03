@@ -8,7 +8,7 @@ import AmericanExpress from "../../../assets/American-Express.png";
 import discover from "../../../assets/discover.png";
 // import stripe from "stripe";
 import InputMask from "react-input-mask";
-
+import appConfig from '../../../appconfig.json';
 // console.log(stripe);
 
 import {
@@ -106,7 +106,7 @@ const FormElement = () => {
 };
 
 const AddNewCard = (props) => {
-  const stripePromise = loadStripe("pk_test_BVYHeMmpLalkw9ro9W2IkTFJ");
+  const stripePromise = loadStripe(appConfig.stripe);
 
   return (
     <>

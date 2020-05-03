@@ -14,14 +14,14 @@ import {
 import { AppContext } from "contexts/appContext";
 import { AppAlertsContext } from "contexts/appAlertsContext";
 import Loader from "app/components/Loader";
-
+import appConfig from '../../appconfig.json';
 const CheckoutForm = (props) => {
   const [error, setError] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
   const { userDetails } = useContext(AuthContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
-  console.log("render", props);
+ // console.log("render", props);
   const [selectedCard, setSelectedCard] = useState(false);
 
   // Handle real-time validation errors from the card Element.
@@ -154,7 +154,7 @@ const Checkout = (props) => {
     email: userDetails().emailAddress.length == 0,
   });
   const [cardValidation, setCardValidation] = useState(false);
-  console.log("main_rendered");
+ // console.log("main_rendered");
   useEffect(() => {
     getMyInfo();
   }, []);
@@ -189,7 +189,7 @@ const Checkout = (props) => {
     setCheckoutInfo(oldValues);
   };
   const stripePromise = loadStripe(
-    "pk_test_qtQYQAflfKikPJB9y8Y1H8fY00dcOIegPx"
+    appConfig.stripe
   );
 
   const checkValidation = () => {
