@@ -16,6 +16,7 @@ import TermsCondition from "./TermsCondition";
 import Changepasswordwithtoken from "./Changepasswordwithtoken";
 import ActivateAccount from "./ActivateAccount";
 import AdminOrderDetails from "./admin/AdminOrderDetails";
+import AdminUserDetails from "./admin/AdminUserDetails";
 
 export const ROUTES = [
   {
@@ -47,7 +48,7 @@ export const ROUTES = [
     path: "/changepasswordwithtoken",
     slug: "changepasswordwithtoken",
     title: "changepasswordwithtoken",
-  },{
+  }, {
     component: ActivateAccount,
     isPublic: true,
     path: "/Client/ConfirmEmail",
@@ -156,7 +157,7 @@ export const ROUTES = [
     redirectTo: "/mpartialadmin",
     checkADLogin: true,
     isAD: true,
-  },{
+  }, {
     component: AdminOrderDetails,
     path: "/details/:orderid",
     slug: "admin/orders/details",
@@ -164,7 +165,14 @@ export const ROUTES = [
     redirectTo: "/mpartialadmin",
     isAD: true,
     checkADLogin: true,
-
+  }, {
+    component: AdminUserDetails,
+    path: "/usersdetails/:userid",
+    slug: "admin/users/details",
+    title: "admin/users/details",
+    redirectTo: "/mpartialadmin",
+    isAD: true,
+    checkADLogin: true,
   },
   {
     component: AdminUserManagement,

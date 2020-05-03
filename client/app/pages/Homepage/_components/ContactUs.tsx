@@ -94,7 +94,7 @@ export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
                     {(inputProps) => (
                       <input
                         type="text"
-                        placeholder="Phone Number"
+                        placeholder="Cell"
                         min="1"
                         required
                         {...inputProps}

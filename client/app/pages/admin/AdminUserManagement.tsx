@@ -16,7 +16,7 @@ const AdminUserManagement = () => {
   const [Users, setUsers] = useState([]);
   const columns = [
     {
-      name: "name",
+      name: "Name",
       selector: "firstName",
       sortable: false,
       className: "header-col",
@@ -45,7 +45,7 @@ const AdminUserManagement = () => {
       sortable: false,
       className: "header-col",
       format: (d) => (
-        <Link to={`orderdetails/${d.id}`}>
+        <Link to={`/usersdetails/${window.btoa(d.emailAddress)}`}>
           <img src={viewicon} alt="" />
         </Link>
       ),
@@ -71,7 +71,7 @@ const AdminUserManagement = () => {
           <section>
             <div className={"section-head"}>
               <div>
-                <h2>Users</h2>
+                <h2>Customers</h2>
               </div>
               <div>
                 {/* <div className="form-group">

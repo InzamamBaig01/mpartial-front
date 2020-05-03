@@ -44,13 +44,13 @@ export const Deliverables: React.FC<DeliverablesProps> = ({}) => {
           </div>
           <span className={"numeric-character"}></span>
           <div className={"deliver-slider"}>
-            <h3 className={"widget-title"}>
+            <h3 className={"widget-title sub mt-1"}>
               Immaculate. Impartial. [ESX]
             </h3>
             <DeliverSlider />
           </div>
           <div className={"sketch-widget"}>
-            <h3 className={"widget-title"}>
+            <h3 className={"widget-title sub mt-1"}>
               <a href="https://support.matterport.com/hc/en-us/articles/360001452428-Matterport-TrueSketch-and-TrueSketch-PLUS-for-Xactimate">
                 TrueSketch PLUS [SKX]
               </a>

@@ -187,7 +187,8 @@
 .compare_images_section {
   width: 100%;
   height: auto;
-  padding: 50px;  padding-bottom: 0;
+  padding: 50px;
+  padding-bottom: 0;
   .styles_handle__33IZp {
     background: #3ac280;
     box-shadow: 0px 0px 19px 3px #3ac280;
@@ -674,10 +675,12 @@ span.numeric-character {
     opacity: 1;
     color: #000000;
     white-space: nowrap;
+    margin-bottom: 0;
   }
   .description {
     color: rgba(0, 0, 0, 0.5);
-    padding: 5px 0;
+    padding:0 0 5px 0;
+    font-size: 14px;
   }
   .form-control {
     background: #ffffff 0% 0% no-repeat padding-box;
@@ -690,7 +693,54 @@ span.numeric-character {
     line-height: 16px;
     letter-spacing: 0px;
     color: rgba(0, 0, 0, 0.4);
-    height: 50px;
+    height: 47px;
+
+  }
+  input[type="file"] {
+    display: none;
+  }
+  .custom-file-upload {
+    border: transparent;
+    display: inline-block;
+    padding: 6px 12px;
+    text-align: center;
+    cursor: pointer;
+    line-height: 28px;
+    color: #fff;
+  }
+  select{
+    background: url(../assets/up-arrow.svg) no-repeat right #fff !important;
+    -webkit-appearance: none;
+    background-position-x: 260px !important;
+    padding-right: 25px;
+  }
+  .multi-select .dropdown-container{
+    border: 1px solid #7fa3b0;
+    border-radius: 10px;
+    opacity: 1;
+    text-align: left;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0px;
+    color: rgba(0, 0, 0, 0.4);
+    height: 47px;
+  }
+  .multi-select .dropdown-container .dropdown-heading{
+    height: 47px;
+  }
+  .dropdown-heading-dropdown-arrow{
+    background: url(../assets/up-arrow.svg) no-repeat right #fff !important;
+    width: 20px;
+    height: 20px;
+  }
+
+  .dropdown-heading-dropdown-arrow svg{
+    display: none;
+  }
+  input[type='email'] {
+    border: none;
+    background: transparent;
   }
   textarea {
     height: 200px !important;
@@ -1336,7 +1386,7 @@ span.password_not_matched {
 a {
   color: #0a5169;
   &:hover {
-    color:#57C380;
+    color: #57c380;
   }
 }
 
@@ -1344,7 +1394,7 @@ a {
   line-height: 14px !important;
 }
 .submit_btn_container {
-  text-align: center;
+  text-align: left;
 }
 
 .admin-order-wrap {
@@ -1491,7 +1541,10 @@ a {
   }
 }
 
-
 .order_details_value a {
   display: block;
+}
+
+.popver_text {
+  font-family: "Raleway", sans-serif;
 }

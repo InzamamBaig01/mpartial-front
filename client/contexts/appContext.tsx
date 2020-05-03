@@ -26,7 +26,9 @@ interface IContextProps {
   getallADUsers: Function;
   AllUsers: any;
   getADOrderById: Function
-  singleADOrderDetails: any
+  singleADOrderDetails: any;
+  getADUserById: Function;
+  singleUserDetails: any;
 }
 
 export const AppContext = React.createContext({} as IContextProps);
@@ -42,6 +44,7 @@ export default ({ children }) => {
   const [AllUsers, setAllUsers] = useState([]);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
   const { logout } = useContext(AuthContext);
+  const [singleUserDetails, setSingleUserDetails] = useState(false);
   // console.log(showLoader);
   const getMyOrders = () => {
     // showLoader();
@@ -94,6 +97,7 @@ export default ({ children }) => {
     });
   };
 
+
   const getallADOrders = () => {
     // showLoader();
     allADOrders().subscribe((response) => {
@@ -101,6 +105,20 @@ export default ({ children }) => {
       // hideLoader();
     });
   };
+
+  const getADUserByID = (id, orders?) => {
+    return orders.filter((order) => order.emailAddress == id)[0];
+  };
+
+  const getADUserById = (id) => {
+    // showLoader();
+    allADUsers().subscribe((response) => {
+      setAllUsers(response.response.data);
+      // hideLoader();
+      setSingleUserDetails(getADUserByID(id, response.response.data));
+    });
+  };
+
 
   const getallADUsers = () => {
     // showLoader();
@@ -126,6 +144,8 @@ export default ({ children }) => {
     AllUsers,
     getADOrderById,
     singleADOrderDetails,
+    getADUserById,
+    singleUserDetails,
   };
 
   return (

@@ -13,7 +13,7 @@ const AdminSidebar = () => {
           </li>
           <li>
             <Link to="/user-management">
-              <span></span>Users
+              <span></span> Customers
             </Link>
           </li>
         </ul>

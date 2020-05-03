@@ -9,14 +9,31 @@ import queryString from "query-string";
 import { AppContext } from "contexts/appContext";
 import { AppAlertsContext } from "contexts/appAlertsContext";
 import Loader from "app/components/Loader";
+import Mail from '../../assets/email.svg';
 
 const fields = [
   {
     name: "Project Name",
-    description: null,
+    description: "Anakin Skywalker Repair (required)",
     type: "text",
     required: true,
     id: "projectName",
+  },
+  {
+    id: "preMitigationDemoModelURL",
+    name: "Pre Mitigation/Demo Model URL",
+    description: "e.g. https://my.matterport.com/show/?m=ggh5ffgbkrt",
+    type: "text",
+    required: true,
+    typeOptions: {},
+  },
+  {
+    id: "postMitigationDemoModelURL",
+    name: "Post Mitigation/Demo Model URL",
+    description: "e.g. https://my.matterport.com/show/?m=gjdf56vbngf",
+    type: "text",
+    required: true,
+    typeOptions: {},
   },
   {
     id: "projectZipCode",
@@ -24,12 +41,6 @@ const fields = [
     description: "Informs the applied price list",
     type: "text",
     required: true,
-  },
-  {
-    id: "Carrier",
-    name: "Insurance Carrier",
-    description: null,
-    type: "text",
   },
   {
     id: "causeOfLoss",
@@ -47,8 +58,8 @@ const fields = [
   },
   {
     id: "mitigationOrRepair",
-    name: "Mitigation or Repair",
-    description: null,
+    name: "Scope",
+    description: "Select Mitigation, Repair or Both",
     required: true,
     type: "select",
     options: ["Mitigation", "Repair"],
@@ -69,22 +80,7 @@ const fields = [
     required: true,
     options: ["Residential", "Commercial"],
   },
-  {
-    id: "preMitigationDemoModelURL",
-    name: "Pre Mitigation/Demo Model URL",
-    description: "e.g. https://my.matterport.com/show/?m=ggh5ffgbkrt",
-    type: "text",
-    required: true,
-    typeOptions: {},
-  },
-  {
-    id: "postMitigationDemoModelURL",
-    name: "Post Mitigation/Demo Model URL",
-    description: "e.g. https://my.matterport.com/show/?m=gjdf56vbngf",
-    type: "text",
-    required: true,
-    typeOptions: {},
-  },
+
   {
     id: "durationOfTheProject",
     name: "Duration of the Project",
@@ -156,7 +152,7 @@ const fields = [
   {
     id: "debrisDisposal",
     name: "Debris Disposal",
-    description: null,
+    description: "If progressive dumping is required, detail this in the Additional Information / Project Details field",
     required: true,
     type: "select",
     options: ["Haul Debris", "Dumpster", "N/A"],
@@ -174,6 +170,21 @@ const fields = [
       "N/A",
       'Other - Please describe in the "Additional Information" field',
     ],
+  },
+  {
+    id: "Carrier",
+    name: "Insurance Carrier",
+    description: null,
+    type: "text",
+  },
+  {
+    id: "emailForDeliveryOfResults",
+    name: "Email For Delivery of Results",
+    description: null,
+    required: true,
+    type: "email",
+    typeOptions: {},
+    value: "",
   },
   {
     id: "specialtyTradeSelection",
@@ -207,8 +218,8 @@ const fields = [
   },
   {
     id: "projectDetails",
-    name: "Additional Information / Project Details",
-    description: "Please add any relevant and/or unknowable information here",
+    name: "Additional Information/Project Details",
+    description: "Please add any relevant and/or unknowable information here. The more details you provide, the more accurate deliverables you receive. This is imperative because mpartial does NOT reopen files once your digital assets are delivered.",
     type: "textarea",
   },
   {
@@ -217,15 +228,6 @@ const fields = [
     description:
       "e.g., Additional Invoices, Relevant Images, Environmental Report etc.",
     type: "multipleAttachment",
-  },
-  {
-    id: "emailForDeliveryOfResults",
-    name: "Email For Delivery of Results",
-    description: null,
-    required: true,
-    type: "email",
-    typeOptions: {},
-    value: "",
   },
 ];
 
@@ -280,7 +282,7 @@ const DrawField = (props) => {
               field.value = e.currentTarget.value;
             }}
           >
-            <option value="">Please Select {field.name}</option>
+            <option value="">Select {field.name}</option>
             {Object.values(field.options).map((option, index) => {
               return (
                 <option value={option} key={index}>
@@ -299,15 +301,18 @@ const DrawField = (props) => {
         return (
           <>
             <div>
+              <label htmlFor="file-upload" className="custom-file-upload btn-green">
+                Choose File
+              </label>
               <input
+                id="file-upload"
                 type="file"
                 required={field.required ? true : false}
                 multiple
                 onChange={(e) => {
                   props.onChange(field, e.target.files);
                   field.value = e.target.files;
-                }}
-              />
+                }} />
             </div>
           </>
         );
@@ -327,16 +332,22 @@ const DrawField = (props) => {
         break;
       case "email":
         return (
-          <input
-            type="email"
-            required={field.required ? true : false}
-            value={field.value}
-            className="form-control"
-            onChange={(e) => {
-              props.onChange(field, e.currentTarget.value);
-              field.value = e.currentTarget.value;
-            }}
-          />
+          <div className="form-group">
+            <div className="input-group">
+              <img className="input_icon" src={Mail} alt="" />
+              <input
+                type="email"
+                className="form-control"
+                value={field.value}
+                placeholder="Email"
+                onChange={(e) => {
+                  props.onChange(field, e.currentTarget.value);
+                  field.value = e.currentTarget.value;
+                }}
+                required
+              />
+            </div>
+          </div>
         );
         break;
       default:
@@ -377,9 +388,9 @@ const UserOrder = () => {
       saveFileOrderData(formData, {
         orderId: id,
       }).subscribe((response) => {
-        uploadFiles(id, files, index+1);
+        uploadFiles(id, files, index + 1);
       })
-    }else{
+    } else {
       hideLoader();
       history.push(`/checkout/${id}`);
     }
@@ -427,10 +438,10 @@ const UserOrder = () => {
           console.log(response.response);
 
           uploadFiles(response.response.data.id, fileToUpload, 0);
-        
+
         } else {
           hideLoader();
-          
+
         }
       },
       (response) => {
@@ -515,13 +526,13 @@ const UserOrder = () => {
             </div>
             <div className="form-group submit_btn_container">
               <button
-                className="btn"
+                className="btn btn-green"
                 type="submit"
                 onClick={checkFormValidation}
                 id="formButton"
                 disabled={submitBtnDisabled}
               >
-                Proceed to Checkout
+                Checkout
                 <Loader></Loader>
               </button>
             </div>
