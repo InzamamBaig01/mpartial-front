@@ -1,3 +1,4 @@
 {
-    "stripe" : "pk_test_qtQYQAflfKikPJB9y8Y1H8fY00dcOIegPx"
+    "stripe" : "pk_test_qtQYQAflfKikPJB9y8Y1H8fY00dcOIegPx",
+    "API" : "//dev.mpartial.io:8080"
 }

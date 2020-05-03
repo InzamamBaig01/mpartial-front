@@ -2,8 +2,8 @@ import { Observable } from "rxjs/Observable";
 import { ajax } from "rxjs/observable/dom/ajax";
 import { catchError, map } from "rxjs/operators";
 import history from "../history";
-
-const baseURL = "//dev.mpartial.io:8080";
+import appConfig from '../../appconfig.json';
+const baseURL = appConfig.API;
 
 const requestHeader = () => {
   const headers = {

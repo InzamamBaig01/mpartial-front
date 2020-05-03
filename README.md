@@ -1,4 +1,5 @@
-# corevoyant-frontend
+# mPartial
 ```shell
+npm install
 npm run build
 ```
