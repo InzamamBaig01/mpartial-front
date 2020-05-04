@@ -252,39 +252,44 @@ const EditProfile = (props) => {
                 <div className="form-group">
                   <label>Profile Picture</label>
                   {profileImage.profileImage ? (
-                    <div className="profile_image_preview">
-                      <div
-                        className="cross_icon"
-                        onClick={() =>
-                          setProfileImage({
-                            profilepicture: false,
-                            profileImage: false,
-                          })
-                        }
-                      >
-                        &times;
-                      </div>
-                      <img src={profileImage.profileImage} alt="" />
-                    </div>
-                  ) : (
                     <>
-                      <div
-                        {...getRootProps()}
-                        className="upload_profile_picture"
-                      >
-                        <input {...getInputProps()} />
-                        {isDragActive ? (
-                          <p>
-                            <img src={dragimage} alt="" />
-                          </p>
-                        ) : (
-                          <p>
-                            <img src={dragimage} alt="" />
-                          </p>
-                        )}
+                      <div className="profile_image_preview">
+                        <div
+                          className="cross_icon"
+                          onClick={() =>
+                            setProfileImage({
+                              profilepicture: false,
+                              profileImage: false,
+                            })
+                          }
+                        >
+                          &times;
+                      </div>
+                        <img src={profileImage.profileImage} alt="" />
                       </div>
                     </>
-                  )}
+                  ) : (
+                      <>
+                        <div
+                          {...getRootProps()}
+                          className="upload_profile_picture"
+                        >
+                          <input {...getInputProps()} />
+                          {isDragActive ? (
+                            <p>
+                              <img src={dragimage} alt="" />
+                            </p>
+                          ) : (
+                              <p>
+                                <img src={dragimage} alt="" />
+                              </p>
+                            )}
+                        </div>
+                        <p className="profile_upload_image_info">
+                          Maximum of 150x150 pixels and with a maximum file size of 3MB
+                    </p>
+                      </>
+                    )}
                 </div>
               </div>
             </div>
@@ -392,8 +397,8 @@ const EditPassword = (props) => {
                   Passwords does not match
                 </span>
               ) : (
-                ""
-              )}
+                  ""
+                )}
             </div>
 
             <div className="form-group">
@@ -545,16 +550,16 @@ const Profile = () => {
                     <tbody>
                       {info
                         ? info.stripeCustomerCard.map((card, index) => {
-                            return (
-                              <tr>
-                                <td key={index}><img src={pmicons[card.brand]} className="brand_icon" alt="" /></td>
-                                <td>XXXX XXXX XXXX {card.last4}</td>
-                                <td>
-                                  {card.exp_month}/{card.exp_year}
-                                </td>
-                              </tr>
-                            );
-                          })
+                          return (
+                            <tr>
+                              <td key={index}><img src={pmicons[card.brand]} className="brand_icon" alt="" /></td>
+                              <td>XXXX XXXX XXXX {card.last4}</td>
+                              <td>
+                                {card.exp_month}/{card.exp_year}
+                              </td>
+                            </tr>
+                          );
+                        })
                         : ""}
                     </tbody>
                   </table>
@@ -566,8 +571,8 @@ const Profile = () => {
       </div>
       <AddNewCard
         value={""}
-        onChange={() => {}}
-        onStackSubmit={() => {}}
+        onChange={() => { }}
+        onStackSubmit={() => { }}
         show={addcardpopupshow}
         handleClose={handlecardclose}
       />

@@ -14,6 +14,7 @@ export const Slider: React.FC<SliderProps> = ({ nextSection }) => {
     width: window.innerWidth
   })
   const handleResize = () => {
+    //console.log(window.innerHeight,window.innerWidth)
     setDimensions({
       height: window.innerHeight,
       width: window.innerWidth

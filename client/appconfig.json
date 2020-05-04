@@ -1,4 +1,6 @@
 {
     "stripe" : "pk_test_qtQYQAflfKikPJB9y8Y1H8fY00dcOIegPx",
-    "API" : "//dev.mpartial.io:8080"
+    "API" : "//dev.mpartial.io:8080",
+    "captchaKey": "6LdHVPIUAAAAAN0FZD84ZZ1DS9zbNkTp7C_0-yXk",
+    "sentryDSN" : "https://771b82fc8ec64d94a3df537ea64334ea@o387595.ingest.sentry.io/5223106"
 }

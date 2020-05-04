@@ -21,7 +21,14 @@
     margin: 130px auto 60px !important;
   }
   .home_video_background {
-    height: 325px;
+    height: 251px !important;
+    video {
+      position: absolute !important;
+      width: 100% !important;
+      height: auto !important;
+      top: 39px !important;
+      left: 0px !important;
+    }
   }
   .main_banner_text {
     font-size: 21px;

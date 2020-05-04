@@ -17,6 +17,7 @@ ReactDOM.render(
     <AuthContext>
       <AppContext>
         <Router history={history}>
+          
           <App />
         </Router>
       </AppContext>

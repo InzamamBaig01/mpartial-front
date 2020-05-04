@@ -66,7 +66,7 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
                 {(inputProps) => (
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control signupcell"
                     placeholder="Cell"
                     min="1"
                     value={phonenumber}

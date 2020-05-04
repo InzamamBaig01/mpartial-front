@@ -44,7 +44,7 @@ export const HomePage: React.FC<any> = React.memo((props) => {
 
   const scrollToRef = (ref, to) => {
     // console.log(props.sectionRef);
-    if (window.innerWidth <= 770) toggle();
+    // if (window.innerWidth <= 770) toggle();
 
     setTimeout(() => {
       if (ref) {

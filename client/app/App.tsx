@@ -10,7 +10,10 @@ import {
 import { ROUTES } from "./pages/routes";
 import { hot } from "react-hot-loader";
 import { AuthContext } from "../contexts/authContext";
+import { GoogleReCaptchaProvider, GoogleReCaptcha } from 'react-google-recaptcha-v3';
+import * as Sentry from '@sentry/browser';
 
+import appConfig from '../appconfig.json';
 const App: React.FC<RouteComponentProps<any>> = (props) => {
   const {
     isUserAuthenticated,
@@ -19,7 +22,7 @@ const App: React.FC<RouteComponentProps<any>> = (props) => {
     setPageIsAD,
   } = useContext(AuthContext);
 
-  useState(() => {
+  useEffect(() => {
     isUserAuthenticated();
     // console.log(props);
     let isPublic = false;
@@ -37,15 +40,21 @@ const App: React.FC<RouteComponentProps<any>> = (props) => {
     setPageIsPublicValue(isAD ? undefined : isPublic);
 
     setPageIsAD(isAD);
-  });
+    Sentry.init({dsn: appConfig.sentryDSN});
+
+  },[]);
 
   return (
     <>
-
-      <LocalApp
-        isAuthenticated={isUserAuthenticated()}
-        isADAuthenticated={isADAuthenticated()}
-      ></LocalApp>
+      <GoogleReCaptchaProvider
+        reCaptchaKey={appConfig.captchaKey}
+      >
+        <GoogleReCaptcha onVerify={token => console.log(token)} />
+        <LocalApp
+          isAuthenticated={isUserAuthenticated()}
+          isADAuthenticated={isADAuthenticated()}
+        ></LocalApp>
+      </GoogleReCaptchaProvider>
     </>
   );
 };

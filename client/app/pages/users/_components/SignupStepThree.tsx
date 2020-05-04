@@ -116,7 +116,7 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
               <Link to="/terms" className="underline" target="_blank">
                 Terms & Conditions.
               </Link>{" "}
-              <span className="red">*</span>
+              <span className="red">*</span>.
             </label>
           </div>
           <button
