@@ -46,15 +46,15 @@ const App: React.FC<RouteComponentProps<any>> = (props) => {
 
   return (
     <>
-      <GoogleReCaptchaProvider
+      {/* <GoogleReCaptchaProvider
         reCaptchaKey={appConfig.captchaKey}
       >
-        <GoogleReCaptcha onVerify={token => console.log(token)} />
+        <GoogleReCaptcha onVerify={token => console.log(token)} /> */}
         <LocalApp
           isAuthenticated={isUserAuthenticated()}
           isADAuthenticated={isADAuthenticated()}
         ></LocalApp>
-      </GoogleReCaptchaProvider>
+      {/* </GoogleReCaptchaProvider> */}
     </>
   );
 };

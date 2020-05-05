@@ -114,9 +114,9 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
             <label className="terms">
               I’ve read and accept the mpartial{" "}
               <Link to="/terms" className="underline" target="_blank">
-                Terms & Conditions.
+                Terms & Conditions
               </Link>{" "}
-              <span className="red">*</span>.
+              <span className="red">*</span>
             </label>
           </div>
           <button

@@ -51,7 +51,7 @@ export const Deliverables: React.FC<DeliverablesProps> = ({}) => {
           </div>
           <div className={"sketch-widget"}>
             <h3 className={"widget-title sub mt-1"}>
-              <a href="https://support.matterport.com/hc/en-us/articles/360001452428-Matterport-TrueSketch-and-TrueSketch-PLUS-for-Xactimate">
+              <a href="https://support.matterport.com/hc/en-us/articles/360001452428-Matterport-TrueSketch-and-TrueSketch-PLUS-for-Xactimate" target="_blank">
                 TrueSketch PLUS [SKX]
               </a>
             </h3>

@@ -77,7 +77,7 @@ const fields = [
   {
     id: "residentialOrCommercial",
     name: "Residential or Commercial",
-    description: "If you are uncertain, select Commercials",
+    description: "If you are uncertain, select Commercial",
     type: "select",
     required: true,
     options: ["Residential", "Commercial"],
@@ -319,12 +319,11 @@ const DrawField = (props) => {
       case "multipleAttachment":
         return (
           <>
-            <div>
-              <label htmlFor="file-upload" className="custom-file-upload btn-green">
-                Choose Files
-              </label>
+
+            <div className="button-wrap">
+              <label className="new-button" htmlFor="upload"> Choose File</label>
               <input
-                id="file-upload"
+                id="upload"
                 type="file"
                 required={field.required ? true : false}
                 multiple
@@ -333,6 +332,15 @@ const DrawField = (props) => {
                   field.value = e.target.files;
                 }} />
             </div>
+              {/*<input type="file" className="custom-file-input-btn" onChange={(e) => {*/}
+                {/*props.onChange(field, e.target.files);*/}
+                {/*field.value = e.target.files;*/}
+              {/*}} />*/}
+              {/*<label htmlFor="file-upload" className="custom-file-upload btn-green">*/}
+                {/*Choose Files*/}
+              {/*</label>*/}
+
+
           </>
         );
         break;

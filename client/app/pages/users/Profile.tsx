@@ -165,11 +165,22 @@ const EditProfile = (props) => {
     e.preventDefault();
 
     const formData = new FormData();
-
+    const compObj  = {
+      first_name:data['firstName'],
+      last_name:data['lastName'],
+      phone:data['phonenumber'],
+    };
+    const comObj2 = {
+      first_name:props.info.firstName,
+      last_name:props.info.lastName,
+      phone:props.info.phone,
+    };
+    if(JSON.stringify(compObj) === JSON.stringify(comObj2)){
+      return
+    }
     const stringified = queryString.stringify(data);
 
     formData.append("profilepicture", profileImage.profilepicture);
-
     profileUpdate(formData, stringified).subscribe((response) => {
       if (response.response.Requested_Action) {
         props.onSubmitSuccess();
@@ -274,7 +285,7 @@ const EditProfile = (props) => {
                           {...getRootProps()}
                           className="upload_profile_picture"
                         >
-                          <input {...getInputProps()} />
+                          <input {...getInputProps()} accept="image/jpeg"/>
                           {isDragActive ? (
                             <p>
                               <img src={dragimage} alt="" />

@@ -41,7 +41,7 @@ const ActivateAccount = (props) => {
               {success == "true" ? (
                 <>
                   <img src={successicon} className="verif_image" alt="" />
-                  Your email address is confirmed.
+                  Your email address is confirmed.&nbsp;&nbsp;
                   <Link to="/login">Click here</Link> to Sign In
                 </>
               ) : success != "false" ? (
