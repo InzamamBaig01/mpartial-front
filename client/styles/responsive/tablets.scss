@@ -274,8 +274,16 @@
     width: 100%;
     height: auto;
   }
+  .select_box_field {
+    .description {
+      min-height: 0 !important;
+      &.small_true {
+        min-height: 0 !important;
+      }
+    }
+  }
 }
-
+// Bellow is for Ipad pro
 @media screen and (min-width: 789px) and (max-width: 1026px) {
   .home_video_background {
     height: 479px;

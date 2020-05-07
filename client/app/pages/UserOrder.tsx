@@ -13,26 +13,37 @@ import Mail from '../../assets/email.svg';
 
 const fields = [
   {
+    id: "emailForDeliveryOfResults",
+    name: "Email For Delivery of Results",
+    description: null,
+    required: true,
+    type: "email",
+    typeOptions: {},
+    value: "",
+  },
+  {
     name: "Project Name",
-    description: "Anakin Skywalker Repair (required)",
+    description: "",
     type: "text",
-    placeholder: 'Ex. Wick Mitigation',
+    placeholder: 'Ex. Wick-Mitigation',
     required: true,
     id: "projectName",
   },
   {
     id: "preMitigationDemoModelURL",
     name: "Pre Mitigation/Demo Model URL",
-    description: "e.g. https://my.matterport.com/show/?m=ggh5ffgbkrt",
-    type: "text",
+    placeholder: "Ex. https://my.matterport.com/show/?m=ggh5ffgbkrt",
+    description: "",
+    type: "url",
     required: true,
     typeOptions: {},
   },
   {
     id: "postMitigationDemoModelURL",
     name: "Post Mitigation/Demo Model URL",
-    description: "e.g. https://my.matterport.com/show/?m=gjdf56vbngf",
-    type: "text",
+    placeholder: "Ex. https://my.matterport.com/show/?m=gjdf56vbngf",
+    description: "",
+    type: "url",
     required: true,
     typeOptions: {},
   },
@@ -182,15 +193,6 @@ const fields = [
     type: "text",
   },
   {
-    id: "emailForDeliveryOfResults",
-    name: "Email For Delivery of Results",
-    description: null,
-    required: true,
-    type: "email",
-    typeOptions: {},
-    value: "",
-  },
-  {
     id: "specialtyTradeSelection",
     name: "Specialty Trade Selection",
     description:
@@ -210,14 +212,14 @@ const fields = [
     id: "pPEsConcessions",
     name: "PPEs Concessions",
     description:
-      'Please describe the PPE concessions required e.g.,: 3 Technician(s) x 2 Day(s); (if non-applicable write "n/a")',
+      'Please describe the PPE concessions required EX.,: 3 Technician(s) x 2 Day(s); (if non-applicable write "n/a")',
     type: "textarea",
   },
   {
     id: "dryOutMonitoringDuration",
     name: "Dry Out Monitoring Duration",
     description:
-      "Please describe the type of equipment - for how many days - in what room (If applicable) / e.g.: 3 Dehumidifier(s) x 4 Day(s) - Living Room ",
+      "Please describe the type of equipment - for how many days - in what room (If applicable) / EX.: 3 Dehumidifier(s) x 4 Day(s) - Living Room ",
     type: "textarea",
   },
   {
@@ -230,7 +232,7 @@ const fields = [
     id: "Potentially Relevant Digital Assets",
     name: "Potentially Relevant Digital Assets",
     description:
-      "e.g., Additional Invoices, Relevant Images, Environmental Report etc.",
+      "EX., Additional Invoices, Relevant Images, Environmental Report etc.",
     type: "multipleAttachment",
   },
 ];
@@ -261,6 +263,20 @@ const MultipleSelectField = (props) => {
 };
 
 const DrawField = (props) => {
+  const [value, setValue] = useState(props.field.value);
+  const onChange = (e) => {
+    if (e.target.files) {
+      props.onChange(field, e.currentTarget.files);
+      field.value = e.currentTarget.files;
+      setValue(e.currentTarget.files)
+      // console.log(value)
+    }
+    else {
+      props.onChange(field, e.currentTarget.value);
+      field.value = e.currentTarget.value;
+      setValue(e.currentTarget.value)
+    }
+  }
   const form = (field) => {
     switch (field.type) {
       case "text":
@@ -270,10 +286,8 @@ const DrawField = (props) => {
             required={field.required ? true : false}
             className="form-control"
             placeholder={field.placeholder}
-            onChange={(e) => {
-              props.onChange(field, e.currentTarget.value);
-              field.value = e.currentTarget.value;
-            }}
+            onChange={onChange}
+            value={value}
           />
         );
         break;
@@ -284,10 +298,8 @@ const DrawField = (props) => {
             required={field.required ? true : false}
             className="form-control"
             placeholder={field.placeholder}
-            onChange={(e) => {
-              props.onChange(field, e.currentTarget.value);
-              field.value = e.currentTarget.value;
-            }}
+            value={value}
+            onChange={onChange}
           />
         );
         break;
@@ -296,12 +308,10 @@ const DrawField = (props) => {
           <select
             className="form-control"
             required={field.required ? true : false}
-            onChange={(e) => {
-              props.onChange(field, e.currentTarget.value);
-              field.value = e.currentTarget.value;
-            }}
+            onChange={onChange}
+            value={value}
           >
-            <option value="">Select {field.name}</option>
+            <option value="" selected disabled hidden css={{ 'display': 'none' }}>Select {field.name}</option>
             {Object.values(field.options).map((option, index) => {
               return (
                 <option value={option} key={index}>
@@ -321,24 +331,26 @@ const DrawField = (props) => {
           <>
 
             <div className="button-wrap">
-              <label className="new-button" htmlFor="upload"> Choose File</label>
+              <label className="new-button" htmlFor="upload">Choose Files</label>
               <input
                 id="upload"
                 type="file"
+                // value={value}
                 required={field.required ? true : false}
                 multiple
-                onChange={(e) => {
-                  props.onChange(field, e.target.files);
-                  field.value = e.target.files;
-                }} />
+                onChange={onChange} />
+              {
+                field.value ? field.value.length : 0
+              } Files Selected
+
             </div>
-              {/*<input type="file" className="custom-file-input-btn" onChange={(e) => {*/}
-                {/*props.onChange(field, e.target.files);*/}
-                {/*field.value = e.target.files;*/}
-              {/*}} />*/}
-              {/*<label htmlFor="file-upload" className="custom-file-upload btn-green">*/}
-                {/*Choose Files*/}
-              {/*</label>*/}
+            {/*<input type="file" className="custom-file-input-btn" onChange={(e) => {*/}
+            {/*props.onChange(field, e.target.files);*/}
+            {/*field.value = e.target.files;*/}
+            {/*}} />*/}
+            {/*<label htmlFor="file-upload" className="custom-file-upload btn-green">*/}
+            {/*Choose Files*/}
+            {/*</label>*/}
 
 
           </>
@@ -350,10 +362,8 @@ const DrawField = (props) => {
           <textarea
             required={field.required ? true : false}
             className="form-control"
-            onChange={(e) => {
-              props.onChange(field, e.currentTarget.value);
-              field.value = e.currentTarget.value;
-            }}
+            value={value}
+            onChange={onChange}
           ></textarea>
         );
         break;
@@ -365,16 +375,26 @@ const DrawField = (props) => {
               <input
                 type="email"
                 className="form-control"
-                value={field.value}
+                value={value}
                 placeholder="Email"
-                onChange={(e) => {
-                  props.onChange(field, e.currentTarget.value);
-                  field.value = e.currentTarget.value;
-                }}
+                onChange={onChange}
                 required
               />
             </div>
           </div>
+        );
+        break;
+
+      case 'url':
+        return (
+          <input
+            type="url"
+            required={field.required ? true : false}
+            className="form-control"
+            placeholder={field.placeholder}
+            value={value}
+            onChange={onChange}
+          />
         );
         break;
       default:
@@ -383,10 +403,9 @@ const DrawField = (props) => {
             type="text"
             required={field.required ? true : false}
             className="form-control"
-            onChange={(e) => {
-              props.onChange(field, e.currentTarget.value);
-              field.value = e.currentTarget.value;
-            }}
+            placeholder={field.placeholder}
+            onChange={onChange}
+            value={value}
           />
         );
         break;
@@ -399,7 +418,7 @@ const DrawField = (props) => {
 
 const UserOrder = () => {
   const { userDetails } = useContext(AuthContext);
-  fields[12].value = userDetails().emailAddress;
+  fields[0].value = userDetails().emailAddress;
 
   const [allFields, setAllFields] = useState(fields);
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
@@ -481,7 +500,8 @@ const UserOrder = () => {
 
   const checkFormValidation = () => {
     if (form && form.current) {
-      setSubmitBtnDisabled(!form.current.checkValidity());
+      // setSubmitBtnDisabled(!form.current.checkValidity());
+      setSubmitBtnDisabled(false);
     }
   };
 
@@ -518,7 +538,7 @@ const UserOrder = () => {
             <div className="row">
               {fields.map((field, index) => {
                 const gridCol =
-                  (index > 2 && index < 7) || index == 9 || index == 10
+                  (index > 3 && index < 8) || index == 10 || index == 11
                     ? "col-6 select_box_field"
                     : "col-12";
                 return (

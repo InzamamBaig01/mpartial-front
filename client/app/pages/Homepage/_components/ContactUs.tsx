@@ -127,6 +127,10 @@ export const ContactUs: React.FC<ConatctUsProps> = ({ }) => {
                 type={"submit"}
                 className="btn btn-green"
                 value={"Submit"}
+                id="formButton"
+                disabled={
+                  contactDetails.name == '' || contactDetails.email == '' || contactDetails.phone == '' || contactDetails.message == '' 
+                }
               >
                 Submit
                 <Loader></Loader>

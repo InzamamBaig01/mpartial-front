@@ -139,12 +139,32 @@ const EditProfile = (props) => {
     profilepicture: false,
     profileImage: false,
   });
+
+  const [profileImageError, setProfileImageError] = useState(false)
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
-    setProfileImage({
-      profilepicture: acceptedFiles[0],
-      profileImage: URL.createObjectURL(acceptedFiles[0]),
-    });
+
+    var sFileName = acceptedFiles[0].name;
+    var sFileExtension = sFileName.split('.')[sFileName.split('.').length - 1].toLowerCase();
+    var iFileSize = acceptedFiles[0].size;
+    var iConvert = (acceptedFiles[0].size / 1048576).toFixed(2);
+
+    /// OR together the accepted extensions and NOT it. Then OR the size cond.
+    /// It's easier to see this way, but just a suggestion - no requirement.
+    if (!(sFileExtension === "jpg" ||
+      sFileExtension === "jpeg")) { /// 10 mb
+      setProfileImageError('ext');
+    } else if (iFileSize > 5485760) {
+      setProfileImageError('size');
+    } else {
+      setProfileImageError(false);
+
+      setProfileImage({
+        profilepicture: acceptedFiles[0],
+        profileImage: URL.createObjectURL(acceptedFiles[0]),
+      });
+    }
+
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -165,17 +185,17 @@ const EditProfile = (props) => {
     e.preventDefault();
 
     const formData = new FormData();
-    const compObj  = {
-      first_name:data['firstName'],
-      last_name:data['lastName'],
-      phone:data['phonenumber'],
+    const compObj = {
+      first_name: data['firstName'],
+      last_name: data['lastName'],
+      phone: data['phonenumber'],
     };
     const comObj2 = {
-      first_name:props.info.firstName,
-      last_name:props.info.lastName,
-      phone:props.info.phone,
+      first_name: props.info.firstName,
+      last_name: props.info.lastName,
+      phone: props.info.phone,
     };
-    if(JSON.stringify(compObj) === JSON.stringify(comObj2)){
+    if (JSON.stringify(compObj) === JSON.stringify(comObj2)) {
       return
     }
     const stringified = queryString.stringify(data);
@@ -191,6 +211,12 @@ const EditProfile = (props) => {
       }
     });
   };
+  const validateChange = () => {
+    return data.firstName == props.info.firstName &&
+      data.lastName == props.info.lastName &&
+      data.phonenumber == props.info.phone &&
+      profileImage.profilepicture == false;
+  }
   return (
     <>
       <Modal
@@ -285,7 +311,7 @@ const EditProfile = (props) => {
                           {...getRootProps()}
                           className="upload_profile_picture"
                         >
-                          <input {...getInputProps()} accept="image/jpeg"/>
+                          <input {...getInputProps()} accept="image/jpeg" />
                           {isDragActive ? (
                             <p>
                               <img src={dragimage} alt="" />
@@ -296,16 +322,22 @@ const EditProfile = (props) => {
                               </p>
                             )}
                         </div>
-                        <p className="profile_upload_image_info">
-                          Maximum of 150x150 pixels and with a maximum file size of 3MB
-                    </p>
+                        {profileImageError == "size" ? (<p className="profile_upload_image_info">
+                          Uploaded file exceeds size limit, please upload image lower than 3MB
+                        </p>) : ''}
+                        {profileImageError == "ext" ? (<p className="profile_upload_image_info">
+                          Invalid file extention, Please upload jpg file of 150x150 pixels
+                        </p>) : ''}
                       </>
                     )}
                 </div>
               </div>
             </div>
             <div className="form-group edit_profile_submit_container">
-              <button className="btn edit_profile_submit" type="submit">
+              <button className="btn edit_profile_submit" type="submit"
+                id="formButton"
+                disabled={validateChange()}
+              >
                 Update
               </button>
             </div>
@@ -412,7 +444,7 @@ const EditPassword = (props) => {
                 )}
             </div>
 
-            <div className="form-group">
+            <div className="form-group text-center">
               <button
                 className="btn"
                 type="submit"

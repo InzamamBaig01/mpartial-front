@@ -160,7 +160,7 @@ export const WaterFall: React.FC<WaterFallProps> = ({ }) => {
       <div className="mpartial_section" css={{ backgroundColor: '#FFFFFF', justifyContent: 'center', textAlign: 'center', color: '#0A5169', paddingBottom: '20px' }}>
         <div className="container">
           <SectionTitle
-            title={"mpartial Waterfall Fee Structure"}
+            title={"Waterfall Fee Structure"}
             description={""}
             type="center"
           ></SectionTitle>
@@ -227,7 +227,7 @@ export const WaterFall: React.FC<WaterFallProps> = ({ }) => {
             <label>{commission}%</label>
             <span>mpartial Fee</span>
           </div>
-          <p>[$750 Minimum]</p>
+          <p className="waterfall_info_text">[$750 Minimum]</p>
         </div>
       </div>
     </>

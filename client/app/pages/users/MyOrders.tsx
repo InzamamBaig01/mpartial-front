@@ -46,20 +46,20 @@ const MyOrders = () => {
                       <td>{order.emailForDeliveryOfResults}</td>
                       <td>{order.createdAt}</td>
                       <td>${order.amountInCents / 100}</td>
-                      <td className="orders_payment_status">{order.paymentStatus.toLowerCase()}</td>
+                      <td className="orders_payment_status">{order.paymentStatus == "UNPAID" ? "DRAFT".toLowerCase() : order.paymentStatus.toLowerCase()}</td>
                       <td className="text-center order_view_icon">
                         <Link to={`/ordersdetails/${order.id}`}>
-                        <img src={viewicon} alt="" />
+                          <img src={viewicon} alt="" />
                         </Link>
                       </td>
                     </tr>
                   );
                 })
               ) : (
-                <tr>
-                  <td colSpan="5">No Order Available.</td>
-                </tr>
-              )}
+                  <tr>
+                    <td colSpan="5">No Order Available.</td>
+                  </tr>
+                )}
             </tbody>
           </table>
         </div>

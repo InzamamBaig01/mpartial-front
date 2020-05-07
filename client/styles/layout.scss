@@ -239,6 +239,9 @@
       color: #0a5169;
       opacity: 1;
       min-height: 143px;
+      &.data_number_3 {
+        font-size: 160px;
+      }
     }
     .data_text {
       text-align: left;
@@ -343,7 +346,7 @@
   color: #0a5169;
 }
 .slider_tooltip_text {
-  font-size: 12px;
+  font-size: 15px;
   position: absolute;
   left: 0;
   right: 0;
@@ -699,9 +702,9 @@ span.numeric-character {
   .dropdown-heading-value{
     color:#495057;
   }
-  //input[type="file"] {
-  //  display: none;
-  //}
+  input[type="file"] {
+   display: none;
+  }
   .custom-file-input-btn {
     border: transparent;
     display: inline-block;
@@ -763,7 +766,7 @@ span.numeric-character {
     background-color: #3ac280;
     font-size: 14px;
     color: #fff;
-    margin: 4px 0 0 0;
+    margin: 4px 15px 0 0;
   }
   select {
     background: url(../assets/up-arrow.svg) no-repeat right #fff !important;
@@ -1611,7 +1614,7 @@ a {
 }
 .profile_upload_image_info {
   font-family: "Raleway", sans-serif;
-  color: rgba(0, 0, 0, 0.5);
+  color:red;
   font-size: 12px;
   text-align: center;
   max-width: 200px;
@@ -1643,4 +1646,14 @@ a {
 .signupcell {
   text-align: center !important;
   font-size: 24px !important;
+}
+
+
+.slider_tooltip_price,
+.css-wrrl2p-WaterFall li ,
+.data_number,
+.partial_fee_btn label,
+.waterfall_info_text,
+.form_price {
+  font-family: "Museo Sans Rounded 500";
 }

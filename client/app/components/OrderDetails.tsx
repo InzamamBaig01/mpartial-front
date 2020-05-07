@@ -26,7 +26,7 @@ const fields = [
         description: "Informs the applied price list",
         type: "text",
         required: true,
-      },
+    },
     {
         id: "Carrier",
         name: "Insurance Carrier",
@@ -75,7 +75,7 @@ const fields = [
         id: "preMitigationDemoModelURL",
         name: "Pre Mitigation/Demo Model URL",
         description: "e.g. https://my.matterport.com/show/?m=ggh5ffgbkrt",
-        type: "text",
+        type: "url",
         required: true,
         typeOptions: {},
     },
@@ -83,7 +83,7 @@ const fields = [
         id: "postMitigationDemoModelURL",
         name: "Post Mitigation/Demo Model URL",
         description: "e.g. https://my.matterport.com/show/?m=gjdf56vbngf",
-        type: "text",
+        type: "url",
         required: true,
         typeOptions: {},
     },
@@ -271,9 +271,26 @@ const OrderDetails = (props) => {
                         <>
                             {props.order[props.field.id].map((d, index) => (
                                 <a href={d} target="_blank" download>
-                                    Asset {index+1}
+                                    Asset {index + 1}
                                 </a>
                             ))}
+                        </>
+                    );
+                };
+                break;
+            case "url":
+                Data = () => {
+                    return (
+                        <>
+                            {props.order[props.field.id]
+                                ? (
+                                    <>
+                                        <a href={props.order[props.field.id]} target="_blank" >
+                                            {props.order[props.field.id]}
+                                        </a>
+                                    </>
+                                )
+                                : "Not Available"}
                         </>
                     );
                 };
