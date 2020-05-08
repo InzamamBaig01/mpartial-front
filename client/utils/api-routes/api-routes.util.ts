@@ -336,6 +336,19 @@ export const getMyInfoAPI = () => {
   );
 };
 
+
+export const getPIC = () => {
+  return ajax({
+    headers: requestHeader(),
+    method: "POST",
+    url: `${baseURL}/Client/getSetupIntentForAddingCard?thetoken=${localStorage.token}`,
+  }).pipe(
+    catchError(handleError("logout")),
+    
+  );
+};
+
+
 export const resetPassword = (payload) => {
   return ajax({
     headers: requestHeader(),

@@ -31,6 +31,7 @@ import queryString from "query-string";
 import {
   profileUpdate,
   changePassword,
+  getPIC,
 } from "utils/api-routes/api-routes.util";
 
 const createOptions = (fontSize: string, padding?: string) => {
@@ -56,7 +57,7 @@ const createOptions = (fontSize: string, padding?: string) => {
   };
 };
 
-const FormElement = () => {
+const FormElement = (props) => {
   const stripe = useStripe();
   const elements = useElements();
   const { getMyInfo, myInfo } = useContext(AppContext);
@@ -64,26 +65,31 @@ const FormElement = () => {
   const [name, setName] = useState("");
 
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = async (ev) => {
     ev.preventDefault();
 
-    const card = elements.getElement(CardElement);
 
-    stripe
-      .createPaymentMethod({
-        type: "card",
-        card: card,
+
+    const result = await stripe.confirmCardSetup(props.PI, {
+      payment_method: {
+        card: elements.getElement(CardElement),
         billing_details: {
           name: name,
         },
-      })
-      .then(function (result) {
-        console.log(result);
-        if (result.paymentMethod) {
-          getMyInfo();
-        }
-        // Handle result.error or result.paymentMethod
-      });
+      }
+    });
+
+    
+    if (result.error) {
+      // Display result.error.message in your UI.
+    } else {
+      // The setup has succeeded. Display a success message and send
+      // result.setupIntent.payment_method to your server to save the
+      // card to a Customer
+      getMyInfo();
+      props.handleClose();
+    }
+    
   };
 
   return (
@@ -118,7 +124,7 @@ const AddNewCard = (props) => {
         </Modal.Header>
         <Modal.Body className="support_body">
           <Elements stripe={stripePromise}>
-            <FormElement></FormElement>
+            <FormElement PI={props.PI}  handleClose={props.handleClose}></FormElement>
           </Elements>
         </Modal.Body>
       </Modal>
@@ -494,6 +500,7 @@ const Profile = () => {
   const { getMyInfo, myInfo } = useContext(AppContext);
 
   const [info, setInfo] = useState(false);
+  const [PI, setPI] = useState(false);
   const pmicons = {
     mastercard: mastercard,
     visa: visa,
@@ -502,6 +509,9 @@ const Profile = () => {
   }
   useEffect(() => {
     getMyInfo();
+    getPIC().subscribe((response) => {
+      setPI(response.response.Message);
+    });
   }, []);
 
   useEffect(() => {
@@ -604,9 +614,9 @@ const Profile = () => {
                     <div className="profile_title">Payment Options</div>
                   </div>
                   <div className="col text-right">
-                    {/* <button className="btn" onClick={handlecardshow}>
+                    <button className="btn" onClick={handlecardshow}>
                       ADD
-                    </button> */}
+                    </button>
                   </div>
                 </div>
                 <div className="divider"></div>
@@ -617,7 +627,7 @@ const Profile = () => {
                         <th></th>
                         <th>Card Number</th>
                         <th>Expiration Date</th>
-                        <th>Actions</th>
+                        {/* <th>Actions</th> */}
                       </tr>
                     </thead>
                     <tbody>
@@ -630,10 +640,10 @@ const Profile = () => {
                               <td>
                                 {card.exp_month}/{card.exp_year}
                               </td>
-                              <td>
+                              {/* <td>
                                 <i>a</i>
                                 <i>b</i>
-                              </td>
+                              </td> */}
                             </tr>
                           );
                         })
@@ -651,6 +661,7 @@ const Profile = () => {
         onChange={() => { }}
         onStackSubmit={() => { }}
         show={addcardpopupshow}
+        PI={PI}
         handleClose={handlecardclose}
       />
 
