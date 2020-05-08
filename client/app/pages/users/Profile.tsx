@@ -195,9 +195,7 @@ const EditProfile = (props) => {
       last_name: props.info.lastName,
       phone: props.info.phone,
     };
-    if (JSON.stringify(compObj) === JSON.stringify(comObj2)) {
-      return
-    }
+
     const stringified = queryString.stringify(data);
 
     formData.append("profilepicture", profileImage.profilepicture);
@@ -356,6 +354,7 @@ const EditPassword = (props) => {
     thetoken: localStorage.token,
   });
   const [validPassword, setValidPassword] = React.useState(true);
+  const [isCapsOn, setIsCapsOn] = React.useState(false);
 
   const confirmPassword = (cp) => {
     setValidPassword(cp == passwords.newPassword);
@@ -393,9 +392,18 @@ const EditPassword = (props) => {
               <label>Current Password</label>
               <input
                 type="password"
-                className="form-control"
+                className={`form-control iscaps_${isCapsOn}`}
                 value={passwords.oldPassword}
                 required
+                onClick={(e) => {
+                  const caps_lock_on = e.getModifierState('CapsLock');
+                  setIsCapsOn(caps_lock_on)
+                }}
+                onKeyDown={(e) => {
+                  const caps_lock_on = e.getModifierState('CapsLock');
+                  setIsCapsOn(caps_lock_on);
+                }}
+
                 onChange={(e) =>
                   setPasswords({
                     ...passwords,
@@ -403,12 +411,24 @@ const EditPassword = (props) => {
                   })
                 }
               />
+              {/* {
+                isCapsOn && <p>Caps lock on.</p>
+              } */}
             </div>
             <div className="form-group">
               <label>New Password</label>
               <input
+                onClick={(e) => {
+                  const caps_lock_on = e.getModifierState('CapsLock');
+                  setIsCapsOn(caps_lock_on)
+                }}
+                onKeyDown={(e) => {
+                  const caps_lock_on = e.getModifierState('CapsLock');
+                  setIsCapsOn(caps_lock_on);
+                  console.log(caps_lock_on);
+                }}
                 type="password"
-                className="form-control"
+                className={`form-control iscaps_${isCapsOn}`}
                 value={passwords.newPassword}
                 required
                 onChange={(e) =>
@@ -423,8 +443,17 @@ const EditPassword = (props) => {
             <div className="form-group">
               <label>New Confirm Password</label>
               <input
+                onClick={(e) => {
+                  const caps_lock_on = e.getModifierState('CapsLock');
+                  setIsCapsOn(caps_lock_on)
+                }}
+                onKeyDown={(e) => {
+                  const caps_lock_on = e.getModifierState('CapsLock');
+                  setIsCapsOn(caps_lock_on);
+                  console.log(caps_lock_on);
+                }}
                 type="password"
-                className="form-control"
+                className={`form-control iscaps_${isCapsOn}`}
                 value={passwords.confirm}
                 required
                 onChange={(e) => {
@@ -588,6 +617,7 @@ const Profile = () => {
                         <th></th>
                         <th>Card Number</th>
                         <th>Expiration Date</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -599,6 +629,10 @@ const Profile = () => {
                               <td>XXXX XXXX XXXX {card.last4}</td>
                               <td>
                                 {card.exp_month}/{card.exp_year}
+                              </td>
+                              <td>
+                                <i>a</i>
+                                <i>b</i>
                               </td>
                             </tr>
                           );

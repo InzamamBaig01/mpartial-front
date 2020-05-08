@@ -80,11 +80,11 @@ export const SignupStepRole: React.FC<StepProps> = (props) => {
                 <input
                   type="radio"
                   id="adj"
-                  defaultChecked={role == "SPECIALITY VENDOR"}
+                  defaultChecked={role == "SPECIALTY VENDOR"}
                   name="radio-group"
-                  onClick={() => setrole("SPECIALITY VENDOR")}
+                  onClick={() => setrole("SPECIALTY VENDOR")}
                 />
-                <label htmlFor="adj"> SPECIALITY VENDOR</label>
+                <label htmlFor="adj"> SPECIALTY VENDOR</label>
               </div>
               <div className="form-group">
                 <input

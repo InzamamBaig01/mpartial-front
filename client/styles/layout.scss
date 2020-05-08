@@ -590,7 +590,7 @@ span.numeric-character {
 }
 .sketch-container {
   display: flex;
-  margin: 80px 0;
+  margin: 40px 0;
   justify-content: space-between;
   justify-content: center;
   align-items: center;
@@ -698,6 +698,13 @@ span.numeric-character {
     letter-spacing: 0px;
     // color: rgba(0, 0, 0, 0.4);
     height: 47px;
+    &:invalid {
+      border:1px red solid;
+    }
+
+    &:valid {
+      border:1px green solid;
+    }
   }
   .dropdown-heading-value{
     color:#495057;
@@ -911,6 +918,7 @@ span.numeric-character {
 }
 
 .signUp_actions {
+  cursor: pointer;
   width: 100%;
   ul {
     margin: 0;
@@ -1656,4 +1664,16 @@ a {
 .waterfall_info_text,
 .form_price {
   font-family: "Museo Sans Rounded 500";
+}
+
+
+.brand_icons {
+  width: 30px;
+  height: auto;
+}
+
+button.btn.payment_switch {
+  position: absolute;
+  right: 0;
+  top: -50%;
 }

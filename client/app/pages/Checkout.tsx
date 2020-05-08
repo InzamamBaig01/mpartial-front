@@ -15,15 +15,31 @@ import { AppContext } from "contexts/appContext";
 import { AppAlertsContext } from "contexts/appAlertsContext";
 import Loader from "app/components/Loader";
 import appConfig from '../../appconfig.json';
+import visa from "../../assets/visa.png";
+import mastercard from "../../assets/mastercard.png";
+import AmericanExpress from "../../assets/American-Express.png";
+import discover from "../../assets/discover.png";
+
+
 const CheckoutForm = (props) => {
   const [error, setError] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
   const { userDetails } = useContext(AuthContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
- // console.log("render", props);
+  const pmicons = {
+    mastercard: mastercard,
+    visa: visa,
+    discover: discover,
+    "american express": AmericanExpress,
+  }
+  const [showNewCardForm, setShowNewCardForm] = useState(props.stripeCustomerCard.length == 0);
+  // console.log(props.stripeCustomerCard.length == 0);
   const [selectedCard, setSelectedCard] = useState(false);
 
+  useEffect(() => {
+    setShowNewCardForm(props.stripeCustomerCard.length == 0);
+  }, [props.stripeCustomerCard])
   // Handle real-time validation errors from the card Element.
   const handleChange = (event) => {
     if (event.error) {
@@ -51,23 +67,27 @@ const CheckoutForm = (props) => {
     stripe
       .confirmCardPayment(
         localStorage.getItem("sessipn"),
-        selectedCard
+        !showNewCardForm
           ? {
-              payment_method: selectedCard.paymentMethodId,
-            }
+            payment_method: selectedCard.paymentMethodId,
+          }
           : {
-              payment_method: {
-                card: card,
-                billing_details: {
-                  name: "Jenny Rosen",
-                },
+            payment_method: {
+              card: card,
+              billing_details: {
+                name: "Jenny Rosen",
               },
-              setup_future_usage: "off_session",
-            }
+            },
+            setup_future_usage: "off_session",
+          }
       )
       .then(async function (result) {
+        console.log(result);
+        // return;
         if (result.error) {
           props.setIsFormSubmitted(false);
+          setError(result.error.message);
+          props.setCardValidation(false);
         } else {
           if (result.paymentIntent.status === "succeeded") {
             payOrder({
@@ -88,39 +108,52 @@ const CheckoutForm = (props) => {
 
   return (
     <>
+
       {props.stripeCustomerCard.length ? (
-        props.stripeCustomerCard.map((card, index) => {
-          if (index == 0) {
-            // setSelectedCard(card);
-          }
-          return (
-            <div className={`form-group col-12`} key={index}>
-              <input
-                type="radio"
-                id={`card_${index}`}
-                name="card"
-                defaultChecked={
-                  selectedCard.paymentMethodId == card.paymentMethodId
-                }
-                onClick={() => {
-                  if (!props.cardValidation) props.setCardValidation(true);
-                  setSelectedCard(card);
-                }}
-              />{" "}
-              <label
-                htmlFor={`card_${index}`}
-                onClick={() => {
-                  if (!props.cardValidation) props.setCardValidation(true);
-                  setSelectedCard(card);
-                }}
-              >
-                Card Ending {card.last4} -- {card.exp_month}/{card.exp_year}
-              </label>
-            </div>
-          );
-        })
-      ) : (
-        <div className="">
+        <>
+          <button className="btn payment_switch" type="button" onClick={() => {
+            setShowNewCardForm(!showNewCardForm);
+            setSelectedCard(false);
+            props.setCardValidation(false);
+            setError(null);
+          }} >{showNewCardForm ? 'Use Existing Card' : 'Use New Card'}</button>
+          {!showNewCardForm && props.stripeCustomerCard.map((card, index) => {
+            if (index == 0) {
+              // setSelectedCard(card);
+            }
+            return (
+              <>
+                <div className={`form-group col-12`} key={index}>
+                  <input
+                    type="radio"
+                    id={`card_${index}`}
+                    name="card"
+                    defaultChecked={
+                      selectedCard.paymentMethodId == card.paymentMethodId
+                    }
+                    onClick={() => {
+                      if (!props.cardValidation) props.setCardValidation(true);
+                      setSelectedCard(card);
+                    }}
+                  />{" "}
+                  <label
+                    htmlFor={`card_${index}`}
+                    onClick={() => {
+                      if (!props.cardValidation) props.setCardValidation(true);
+                      setSelectedCard(card);
+                    }}
+                  >
+                    <img src={pmicons[card.brand]} className="brand_icons" alt="" />
+                     &nbsp; Card Ending {card.last4} -- {card.exp_month}/{card.exp_year}
+                  </label>
+                </div>
+              </>
+            );
+          })}
+        </>
+      ) : ''}
+      {
+        showNewCardForm && (<div className="">
           <label htmlFor="card-element">Credit or debit card</label>
           <CardElement
             id="card-element"
@@ -130,8 +163,8 @@ const CheckoutForm = (props) => {
           <div className="card-errors" role="alert">
             {error}
           </div>
-        </div>
-      )}
+        </div>)
+      }
     </>
   );
 };
@@ -154,7 +187,7 @@ const Checkout = (props) => {
     email: userDetails().emailAddress.length == 0,
   });
   const [cardValidation, setCardValidation] = useState(false);
- // console.log("main_rendered");
+  // console.log("main_rendered");
   useEffect(() => {
     getMyInfo();
   }, []);
@@ -241,8 +274,8 @@ const Checkout = (props) => {
                     First Name Is Required.
                   </span>
                 ) : (
-                  ""
-                )}
+                    ""
+                  )}
               </div>
             </div>
             <div className="row">
@@ -264,8 +297,8 @@ const Checkout = (props) => {
                     Last Name Is Required.
                   </span>
                 ) : (
-                  ""
-                )}
+                    ""
+                  )}
               </div>
             </div>
             <div className="row">
@@ -287,8 +320,8 @@ const Checkout = (props) => {
                     Email Address Is Required.
                   </span>
                 ) : (
-                  ""
-                )}
+                    ""
+                  )}
               </div>
             </div>
 
@@ -354,9 +387,9 @@ const Checkout = (props) => {
                   onClick={checkValidation}
                   disabled={
                     checkoutInfo.firstName == "" ||
-                    checkoutInfo.lastName == "" ||
-                    checkoutInfo.emailAddress == "" ||
-                    !cardValidation
+                      checkoutInfo.lastName == "" ||
+                      checkoutInfo.emailAddress == "" ||
+                      !cardValidation
                       ? true
                       : false
                   }

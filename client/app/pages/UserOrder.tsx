@@ -340,8 +340,12 @@ const DrawField = (props) => {
                 multiple
                 onChange={onChange} />
               {
-                field.value ? field.value.length : 0
-              } Files Selected
+                field.value ? Object.values(field.value).map((file) => {
+                  return (
+                  <div className="selected_file_name">{file.name}</div>
+                  )
+                }) : ''
+              } 
 
             </div>
             {/*<input type="file" className="custom-file-input-btn" onChange={(e) => {*/}
@@ -369,7 +373,7 @@ const DrawField = (props) => {
         break;
       case "email":
         return (
-          <div className="form-group">
+          <div className="">
             <div className="input-group">
               <img className="input_icon" src={Mail} alt="" />
               <input
@@ -386,7 +390,7 @@ const DrawField = (props) => {
         break;
 
       case 'url':
-        return (
+        return (<>
           <input
             type="url"
             required={field.required ? true : false}
@@ -394,7 +398,15 @@ const DrawField = (props) => {
             placeholder={field.placeholder}
             value={value}
             onChange={onChange}
+
           />
+          {
+            props.matchingUrl &&
+            <p>Please submit unique Matterport Scan URLs.
+
+            </p>
+          }
+        </>
         );
         break;
       default:
@@ -425,6 +437,7 @@ const UserOrder = () => {
   const { price } = useContext(AppContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
 
+  const [matchingUrl, setMatchingUrl] = useState(false)
   const uploadFiles = (id, files, index) => {
     if (files && files[index]) {
       const formData = new FormData();
@@ -512,7 +525,23 @@ const UserOrder = () => {
   useEffect(() => {
     // console.log(fields);
     checkFormValidation();
+    checkMatchingUrl();
   }, [allFields]);
+
+
+  const checkMatchingUrl = () => {
+    // console.log(fields);
+    const firstUrl = fields.filter((field) => {
+      return field.id == "preMitigationDemoModelURL";
+    })
+    const secondUrl = fields.filter((field) => {
+      return field.id == "postMitigationDemoModelURL";
+    });
+
+    if(firstUrl[0].value  && secondUrl[0].value) setMatchingUrl(firstUrl[0].value == secondUrl[0].value)
+  }
+
+
 
   const handleChange = (field, value) => {
     // console.log(allFields);
@@ -525,6 +554,7 @@ const UserOrder = () => {
       }
       return f;
     });
+    
     setAllFields(fieldsData);
   };
 
@@ -551,6 +581,7 @@ const UserOrder = () => {
                     <DrawField
                       field={field}
                       onChange={handleChange}
+                      matchingUrl={matchingUrl}
                     ></DrawField>
                   </div>
                 );
