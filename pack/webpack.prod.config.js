@@ -9,7 +9,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const merge                   = require('webpack-merge');
 const common                  = require('./webpack.common.config');
 const path                    = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin         = require('copy-webpack-plugin');
 
 const {
   EnvironmentPlugin,
@@ -69,6 +69,12 @@ module.exports = merge(common, {
       dry: true,
       cleanOnceBeforeBuildPatterns: ['**/*', '!./static/*'],
     }),
+    new CopyWebpackPlugin([
+      {
+        from: PATHS.client + "/sitemap.txt",
+        to: PATHS.output,
+      }
+    ]),
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
     }),

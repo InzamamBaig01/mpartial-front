@@ -264,6 +264,7 @@ const MultipleSelectField = (props) => {
 
 const DrawField = (props) => {
   const [value, setValue] = useState(props.field.value);
+  const [changed, setChanged] = useState(false);
   const onChange = (e) => {
     if (e.target.files) {
       props.onChange(field, e.currentTarget.files);
@@ -276,7 +277,16 @@ const DrawField = (props) => {
       field.value = e.currentTarget.value;
       setValue(e.currentTarget.value)
     }
+    setChanged(true);
   }
+
+  const removeFile = (index) => {
+    const val = Object.assign({}, value);
+    delete val[index];
+    setValue(val);
+
+  }
+
   const form = (field) => {
     switch (field.type) {
       case "text":
@@ -284,7 +294,7 @@ const DrawField = (props) => {
           <input
             type="text"
             required={field.required ? true : false}
-            className="form-control"
+            className={`form-control is_required_${field.required ? true : false} changed_${changed}`}
             placeholder={field.placeholder}
             onChange={onChange}
             value={value}
@@ -296,7 +306,7 @@ const DrawField = (props) => {
           <input
             type="number"
             required={field.required ? true : false}
-            className="form-control"
+            className={`form-control is_required_${field.required} changed_${changed}`}
             placeholder={field.placeholder}
             value={value}
             onChange={onChange}
@@ -306,7 +316,7 @@ const DrawField = (props) => {
       case "select":
         return (
           <select
-            className="form-control"
+            className={`form-control is_required_${field.required} changed_${changed}`}
             required={field.required ? true : false}
             onChange={onChange}
             value={value}
@@ -340,12 +350,20 @@ const DrawField = (props) => {
                 multiple
                 onChange={onChange} />
               {
-                field.value ? Object.values(field.value).map((file) => {
+                value ? Object.keys(value).map((index) => {
                   return (
-                  <div className="selected_file_name">{file.name}</div>
+                    <div className="selected_file_name" key={index}>
+                      <i className="close" onClick={() => removeFile(index)}>&times;</i>
+
+                      <i className="">
+                        <small>
+                          {field.value[index].name}
+                        </small>
+                      </i>
+                    </div>
                   )
                 }) : ''
-              } 
+              }
 
             </div>
             {/*<input type="file" className="custom-file-input-btn" onChange={(e) => {*/}
@@ -365,7 +383,7 @@ const DrawField = (props) => {
         return (
           <textarea
             required={field.required ? true : false}
-            className="form-control"
+            className={`form-control is_required_${field.required} changed_${changed}`}
             value={value}
             onChange={onChange}
           ></textarea>
@@ -373,19 +391,16 @@ const DrawField = (props) => {
         break;
       case "email":
         return (
-          <div className="">
-            <div className="input-group">
-              <img className="input_icon" src={Mail} alt="" />
-              <input
-                type="email"
-                className="form-control"
-                value={value}
-                placeholder="Email"
-                onChange={onChange}
-                required
-              />
-            </div>
-          </div>
+
+          <input
+            type="email"
+            className={`form-control is_required_${field.required} changed_${changed || value.length!=0}`}
+            value={value}
+            placeholder="Email"
+            onChange={onChange}
+            required
+          />
+
         );
         break;
 
@@ -394,17 +409,18 @@ const DrawField = (props) => {
           <input
             type="url"
             required={field.required ? true : false}
-            className="form-control"
+            className={`form-control is_required_${field.required} changed_${changed}`}
             placeholder={field.placeholder}
             value={value}
             onChange={onChange}
 
           />
           {
-            props.matchingUrl &&
-            <p>Please submit unique Matterport Scan URLs.
-
-            </p>
+            props.matchingUrl && field.id == "postMitigationDemoModelURL" &&
+            <i className="red">
+              <small>Please submit unique Matterport Scan URLs.
+              </small>
+            </i>
           }
         </>
         );
@@ -414,7 +430,7 @@ const DrawField = (props) => {
           <input
             type="text"
             required={field.required ? true : false}
-            className="form-control"
+            className={`form-control is_required_${field.required} changed_${changed}`}
             placeholder={field.placeholder}
             onChange={onChange}
             value={value}
@@ -513,8 +529,8 @@ const UserOrder = () => {
 
   const checkFormValidation = () => {
     if (form && form.current) {
-      // setSubmitBtnDisabled(!form.current.checkValidity());
-      setSubmitBtnDisabled(false);
+      setSubmitBtnDisabled(!form.current.checkValidity());
+      // setSubmitBtnDisabled(false);
     }
   };
 
@@ -538,7 +554,11 @@ const UserOrder = () => {
       return field.id == "postMitigationDemoModelURL";
     });
 
-    if(firstUrl[0].value  && secondUrl[0].value) setMatchingUrl(firstUrl[0].value == secondUrl[0].value)
+    if (firstUrl[0].value && secondUrl[0].value) {
+      const isMatch = firstUrl[0].value == secondUrl[0].value;
+      if(!submitBtnDisabled) setSubmitBtnDisabled(isMatch ? true : false);
+      setMatchingUrl(isMatch)
+    }
   }
 
 
@@ -554,7 +574,7 @@ const UserOrder = () => {
       }
       return f;
     });
-    
+
     setAllFields(fieldsData);
   };
 

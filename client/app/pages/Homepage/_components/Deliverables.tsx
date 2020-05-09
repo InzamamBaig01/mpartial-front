@@ -6,8 +6,8 @@ import { DeliverSlider } from "./DelieverSlider";
 import mitigation from "../../../../assets/deliverable-1.png";
 import mitigation2 from "../../../../assets/deliverable-2.png";
 
-import sketch from "../../../../assets/sketch-1.png";
-import sketch2 from "../../../../assets/sketch2.png";
+import sketch from "../../../../assets/TS_Plus_Front.png";
+import sketch2 from "../../../../assets/TS_Plus_Top_View.png";
 interface DeliverablesProps {}
 export const Deliverables: React.FC<DeliverablesProps> = ({}) => {
   return (

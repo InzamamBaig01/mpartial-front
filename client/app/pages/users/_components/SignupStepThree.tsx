@@ -6,7 +6,11 @@ import { Link } from "react-router-dom";
 import queryString from "query-string";
 import Loader from "app/components/Loader";
 
+import ReCAPTCHA from "react-google-recaptcha";
+import appConfig from '../../../../appconfig.json';
+
 import { AppAlertsContext } from "contexts/appAlertsContext";
+import { useState } from "react";
 interface StepProps {
   step?: number;
   setStep?: Function;
@@ -14,11 +18,12 @@ interface StepProps {
   setFormData: Function;
 }
 export const SignupStepThree: React.FC<StepProps> = (props) => {
-  const [password, setpassword] = React.useState("");
-  const [cpassword, setcpassword] = React.useState("");
-  const [validPassword, setValidPassword] = React.useState(false);
-  const [validCheckbox, setValidCheckbox] = React.useState(false);
+  const [password, setpassword] = useState("");
+  const [cpassword, setcpassword] = useState("");
+  const [validPassword, setValidPassword] = useState(false);
+  const [validCheckbox, setValidCheckbox] = useState(false);
 
+  const [isHuman, setIshuman] = useState(false);
   const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
   // const stringified = queryString.stringify({
   //   password: password,
@@ -56,6 +61,12 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
   const confirmPassword = (cp) => {
     setValidPassword(cp == password);
   };
+
+  const onCaptchaChange = (value) => {
+    // console.log("Captcha value:", value);
+    if (value) setIshuman(true);
+  }
+
   return (
     <>
       <div className={"container"}>
@@ -102,8 +113,8 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
                 Passwords does not match
               </span>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </div>
           <div className="form-group">
             <input
@@ -115,15 +126,20 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
               I’ve read and accept the mpartial{" "}
               <Link to="/terms" className="underline" target="_blank">
                 Terms & Conditions
-              </Link>{" "}
+              </Link>
               <span className="red">*</span>
             </label>
           </div>
+          <ReCAPTCHA
+            sitekey={appConfig.captchaKey}
+            onChange={onCaptchaChange}
+            className="captcha_box"
+          />
           <button
             css={{ maxWidth: "257px", marginTop: "30px" }}
             type="submit"
             id="formButton"
-            disabled={!validPassword || password.length == 0 || !validCheckbox}
+            disabled={!validPassword || password.length == 0 || !validCheckbox || !isHuman}
             className="btn btn-primary btn-block submit"
           >
             Create

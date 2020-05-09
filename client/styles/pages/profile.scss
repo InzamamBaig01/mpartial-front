@@ -178,3 +178,90 @@
   width: 50px;
   height: auto;
 }
+
+.cards {
+  text-align: center;
+  .card_item {
+    display: inline-block;
+    vertical-align: top;
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border: 1px solid #cecece;
+    border-radius: 10px;
+    opacity: 1;
+    width: 300px;
+    padding: 22px;
+    margin: 20px;
+    height: auto;
+    &.card_is_default_true {
+      border: 1px solid #3ac280;
+    }
+    .card_number {
+      text-align: center;
+      font-weight: 600;
+      font-size: 29px;
+      line-height: 35px;
+      letter-spacing: 0px;
+      color: #3ac280;
+      opacity: 1;
+      padding: 29px 0 21px 0;
+    }
+    label {
+      text-align: right;
+      font-weight: normal;
+      font-size: 10px;
+      line-height: 12px;
+      letter-spacing: 0px;
+      color: rgba(0, 0, 0, 0.5);
+      margin-bottom: 0;
+    }
+    .info_text {
+      text-align: right;
+      font-weight: normal;
+      font-size: 10px;
+      line-height: 12px;
+      letter-spacing: 0px;
+      color: rgba(0, 0, 0, 1);
+    }
+    .card_status {
+      text-align: left;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 14px;
+      letter-spacing: 0px;
+      color: #64747f;
+      opacity: 1;
+    }
+    .remove_card {
+      cursor: pointer;
+      margin-right: 12px;
+    }
+    .default {
+      color: #3ac280;
+    }
+    .nondefault {
+      color: #64747f;
+    }
+    .set_default_action {
+      cursor: pointer;
+      &.hover {
+        .nondefault {
+          color: #3ac280;
+        }
+        .set_default {
+          border: 0.5px solid #3ac280;
+        }
+      }
+    }
+    .set_default {
+      width: 9px;
+      height: 9px;
+      background: #ffffff 0% 0% no-repeat padding-box;
+      border: 0.5px solid #64747f;
+      opacity: 1;
+      display: inline-block;
+      vertical-align: middle;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+  }
+}

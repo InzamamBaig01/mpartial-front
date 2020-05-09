@@ -4,6 +4,8 @@ node {
 		
 	}
 	stage('Build') {
+        sh 'npm install'
+        sh 'npm run build'
         sh 'rm -rf "/var/www/html/*"'
         sh 'cp -R "${JENKINS_HOME}/workspace/mpartial-frontend/build/." "/var/www/html"'
 

@@ -346,7 +346,7 @@
   color: #0a5169;
 }
 .slider_tooltip_text {
-  font-size: 15px;
+  font-size: 19px;
   position: absolute;
   left: 0;
   right: 0;
@@ -586,16 +586,21 @@ span.numeric-character {
   background: #3ac280;
 }
 .sketch-widget {
-  margin: 80px 0;
+  margin: 40px 0;
 }
 .sketch-container {
   display: flex;
-  margin: 40px 0;
+  margin: 15px 0;
   justify-content: space-between;
   justify-content: center;
   align-items: center;
   img {
     width: 49%;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    min-height: 370px;
+    margin: 1%;
   }
 }
 .form-holder {
@@ -698,19 +703,23 @@ span.numeric-character {
     letter-spacing: 0px;
     // color: rgba(0, 0, 0, 0.4);
     height: 47px;
-    &:invalid {
-      border:1px red solid;
-    }
+    &.changed_true {
+      &.is_required_true {
+        &:invalid {
+          border: 1px red solid;
+        }
 
-    &:valid {
-      border:1px green solid;
+        &:valid {
+          border: 1px green solid;
+        }
+      }
     }
   }
-  .dropdown-heading-value{
-    color:#495057;
+  .dropdown-heading-value {
+    color: #495057;
   }
   input[type="file"] {
-   display: none;
+    display: none;
   }
   .custom-file-input-btn {
     border: transparent;
@@ -728,7 +737,7 @@ span.numeric-character {
     visibility: hidden;
   }
   .custom-file-input-btn::before {
-    content: 'Select some files';
+    content: "Select some files";
     color: black;
     display: inline-block;
     background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
@@ -805,11 +814,7 @@ span.numeric-character {
   .dropdown-heading-dropdown-arrow svg {
     display: none;
   }
-  input[type="email"] {
-    border: none;
-    background: transparent;
-    color: #495057;
-  }
+
   textarea {
     height: 200px !important;
     resize: none;
@@ -1032,6 +1037,7 @@ span.numeric-character {
   letter-spacing: 0px;
   color: #000000;
   opacity: 1;
+  margin-top: 15px;
   margin-bottom: 15px;
 }
 
@@ -1450,7 +1456,7 @@ span.password_not_matched {
   .description {
     min-height: 66px;
     &.small_true {
-      min-height: 45px;
+      min-height: 28px;
     }
   }
 }
@@ -1622,7 +1628,7 @@ a {
 }
 .profile_upload_image_info {
   font-family: "Raleway", sans-serif;
-  color:red;
+  color: red;
   font-size: 12px;
   text-align: center;
   max-width: 200px;
@@ -1633,9 +1639,6 @@ a {
   font-size: 24px;
   text-align: center;
 }
-
-
-
 
 .backgroundVideo__poster,
 .backgroundVideo__video {
@@ -1648,24 +1651,19 @@ a {
   transition: opacity 250ms ease-in;
 }
 
-
-
-
 .signupcell {
   text-align: center !important;
   font-size: 24px !important;
 }
 
-
 .slider_tooltip_price,
-.css-wrrl2p-WaterFall li ,
+.css-wrrl2p-WaterFall li,
 .data_number,
 .partial_fee_btn label,
 .waterfall_info_text,
 .form_price {
   font-family: "Museo Sans Rounded 500";
 }
-
 
 .brand_icons {
   width: 30px;
@@ -1675,5 +1673,19 @@ a {
 button.btn.payment_switch {
   position: absolute;
   right: 0;
-  top: -50%;
+  top: -40px;
+}
+
+.selected_file_name {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+  .close {
+    cursor: pointer;
+  }
+}
+
+.captcha_box div {
+  margin: 10px auto;
 }

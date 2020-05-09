@@ -100,7 +100,7 @@ const Header = (props) => {
                       <DropdownToggle nav caret>
                         <span className="nav-link" id="toBold">
                           Hi, {userD.lastName}
-                          {headerClass == "" ? (
+                          {(headerClass == "" && window.innerWidth >= 1030  ) ? (
                             <img src={rightarrow} alt="" />
                           ) : (
                             <img src={rightarrowdark} alt="" />

@@ -4,13 +4,20 @@ import SectionTitle from "app/components/SectionTitle";
 import { AppAlertsContext } from "contexts/appAlertsContext";
 import InputMask from "react-input-mask";
 import { sendEmail, resetPassword } from "utils/api-routes/api-routes.util";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Loader from "app/components/Loader";
 import { AuthContext } from "contexts/authContext";
+
+import ReCAPTCHA from "react-google-recaptcha";
+import appConfig from '../../../../appconfig.json';
+
+
 interface ConatctUsProps { }
 export const ContactUs: React.FC<ConatctUsProps> = ({ }) => {
   const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
-  const { userDetails } = React.useContext(AuthContext);
+  const { userDetails, isUserAuthenticated } = useContext(AuthContext);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(isUserAuthenticated());
 
   const userd = userDetails() ? userDetails() : false;
   const [contactDetails, setContactDetails] = useState({
@@ -20,6 +27,7 @@ export const ContactUs: React.FC<ConatctUsProps> = ({ }) => {
     message: "",
   });
   const [messageDone, setMessageDone] = useState(false);
+  const [isHuman, setIshuman] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     showLoader();
@@ -46,6 +54,13 @@ export const ContactUs: React.FC<ConatctUsProps> = ({ }) => {
     details[key] = value;
     setContactDetails(details);
   };
+
+  const onCaptchaChange = (value) => {
+    // console.log("Captcha value:", value);
+    if (value) setIshuman(true);
+  }
+
+
   return (
     <>
       <div
@@ -118,18 +133,24 @@ export const ContactUs: React.FC<ConatctUsProps> = ({ }) => {
                   ></textarea>
                 </div>
               </div>
+              {!isLoggedIn && <ReCAPTCHA
+                sitekey={appConfig.captchaKey}
+                onChange={onCaptchaChange}
+                className="captcha_box"
+              />}
               <p>
                 {messageDone
                   ? "Your message has been sent to the support team, you can expect a reply within 12 hours. "
                   : ""}
               </p>
+
               <button
                 type={"submit"}
                 className="btn btn-green"
                 value={"Submit"}
                 id="formButton"
                 disabled={
-                  contactDetails.name == '' || contactDetails.email == '' || contactDetails.phone == '' || contactDetails.message == '' 
+                  contactDetails.name == '' || contactDetails.email == '' || contactDetails.phone == '' || contactDetails.message == '' || (!isLoggedIn && !isHuman)
                 }
               >
                 Submit

@@ -12,6 +12,10 @@ import {
   resendActivationEmail,
 } from "utils/api-routes/api-routes.util";
 import Loader from "app/components/Loader";
+
+import ReCAPTCHA from "react-google-recaptcha";
+import appConfig from '../../../appconfig.json';
+
 interface IProps { }
 
 export const Login: React.FC<IProps> = ({ ...props }) => {
@@ -27,25 +31,32 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
   const [loginStatus, setLoginStatus] = useState(false);
   const handleEmailChange = (e: any) => emailOnChange(e.target.value);
   const handlePasswordChange = (e: any) => passwordOnChange(e.target.value);
+  const [loginAttempt, setLoginAttempt] = useState(0);
+  const captcha = React.createRef();
   const handleSubmitForm = (e: any) => {
     e.preventDefault();
     dispatchLogin();
   };
 
+  const [isHuman, setIshuman] = useState(false);
   useEffect(() => {
     // console.log(loginError);
-    if (loginError)
+    if (loginError) {
       setLoginStatus(
         loginError == "A user could not be found with this email address."
           ? "Sorry, we couldn't find an account with that username or the password you entered isn't right."
           : loginError
       );
+      setLoginAttempt(loginAttempt + 1);
+      if(captcha.current) captcha.current.reset();
+    }
   }, [status, loginError]);
 
   useEffect(() => {
     return () => {
       setLoginStatus(false);
       setLoginError(false);
+      setLoginAttempt(0);
     };
   }, []);
 
@@ -60,6 +71,10 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
       }
     });
   };
+  const onCaptchaChange = (value) => {
+    // console.log("Captcha value:", value);
+    if (value) setIshuman(true);
+  }
 
   return (
     <>
@@ -99,10 +114,19 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
               <div className="forgotP_container">
                 <Link to="/forgot-password">Forgot Password?</Link>
               </div>
-
+              {
+                loginAttempt > 5 &&
+                <ReCAPTCHA
+                  sitekey={appConfig.captchaKey}
+                  onChange={onCaptchaChange}
+                  ref={captcha}
+                  className="captcha_box"
+                />}
               <button
                 type="submit"
                 className="btn btn-primary btn-block submit"
+                id="formButton"
+                disabled={loginAttempt > 5 && !isHuman}
               >
                 Sign in
                 <Loader></Loader>

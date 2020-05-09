@@ -1,4 +1,9 @@
 @media (max-width: 500px) {
+  button.btn.payment_switch {
+    position: absolute;
+    right: 0;
+    top: -35px !important;
+  }
   .dropdown_desktop {
     display: none !important;
   }

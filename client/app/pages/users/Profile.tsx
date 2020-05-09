@@ -33,6 +33,9 @@ import {
   changePassword,
   getPIC,
 } from "utils/api-routes/api-routes.util";
+import BankCard from "app/components/BankCard";
+import Loader from "app/components/Loader";
+import { AppAlertsContext } from "contexts/appAlertsContext";
 
 const createOptions = (fontSize: string, padding?: string) => {
   return {
@@ -61,13 +64,14 @@ const FormElement = (props) => {
   const stripe = useStripe();
   const elements = useElements();
   const { getMyInfo, myInfo } = useContext(AppContext);
+  const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
 
   const [name, setName] = useState("");
 
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
-
+    showLoader();
 
 
     const result = await stripe.confirmCardSetup(props.PI, {
@@ -79,17 +83,19 @@ const FormElement = (props) => {
       }
     });
 
-    
+
     if (result.error) {
       // Display result.error.message in your UI.
+      hideLoader();
     } else {
       // The setup has succeeded. Display a success message and send
       // result.setupIntent.payment_method to your server to save the
       // card to a Customer
+      hideLoader();
       getMyInfo();
       props.handleClose();
     }
-    
+
   };
 
   return (
@@ -105,6 +111,7 @@ const FormElement = (props) => {
         <CardElement className="card_element_form"></CardElement>
         <button type="submit" className="btn btn-lg">
           Save
+          <Loader></Loader>
         </button>
       </form>
     </>
@@ -124,7 +131,7 @@ const AddNewCard = (props) => {
         </Modal.Header>
         <Modal.Body className="support_body">
           <Elements stripe={stripePromise}>
-            <FormElement PI={props.PI}  handleClose={props.handleClose}></FormElement>
+            <FormElement PI={props.PI} handleClose={props.handleClose}></FormElement>
           </Elements>
         </Modal.Body>
       </Modal>
@@ -509,10 +516,14 @@ const Profile = () => {
   }
   useEffect(() => {
     getMyInfo();
+
+  }, []);
+
+  const getPI = () => {
     getPIC().subscribe((response) => {
       setPI(response.response.Message);
     });
-  }, []);
+  }
 
   useEffect(() => {
     console.log(myInfo);
@@ -535,7 +546,10 @@ const Profile = () => {
 
   const [userData, setUserData] = useState(userDetails());
   const handlecardclose = () => setaddcardpopupshow(false);
-  const handlecardshow = () => setaddcardpopupshow(true);
+  const handlecardshow = () => {
+    getPI();
+    setaddcardpopupshow(true);
+  }
 
   const stripePromise = loadStripe("pk_test_BVYHeMmpLalkw9ro9W2IkTFJ");
 
@@ -621,41 +635,31 @@ const Profile = () => {
                 </div>
                 <div className="divider"></div>
                 <div className="cards">
-                  <table className="table stable-stripe">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>Card Number</th>
-                        <th>Expiration Date</th>
-                        {/* <th>Actions</th> */}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {info
-                        ? info.stripeCustomerCard.map((card, index) => {
-                          return (
-                            <tr>
-                              <td key={index}><img src={pmicons[card.brand]} className="brand_icon" alt="" /></td>
-                              <td>XXXX XXXX XXXX {card.last4}</td>
-                              <td>
-                                {card.exp_month}/{card.exp_year}
-                              </td>
-                              {/* <td>
-                                <i>a</i>
-                                <i>b</i>
-                              </td> */}
-                            </tr>
-                          );
-                        })
-                        : ""}
-                    </tbody>
-                  </table>
+
+                  {info
+                    ? info.stripeCustomerCard.map((card, index) => {
+                      return (
+                        // <tr>
+                        //   <td key={index}><img src={pmicons[card.brand]} className="brand_icon" alt="" /></td>
+                        //   <td>XXXX XXXX XXXX {card.last4}</td>
+                        //   <td>
+                        //     {card.exp_month}/{card.exp_year}
+                        //   </td>
+                        //   {/* <td>
+                        //         <i>a</i>
+                        //         <i>b</i>
+                        //       </td> */}
+                        // </tr>
+                        <BankCard card={card} />
+                      );
+                    })
+                    : ""}
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div >
+      </div >
       <AddNewCard
         value={""}
         onChange={() => { }}
@@ -665,25 +669,29 @@ const Profile = () => {
         handleClose={handlecardclose}
       />
 
-      {editProfileShow && (
-        <EditProfile
-          value={""}
-          onSubmitSuccess={onSubmitSuccess}
-          show={editProfileShow}
-          handleClose={handleEditProfileclose}
-          info={info}
-        />
-      )}
+      {
+        editProfileShow && (
+          <EditProfile
+            value={""}
+            onSubmitSuccess={onSubmitSuccess}
+            show={editProfileShow}
+            handleClose={handleEditProfileclose}
+            info={info}
+          />
+        )
+      }
 
-      {editPasswordShow && (
-        <EditPassword
-          value={""}
-          onEditPasswordSuccess={onSubmitPasswordSuccess}
-          show={editPasswordShow}
-          handleClose={handleEditPasswordclose}
-          info={info}
-        />
-      )}
+      {
+        editPasswordShow && (
+          <EditPassword
+            value={""}
+            onEditPasswordSuccess={onSubmitPasswordSuccess}
+            show={editPasswordShow}
+            handleClose={handleEditPasswordclose}
+            info={info}
+          />
+        )
+      }
     </>
   );
 };

@@ -42,7 +42,7 @@ const handleError = (operation: string) => (err: any) => {
   return Observable.throw(errMsg);
 };
 
-const afterRes = () => {}
+const afterRes = () => { }
 
 export const auth = () => {
   return ajax({
@@ -50,10 +50,10 @@ export const auth = () => {
     method: "POST",
     url: `${baseURL}/isAValidToken?authToken=${
       localStorage.token
-    }&type=${"client"}`,
+      }&type=${"client"}`,
   }).pipe(
     catchError(handleError("auth")),
-    
+
   );
 };
 
@@ -66,10 +66,10 @@ export const adAuth = () => {
     method: "POST",
     url: `${baseURL}//GIServer/isValidToken?authString=${
       localStorage.topen
-    }&type=${"client"}`,
+      }&type=${"client"}`,
   }).pipe(
     catchError(handleError("auth")),
-    
+
   );
 };
 
@@ -83,7 +83,7 @@ export const allADOrders = () =>
     url: `${baseURL}/GIServer/getAllOrders`,
   }).pipe(catchError(handleError('login')));
 
-  export const allADUsers = () =>
+export const allADUsers = () =>
   ajax({
     headers: {
       authString: localStorage.topen
@@ -92,7 +92,7 @@ export const allADOrders = () =>
     url: `${baseURL}/GIServer/getAllCustomers`,
   }).pipe(catchError(handleError('login')));
 
-  export const updateStatus = (payload) =>
+export const updateStatus = (payload) =>
   ajax({
     headers: {
       authString: localStorage.topen
@@ -101,14 +101,14 @@ export const allADOrders = () =>
     url: `${baseURL}/GIServer/updateOrderStatus?orderId=${payload.orderId}&orderStatus=${payload.orderStatus}`,
   }).pipe(catchError(handleError('login')));
 
-  
+
 
 export const adLogin = payload =>
-ajax({
-  headers: requestHeader(),
-  method: 'POST',
-  url: `${baseURL}/AdminLogin?username=${payload.username}&password=${payload.password}`,
-}).pipe(catchError(handleError('login')));
+  ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/AdminLogin?username=${payload.username}&password=${payload.password}`,
+  }).pipe(catchError(handleError('login')));
 
 
 export const login = (payload) => {
@@ -118,7 +118,7 @@ export const login = (payload) => {
     url: `${baseURL}/Client/loginWithEmailAndPassword?emailaddress=${payload.username}&password=${payload.password}`,
   }).pipe(
     catchError(handleError("login")),
-    
+
   );
 };
 
@@ -129,7 +129,7 @@ export const signup1 = (payload) => {
     url: `${baseURL}/Client/RegisterNewCustomerStep1?emailaddress=${payload.emailaddress}`,
   }).pipe(
     catchError(handleError("login")),
-    
+
   );
 };
 
@@ -140,7 +140,7 @@ export const signup2 = (payload) => {
     url: `${baseURL}/Client/RegisterNewCustomerStep2?emailaddress=${payload.emailaddress}&firstname=${payload.firstname}&lastname=${payload.lastname}`,
   }).pipe(
     catchError(handleError("login")),
-    
+
   );
 };
 
@@ -151,7 +151,7 @@ export const signup3 = (payload) => {
     url: `${baseURL}/Client/RegisterNewCustomerStep3?emailaddress=${payload.emailaddress}&phonenumber=${payload.phonenumber}`,
   }).pipe(
     catchError(handleError("login")),
-    
+
   );
 };
 
@@ -162,7 +162,7 @@ export const signup4 = (payload) => {
     url: `${baseURL}/Client/RegisterNewCustomerStep4?emailaddress=${payload.emailaddress}&role=${payload.role}`,
   }).pipe(
     catchError(handleError("login")),
-    
+
   );
 };
 
@@ -173,7 +173,7 @@ export const signup5 = (payload) => {
     url: `${baseURL}/Client/RegisterNewCustomerStep5?emailaddress=${payload.emailaddress}&role=${payload.role}&password=${payload.password}&firstname=${payload.firstname}&lastname=${payload.lastname}&phonenumber=${payload.phonenumber}`,
   }).pipe(
     catchError(handleError("login")),
-    
+
   );
 };
 
@@ -184,7 +184,7 @@ export const saveOrderData = (payload, apiData) => {
     body: payload,
   }).pipe(
     catchError(handleError("claimForm")),
-    
+
   );
 };
 
@@ -195,7 +195,7 @@ export const saveFileOrderData = (payload, apiData) => {
     body: payload,
   }).pipe(
     catchError(handleError("claimForm")),
-    
+
   );
 };
 
@@ -206,7 +206,7 @@ export const profileUpdate = (payload, apiData) => {
     body: payload,
   }).pipe(
     catchError(handleError("claimForm")),
-    
+
   );
 };
 
@@ -217,7 +217,7 @@ export const changePassword = (payload) => {
     url: `${baseURL}/Client/changeCustomerPassword?${payload}`,
   }).pipe(
     catchError(handleError("login")),
-    
+
   );
 };
 export const resetPasswordWithToken = (payload) => {
@@ -227,7 +227,7 @@ export const resetPasswordWithToken = (payload) => {
     url: `${baseURL}/Client/ResetPasswordWithToken?${payload}`,
   }).pipe(
     catchError(handleError("login")),
-    
+
   );
 };
 
@@ -238,7 +238,7 @@ export const ActivateAccountAPI = (payload) => {
     url: `${baseURL}/Client/ConfirmEmail?${payload}`,
   }).pipe(
     catchError(handleError("login")),
-    
+
   );
 };
 
@@ -248,12 +248,12 @@ export const payOrder = (payload) => {
     method: "POST",
     url: `${baseURL}/Client/payForOrder?status=${payload.status}&orderId=${
       payload.orderId
-    }&fullresponse=${encodeURIComponent(payload.fullresponse)}&thetoken=${
+      }&fullresponse=${encodeURIComponent(payload.fullresponse)}&thetoken=${
       localStorage.token
-    }`,
+      }`,
   }).pipe(
     catchError(handleError("login")),
-    
+
   );
 };
 
@@ -264,7 +264,7 @@ export const forgotPasswordAPI = (payload) => {
     url: `${baseURL}/Client/forgotPassword?emailaddress=${payload.emailaddress}`,
   }).pipe(
     catchError(handleError("logout")),
-    
+
   );
 };
 export const resendActivationEmail = (payload) => {
@@ -274,7 +274,7 @@ export const resendActivationEmail = (payload) => {
     url: `${baseURL}/Client/resendActivationEmail?emailaddress=${payload.emailaddress}`,
   }).pipe(
     catchError(handleError("logout")),
-    
+
   );
 };
 
@@ -285,7 +285,7 @@ export const sendEmail = (payload) => {
     url: `${baseURL}/contactus?yourname=${payload.yourname}&email=${payload.email}&phonenumber=${payload.phonenumber}&message=${payload.message}`,
   }).pipe(
     catchError(handleError("logout")),
-    
+
   );
 };
 
@@ -296,7 +296,7 @@ export const logoutAPI = () => {
     url: `${baseURL}/Client/logout?thetoken=${localStorage.token}`,
   }).pipe(
     catchError(handleError("logout")),
-    
+
   );
 };
 
@@ -309,7 +309,7 @@ export const adLogoutAPI = () => {
     url: `${baseURL}/GIServer/logout?authString=${localStorage.topen}`,
   }).pipe(
     catchError(handleError("logout")),
-    
+
   );
 };
 
@@ -321,7 +321,7 @@ export const getMyOrdersAPI = () => {
     url: `${baseURL}/Client/getOrders?thetoken=${localStorage.token}`,
   }).pipe(
     catchError(handleError("logout")),
-    
+
   );
 };
 
@@ -332,7 +332,7 @@ export const getMyInfoAPI = () => {
     url: `${baseURL}/Client/getCustomerInfo?thetoken=${localStorage.token}`,
   }).pipe(
     catchError(handleError("logout")),
-    
+
   );
 };
 
@@ -344,9 +344,46 @@ export const getPIC = () => {
     url: `${baseURL}/Client/getSetupIntentForAddingCard?thetoken=${localStorage.token}`,
   }).pipe(
     catchError(handleError("logout")),
-    
+
   );
 };
+
+
+export const setDefaultPaymentMenthod = (pmId) => {
+  return ajax({
+    headers: requestHeader(),
+    method: "POST",
+    url: `${baseURL}/Client/setDefaultPaymentMenthod?thetoken=${localStorage.token}&pmId=${pmId}`,
+  }).pipe(
+    catchError(handleError("logout")),
+
+  );
+};
+
+
+
+export const getDefaultPaymentMenthod = () => {
+  return ajax({
+    headers: requestHeader(),
+    method: "POST",
+    url: `${baseURL}/Client/getDefaultPaymentMenthod?thetoken=${localStorage.token}`,
+  }).pipe(
+    catchError(handleError("logout")),
+  );
+};
+
+
+export const deletePaymentMenthod = (pmId) => {
+  return ajax({
+    headers: requestHeader(),
+    method: "POST",
+    url: `${baseURL}/Client/deletePaymentMenthod?thetoken=${localStorage.token}&pmId=${pmId}`,
+  }).pipe(
+    catchError(handleError("logout")),
+
+  );
+};
+
 
 
 export const resetPassword = (payload) => {
@@ -357,6 +394,6 @@ export const resetPassword = (payload) => {
     body: payload,
   }).pipe(
     catchError(handleError("resetPassword")),
-    
+
   );
 };

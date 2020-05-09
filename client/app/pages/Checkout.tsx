@@ -75,7 +75,7 @@ const CheckoutForm = (props) => {
             payment_method: {
               card: card,
               billing_details: {
-                name: "Jenny Rosen",
+                name: `${props.checkoutInfo.firstName} ${props.checkoutInfo.lastName}`
               },
             },
             setup_future_usage: "off_session",
@@ -98,13 +98,20 @@ const CheckoutForm = (props) => {
               if (response.response.Requested_Action) {
                 localStorage.removeItem("sessipn");
                 hideLoader();
-                history.push(`/receipt/${props.orderid}`);
+                history.push(`/ receipt / ${props.orderid}`);
               }
             });
           }
         }
       });
   };
+  useEffect(() => {
+    props.stripeCustomerCard.map((card, index) => {
+      if (card.isDefault) {
+        setSelectedCard(card);
+      }
+    });
+  }, [props.stripeCustomerCard]);
 
   return (
     <>
@@ -118,36 +125,34 @@ const CheckoutForm = (props) => {
             setError(null);
           }} >{showNewCardForm ? 'Use Existing Card' : 'Use New Card'}</button>
           {!showNewCardForm && props.stripeCustomerCard.map((card, index) => {
-            if (index == 0) {
-              // setSelectedCard(card);
-            }
+
             return (
-              <>
-                <div className={`form-group col-12`} key={index}>
-                  <input
-                    type="radio"
-                    id={`card_${index}`}
-                    name="card"
-                    defaultChecked={
-                      selectedCard.paymentMethodId == card.paymentMethodId
-                    }
-                    onClick={() => {
-                      if (!props.cardValidation) props.setCardValidation(true);
-                      setSelectedCard(card);
-                    }}
-                  />{" "}
-                  <label
-                    htmlFor={`card_${index}`}
-                    onClick={() => {
-                      if (!props.cardValidation) props.setCardValidation(true);
-                      setSelectedCard(card);
-                    }}
-                  >
-                    <img src={pmicons[card.brand]} className="brand_icons" alt="" />
+
+              <div className={`form - group col - 12`} key={index}>
+                <input
+                  type="radio"
+                  id={`card_${index}`}
+                  name="card"
+                  defaultChecked={
+                    selectedCard.paymentMethodId == card.paymentMethodId
+                  }
+                  onClick={() => {
+                    if (!props.cardValidation) props.setCardValidation(true);
+                    setSelectedCard(card);
+                  }}
+                />{" "}
+                <label
+                  htmlFor={`card_${index}`}
+                  onClick={() => {
+                    if (!props.cardValidation) props.setCardValidation(true);
+                    setSelectedCard(card);
+                  }}
+                >
+                  <img src={pmicons[card.brand]} className="brand_icons" alt="" />
                      &nbsp; Card Ending {card.last4} -- {card.exp_month}/{card.exp_year}
-                  </label>
-                </div>
-              </>
+                </label>
+              </div>
+
             );
           })}
         </>
@@ -256,7 +261,7 @@ const Checkout = (props) => {
               <div className="col sub_titles">Billing Details</div>
             </div>
             <div className="row">
-              <div className={`form-group col-12`}>
+              <div className={`form - group col - 12`}>
                 <label>
                   First Name <span className="red">*</span>
                 </label>
@@ -279,7 +284,7 @@ const Checkout = (props) => {
               </div>
             </div>
             <div className="row">
-              <div className={`form-group col-12`}>
+              <div className={`form - group col - 12`}>
                 <label>
                   Last Name <span className="red">*</span>
                 </label>
@@ -302,7 +307,7 @@ const Checkout = (props) => {
               </div>
             </div>
             <div className="row">
-              <div className={`form-group col-12`}>
+              <div className={`form - group col - 12`}>
                 <label>
                   Email Address <span className="red">*</span>
                 </label>
@@ -330,7 +335,7 @@ const Checkout = (props) => {
             </div>
 
             <div className="row">
-              <div className={`form-group col-12`}>
+              <div className={`form - group col - 12`}>
                 <Elements stripe={stripePromise}>
                   <CheckoutForm
                     orderid={orderid}
@@ -339,6 +344,7 @@ const Checkout = (props) => {
                     stripeCustomerCard={info ? info.stripeCustomerCard : []}
                     setCardValidation={handleCardAction}
                     cardValidation={cardValidation}
+                    checkoutInfo={checkoutInfo}
                   />
                 </Elements>
                 {/* <input type="checkbox" /> Card Ending 7878 */}

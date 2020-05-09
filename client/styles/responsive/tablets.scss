@@ -283,7 +283,6 @@
     }
   }
 
-
   .navbar-expand-md .navbar-toggler {
     display: inline-block;
   }
@@ -332,7 +331,29 @@
   .navbar-expand-md > .container-xl {
     flex-wrap: wrap;
   }
-  
+
+  .main_header {
+    background: #fff;
+  }
+  .navbar-toggler {
+    // border-color: #3ac280;
+    outline: 0 !important;
+  }
+  .main_header .main_navbar li a {
+    color: #4a4848;
+  }
+  .navbar-text {
+    display: block;
+    text-align: center;
+    .login_btn {
+      margin: 0 auto;
+    }
+  }
+  button.btn.payment_switch {
+    position: absolute;
+    right: 0;
+    top: -35px !important;
+  }
 }
 // Bellow is for Ipad pro
 @media screen and (min-width: 789px) and (max-width: 1026px) {
@@ -346,5 +367,14 @@
       top: -48px !important;
       left: 0 !important;
     }
+  }
+}
+
+// bellow if for ipad landscape
+@media screen and (min-width: 1365px) and (max-width: 1377px) {
+  button.btn.payment_switch {
+    position: absolute;
+    right: 0;
+    top: -35px !important;
   }
 }
