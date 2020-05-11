@@ -68,7 +68,7 @@ const BankCard = (props) => {
                                                         <span className="remove_card" onClick={deletePM}><img src={remove} alt="" /></span>
                                                         <span className="set_default_action" onClick={setDefault}>
                                                             <span className="set_default"></span>
-                                                            <span className="nondefault">Default</span>
+                                                            <span className="nondefault">Make Default</span>
                                                         </span>
                                                     </>
                                                 )
@@ -87,7 +87,7 @@ const BankCard = (props) => {
                 </div>
                 <div className="row">
                     <div className="col text-left">
-                        <label className="text-left">name</label>
+                        <label className="text-left">Name</label>
                         <div className="info_text text-left">
                             {card.billingDetailName}
                         </div>

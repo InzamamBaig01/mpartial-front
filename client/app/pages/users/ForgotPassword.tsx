@@ -29,7 +29,7 @@ export const ForgotPassword: React.FC<IProps> = ({ ...props }) => {
     }).subscribe((response) => {
       if (response.response.Requested_Action) {
         hideLoader();
-        setLoginStatus("A password recovery email has been sent");
+        setLoginStatus("A password recovery email has been sent to entered email.");
       }
     });
   };

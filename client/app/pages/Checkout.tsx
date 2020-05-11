@@ -98,7 +98,7 @@ const CheckoutForm = (props) => {
               if (response.response.Requested_Action) {
                 localStorage.removeItem("sessipn");
                 hideLoader();
-                history.push(`/ receipt / ${props.orderid}`);
+                history.push(`/receipt/${props.orderid}`);
               }
             });
           }
@@ -109,6 +109,7 @@ const CheckoutForm = (props) => {
     props.stripeCustomerCard.map((card, index) => {
       if (card.isDefault) {
         setSelectedCard(card);
+        props.setCardValidation(true);
       }
     });
   }, [props.stripeCustomerCard]);
