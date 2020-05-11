@@ -236,8 +236,7 @@
     }
     .remove_card {
       cursor: pointer;
-      margin-right: 12px;
-      vertical-align: middle;
+      // margin-right: 12px;
       display: block;
       img {
         width: 15px;
@@ -249,9 +248,14 @@
     }
     .nondefault {
       color: #64747f;
+      &:hover {
+        color: #3ac280;
+        text-decoration: underline;;
+      }
     }
     .set_default_action {
       cursor: pointer;
+
       &.hover {
         .nondefault {
           color: #3ac280;

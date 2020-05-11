@@ -61,13 +61,13 @@ const BankCard = (props) => {
               <>
                 {card.isDefault ? (
                   <>
-                    {/* <img src={isDefaultIcon} alt="" />{" "} */}
-                    {/* <span className="default">Default</span> */}
+                    <img src={isDefaultIcon} alt="" />{" "}
+                    <span className="default">Default</span>
                   </>
                 ) : (
                   <>
                     <span className="set_default_action" onClick={setDefault}>
-                      <span className="set_default"></span>
+                      {/* <span className="set_default"></span> */}
                       <span className="nondefault">Make Default</span>
                     </span>
                     <span className="remove_card" onClick={deletePM}>

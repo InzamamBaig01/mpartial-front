@@ -293,7 +293,6 @@ const DrawField = (props) => {
   };
 
   const removeFile = (index) => {
-    const val = Object.assign([], files);
     setFiles(
       _.remove(files, function (n, idex) {
         return idex != index;
