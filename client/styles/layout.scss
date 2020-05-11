@@ -1699,3 +1699,24 @@ button.btn.payment_switch {
 .captcha_box div {
   margin: 10px auto;
 }
+
+
+.dropdown-container {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #7fa3b0;
+  border-radius: 10px;
+  opacity: 1;
+  text-align: left;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0px;
+  height: 47px;
+  .dropdown-heading {
+    height: 47px;
+  }
+}
+
+.signupcell {
+  height: 50px;
+}

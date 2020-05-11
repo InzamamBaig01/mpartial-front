@@ -293,9 +293,12 @@ const DrawField = (props) => {
   };
 
   const removeFile = (index) => {
-    const val = Object.assign({}, value);
-    delete val[index];
-    setValue(val);
+    const val = Object.assign([], files);
+    setFiles(
+      _.remove(files, function (n, idex) {
+        return idex != index;
+      })
+    );
   };
 
   const form = (field) => {
@@ -630,7 +633,7 @@ const UserOrder = () => {
                 <Link to="/terms">
                   <span className="underline">Terms & Conditions</span>
                 </Link>
-                .<span className="red">*</span>
+                <span className="red">*</span>
               </label>
             </div>
             <div className="form-group submit_btn_container">
@@ -641,7 +644,7 @@ const UserOrder = () => {
                 id="formButton"
                 disabled={submitBtnDisabled}
               >
-                Checkout
+                Proceed to Checkout
                 <Loader></Loader>
               </button>
             </div>
