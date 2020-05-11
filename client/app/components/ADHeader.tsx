@@ -15,12 +15,9 @@ import {
 } from "reactstrap";
 
 import logo from "../../assets/logo.png";
-import Loader from "./Loader";
 import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "contexts/authContext";
 
-import usericon from "../../assets/usericon.svg";
-import cart from "../../assets/cart.svg";
 import logouticon from "../../assets/logout.svg";
 import rightarrow from "../../assets/right-arrow.svg";
 import rightarrowdark from "../../assets/right-arrow-dark.svg";

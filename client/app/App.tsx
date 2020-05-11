@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { renderRoutes } from "../utils/render-routes/render-routes.util";
 import {
   withRouter,
@@ -10,7 +10,6 @@ import {
 import { ROUTES } from "./pages/routes";
 import { hot } from "react-hot-loader";
 import { AuthContext } from "../contexts/authContext";
-import { GoogleReCaptchaProvider, GoogleReCaptcha } from 'react-google-recaptcha-v3';
 import * as Sentry from '@sentry/browser';
 
 import appConfig from '../appconfig.json';
@@ -24,7 +23,6 @@ const App: React.FC<RouteComponentProps<any>> = (props) => {
 
   useEffect(() => {
     isUserAuthenticated();
-    // console.log(props);
     let isPublic = false;
     let isAD = false;
     ROUTES.map((route) => {
@@ -46,15 +44,11 @@ const App: React.FC<RouteComponentProps<any>> = (props) => {
 
   return (
     <>
-      {/* <GoogleReCaptchaProvider
-        reCaptchaKey={appConfig.captchaKey}
-      >
-        <GoogleReCaptcha onVerify={token => console.log(token)} /> */}
+     
         <LocalApp
           isAuthenticated={isUserAuthenticated()}
           isADAuthenticated={isADAuthenticated()}
         ></LocalApp>
-      {/* </GoogleReCaptchaProvider> */}
     </>
   );
 };

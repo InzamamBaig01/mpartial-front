@@ -55,7 +55,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           iesafe: true,
-          encoding: 'base64',
+          // encoding: 'base64',
         }
       },
       {

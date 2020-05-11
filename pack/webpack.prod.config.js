@@ -10,7 +10,12 @@ const merge                   = require('webpack-merge');
 const common                  = require('./webpack.common.config');
 const path                    = require('path');
 const CopyWebpackPlugin         = require('copy-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+const zopfli = require('@gfx/zopfli');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+
+const webpack = require('webpack');
 const {
   EnvironmentPlugin,
 } = require('webpack');
@@ -54,12 +59,25 @@ module.exports = merge(common, {
     ]
   },
   optimization: {
+    minimize: true,
+    mangleWasmImports: true,
+    removeAvailableModules: true,
+    splitChunks: {
+			cacheGroups: {
+				commons: {
+					test: /[\\/]node_modules[\\/]/,
+					name: 'vendors',
+					chunks: 'all'
+				}
+			}
+		},
     minimizer: [
       new TerserPlugin({
         cache: path.resolve(PATHS.cache, 'terser-webpack-plugin'),
         parallel: true,
         sourceMap: false,
       }),
+      
       new OptimizeCSSAssetsPlugin({}),
     ]
   },
@@ -81,6 +99,18 @@ module.exports = merge(common, {
     new EnvironmentPlugin({
       // * explicitly setting the node environment variable for clarity
       NODE_ENV: 'production',
+    }),
+    // new LodashModuleReplacementPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin(),
+    // new BundleAnalyzerPlugin(),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /ja|it/),
+    new CompressionPlugin({
+      compressionOptions: {
+        numiterations: 15,
+      },
+      algorithm(input, compressionOptions, callback) {
+        return zopfli.gzip(input, compressionOptions, callback);
+      },
     }),
   ],
 });

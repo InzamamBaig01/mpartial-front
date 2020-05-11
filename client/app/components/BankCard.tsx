@@ -12,8 +12,6 @@ import {
   deletePaymentMenthod,
 } from "utils/api-routes/api-routes.util";
 import { AppContext } from "contexts/appContext";
-import Loader from "./Loader";
-import { AppAlertsContext } from "contexts/appAlertsContext";
 import { OverlayTrigger } from "react-bootstrap";
 import { Tooltip } from "react-bootstrap";
 

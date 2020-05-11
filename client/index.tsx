@@ -8,8 +8,6 @@ import { Router } from "react-router-dom";
 
 import AuthContext from "./contexts/authContext";
 import AppContext from "./contexts/appContext";
-import BackofficeContext from "./contexts/backofficeContext";
-import SocketContext from "./contexts/SocketContext";
 import AppAlertsContext from "./contexts/appAlertsContext";
 
 ReactDOM.render(
