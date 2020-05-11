@@ -846,7 +846,10 @@ span.numeric-character {
     }
   }
   .btn-green {
-    width: 185px;
+    width: 208px;
+  }
+  .loader {
+    display: inline-block;
   }
 }
 // .slider_tooltip_price {
@@ -1696,13 +1699,15 @@ button.btn.payment_switch {
   margin: 10px 0;
   .close {
     cursor: pointer;
+    &:hover {
+      color: #57c380 !important;
+    }
   }
 }
 
 .captcha_box div {
   margin: 10px auto;
 }
-
 
 .dropdown-container {
   background: #ffffff 0% 0% no-repeat padding-box;
