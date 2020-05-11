@@ -599,7 +599,7 @@ span.numeric-character {
     background: white;
     border-radius: 20px;
     padding: 20px;
-    min-height: 370px;
+    min-height: 440px;
     margin: 1%;
   }
 }
@@ -1457,6 +1457,16 @@ span.password_not_matched {
     min-height: 66px;
     &.small_true {
       min-height: 28px;
+    }
+  }
+  .valid_false {
+    .dropdown-container {
+      border: 1px red solid;
+    }
+  }
+  .valid_true {
+    .dropdown-container {
+      border: 1px green solid;
     }
   }
 }

@@ -231,9 +231,15 @@
   .navbar-expand-md > .container-xl {
     flex-wrap: wrap;
   }
+  .nav-item {
+    text-align: center;
+  }
 }
 
 @media screen and (min-width: 721px) and (max-width: 1280px) {
+  .nav-item {
+    text-align: center;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -354,6 +360,10 @@
     right: 0;
     top: -35px !important;
   }
+
+  .nav-item {
+    text-align: center;
+  }
 }
 // Bellow is for Ipad pro
 @media screen and (min-width: 789px) and (max-width: 1026px) {
@@ -368,6 +378,10 @@
       left: 0 !important;
     }
   }
+
+  .nav-item {
+    text-align: center;
+  }
 }
 
 // bellow if for ipad landscape
@@ -376,5 +390,9 @@
     position: absolute;
     right: 0;
     top: -35px !important;
+  }
+
+  .nav-item {
+    text-align: center;
   }
 }

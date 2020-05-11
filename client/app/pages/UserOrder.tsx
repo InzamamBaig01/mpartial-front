@@ -3,13 +3,17 @@ import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import MultiSelect from "react-multi-select-component";
 import { AuthContext } from "contexts/authContext";
-import { saveOrderData, saveFileOrderData } from "utils/api-routes/api-routes.util";
+import {
+  saveOrderData,
+  saveFileOrderData,
+} from "utils/api-routes/api-routes.util";
 import history from "../../utils/history";
 import queryString from "query-string";
 import { AppContext } from "contexts/appContext";
 import { AppAlertsContext } from "contexts/appAlertsContext";
 import Loader from "app/components/Loader";
-import Mail from '../../assets/email.svg';
+import Mail from "../../assets/email.svg";
+import _ from "lodash";
 
 const fields = [
   {
@@ -25,7 +29,7 @@ const fields = [
     name: "Project Name",
     description: "",
     type: "text",
-    placeholder: 'Ex. Wick-Mitigation',
+    placeholder: "Ex. Wick-Mitigation",
     required: true,
     id: "projectName",
   },
@@ -50,7 +54,8 @@ const fields = [
   {
     id: "debrisDisposal",
     name: "Debris Disposal",
-    description: "If progressive dumping is required, detail this in the Additional Information / Project Details field",
+    description:
+      "If progressive dumping is required, detail this in the Additional Information / Project Details field",
     required: true,
     type: "select",
     options: ["Haul Debris", "Dumpster", "N/A"],
@@ -182,14 +187,14 @@ const fields = [
     name: "Project Zip Code",
     description: "Informs the applied price list",
     type: "number",
-    placeholder: 'Ex. 92037',
+    placeholder: "Ex. 92037",
     required: true,
   },
   {
     id: "Carrier",
     name: "Insurance Carrier",
     description: null,
-    placeholder: 'Ex. Nat Gen Premier',
+    placeholder: "Ex. Nat Gen Premier",
     type: "text",
   },
   {
@@ -225,7 +230,8 @@ const fields = [
   {
     id: "projectDetails",
     name: "Additional Information/Project Details",
-    description: "Please add any relevant and/or unknowable information here. The more details you provide, the more accurate deliverables you receive. This is imperative because mpartial does NOT reopen files once your digital assets are delivered.",
+    description:
+      "Please add any relevant and/or unknowable information here. The more details you provide, the more accurate deliverables you receive. This is imperative because mpartial does NOT reopen files once your digital assets are delivered.",
     type: "textarea",
   },
   {
@@ -239,6 +245,7 @@ const fields = [
 
 const MultipleSelectField = (props) => {
   const [selected, setSelected] = useState([]);
+  const [valid, setValid] = useState(null);
   const options = [];
   props.field.options.map((option) => {
     options.push({
@@ -252,8 +259,12 @@ const MultipleSelectField = (props) => {
       options={options}
       value={selected}
       required={props.field.required ? true : false}
+      className={`valid_${
+        valid != null ? (selected.length != 0 ? "true" : "false") : "0"
+      }`}
       onChange={(value) => {
         setSelected(value);
+        setValid(true);
         props.onChange(props.field, value);
         props.field.value = value;
       }}
@@ -264,28 +275,28 @@ const MultipleSelectField = (props) => {
 
 const DrawField = (props) => {
   const [value, setValue] = useState(props.field.value);
+  const [files, setFiles] = useState([]);
   const [changed, setChanged] = useState(false);
   const onChange = (e) => {
     if (e.target.files) {
-      props.onChange(field, e.currentTarget.files);
-      field.value = e.currentTarget.files;
-      setValue(e.currentTarget.files)
-      // console.log(value)
-    }
-    else {
+      const newFiles = Object.assign([], files);
+      newFiles.push(e.currentTarget.files[0]);
+      field.value = newFiles;
+      props.onChange(field, newFiles);
+      setFiles(newFiles);
+    } else {
       props.onChange(field, e.currentTarget.value);
       field.value = e.currentTarget.value;
-      setValue(e.currentTarget.value)
+      setValue(e.currentTarget.value);
     }
     setChanged(true);
-  }
+  };
 
   const removeFile = (index) => {
     const val = Object.assign({}, value);
     delete val[index];
     setValue(val);
-
-  }
+  };
 
   const form = (field) => {
     switch (field.type) {
@@ -294,7 +305,9 @@ const DrawField = (props) => {
           <input
             type="text"
             required={field.required ? true : false}
-            className={`form-control is_required_${field.required ? true : false} changed_${changed}`}
+            className={`form-control is_required_${
+              field.required ? true : false
+            } changed_${changed}`}
             placeholder={field.placeholder}
             onChange={onChange}
             value={value}
@@ -321,7 +334,9 @@ const DrawField = (props) => {
             onChange={onChange}
             value={value}
           >
-            <option value="" selected disabled hidden css={{ 'display': 'none' }}>Select {field.name}</option>
+            <option value="" selected disabled hidden css={{ display: "none" }}>
+              Select {field.name}
+            </option>
             {Object.values(field.options).map((option, index) => {
               return (
                 <option value={option} key={index}>
@@ -339,32 +354,32 @@ const DrawField = (props) => {
       case "multipleAttachment":
         return (
           <>
-
             <div className="button-wrap">
-              <label className="new-button" htmlFor="upload">Choose Files</label>
+              <label className="new-button" htmlFor="upload">
+                Choose Files
+              </label>
               <input
                 id="upload"
                 type="file"
                 // value={value}
                 required={field.required ? true : false}
-                multiple
-                onChange={onChange} />
-              {
-                value ? Object.keys(value).map((index) => {
-                  return (
-                    <div className="selected_file_name" key={index}>
-                      <i className="close" onClick={() => removeFile(index)}>&times;</i>
+                onChange={onChange}
+              />
+              {files.length
+                ? files.map((file, index) => {
+                    return (
+                      <div className="selected_file_name" key={index}>
+                        <i className="close" onClick={() => removeFile(index)}>
+                          &times;
+                        </i>
 
-                      <i className="">
-                        <small>
-                          {field.value[index].name}
-                        </small>
-                      </i>
-                    </div>
-                  )
-                }) : ''
-              }
-
+                        <i className="">
+                          <small>{file.name}</small>
+                        </i>
+                      </div>
+                    );
+                  })
+                : ""}
             </div>
             {/*<input type="file" className="custom-file-input-btn" onChange={(e) => {*/}
             {/*props.onChange(field, e.target.files);*/}
@@ -373,8 +388,6 @@ const DrawField = (props) => {
             {/*<label htmlFor="file-upload" className="custom-file-upload btn-green">*/}
             {/*Choose Files*/}
             {/*</label>*/}
-
-
           </>
         );
         break;
@@ -391,38 +404,36 @@ const DrawField = (props) => {
         break;
       case "email":
         return (
-
           <input
             type="email"
-            className={`form-control is_required_${field.required} changed_${changed || value.length!=0}`}
+            className={`form-control is_required_${field.required} changed_${
+              changed || value.length != 0
+            }`}
             value={value}
             placeholder="Email"
             onChange={onChange}
             required
           />
-
         );
         break;
 
-      case 'url':
-        return (<>
-          <input
-            type="url"
-            required={field.required ? true : false}
-            className={`form-control is_required_${field.required} changed_${changed}`}
-            placeholder={field.placeholder}
-            value={value}
-            onChange={onChange}
-
-          />
-          {
-            props.matchingUrl && field.id == "postMitigationDemoModelURL" &&
-            <i className="red">
-              <small>Please submit unique Matterport Scan URLs.
-              </small>
-            </i>
-          }
-        </>
+      case "url":
+        return (
+          <>
+            <input
+              type="url"
+              required={field.required ? true : false}
+              className={`form-control is_required_${field.required} changed_${changed}`}
+              placeholder={field.placeholder}
+              value={value}
+              onChange={onChange}
+            />
+            {props.matchingUrl && field.id == "postMitigationDemoModelURL" && (
+              <i className="red">
+                <small>Please submit unique Matterport Scan URLs.</small>
+              </i>
+            )}
+          </>
         );
         break;
       default:
@@ -443,7 +454,6 @@ const DrawField = (props) => {
   return form(field);
 };
 
-
 const UserOrder = () => {
   const { userDetails } = useContext(AuthContext);
   fields[0].value = userDetails().emailAddress;
@@ -453,7 +463,7 @@ const UserOrder = () => {
   const { price } = useContext(AppContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
 
-  const [matchingUrl, setMatchingUrl] = useState(false)
+  const [matchingUrl, setMatchingUrl] = useState(false);
   const uploadFiles = (id, files, index) => {
     if (files && files[index]) {
       const formData = new FormData();
@@ -464,12 +474,12 @@ const UserOrder = () => {
         orderId: id,
       }).subscribe((response) => {
         uploadFiles(id, files, index + 1);
-      })
+      });
     } else {
       hideLoader();
       history.push(`/checkout/${id}`);
     }
-  }
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -488,8 +498,8 @@ const UserOrder = () => {
       } else if (field.type === "multiSelect") {
         apiData[field.id] = field.value
           ? field.value.map((v) => {
-            return v.value;
-          })
+              return v.value;
+            })
           : "";
       } else {
         apiData[field.id] = field.value;
@@ -497,7 +507,6 @@ const UserOrder = () => {
     });
 
     //console.log(fileToUpload)
-
 
     const stringified = queryString.stringify(apiData);
 
@@ -513,10 +522,8 @@ const UserOrder = () => {
           console.log(response.response);
 
           uploadFiles(response.response.data.id, fileToUpload, 0);
-
         } else {
           hideLoader();
-
         }
       },
       (response) => {
@@ -544,27 +551,24 @@ const UserOrder = () => {
     checkMatchingUrl();
   }, [allFields]);
 
-
   const checkMatchingUrl = () => {
     // console.log(fields);
     const firstUrl = fields.filter((field) => {
       return field.id == "preMitigationDemoModelURL";
-    })
+    });
     const secondUrl = fields.filter((field) => {
       return field.id == "postMitigationDemoModelURL";
     });
 
     if (firstUrl[0].value && secondUrl[0].value) {
       const isMatch = firstUrl[0].value == secondUrl[0].value;
-      if(!submitBtnDisabled) setSubmitBtnDisabled(isMatch ? true : false);
-      setMatchingUrl(isMatch)
+      if (!submitBtnDisabled) setSubmitBtnDisabled(isMatch ? true : false);
+      setMatchingUrl(isMatch);
     }
-  }
-
-
+  };
 
   const handleChange = (field, value) => {
-    // console.log(allFields);
+    // console.log(field, value);
     checkFormValidation();
     let fieldsData = Object.assign([], allFields);
     fieldsData = fieldsData.map((f) => {
@@ -597,7 +601,14 @@ const UserOrder = () => {
                       {field.name}{" "}
                       {field.required ? <span className="red">*</span> : ""}
                     </label>
-                    <div className={`description small_${field.id != "projectZipCode" && field.description?.length <= 42}`}>{field.description}</div>
+                    <div
+                      className={`description small_${
+                        field.id != "projectZipCode" &&
+                        field.description?.length <= 42
+                      }`}
+                    >
+                      {field.description}
+                    </div>
                     <DrawField
                       field={field}
                       onChange={handleChange}
