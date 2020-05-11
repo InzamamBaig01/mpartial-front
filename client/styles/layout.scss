@@ -845,6 +845,9 @@ span.numeric-character {
       top: 2px;
     }
   }
+  .btn-green {
+    width: 185px;
+  }
 }
 // .slider_tooltip_price {
 //   text-align: center;
@@ -1703,8 +1706,8 @@ button.btn.payment_switch {
 
 .dropdown-container {
   background: #ffffff 0% 0% no-repeat padding-box;
-  border: 1px solid #7fa3b0;
-  border-radius: 10px;
+  border: 1px solid #7fa3b0 !important;
+  border-radius: 10px !important;
   opacity: 1;
   text-align: left;
   font-weight: normal;
