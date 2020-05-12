@@ -8,7 +8,7 @@ import AmericanExpress from "../../../assets/American-Express.png";
 import discover from "../../../assets/discover.png";
 // import stripe from "stripe";
 import InputMask from "react-input-mask";
-import appConfig from '../../../appconfig.json';
+import appConfig from "../../../appconfig.json";
 // console.log(stripe);
 
 import {
@@ -65,14 +65,12 @@ const FormElement = (props) => {
   const elements = useElements();
   const { getMyInfo, myInfo } = useContext(AppContext);
   const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
-
+  const [cardError, setCardError] = useState(false);
   const [name, setName] = useState("");
-
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     showLoader();
-
 
     const result = await stripe.confirmCardSetup(props.PI, {
       payment_method: {
@@ -80,12 +78,12 @@ const FormElement = (props) => {
         billing_details: {
           name: name,
         },
-      }
+      },
     });
-
 
     if (result.error) {
       // Display result.error.message in your UI.
+      setCardError(result.error.message);
       hideLoader();
     } else {
       // The setup has succeeded. Display a success message and send
@@ -93,9 +91,9 @@ const FormElement = (props) => {
       // card to a Customer
       hideLoader();
       getMyInfo();
+      setCardError(false);
       props.handleClose();
     }
-
   };
 
   return (
@@ -109,6 +107,15 @@ const FormElement = (props) => {
           placeholder="Name on card"
         />
         <CardElement className="card_element_form"></CardElement>
+        {cardError ? (
+          <>
+            <i className="red">
+              <small>{cardError}</small>
+            </i><br /><br />
+          </>
+        ) : (
+          <> </>
+        )}
         <button type="submit" className="btn btn-lg">
           Save
           <Loader></Loader>
@@ -131,7 +138,10 @@ const AddNewCard = (props) => {
         </Modal.Header>
         <Modal.Body className="support_body">
           <Elements stripe={stripePromise}>
-            <FormElement PI={props.PI} handleClose={props.handleClose}></FormElement>
+            <FormElement
+              PI={props.PI}
+              handleClose={props.handleClose}
+            ></FormElement>
           </Elements>
         </Modal.Body>
       </Modal>
@@ -153,22 +163,24 @@ const EditProfile = (props) => {
     profileImage: false,
   });
 
-  const [profileImageError, setProfileImageError] = useState(false)
+  const [profileImageError, setProfileImageError] = useState(false);
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
 
     var sFileName = acceptedFiles[0].name;
-    var sFileExtension = sFileName.split('.')[sFileName.split('.').length - 1].toLowerCase();
+    var sFileExtension = sFileName
+      .split(".")
+      [sFileName.split(".").length - 1].toLowerCase();
     var iFileSize = acceptedFiles[0].size;
     var iConvert = (acceptedFiles[0].size / 1048576).toFixed(2);
 
     /// OR together the accepted extensions and NOT it. Then OR the size cond.
     /// It's easier to see this way, but just a suggestion - no requirement.
-    if (!(sFileExtension === "jpg" ||
-      sFileExtension === "jpeg")) { /// 10 mb
-      setProfileImageError('ext');
+    if (!(sFileExtension === "jpg" || sFileExtension === "jpeg")) {
+      /// 10 mb
+      setProfileImageError("ext");
     } else if (iFileSize > 5485760) {
-      setProfileImageError('size');
+      setProfileImageError("size");
     } else {
       setProfileImageError(false);
 
@@ -177,7 +189,6 @@ const EditProfile = (props) => {
         profileImage: URL.createObjectURL(acceptedFiles[0]),
       });
     }
-
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -192,6 +203,12 @@ const EditProfile = (props) => {
       profileImage: false,
       thetoken: localStorage.token,
     });
+    setProfileImage({
+      profilepicture: false,
+      profileImage: props.info.profilePicture
+        ? props.info.profilePicture
+        : false,
+    });
   }, [props.info]);
 
   const handleSubmit = (e) => {
@@ -199,9 +216,9 @@ const EditProfile = (props) => {
 
     const formData = new FormData();
     const compObj = {
-      first_name: data['firstName'],
-      last_name: data['lastName'],
-      phone: data['phonenumber'],
+      first_name: data["firstName"],
+      last_name: data["lastName"],
+      phone: data["phonenumber"],
     };
     const comObj2 = {
       first_name: props.info.firstName,
@@ -223,11 +240,13 @@ const EditProfile = (props) => {
     });
   };
   const validateChange = () => {
-    return data.firstName == props.info.firstName &&
+    return (
+      data.firstName == props.info.firstName &&
       data.lastName == props.info.lastName &&
       data.phonenumber == props.info.phone &&
-      profileImage.profilepicture == false;
-  }
+      profileImage.profilepicture == false
+    );
+  };
   return (
     <>
       <Modal
@@ -312,40 +331,52 @@ const EditProfile = (props) => {
                           }
                         >
                           &times;
-                      </div>
+                        </div>
                         <img src={profileImage.profileImage} alt="" />
                       </div>
                     </>
                   ) : (
-                      <>
-                        <div
-                          {...getRootProps()}
-                          className="upload_profile_picture"
-                        >
-                          <input {...getInputProps()} accept="image/jpeg" />
-                          {isDragActive ? (
-                            <p>
-                              <img src={dragimage} alt="" />
-                            </p>
-                          ) : (
-                              <p>
-                                <img src={dragimage} alt="" />
-                              </p>
-                            )}
-                        </div>
-                        {profileImageError == "size" ? (<p className="profile_upload_image_info">
-                          Uploaded file exceeds size limit, please upload image lower than 3MB
-                        </p>) : ''}
-                        {profileImageError == "ext" ? (<p className="profile_upload_image_info">
-                          Invalid file extention, Please upload jpg file of 150x150 pixels
-                        </p>) : ''}
-                      </>
-                    )}
+                    <>
+                      <div
+                        {...getRootProps()}
+                        className="upload_profile_picture"
+                      >
+                        <input {...getInputProps()} accept="image/jpeg" />
+                        {isDragActive ? (
+                          <p>
+                            <img src={dragimage} alt="" />
+                          </p>
+                        ) : (
+                          <p>
+                            <img src={dragimage} alt="" />
+                          </p>
+                        )}
+                      </div>
+                      {profileImageError == "size" ? (
+                        <p className="profile_upload_image_info">
+                          Uploaded file exceeds size limit, please upload image
+                          lower than 3MB
+                        </p>
+                      ) : (
+                        ""
+                      )}
+                      {profileImageError == "ext" ? (
+                        <p className="profile_upload_image_info">
+                          Invalid file extention, Please upload jpg file of
+                          150x150 pixels
+                        </p>
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
             <div className="form-group edit_profile_submit_container">
-              <button className="btn edit_profile_submit" type="submit"
+              <button
+                className="btn edit_profile_submit"
+                type="submit"
                 id="formButton"
                 disabled={validateChange()}
               >
@@ -409,14 +440,13 @@ const EditPassword = (props) => {
                 value={passwords.oldPassword}
                 required
                 onClick={(e) => {
-                  const caps_lock_on = e.getModifierState('CapsLock');
-                  setIsCapsOn(caps_lock_on)
-                }}
-                onKeyDown={(e) => {
-                  const caps_lock_on = e.getModifierState('CapsLock');
+                  const caps_lock_on = e.getModifierState("CapsLock");
                   setIsCapsOn(caps_lock_on);
                 }}
-
+                onKeyDown={(e) => {
+                  const caps_lock_on = e.getModifierState("CapsLock");
+                  setIsCapsOn(caps_lock_on);
+                }}
                 onChange={(e) =>
                   setPasswords({
                     ...passwords,
@@ -432,11 +462,11 @@ const EditPassword = (props) => {
               <label>New Password</label>
               <input
                 onClick={(e) => {
-                  const caps_lock_on = e.getModifierState('CapsLock');
-                  setIsCapsOn(caps_lock_on)
+                  const caps_lock_on = e.getModifierState("CapsLock");
+                  setIsCapsOn(caps_lock_on);
                 }}
                 onKeyDown={(e) => {
-                  const caps_lock_on = e.getModifierState('CapsLock');
+                  const caps_lock_on = e.getModifierState("CapsLock");
                   setIsCapsOn(caps_lock_on);
                   console.log(caps_lock_on);
                 }}
@@ -457,11 +487,11 @@ const EditPassword = (props) => {
               <label>New Confirm Password</label>
               <input
                 onClick={(e) => {
-                  const caps_lock_on = e.getModifierState('CapsLock');
-                  setIsCapsOn(caps_lock_on)
+                  const caps_lock_on = e.getModifierState("CapsLock");
+                  setIsCapsOn(caps_lock_on);
                 }}
                 onKeyDown={(e) => {
-                  const caps_lock_on = e.getModifierState('CapsLock');
+                  const caps_lock_on = e.getModifierState("CapsLock");
                   setIsCapsOn(caps_lock_on);
                   console.log(caps_lock_on);
                 }}
@@ -482,8 +512,8 @@ const EditPassword = (props) => {
                   Passwords does not match
                 </span>
               ) : (
-                  ""
-                )}
+                ""
+              )}
             </div>
 
             <div className="form-group text-center">
@@ -513,17 +543,16 @@ const Profile = () => {
     visa: visa,
     discover: discover,
     "american express": AmericanExpress,
-  }
+  };
   useEffect(() => {
     getMyInfo();
-
   }, []);
 
   const getPI = () => {
     getPIC().subscribe((response) => {
       setPI(response.response.Message);
     });
-  }
+  };
 
   useEffect(() => {
     console.log(myInfo);
@@ -549,7 +578,7 @@ const Profile = () => {
   const handlecardshow = () => {
     getPI();
     setaddcardpopupshow(true);
-  }
+  };
 
   const stripePromise = loadStripe("pk_test_BVYHeMmpLalkw9ro9W2IkTFJ");
 
@@ -635,63 +664,58 @@ const Profile = () => {
                 </div>
                 <div className="divider"></div>
                 <div className="cards">
-
                   {info
                     ? info.stripeCustomerCard.map((card, index) => {
-                      return (
-                        // <tr>
-                        //   <td key={index}><img src={pmicons[card.brand]} className="brand_icon" alt="" /></td>
-                        //   <td>XXXX XXXX XXXX {card.last4}</td>
-                        //   <td>
-                        //     {card.exp_month}/{card.exp_year}
-                        //   </td>
-                        //   {/* <td>
-                        //         <i>a</i>
-                        //         <i>b</i>
-                        //       </td> */}
-                        // </tr>
-                        <BankCard card={card} />
-                      );
-                    })
+                        return (
+                          // <tr>
+                          //   <td key={index}><img src={pmicons[card.brand]} className="brand_icon" alt="" /></td>
+                          //   <td>XXXX XXXX XXXX {card.last4}</td>
+                          //   <td>
+                          //     {card.exp_month}/{card.exp_year}
+                          //   </td>
+                          //   {/* <td>
+                          //         <i>a</i>
+                          //         <i>b</i>
+                          //       </td> */}
+                          // </tr>
+                          <BankCard card={card} />
+                        );
+                      })
                     : ""}
                 </div>
               </div>
             </div>
           </div>
-        </div >
-      </div >
+        </div>
+      </div>
       <AddNewCard
         value={""}
-        onChange={() => { }}
-        onStackSubmit={() => { }}
+        onChange={() => {}}
+        onStackSubmit={() => {}}
         show={addcardpopupshow}
         PI={PI}
         handleClose={handlecardclose}
       />
 
-      {
-        editProfileShow && (
-          <EditProfile
-            value={""}
-            onSubmitSuccess={onSubmitSuccess}
-            show={editProfileShow}
-            handleClose={handleEditProfileclose}
-            info={info}
-          />
-        )
-      }
+      {editProfileShow && (
+        <EditProfile
+          value={""}
+          onSubmitSuccess={onSubmitSuccess}
+          show={editProfileShow}
+          handleClose={handleEditProfileclose}
+          info={info}
+        />
+      )}
 
-      {
-        editPasswordShow && (
-          <EditPassword
-            value={""}
-            onEditPasswordSuccess={onSubmitPasswordSuccess}
-            show={editPasswordShow}
-            handleClose={handleEditPasswordclose}
-            info={info}
-          />
-        )
-      }
+      {editPasswordShow && (
+        <EditPassword
+          value={""}
+          onEditPasswordSuccess={onSubmitPasswordSuccess}
+          show={editPasswordShow}
+          handleClose={handleEditPasswordclose}
+          info={info}
+        />
+      )}
     </>
   );
 };

@@ -15,7 +15,7 @@ import Loader from "app/components/Loader";
 import Mail from "../../assets/email.svg";
 import _ from "lodash";
 
-const fields = [
+let fields = [
   {
     id: "emailForDeliveryOfResults",
     name: "Email For Delivery of Results",
@@ -243,6 +243,8 @@ const fields = [
   },
 ];
 
+const FieldsObj = Object.assign([], fields);
+
 const MultipleSelectField = (props) => {
   const [selected, setSelected] = useState([]);
   const [valid, setValid] = useState(null);
@@ -460,7 +462,7 @@ const UserOrder = () => {
   const { userDetails } = useContext(AuthContext);
   fields[0].value = userDetails().emailAddress;
 
-  const [allFields, setAllFields] = useState(fields);
+  const [allFields, setAllFields] = useState(Object.assign([], fields));
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const { price } = useContext(AppContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
@@ -545,6 +547,12 @@ const UserOrder = () => {
 
   useEffect(() => {
     checkFormValidation();
+    setAllFields(FieldsObj);
+    return () => {
+      setAllFields(FieldsObj);
+      console.log(FieldsObj);
+      fields = FieldsObj;
+    }
   }, []);
 
   useEffect(() => {

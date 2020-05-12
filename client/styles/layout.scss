@@ -677,7 +677,7 @@ span.numeric-character {
   margin: 0 auto;
   label {
     text-align: left;
-    font-weight: 600;
+    font-weight: normal;
     font-size: 14px;
     line-height: 16px;
     letter-spacing: 0px;
@@ -1372,6 +1372,7 @@ span.password_not_matched {
     border-radius: 10px;
     opacity: 1;
     padding: 20px;
+    height: 58px;
   }
   .card_element_form {
     padding: 20px;
@@ -1384,7 +1385,7 @@ span.password_not_matched {
   .btn {
     display: inline-block;
     vertical-align: top;
-    min-width: 50%;
+    min-width: 30%;
     height: 50px;
   }
 }
@@ -1467,12 +1468,12 @@ span.password_not_matched {
   }
   .valid_false {
     .dropdown-container {
-      border: 1px red solid;
+      border: 1px red solid !important;
     }
   }
   .valid_true {
     .dropdown-container {
-      border: 1px green solid;
+      border: 1px green solid !important;
     }
   }
 }
@@ -1728,3 +1729,29 @@ button.btn.payment_switch {
 .signupcell {
   height: 50px;
 }
+
+.try_now_btn {
+  .btn {
+    min-width: 120px !important;
+  }
+}
+
+// ::-webkit-input-placeholder {
+//   /* Edge */
+//   font-weight: normal;
+// }
+
+// :-ms-input-placeholder {
+//   /* Internet Explorer 10-11 */
+//   font-weight: normal;
+// }
+
+// ::placeholder {
+//   font-weight: normal;
+// }
+// .form-control {
+//   font-weight: bold !important;
+// }
+// option[value=""] {
+//   font-weight: normal !important;
+// }

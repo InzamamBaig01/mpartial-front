@@ -68,17 +68,17 @@ const BankCard = (props) => {
                       {/* <span className="set_default"></span> */}
                       <span className="nondefault">Make Default</span>
                     </span>
-                    <span className="remove_card" onClick={deletePM}>
-                      <OverlayTrigger
-                        key={"top"}
-                        placement={"top"}
-                        overlay={<Tooltip id="remove">Delete</Tooltip>}
-                      >
-                        <img src={remove} alt="" />
-                      </OverlayTrigger>
-                    </span>
                   </>
                 )}
+                <span className="remove_card" onClick={deletePM}>
+                  <OverlayTrigger
+                    key={"top"}
+                    placement={"top"}
+                    overlay={<Tooltip id="remove">Delete</Tooltip>}
+                  >
+                    <img src={remove} alt="" />
+                  </OverlayTrigger>
+                </span>
               </>
             )}
           </div>
