@@ -17,6 +17,7 @@ import Changepasswordwithtoken from "./Changepasswordwithtoken";
 import ActivateAccount from "./ActivateAccount";
 import AdminOrderDetails from "./admin/AdminOrderDetails";
 import AdminUserDetails from "./admin/AdminUserDetails";
+import BuildDetails from "./BuildDetails";
 
 export const ROUTES = [
   {
@@ -26,6 +27,14 @@ export const ROUTES = [
     slug: "login",
     title: "Login",
     isLogin: true,
+  },
+  {
+    component: BuildDetails,
+    path: "/packagebuild",
+    slug: "package-build",
+    isExact: true,
+    checkLogin: true,
+    title: "package-build",
   },
   {
     component: Signup,
