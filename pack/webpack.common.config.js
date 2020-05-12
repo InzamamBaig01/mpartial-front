@@ -46,13 +46,12 @@ module.exports = {
             limit: 8192,
             stripdeclarations: true,
             iesafe: true,
-            encoding: 'base64',
           },
         },
       },
       {
         test: /\.(png|gif|jpg|cur)$/,
-        loader: 'url-loader',
+        loader: 'file-loader',
         options: {
           iesafe: true,
           // encoding: 'base64',
