@@ -6,10 +6,10 @@ node {
 	
 	stage('Build'){
 		
-		//dir("${JENKINS_HOME}/workspace/mpartial-frontend/target"){
-		//  	sh 'npm install'
-        	//	sh 'npm run build'
-		//}
+		dir("${JENKINS_HOME}/workspace/mpartial-frontend"){
+		  	sh 'npm install'
+        		sh 'npm run build'
+		}
 		
 		
 		
