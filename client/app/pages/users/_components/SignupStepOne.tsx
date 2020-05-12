@@ -14,7 +14,7 @@ interface StepProps {
 export const SignupStepOne: React.FC<StepProps> = (props) => {
   const [value, setValue] = React.useState(props.formData.email);
   const [error, setError] = React.useState(false);
-  const { showLoader,hideLoader } = React.useContext(AppAlertsContext);
+  const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
 
   const { step1 } = React.useContext(AuthContext);
   const onSubmit = (e) => {
@@ -41,8 +41,7 @@ export const SignupStepOne: React.FC<StepProps> = (props) => {
     <>
       <div className={"container"}>
         <h2>
-          Hello! I'm Joe. I'll get you signed up in <br /> seconds. Ready to
-          go?
+          Hello! I'm Joe. I'll get you signed up in <br /> seconds. Ready to go?
         </h2>
         <form onSubmit={onSubmit}>
           <div
@@ -72,8 +71,7 @@ export const SignupStepOne: React.FC<StepProps> = (props) => {
             id="formButton"
             className="btn btn-primary btn-block submit"
           >
-            Lets Do This
-            <Loader></Loader>
+            <Loader text="Lets Do This"></Loader>
           </button>
         </form>
       </div>

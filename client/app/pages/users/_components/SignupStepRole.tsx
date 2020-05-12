@@ -115,8 +115,7 @@ export const SignupStepRole: React.FC<StepProps> = (props) => {
             disabled={role.length == 0}
             className="btn btn-primary btn-block submit"
           >
-            Next
-            <Loader></Loader>
+            <Loader text="Next"></Loader>
           </button>
         </form>
       </div>

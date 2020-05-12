@@ -7,7 +7,7 @@ import queryString from "query-string";
 import Loader from "app/components/Loader";
 
 import ReCAPTCHA from "react-google-recaptcha";
-import appConfig from '../../../../appconfig.json';
+import appConfig from "../../../../appconfig.json";
 
 import { AppAlertsContext } from "contexts/appAlertsContext";
 import { useState } from "react";
@@ -65,7 +65,7 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
   const onCaptchaChange = (value) => {
     // console.log("Captcha value:", value);
     if (value) setIshuman(true);
-  }
+  };
 
   return (
     <>
@@ -113,8 +113,8 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
                 Passwords does not match
               </span>
             ) : (
-                ""
-              )}
+              ""
+            )}
           </div>
           <div className="form-group">
             <input
@@ -139,11 +139,15 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
             css={{ maxWidth: "257px", marginTop: "30px" }}
             type="submit"
             id="formButton"
-            disabled={!validPassword || password.length == 0 || !validCheckbox || !isHuman}
+            disabled={
+              !validPassword ||
+              password.length == 0 ||
+              !validCheckbox ||
+              !isHuman
+            }
             className="btn btn-primary btn-block submit"
           >
-            Create
-            <Loader></Loader>
+            <Loader text="Create"></Loader>
           </button>
         </form>
       </div>

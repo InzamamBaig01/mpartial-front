@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 
 import loadericon from "../../assets/loader.gif";
 import { AppAlertsContext } from "contexts/appAlertsContext";
-const Loader = () => {
+const Loader = (props) => {
   const { loader } = useContext(AppAlertsContext);
   const [isLoader, setIsLoader] = useState(loader);
   useEffect(() => {
@@ -10,6 +10,7 @@ const Loader = () => {
   }, [loader]);
   return (
     <>
+      {props.text && !isLoader ? props.text : ""}
       <div className={`loader show_${isLoader}`}></div>
     </>
   );

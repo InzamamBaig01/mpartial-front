@@ -59,7 +59,7 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
                 mask="999-999-9999"
                 onChange={(e) => {
                   setphonenumber(e.currentTarget.value);
-                //  console.log();
+                  //  console.log();
                 }}
                 value={phonenumber}
               >
@@ -86,8 +86,7 @@ export const SignupStepMobile: React.FC<StepProps> = (props) => {
             }
             className="btn btn-primary btn-block submit"
           >
-            Next
-            <Loader></Loader>
+            <Loader text="Next"></Loader>
           </button>
         </form>
       </div>

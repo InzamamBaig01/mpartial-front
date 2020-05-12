@@ -14,9 +14,9 @@ import {
 import Loader from "app/components/Loader";
 
 import ReCAPTCHA from "react-google-recaptcha";
-import appConfig from '../../../appconfig.json';
+import appConfig from "../../../appconfig.json";
 
-interface IProps { }
+interface IProps {}
 
 export const Login: React.FC<IProps> = ({ ...props }) => {
   const {
@@ -48,7 +48,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
           : loginError
       );
       setLoginAttempt(loginAttempt + 1);
-      if(captcha.current) captcha.current.reset();
+      if (captcha.current) captcha.current.reset();
     }
   }, [status, loginError]);
 
@@ -74,7 +74,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
   const onCaptchaChange = (value) => {
     // console.log("Captcha value:", value);
     if (value) setIshuman(true);
-  }
+  };
 
   return (
     <>
@@ -114,22 +114,21 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
               <div className="forgotP_container">
                 <Link to="/forgot-password">Forgot Password?</Link>
               </div>
-              {
-                loginAttempt > 5 &&
+              {loginAttempt > 5 && (
                 <ReCAPTCHA
                   sitekey={appConfig.captchaKey}
                   onChange={onCaptchaChange}
                   ref={captcha}
                   className="captcha_box"
-                />}
+                />
+              )}
               <button
                 type="submit"
                 className="btn btn-primary btn-block submit"
                 id="formButton"
                 disabled={loginAttempt > 5 && !isHuman}
               >
-                Sign in
-                <Loader></Loader>
+                <Loader text="Sign in"></Loader>
               </button>
             </form>
             <div className="login_devider">
@@ -154,28 +153,27 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
               &times;
             </div>
             {loginStatus ==
-              "This user is not allowed to login. Please verify your email address first." ? (
-                <>
-                  You have not verified your email address.{" "}
-                  <a
-                    href="#"
-                    onClick={() => {
-                      resendEmail();
-                    }}
-                  >
-                    Click here
+            "This user is not allowed to login. Please verify your email address first." ? (
+              <>
+                You have not verified your email address.{" "}
+                <a
+                  href="#"
+                  onClick={() => {
+                    resendEmail();
+                  }}
+                >
+                  Click here
                 </a>{" "}
                 to resend verification email.
-
               </>
-              ) : (
-                loginStatus
-              )}
+            ) : (
+              loginStatus
+            )}
           </div>
         </div>
       ) : (
-          ""
-        )}
+        ""
+      )}
     </>
   );
 };

@@ -19,7 +19,7 @@ export const SignupStepTwo: React.FC<StepProps> = (props) => {
   const [lastname, setlastname] = React.useState(
     props.formData.lastname ? props.formData.lastname : ""
   );
- // console.log(props.formData);
+  // console.log(props.formData);
   const { step2 } = React.useContext(AuthContext);
   const onSubmit = (e) => {
     e.preventDefault();
@@ -87,8 +87,7 @@ export const SignupStepTwo: React.FC<StepProps> = (props) => {
             disabled={firstname.length == 0 || lastname.length == 0}
             className="btn btn-primary btn-block submit"
           >
-            Next
-            <Loader></Loader>
+            <Loader text="Next"></Loader>
           </button>
         </form>
       </div>

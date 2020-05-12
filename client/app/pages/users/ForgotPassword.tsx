@@ -16,7 +16,7 @@ export const ForgotPassword: React.FC<IProps> = ({ ...props }) => {
   const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
   useEffect(() => {
     return () => {
-     // console.log("cleaned up");
+      // console.log("cleaned up");
       setLoginStatus(false);
     };
   }, []);
@@ -29,7 +29,9 @@ export const ForgotPassword: React.FC<IProps> = ({ ...props }) => {
     }).subscribe((response) => {
       if (response.response.Requested_Action) {
         hideLoader();
-        setLoginStatus("A password recovery email has been sent to entered email.");
+        setLoginStatus(
+          "A password recovery email has been sent to entered email."
+        );
       }
     });
   };
@@ -60,8 +62,7 @@ export const ForgotPassword: React.FC<IProps> = ({ ...props }) => {
                 type="submit"
                 className="btn btn-primary btn-block submit"
               >
-                Submit
-                <Loader></Loader>
+                <Loader text="Submit"></Loader>
               </button>
             </form>
             <div className="login_devider">

@@ -651,8 +651,7 @@ const UserOrder = () => {
                 id="formButton"
                 disabled={submitBtnDisabled}
               >
-                Proceed to Checkout
-                <Loader></Loader>
+                <Loader text="Proceed to Checkout"></Loader>
               </button>
             </div>
           </form>

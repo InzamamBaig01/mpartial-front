@@ -121,8 +121,7 @@ export const AdminLogin: React.FC<IProps> = ({ ...props }) => {
                   type="submit"
                   className="btn btn-primary btn-block submit"
                 >
-                  Sign in
-                  <Loader></Loader>
+                  <Loader text="Sign in"></Loader>
                 </button>
             </form>
           </div>

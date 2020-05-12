@@ -9,11 +9,10 @@ import Loader from "app/components/Loader";
 import { AuthContext } from "contexts/authContext";
 
 import ReCAPTCHA from "react-google-recaptcha";
-import appConfig from '../../../../appconfig.json';
+import appConfig from "../../../../appconfig.json";
 
-
-interface ConatctUsProps { }
-export const ContactUs: React.FC<ConatctUsProps> = ({ }) => {
+interface ConatctUsProps {}
+export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
   const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
   const { userDetails, isUserAuthenticated } = useContext(AuthContext);
 
@@ -58,8 +57,7 @@ export const ContactUs: React.FC<ConatctUsProps> = ({ }) => {
   const onCaptchaChange = (value) => {
     // console.log("Captcha value:", value);
     if (value) setIshuman(true);
-  }
-
+  };
 
   return (
     <>
@@ -133,11 +131,13 @@ export const ContactUs: React.FC<ConatctUsProps> = ({ }) => {
                   ></textarea>
                 </div>
               </div>
-              {!isLoggedIn && <ReCAPTCHA
-                sitekey={appConfig.captchaKey}
-                onChange={onCaptchaChange}
-                className="captcha_box"
-              />}
+              {!isLoggedIn && (
+                <ReCAPTCHA
+                  sitekey={appConfig.captchaKey}
+                  onChange={onCaptchaChange}
+                  className="captcha_box"
+                />
+              )}
               <p>
                 {messageDone
                   ? "Your message has been sent to the support team, you can expect a reply within 12 hours. "
@@ -150,11 +150,14 @@ export const ContactUs: React.FC<ConatctUsProps> = ({ }) => {
                 value={"Submit"}
                 id="formButton"
                 disabled={
-                  contactDetails.name == '' || contactDetails.email == '' || contactDetails.phone == '' || contactDetails.message == '' || (!isLoggedIn && !isHuman)
+                  contactDetails.name == "" ||
+                  contactDetails.email == "" ||
+                  contactDetails.phone == "" ||
+                  contactDetails.message == "" ||
+                  (!isLoggedIn && !isHuman)
                 }
               >
-                Submit
-                <Loader></Loader>
+                <Loader text="Submit"></Loader>
               </button>
             </form>
           </div>

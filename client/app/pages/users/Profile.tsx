@@ -90,7 +90,7 @@ const FormElement = (props) => {
       // result.setupIntent.payment_method to your server to save the
       // card to a Customer
       hideLoader();
-      getMyInfo();
+      getMyInfo(true);
       setCardError(false);
       props.handleClose();
     }
@@ -111,14 +111,15 @@ const FormElement = (props) => {
           <>
             <i className="red">
               <small>{cardError}</small>
-            </i><br /><br />
+            </i>
+            <br />
+            <br />
           </>
         ) : (
           <> </>
         )}
         <button type="submit" className="btn btn-lg">
-          Save
-          <Loader></Loader>
+          <Loader text="Save"></Loader>
         </button>
       </form>
     </>

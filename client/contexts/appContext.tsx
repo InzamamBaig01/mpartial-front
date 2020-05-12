@@ -4,6 +4,7 @@ import {
   getMyInfoAPI,
   allADOrders,
   allADUsers,
+  setDefaultPaymentMenthod,
 } from "../utils/api-routes/api-routes.util";
 import { useState, useEffect, useContext } from "react";
 import * as jsoncompare from "js-object-compare";
@@ -25,7 +26,7 @@ interface IContextProps {
   AllOrders: any;
   getallADUsers: Function;
   AllUsers: any;
-  getADOrderById: Function
+  getADOrderById: Function;
   singleADOrderDetails: any;
   getADUserById: Function;
   singleUserDetails: any;
@@ -54,15 +55,28 @@ export default ({ children }) => {
     });
   };
 
-  const getMyInfo = () => {
+  const getMyInfo = (isFirstCardAdded?) => {
     // showLoader();
     getMyInfoAPI().subscribe((response) => {
       // console.log(response.response);
       if (response.response.Requested_Action) {
-        setMyInfo(response.response.data);
+        if (
+          isFirstCardAdded &&
+          response.response.data.stripeCustomerCard.length == 1
+        ) {
+          setDefaultPaymentMenthod(
+            response.response.data.stripeCustomerCard[0].paymentMethodId
+          ).subscribe((response) => {
+            getMyInfo();
+          });
+        } else {
+          setMyInfo(response.response.data);
+          localStorage.setItem(
+            "profile",
+            JSON.stringify(response.response.data)
+          );
+        }
         // hideLoader();
-
-        localStorage.setItem("profile", JSON.stringify(response.response.data));
       } else {
         logout();
       }
@@ -82,8 +96,6 @@ export default ({ children }) => {
     });
   };
 
-
-
   const getADOrderByID = (id, orders?) => {
     return orders.filter((order) => order.id == id)[0];
   };
@@ -96,7 +108,6 @@ export default ({ children }) => {
       setSingleADOrderDetails(getADOrderByID(id, response.response.data));
     });
   };
-
 
   const getallADOrders = () => {
     // showLoader();
@@ -118,7 +129,6 @@ export default ({ children }) => {
       setSingleUserDetails(getADUserByID(id, response.response.data));
     });
   };
-
 
   const getallADUsers = () => {
     // showLoader();
