@@ -104,13 +104,13 @@ module.exports = merge(common, {
     new webpack.optimize.AggressiveMergingPlugin(),
     new BundleAnalyzerPlugin(),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /ja|it/),
-    new CompressionPlugin({
-      compressionOptions: {
-        numiterations: 15,
-      },
-      algorithm(input, compressionOptions, callback) {
-        return zopfli.gzip(input, compressionOptions, callback);
-      },
-    }),
+    // new CompressionPlugin({
+    //   compressionOptions: {
+    //     numiterations: 15,
+    //   },
+    //   algorithm(input, compressionOptions, callback) {
+    //     return zopfli.gzip(input, compressionOptions, callback);
+    //   },
+    // }),
   ],
 });
