@@ -15,7 +15,7 @@ import Loader from "app/components/Loader";
 import Mail from "../../assets/email.svg";
 import _ from "lodash";
 
-let fields = [
+const fields = [
   {
     id: "emailForDeliveryOfResults",
     name: "Email For Delivery of Results",
@@ -211,6 +211,7 @@ let fields = [
       "HVAC - Entire property",
       "Framing - Entire property",
       'Other - Please describe in the "Additional Information" field',
+      'N/A',
     ],
   },
   {
@@ -242,8 +243,6 @@ let fields = [
     type: "multipleAttachment",
   },
 ];
-
-const FieldsObj = Object.assign([], fields);
 
 const MultipleSelectField = (props) => {
   const [selected, setSelected] = useState([]);
@@ -287,9 +286,10 @@ const DrawField = (props) => {
       props.onChange(field, newFiles);
       setFiles(newFiles);
     } else {
+      setValue(e.currentTarget.value);
+
       props.onChange(field, e.currentTarget.value);
       field.value = e.currentTarget.value;
-      setValue(e.currentTarget.value);
     }
     setChanged(true);
   };
@@ -332,23 +332,26 @@ const DrawField = (props) => {
         break;
       case "select":
         return (
-          <select
-            className={`form-control is_required_${field.required} changed_${changed}`}
-            required={field.required ? true : false}
-            onChange={onChange}
-            value={value}
-          >
-            <option value="" selected disabled hidden css={{ display: "none" }}>
-              Select {field.name}
-            </option>
-            {Object.values(field.options).map((option, index) => {
-              return (
-                <option value={option} key={index}>
-                  {option}
-                </option>
-              );
-            })}
-          </select>
+          <>
+            <select
+              className={`form-control is_required_${field.required} changed_${changed}`}
+              required={field.required ? true : false}
+              onChange={onChange}
+              defaultValue=""
+              value={value}
+            >
+              <option value="" disabled hidden css={{ display: "none" }}>
+                Select {field.name}
+              </option>
+              {Object.values(field.options).map((option, index) => {
+                return (
+                  <option value={option} key={index}>
+                    {option}
+                  </option>
+                );
+              })}
+            </select>
+          </>
         );
         break;
       case "multiSelect":
@@ -462,7 +465,7 @@ const UserOrder = () => {
   const { userDetails } = useContext(AuthContext);
   fields[0].value = userDetails().emailAddress;
 
-  const [allFields, setAllFields] = useState(Object.assign([], fields));
+  const [allFields, setAllFields] = useState(fields);
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const { price } = useContext(AppContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
@@ -547,18 +550,13 @@ const UserOrder = () => {
 
   useEffect(() => {
     checkFormValidation();
-    setAllFields(FieldsObj);
-    return () => {
-      setAllFields(FieldsObj);
-      console.log(FieldsObj);
-      fields = FieldsObj;
-    }
   }, []);
 
   useEffect(() => {
     // console.log(fields);
     checkFormValidation();
     checkMatchingUrl();
+    // console.log("i have changed")
   }, [allFields]);
 
   const checkMatchingUrl = () => {
@@ -582,13 +580,11 @@ const UserOrder = () => {
     checkFormValidation();
     let fieldsData = Object.assign([], allFields);
     fieldsData = fieldsData.map((f) => {
-      // console.log(f);
       if (f.id == field.id) {
         f.value = value;
       }
       return f;
     });
-
     setAllFields(fieldsData);
   };
 
@@ -600,7 +596,7 @@ const UserOrder = () => {
         <div className="container">
           <form className="order_form" onSubmit={onSubmit} ref={form}>
             <div className="row">
-              {fields.map((field, index) => {
+              {allFields.map((field, index) => {
                 const gridCol =
                   (index > 3 && index < 8) || index == 10 || index == 11
                     ? "col-6 select_box_field"
