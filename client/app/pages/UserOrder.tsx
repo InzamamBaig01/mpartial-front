@@ -191,7 +191,7 @@ const fields = [
     required: true,
   },
   {
-    id: "Carrier",
+    id: "insuranceCarrier",
     name: "Insurance Carrier",
     description: null,
     placeholder: "Ex. Nat Gen Premier",
@@ -229,14 +229,14 @@ const fields = [
     type: "textarea",
   },
   {
-    id: "projectDetails",
+    id: "additionalInformation",
     name: "Additional Information/Project Details",
     description:
       "Please add any relevant and/or unknowable information here. The more details you provide, the more accurate deliverables you receive. This is imperative because mpartial does NOT reopen files once your digital assets are delivered.",
     type: "textarea",
   },
   {
-    id: "Potentially Relevant Digital Assets",
+    id: "potentiallyRelevantDigitalAssets",
     name: "Potentially Relevant Digital Assets",
     description:
       "EX., Additional Invoices, Relevant Images, Environmental Report etc.",
