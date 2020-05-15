@@ -469,7 +469,7 @@ const UserOrder = () => {
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const { price } = useContext(AppContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
-
+  const top = React.createRef();
   const [matchingUrl, setMatchingUrl] = useState(false);
   const uploadFiles = (id, files, index) => {
     if (files && files[index]) {
@@ -487,6 +487,9 @@ const UserOrder = () => {
       history.push(`/checkout/${id}`);
     }
   };
+  useEffect(() => {
+    if(top.current) window.scrollTo({ top: top.current.offsetTop, behavior: "smooth" });
+  }, [top.current]);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -591,8 +594,8 @@ const UserOrder = () => {
   return (
     <>
       <Header isFixedColor={true}></Header>
-      <div className="other_pages_container">
-        <h1 className="title text-center">mpartial Engine</h1>
+      <div className="other_pages_container" >
+        <h1 className="title text-center"  ref={top}>mpartial Engine</h1>
         <div className="container">
           <form className="order_form" onSubmit={onSubmit} ref={form}>
             <div className="row">

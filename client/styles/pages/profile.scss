@@ -251,7 +251,7 @@
       color: #64747f;
       &:hover {
         color: #3ac280;
-        text-decoration: underline;;
+        text-decoration: underline;
       }
     }
     .set_default_action {
@@ -277,5 +277,11 @@
       border-radius: 50%;
       margin-right: 5px;
     }
+  }
+}
+
+.profile_right_section {
+  .btn {
+    min-width: 80px !important;
   }
 }

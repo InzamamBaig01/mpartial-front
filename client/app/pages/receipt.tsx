@@ -29,9 +29,11 @@ const Receipt = (props) => {
       <Header isFixedColor={true}></Header>
       <div className="other_pages_container">
         <h1 className="title text-center">Receipt</h1>
+        <h3 className="text-center">{order.projectName}</h3>
+        <br />
         <div className="container receipt_details">
           <div className="receipt_info">
-          Thank you for your deposit. Your request is being processed. You can expect the deliverable to arrive in your inbox within the next 4 business days.
+          Thank you for your deposit. Your request is being processed. You can expect the deliverable to arrive in your inbox within the next 4 business days. A receipt for this transaction has been sent to the email associated with your account.
           </div>
           <div className="row order_details_row">
             <div className="col">
