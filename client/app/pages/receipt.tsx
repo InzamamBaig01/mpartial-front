@@ -46,7 +46,7 @@ const Receipt = (props) => {
             </div>
             <div className="col">
               <label>Email</label>
-              <div className="receipt_data">{userDetails().emailAddress}</div>
+              <div className="receipt_data" title={userDetails().emailAddress}>{userDetails().emailAddress.length > 20 ? userDetails().emailAddress.substring(0, 20) + "..." : userDetails().emailAddress}</div>
             </div>
             <div className="col">
               <label>Total</label>

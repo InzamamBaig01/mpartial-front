@@ -103,6 +103,7 @@ export default ({ children }) => {
   const getADOrderById = (id) => {
     // showLoader();
     allADOrders().subscribe((response) => {
+
       setAllOrders(response.response.data);
       // hideLoader();
       setSingleADOrderDetails(getADOrderByID(id, response.response.data));

@@ -9,11 +9,11 @@ import Next from "../../../assets/next.svg";
 import Previous from "../../../assets/previous.svg";
 import viewicon from "../../../assets/view.svg";
 import editicon from "../../../assets/profile_edit.svg";
-
 import { AppContext } from "contexts/appContext";
 import AdminSidebar from "./_components/AdminSidebar";
 const AdminOrders = () => {
   const { getallADOrders, AllOrders } = useContext(AppContext);
+  const sortedOrder = AllOrders.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
   const [orders, setOrders] = useState([]);
   const columns = [
     {
@@ -76,10 +76,10 @@ const AdminOrders = () => {
   }, []);
 
   useEffect(() => {
-    if (AllOrders.length) {
-      setOrders(AllOrders);
+    if (sortedOrder.length) {
+      setOrders(sortedOrder);
     }
-  }, [AllOrders]);
+  }, [sortedOrder]);
   return (
     <>
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>

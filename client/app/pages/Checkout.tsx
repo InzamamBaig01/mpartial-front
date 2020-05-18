@@ -365,7 +365,7 @@ const Checkout = (props) => {
               <div className="col sub_titles">Your Order</div>
             </div>
 
-            <div className="row order_checkout_details">
+            <div className="order_checkout_details">
               <div className="col-12">
                 <table className="table">
                   <thead>

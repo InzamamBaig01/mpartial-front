@@ -396,3 +396,17 @@
     text-align: center;
   }
 }
+
+@media screen and (min-width: 789px) and (max-width: 1026px) {
+  .home_video_background {
+    height: 479px;
+    .video {
+      object-fit: cover;
+      position: absolute !important;
+      width: 100% !important;
+      height: auto !important;
+      top: -48px !important;
+      left: 0 !important;
+    }
+  }
+}

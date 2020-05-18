@@ -515,7 +515,7 @@ const UserOrder = () => {
         apiData[field.id] = field.value;
       }
     });
-
+    console.log(allFields)
     //console.log(fileToUpload)
 
     const stringified = queryString.stringify(apiData);
@@ -532,6 +532,9 @@ const UserOrder = () => {
           console.log(response.response);
 
           uploadFiles(response.response.data.id, fileToUpload, 0);
+          allFields.map((field) => {
+            field.value = '';
+          });
         } else {
           hideLoader();
         }
