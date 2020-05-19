@@ -7,8 +7,8 @@ node {
 	stage('Build'){
 		
 		dir("${JENKINS_HOME}/workspace/mpartial-frontend"){
-		  	sh '/home/ec2-user/.nvm/versions/node/v14.2.0/bin/npm install'
-        		sh '/home/ec2-user/.nvm/versions/node/v14.2.0/bin/npm run build'
+		  	sh 'npm install'
+        		sh 'npm run build'
 		}
 		
 		
