@@ -14,6 +14,7 @@ import { AppAlertsContext } from "contexts/appAlertsContext";
 import Loader from "app/components/Loader";
 import Mail from "../../assets/email.svg";
 import _ from "lodash";
+import toPairs from "ramda/es/toPairs";
 
 const fields = [
   {
@@ -211,7 +212,7 @@ const fields = [
       "HVAC - Entire property",
       "Framing - Entire property",
       'Other - Please describe in the "Additional Information" field',
-      'N/A',
+      "N/A",
     ],
   },
   {
@@ -470,6 +471,7 @@ const UserOrder = () => {
   const { price } = useContext(AppContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
   const top = React.createRef();
+  const form = React.createRef();
   const [matchingUrl, setMatchingUrl] = useState(false);
   const uploadFiles = (id, files, index) => {
     if (files && files[index]) {
@@ -488,8 +490,22 @@ const UserOrder = () => {
     }
   };
   useEffect(() => {
-    if(top.current) window.scrollTo({ top: top.current.offsetTop, behavior: "smooth" });
+    if (top.current) {
+      window.scrollTo({ top: top.current.offsetTop, behavior: "smooth" });
+      // [0].reset();
+      form.current.reset();
+    }
   }, [top.current]);
+
+  useEffect(() => {
+    // console.error("I am loaded");
+    setAllFields(
+      fields.map((field) => {
+        field.value = undefined;
+        return field;
+      })
+    );
+  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -515,7 +531,7 @@ const UserOrder = () => {
         apiData[field.id] = field.value;
       }
     });
-    console.log(allFields)
+    // console.log(allFields);
     //console.log(fileToUpload)
 
     const stringified = queryString.stringify(apiData);
@@ -529,12 +545,12 @@ const UserOrder = () => {
           // console.log(response.response);
           localStorage.setItem("sessipn", response.response.message);
 
-          console.log(response.response);
+          // console.log(response.response);
 
           uploadFiles(response.response.data.id, fileToUpload, 0);
-          allFields.map((field) => {
-            field.value = '';
-          });
+          // allFields.map((field) => {
+          //   field.value = "";
+          // });
         } else {
           hideLoader();
         }
@@ -545,8 +561,21 @@ const UserOrder = () => {
     );
   };
 
-  const form = React.createRef();
 
+  const checkRequiredFieldsValue = () => {
+    let invalid = false;
+    allFields.map((field) => {
+      if (field.required) {
+        if (field.value && field.value.length) {
+          // console.log(field.name, "is Valid");
+        } else {
+          // console.log(field.name,field.value, "is INValid");
+          invalid = true;
+        }
+      }
+    });
+    return invalid;
+  };
   const checkFormValidation = () => {
     if (form && form.current) {
       setSubmitBtnDisabled(!form.current.checkValidity());
@@ -597,8 +626,10 @@ const UserOrder = () => {
   return (
     <>
       <Header isFixedColor={true}></Header>
-      <div className="other_pages_container" >
-        <h1 className="title text-center"  ref={top}>mpartial Engine</h1>
+      <div className="other_pages_container">
+        <h1 className="title text-center" ref={top}>
+          mpartial Engine
+        </h1>
         <div className="container">
           <form className="order_form" onSubmit={onSubmit} ref={form}>
             <div className="row">
