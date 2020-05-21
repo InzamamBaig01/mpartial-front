@@ -464,6 +464,10 @@ const DrawField = (props) => {
 
 const UserOrder = () => {
   const { userDetails } = useContext(AuthContext);
+  fields.map((field) => {
+    field.value = undefined;
+    return field;
+  });
   fields[0].value = userDetails().emailAddress;
 
   const [allFields, setAllFields] = useState(fields);
@@ -493,7 +497,7 @@ const UserOrder = () => {
     if (top.current) {
       window.scrollTo({ top: top.current.offsetTop, behavior: "smooth" });
       // [0].reset();
-    console.error("Form reseted");
+      console.error("Form reseted");
 
       form.current.reset();
     }
@@ -562,7 +566,6 @@ const UserOrder = () => {
       }
     );
   };
-
 
   const checkRequiredFieldsValue = () => {
     let invalid = false;
