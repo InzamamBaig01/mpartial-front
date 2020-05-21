@@ -493,12 +493,14 @@ const UserOrder = () => {
     if (top.current) {
       window.scrollTo({ top: top.current.offsetTop, behavior: "smooth" });
       // [0].reset();
+    console.error("Form reseted");
+
       form.current.reset();
     }
   }, [top.current]);
 
   useEffect(() => {
-    // console.error("I am loaded");
+    console.error("I am loaded");
     setAllFields(
       fields.map((field) => {
         field.value = undefined;

@@ -1,6 +1,6 @@
 {
   "name": "mpartial",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "serve": "webpack-dev-server --https --progress --config ./pack/webpack.dev.config.js",
