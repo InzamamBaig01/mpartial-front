@@ -47,7 +47,7 @@ const MultipleSelectField = (props) => {
 };
 
 const DrawField = (props) => {
-  const [value, setValue] = useState(props.formValues[props.field.id]);
+  const [value, setValue] = useState(props.field.value);
   const [files, setFiles] = useState([]);
   const [changed, setChanged] = useState(false);
   const onChange = (e) => {
@@ -464,32 +464,6 @@ const UserOrder = () => {
       type: "multipleAttachment",
     },
   ]);
-
-  const [formValues, setFormValues] = useState({
-    emailForDeliveryOfResults: userDetails().emailAddress,
-    projectName: "",
-    preMitigationDemoModelURL: "",
-    postMitigationDemoModelURL: "",
-    debrisDisposal: "",
-    causeOfLoss: "",
-    mitigationOrRepair: "",
-    category: "",
-    residentialOrCommercial: "",
-    durationOfTheProject: "",
-    temporaryActivities: "",
-    projectZipCode: "",
-    insuranceCarrier: "",
-    specialtyTradeSelection: "",
-    pPEsConcessions: "",
-    dryOutMonitoringDuration: "",
-    additionalInformation: "",
-    potentiallyRelevantDigitalAssets: "",
-  });
-
-  useEffect(() => {
-    console.log("formValues", formValues);
-  }, [formValues]);
-
   
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const { price } = useContext(AppContext);
@@ -859,11 +833,6 @@ const UserOrder = () => {
   const handleChange = (field, value) => {
     // console.log(field, value);
     checkFormValidation();
-    setFormValues({
-      ...formValues,
-      [field.id]: value,
-    });
-
     let fieldsData = Object.assign([], allFields);
     fieldsData = fieldsData.map((f) => {
       if (f.id == field.id) {
@@ -906,7 +875,6 @@ const UserOrder = () => {
                     <DrawField
                       field={field}
                       onChange={handleChange}
-                      formValues={formValues}
                       matchingUrl={matchingUrl}
                     ></DrawField>
                   </div>
