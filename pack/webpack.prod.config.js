@@ -93,6 +93,12 @@ module.exports = merge(common, {
         to: PATHS.output,
       }
     ]),
+    new CopyWebpackPlugin([
+      {
+        from: PATHS.client + "/.htaccess",
+        to: PATHS.output,
+      }
+    ]),
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
     }),
