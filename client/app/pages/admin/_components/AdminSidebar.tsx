@@ -16,6 +16,11 @@ const AdminSidebar = () => {
               <span></span> Customers
             </Link>
           </li>
+          <li>
+            <Link to="/coupons">
+              <span></span> Coupons
+            </Link>
+          </li>
         </ul>
       </aside>
     </>

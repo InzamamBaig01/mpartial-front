@@ -18,6 +18,7 @@ import ActivateAccount from "./ActivateAccount";
 import AdminOrderDetails from "./admin/AdminOrderDetails";
 import AdminUserDetails from "./admin/AdminUserDetails";
 import BuildDetails from "./BuildDetails";
+import Coupons from "./admin/Coupons";
 
 export const ROUTES = [
   {
@@ -149,6 +150,15 @@ export const ROUTES = [
     redirectTo: "/login",
   },
   {
+    component: ForgotPassword,
+    isPublic: true,
+    path: "/forgot-password",
+    slug: "forgot-password",
+    title: "forgot-password",
+    isLogin: false,
+    redirectTo: "/forgot-password",
+  },
+  {
     component: AdminLogin,
     path: "/mpartialadmin",
     slug: "admin",
@@ -193,12 +203,13 @@ export const ROUTES = [
     checkADLogin: true,
   },
   {
-    component: ForgotPassword,
-    isPublic: true,
-    path: "/forgot-password",
-    slug: "forgot-password",
-    title: "forgot-password",
-    isLogin: false,
-    redirectTo: "/forgot-password",
+    component: Coupons,
+    path: "/coupons",
+    slug: "admin/coupons",
+    title: "admin/coupons",
+    redirectTo: "/mpartialadmin",
+    isAD: true,
+    checkADLogin: true,
   },
+  
 ];

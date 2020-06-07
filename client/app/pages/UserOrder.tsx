@@ -35,6 +35,7 @@ const MultipleSelectField = (props) => {
       className={`valid_${
         valid != null ? (selected.length != 0 ? "true" : "false") : "0"
       }`}
+      hasSelectAll={props.field.hasSelectAll}
       onChange={(value) => {
         setSelected(value);
         setValid(true);
@@ -395,6 +396,7 @@ const UserOrder = () => {
       description:
         'Please describe the quantities in the "Additional Information" field',
       type: "multiSelect",
+      hasSelectAll: true,
       required: true,
       options: [
         "Temp Toilet",
@@ -424,6 +426,7 @@ const UserOrder = () => {
       description:
         "Specialty trades typically require in-depth inspections and will be omitted from your deliverables by default. Should you wish to include various specialty trades, be sure to select from the list below.",
       type: "multiSelect",
+      hasSelectAll: false,
       options: [
         "Electrical - Affected rooms only",
         "HVAC - Affected rooms only",
@@ -454,6 +457,12 @@ const UserOrder = () => {
       name: "Additional Information/Project Details",
       description:
         "Please add any relevant and/or unknowable information here. The more details you provide, the more accurate deliverables you receive. This is imperative because mpartial does NOT reopen files once your digital assets are delivered.",
+      type: "textarea",
+    },{
+      id: "additionalFees",
+      name: "Auxiliary Fees",
+      description:
+        "Please describe what additional fees and the prices - Architectural, Engineering, Building Dept. and/or Environmental (as applicable)",
       type: "textarea",
     },
     {
@@ -658,6 +667,7 @@ const UserOrder = () => {
           'Please describe the quantities in the "Additional Information" field',
         type: "multiSelect",
         required: true,
+        hasSelectAll: true,
         options: [
           "Temp Toilet",
           "Temp Power",
@@ -686,6 +696,7 @@ const UserOrder = () => {
         description:
           "Specialty trades typically require in-depth inspections and will be omitted from your deliverables by default. Should you wish to include various specialty trades, be sure to select from the list below.",
         type: "multiSelect",
+        hasSelectAll: false,
         options: [
           "Electrical - Affected rooms only",
           "HVAC - Affected rooms only",
@@ -716,6 +727,13 @@ const UserOrder = () => {
         name: "Additional Information/Project Details",
         description:
           "Please add any relevant and/or unknowable information here. The more details you provide, the more accurate deliverables you receive. This is imperative because mpartial does NOT reopen files once your digital assets are delivered.",
+        type: "textarea",
+      },
+      {
+        id: "additionalFees",
+        name: "Auxiliary Fees",
+        description:
+          "Please describe what additional fees and the prices - Architectural, Engineering, Building Dept. and/or Environmental (as applicable)",
         type: "textarea",
       },
       {
