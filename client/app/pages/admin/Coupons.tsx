@@ -7,7 +7,7 @@ import First from "../../../assets/first.svg";
 import Last from "../../../assets/last.svg";
 import Next from "../../../assets/next.svg";
 import Previous from "../../../assets/previous.svg";
-import viewicon from "../../../assets/view.svg";
+import viewicon from "../../../assets/profile_edit.svg";
 import AdminSidebar from "./_components/AdminSidebar";
 
 
@@ -101,6 +101,90 @@ const AddCoupons = (props) => {
 
 
 
+
+const EditCoupons = (props) => {
+
+    const [data, setData] = useState({
+        code: "",
+        date: new Date().toISOString(),
+        couponlimit: "",
+        userlimit: "",
+        percentage: "",
+    })
+
+    const onsubmit = (e) => {
+        e.preventDefault();
+
+        console.log(data);
+    }
+
+    return (
+        <>
+            <Modal
+                show={props.show}
+                onHide={props.handleClose}
+                className="edit_profile"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title className="add_card_title">Edit Coupon</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="support_body">
+                    <form onSubmit={onsubmit}>
+                        <div className="form-group">
+                            <input type="text" placeholder="Coupon Code" className="form-control" required onChange={
+                                (e) => setData({
+                                    ...data,
+                                    code: e.currentTarget.value
+                                })
+                            } value={data.code} />
+                        </div>
+                        <div className="form-group">
+                            <input type="number" placeholder="Coupon Percentage" className="form-control" required onChange={
+                                (e) => setData({
+                                    ...data,
+                                    percentage: e.currentTarget.value
+                                })
+                            } value={data.percentage} min="0" max="100" step="0.10" />
+                        </div>
+                        <div className="form-group">
+                            <DatePicker id="example-datepicker" className="form-control" required
+                                value={data.date}
+                                showClearButton={false}
+                                placeholder="Coupon Expiry Date"
+                                onChange={(v, f) => setData({
+                                    ...data,
+                                    date: v
+                                })} />
+                        </div>
+                        <div className="form-group">
+                            <input type="number" placeholder="Usage Limit Per Coupon" className="form-control" required onChange={
+                                (e) => setData({
+                                    ...data,
+                                    couponlimit: e.currentTarget.value
+                                })
+                            } value={data.couponlimit} />
+                        </div>
+                        <div className="form-group">
+                            <input type="number" placeholder="Usage Limit Per User" className="form-control" required onChange={
+                                (e) => setData({
+                                    ...data,
+                                    userlimit: e.currentTarget.value
+                                })
+                            } value={data.userlimit} />
+                        </div>
+                        <div className="form-group text-center">
+                            <button className="btn btn-lg" type="submit">Update</button>
+                        </div>
+                    </form>
+                </Modal.Body>
+            </Modal>
+        </>
+    );
+};
+
+
+
+
 const Coupons = () => {
 
     const { getallADUsers, AllUsers } = useContext(AppContext);
@@ -109,6 +193,13 @@ const Coupons = () => {
     const [AddCouponsShow, setAddCouponsShow] = useState(false);
     const handleAddCouponsclose = () => setAddCouponsShow(false);
     const handleAddCouponsShow = () => setAddCouponsShow(true);
+
+
+    const [EditCouponShow, setEditCouponShow] = useState(false);
+    const handleEditCouponclose = () => setEditCouponShow(false);
+    const handleEditCouponShow = () => setEditCouponShow(true);
+
+
 
 
     const onSubmitSuccess = () => {
@@ -152,9 +243,9 @@ const Coupons = () => {
             sortable: false,
             className: "header-col",
             format: (d) => (
-                <Link to={`/usersdetails/${window.btoa(d.emailAddress)}`}>
+                <a href="javascript:;" onClick={handleEditCouponShow}>
                     <img src={viewicon} alt="" />
-                </Link>
+                </a>
             ),
         },
     ];
@@ -204,6 +295,16 @@ const Coupons = () => {
                     onSubmitSuccess={onSubmitSuccess}
                     show={AddCouponsShow}
                     handleClose={handleAddCouponsclose}
+                    info={{}}
+                />
+            )}
+
+            {EditCouponShow && (
+                <EditCoupons
+                    value={""}
+                    onSubmitSuccess={onSubmitSuccess}
+                    show={EditCouponShow}
+                    handleClose={handleEditCouponclose}
                     info={{}}
                 />
             )}

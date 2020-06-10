@@ -72,6 +72,12 @@ const Receipt = (props) => {
                   </tr>
 
                   <tr>
+                    <td>Discound: Code</td>
+                    <td>${price / 2}</td>
+                  </tr>
+
+
+                  <tr>
                     <td>Subtotal</td>
                     <td>${price}</td>
                   </tr>

@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
 import { payOrder } from "utils/api-routes/api-routes.util";
@@ -70,17 +70,17 @@ const CheckoutForm = (props) => {
         localStorage.getItem("sessipn"),
         !showNewCardForm
           ? {
-              payment_method: selectedCard.paymentMethodId,
-            }
+            payment_method: selectedCard.paymentMethodId,
+          }
           : {
-              payment_method: {
-                card: card,
-                billing_details: {
-                  name: `${props.checkoutInfo.firstName} ${props.checkoutInfo.lastName}`,
-                },
+            payment_method: {
+              card: card,
+              billing_details: {
+                name: `${props.checkoutInfo.firstName} ${props.checkoutInfo.lastName}`,
               },
-              setup_future_usage: "off_session",
-            }
+            },
+            setup_future_usage: "off_session",
+          }
       )
       .then(async function (result) {
         console.log(result);
@@ -167,8 +167,8 @@ const CheckoutForm = (props) => {
             })}
         </>
       ) : (
-        ""
-      )}
+          ""
+        )}
       {showNewCardForm && (
         <div className="">
           <label htmlFor="card-element">Credit or debit card</label>
@@ -289,8 +289,8 @@ const Checkout = (props) => {
                     First Name Is Required.
                   </span>
                 ) : (
-                  ""
-                )}
+                    ""
+                  )}
               </div>
             </div>
             <div className="row">
@@ -312,8 +312,8 @@ const Checkout = (props) => {
                     Last Name Is Required.
                   </span>
                 ) : (
-                  ""
-                )}
+                    ""
+                  )}
               </div>
             </div>
             <div className="row">
@@ -335,8 +335,8 @@ const Checkout = (props) => {
                     Email Address Is Required.
                   </span>
                 ) : (
-                  ""
-                )}
+                    ""
+                  )}
               </div>
             </div>
 
@@ -381,9 +381,15 @@ const Checkout = (props) => {
                     </tr>
 
                     <tr>
+                      <td>Coupon: ABC</td>
+                      <td>${price / 2}</td>
+                    </tr>
+
+                    <tr>
                       <td>Subtotal</td>
                       <td>${price}</td>
                     </tr>
+
 
                     <tr>
                       <td>Total</td>
@@ -403,9 +409,9 @@ const Checkout = (props) => {
                   onClick={checkValidation}
                   disabled={
                     checkoutInfo.firstName == "" ||
-                    checkoutInfo.lastName == "" ||
-                    checkoutInfo.emailAddress == "" ||
-                    !cardValidation
+                      checkoutInfo.lastName == "" ||
+                      checkoutInfo.emailAddress == "" ||
+                      !cardValidation
                       ? true
                       : false
                   }

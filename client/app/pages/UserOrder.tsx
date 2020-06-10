@@ -15,6 +15,7 @@ import Loader from "app/components/Loader";
 import Mail from "../../assets/email.svg";
 import _ from "lodash";
 import toPairs from "ramda/es/toPairs";
+import { Modal } from "react-bootstrap";
 
 const MultipleSelectField = (props) => {
   const [selected, setSelected] = useState([]);
@@ -34,7 +35,7 @@ const MultipleSelectField = (props) => {
       required={props.field.required ? true : false}
       className={`valid_${
         valid != null ? (selected.length != 0 ? "true" : "false") : "0"
-      }`}
+        }`}
       hasSelectAll={props.field.hasSelectAll}
       onChange={(value) => {
         setSelected(value);
@@ -84,7 +85,7 @@ const DrawField = (props) => {
             required={field.required ? true : false}
             className={`form-control is_required_${
               field.required ? true : false
-            } changed_${changed}`}
+              } changed_${changed}`}
             placeholder={field.placeholder}
             onChange={onChange}
             value={value}
@@ -147,18 +148,18 @@ const DrawField = (props) => {
               />
               {files.length
                 ? files.map((file, index) => {
-                    return (
-                      <div className="selected_file_name" key={index}>
-                        <i className="close" onClick={() => removeFile(index)}>
-                          &times;
+                  return (
+                    <div className="selected_file_name" key={index}>
+                      <i className="close" onClick={() => removeFile(index)}>
+                        &times;
                         </i>
 
-                        <i className="">
-                          <small>{file.name}</small>
-                        </i>
-                      </div>
-                    );
-                  })
+                      <i className="">
+                        <small>{file.name}</small>
+                      </i>
+                    </div>
+                  );
+                })
                 : ""}
             </div>
             {/*<input type="file" className="custom-file-input-btn" onChange={(e) => {*/}
@@ -188,7 +189,7 @@ const DrawField = (props) => {
             type="email"
             className={`form-control is_required_${field.required} changed_${
               changed || value.length != 0
-            }`}
+              }`}
             value={value}
             placeholder="Email"
             onChange={onChange}
@@ -234,9 +235,58 @@ const DrawField = (props) => {
   return form(field);
 };
 
-const UserOrder = () => {
-  const { userDetails } = useContext(AuthContext);
 
+const ApplyCoupon = (props) => {
+  const { showLoader, hideLoader } = useContext(AppAlertsContext);
+  const { price } = useContext(AppContext);
+
+  const [coupon, setCoupon] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    showLoader();
+    //  price - (price * (discount % / 100))
+    const newPrice = price - (price * (50 / 100));
+    props.onSubmitSuccess({
+      coupon: coupon,
+      price: newPrice,
+    });
+    hideLoader();
+  };
+
+  return (
+    <>
+      <Modal
+        show={props.show}
+        onHide={props.handleClose}
+        className="apply_coupon"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title className="add_card_title">Apply Coupon</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="support_body">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Coupon Code</label>
+              <input type="text" className="form-control" required value={coupon} onChange={e => setCoupon(e.currentTarget.value)} />
+            </div>
+            <div className="form-group text-center">
+              <button className="btn btn-lg" type="submit">
+                <Loader text="Apply"></Loader>
+              </button>
+            </div>
+          </form>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+};
+
+
+const UserOrder = (props) => {
+  const { userDetails } = useContext(AuthContext);
+  const orderId = props.match.params.orderId;
+  console.log(orderId);
   const [allFields, setAllFields] = useState([
     {
       id: "emailForDeliveryOfResults",
@@ -458,7 +508,7 @@ const UserOrder = () => {
       description:
         "Please add any relevant and/or unknowable information here. The more details you provide, the more accurate deliverables you receive. This is imperative because mpartial does NOT reopen files once your digital assets are delivered.",
       type: "textarea",
-    },{
+    }, {
       id: "additionalFees",
       name: "Auxiliary Fees",
       description:
@@ -473,9 +523,25 @@ const UserOrder = () => {
       type: "multipleAttachment",
     },
   ]);
-  
-  const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const { price } = useContext(AppContext);
+  const [productPrice, setPrice] = useState(price);
+  const [couponApplied, setCouponApplied] = useState(false);
+  const [ApplyCouponShow, setApplyCouponShow] = useState(false);
+
+
+  const handleApplyCouponclose = () => setApplyCouponShow(false);
+  const handleApplyCouponShow = () => setApplyCouponShow(true);
+
+
+  const onSubmitSuccess = (couponData) => {
+    handleApplyCouponclose();
+    setPrice(couponData.price);
+    setCouponApplied(couponData.coupon);
+  };
+
+
+
+  const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
   const top = React.createRef();
   const form = React.createRef();
@@ -750,7 +816,7 @@ const UserOrder = () => {
     e.preventDefault();
     showLoader();
     const apiData = {
-      amountInCents: price * 100,
+      amountInCents: productPrice * 100,
       additionalFees: "",
       thetoken: localStorage.token,
     };
@@ -763,8 +829,8 @@ const UserOrder = () => {
       } else if (field.type === "multiSelect") {
         apiData[field.id] = field.value
           ? field.value.map((v) => {
-              return v.value;
-            })
+            return v.value;
+          })
           : "";
       } else {
         apiData[field.id] = field.value;
@@ -861,6 +927,64 @@ const UserOrder = () => {
     setAllFields(fieldsData);
   };
 
+
+
+  const saveToDraft = () => {
+    showLoader();
+    // return false;
+    const apiData = {
+      amountInCents: productPrice * 100,
+      additionalFees: "",
+      thetoken: localStorage.token,
+    };
+    let fileToUpload;
+    const formData = new FormData();
+
+    allFields.map((field) => {
+      if (field.type === "multipleAttachment") {
+        fileToUpload = field.value;
+      } else if (field.type === "multiSelect") {
+        apiData[field.id] = field.value
+          ? field.value.map((v) => {
+            return v.value;
+          })
+          : "";
+      } else {
+        apiData[field.id] = field.value;
+      }
+    });
+    // console.log(allFields);
+    //console.log(fileToUpload)
+
+    const stringified = queryString.stringify(apiData);
+
+    // if (fileToUpload)
+    //   formData.append("potentiallyRelevantDigitalAssets", fileToUpload[0]);
+    console.log(apiData)
+    return false;
+
+    saveOrderData(formData, stringified).subscribe(
+      (response: any) => {
+        if (response.response.Requested_Action) {
+          // console.log(response.response);
+          localStorage.setItem("sessipn", response.response.message);
+
+          // console.log(response.response);
+
+          uploadFiles(response.response.data.id, fileToUpload, 0);
+          // allFields.map((field) => {
+          //   field.value = "";
+          // });
+        } else {
+          hideLoader();
+        }
+      },
+      (response) => {
+        //console.log(response);
+      }
+    );
+  }
+
   return (
     <>
       <Header isFixedColor={true}></Header>
@@ -886,7 +1010,7 @@ const UserOrder = () => {
                       className={`description small_${
                         field.id != "projectZipCode" &&
                         field.description?.length <= 42
-                      }`}
+                        }`}
                     >
                       {field.description}
                     </div>
@@ -901,7 +1025,35 @@ const UserOrder = () => {
             </div>
             <div className="form-group">
               <label>Price</label>
-              <div className="form_price">${price}</div>
+              <div className="row">
+                <div className="col-3">
+                  {
+                    couponApplied.length ? (
+                      <>
+                        <div className="form_price">${productPrice} <sup>${price} </sup></div>
+                      </>
+                    ) : (
+                        <div className="form_price">${productPrice}</div>
+                      )
+                  }
+                </div>
+                <div className="col">
+                  <div className="pull-right">
+                    {
+                      couponApplied.length ? (
+                        <>
+                          <span className="coupon_success">
+                            Coupon Applied: {couponApplied}
+                          </span>
+                        </>
+                      ) : (
+                          <button className="btn mt-2" onClick={handleApplyCouponShow}>Apply Coupon</button>
+                        )
+                    }
+                  </div>
+                </div>
+              </div>
+
             </div>
 
             <div className="form-group">
@@ -924,10 +1076,31 @@ const UserOrder = () => {
               >
                 <Loader text="Proceed to Checkout"></Loader>
               </button>
+              {
+                !orderId && <button
+                  className="btn btn-green savetodrafts"
+                  type="button"
+                  onClick={saveToDraft}
+                  id="formButton"
+
+                >
+                  <Loader text="Save as draft"></Loader>
+                </button>
+              }
+
             </div>
           </form>
         </div>
       </div>
+      {ApplyCouponShow && (
+        <ApplyCoupon
+          value={""}
+          onSubmitSuccess={onSubmitSuccess}
+          show={ApplyCouponShow}
+          handleClose={handleApplyCouponclose}
+          info={{}}
+        />
+      )}
     </>
   );
 };

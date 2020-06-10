@@ -89,7 +89,7 @@ const FormElement = (props) => {
       // The setup has succeeded. Display a success message and send
       // result.setupIntent.payment_method to your server to save the
       // card to a Customer
-      hideLoader();
+      // hideLoader();
       getMyInfo(true);
       setCardError(false);
       props.handleClose();
@@ -536,6 +536,7 @@ const EditPassword = (props) => {
 
 const Profile = () => {
   const { getMyInfo, myInfo } = useContext(AppContext);
+  const { showLoader, hideLoader } = useContext(AppAlertsContext);
 
   const [info, setInfo] = useState(false);
   const [PI, setPI] = useState(false);
@@ -546,6 +547,7 @@ const Profile = () => {
     "american express": AmericanExpress,
   };
   useEffect(() => {
+    showLoader();
     getMyInfo();
   }, []);
 
@@ -558,6 +560,7 @@ const Profile = () => {
   useEffect(() => {
     console.log(myInfo);
     if (myInfo) {
+      hideLoader();
       setInfo(myInfo);
     }
   }, [myInfo]);
@@ -664,7 +667,9 @@ const Profile = () => {
                   </div>
                 </div>
                 <div className="divider"></div>
+                <Loader></Loader>
                 <div className="cards">
+                
                   {info
                     ? info.stripeCustomerCard.map((card, index) => {
                         return (

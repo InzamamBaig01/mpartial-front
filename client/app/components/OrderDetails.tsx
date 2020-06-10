@@ -342,6 +342,14 @@ const OrderDetails = (props) => {
                         <Link to={props.isAdmin ? `/allorders` : `/orders`}>
                             <button className="btn">Back</button>
                         </Link>
+
+                        <Link to={`/order/${order.id}`}>
+                            <button className="btn">Load Draft</button>
+                        </Link>
+
+                        <Link to={`/payorder/${order.id}`}>
+                            <button className="btn">Pay Now</button>
+                        </Link>
                     </div>
                 </div>
             ) : (

@@ -10,6 +10,13 @@
   opacity: 1;
   min-width: 159px;
 }
+.btn-sm {
+  min-width: 0px;
+  font-size:10px;
+  display:inline-block;
+  vertical-align: middle;
+  margin-left:10px;
+}
 .btn-green {
   width: 159px;
   height: 40px;
@@ -857,6 +864,21 @@ input:-moz-placeholder { /* Firefox 18- */
     letter-spacing: 0px;
     color: #3ac280;
     opacity: 1;
+    sup {
+      font-size: 13px;
+    text-decoration: line-through;
+    }
+  }
+  .coupon_success {
+    font-size: 15px;
+    color: #57c380;
+    /* margin-top: 11px; */
+    display: inline-block;
+    vertical-align: middle;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px #57c380 solid;
   }
   .terms {
     text-align: left;
@@ -1184,6 +1206,9 @@ input:-moz-placeholder { /* Firefox 18- */
   .order_details_footer {
     border-top: 1px solid rgba(112, 112, 112, 0.2);
     padding: 20px 43px;
+    button {
+      margin-right:10px;
+    }
   }
 }
 
@@ -1781,3 +1806,32 @@ button.btn.payment_switch {
 // option[value=""] {
 //   font-weight: normal !important;
 // }
+
+
+
+
+.apply_coupon {
+  text-align: left;
+  .modal-dialog {
+    width: 100%;
+    max-width: 350px;
+    margin-top: 10%;
+
+    .add_card_title {
+      text-align: left;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 24px;
+      font-family: "Museo Sans Rounded 500";
+      letter-spacing: 0px;
+      color: #000000;
+    }
+  }
+}
+
+
+.savetodrafts {
+  margin-left:10px;
+  display: inline-block;
+  vertical-align: top;
+}

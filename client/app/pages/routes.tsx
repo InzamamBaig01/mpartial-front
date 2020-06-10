@@ -19,6 +19,8 @@ import AdminOrderDetails from "./admin/AdminOrderDetails";
 import AdminUserDetails from "./admin/AdminUserDetails";
 import BuildDetails from "./BuildDetails";
 import Coupons from "./admin/Coupons";
+import Committee from "./Committee";
+import PayOrder from "./PayOrder";
 
 export const ROUTES = [
   {
@@ -101,6 +103,24 @@ export const ROUTES = [
     checkLogin: true,
     slug: "userorder",
     title: "userorder",
+    isLogin: false,
+    redirectTo: "/login",
+  }, {
+    component: UserOrder,
+    isExact: true,
+    path: "/order/:orderId?",
+    checkLogin: true,
+    slug: "userorder",
+    title: "userorder",
+    isLogin: false,
+    redirectTo: "/login",
+  }, {
+    component: PayOrder,
+    isExact: true,
+    path: "/payorder/:orderId?",
+    checkLogin: true,
+    slug: "payorder",
+    title: "payorder",
     isLogin: false,
     redirectTo: "/login",
   },
@@ -211,5 +231,5 @@ export const ROUTES = [
     isAD: true,
     checkADLogin: true,
   },
-  
+
 ];
