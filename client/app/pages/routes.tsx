@@ -5,7 +5,7 @@ import Signup from "./users/Signup";
 import Profile from "./users/Profile";
 import MyOrders from "./users/MyOrders";
 import MyOrderDetails from "./users/MyOrderDetails";
-import UserOrder from "./UserOrder";
+import UserOrder from "./UserOrder/UserOrder";
 import Checkout from "./Checkout";
 import Receipt from "./receipt";
 import AdminLogin from "./admin/AdminLogin";

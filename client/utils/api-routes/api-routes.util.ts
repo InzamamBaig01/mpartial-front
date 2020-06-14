@@ -102,6 +102,31 @@ export const updateStatus = (payload) =>
   }).pipe(catchError(handleError('login')));
 
 
+  export const addCoupen = (payload) =>
+  ajax({
+    headers: {
+      authString: localStorage.topen,
+      "Content-Type": "application/json",
+    },
+    method: 'POST',
+    url: `${baseURL}/GIServer/addCoupen`,
+    body: payload
+  }).pipe(catchError(handleError('login')));
+
+
+  export const getAllCoupen = () =>
+  ajax({
+    headers: {
+      authString: localStorage.topen,
+      "Content-Type": "application/json",
+    },
+    method: 'POST',
+    url: `${baseURL}/GIServer/getAllCoupens`,
+  }).pipe(catchError(handleError('login')));
+
+
+  
+  
 
 export const adLogin = payload =>
   ajax({

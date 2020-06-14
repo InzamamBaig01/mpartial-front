@@ -1515,6 +1515,10 @@ span.password_not_matched {
     &.small_true {
       min-height: 28px;
     }
+
+    &.small_xs {
+      min-height: 47px;
+    }
   }
   .valid_false {
     .dropdown-container {
@@ -1834,4 +1838,7 @@ button.btn.payment_switch {
   margin-left:10px;
   display: inline-block;
   vertical-align: top;
+}
+.details_vew_list {
+  font-weight: bold !important;
 }

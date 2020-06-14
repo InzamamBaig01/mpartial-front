@@ -1,5 +1,5 @@
 import { withRouter, Link } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 import queryString from "query-string";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
@@ -14,7 +14,7 @@ const Changepasswordwithtoken = (props) => {
 //   console.log(values);
   const [password, setpassword] = React.useState("");
   const [validPassword, setValidPassword] = React.useState(true);
-
+  const [passwordMsg,setPasswordMsg] = useState(false)
   const onSubmit = (e) => {
     // props.setStep(2)
     e.preventDefault();
@@ -25,9 +25,11 @@ const Changepasswordwithtoken = (props) => {
       })
     ).subscribe((response) => {
       if (response.response.Requested_Action) {
-        history.push("/login");
+        setPasswordMsg("true")
+        // history.push("/login");
       } else {
         console.log(response);
+        setPasswordMsg("Link has expired")
       }
     });
   };
@@ -100,6 +102,28 @@ const Changepasswordwithtoken = (props) => {
           </div>
         </div>
       </div>
+      {passwordMsg ? (
+        <div className="not_verified">
+          <div className="error_msg">
+            <div
+              className="close_verification_popup"
+              onClick={() => {
+                setPasswordMsg(false);
+              }}
+            >
+              &times;
+            </div>
+            {passwordMsg ? passwordMsg == "true" ? (
+              <>
+              Your Password has been updated. <Link to="/login">Click Here</Link> to Login.
+              </>
+            ) : passwordMsg : ""}
+            {/*  */}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 };
