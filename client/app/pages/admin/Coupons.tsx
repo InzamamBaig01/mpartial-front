@@ -16,6 +16,7 @@ import DatePicker from 'reactstrap-date-picker';
 import { AppContext } from "../../../contexts/appContext";
 import { addCoupen, getAllCoupen } from "utils/api-routes/api-routes.util";
 import { data } from "jquery";
+import moment from "moment";
 
 
 
@@ -50,11 +51,13 @@ const AddCoupons = (props) => {
 
     const onsubmit = (e) => {
         e.preventDefault();
-
+        data.expiry = moment(data.expiry).format("YYYY-MM-DD");
+        data.activefrom = moment(data.activefrom).format("YYYY-MM-DD");
         console.log(data);
         addCoupen(data).subscribe(response => {
             if (response.response.Requested_Action) {
-
+                props.onSubmitSuccess();
+                props.handleClose();
             }
         })
     }
@@ -292,8 +295,7 @@ const EditCoupons = (props) => {
 
 const Coupons = () => {
 
-    const { getallADUsers, AllUsers } = useContext(AppContext);
-    const [Users, setUsers] = useState([]);
+    const [Coupons, setCoupons] = useState([]);
 
     const [AddCouponsShow, setAddCouponsShow] = useState(false);
     const handleAddCouponsclose = () => setAddCouponsShow(false);
@@ -306,44 +308,43 @@ const Coupons = () => {
 
 
     useEffect(() => {
-        getAllCoupen().subscribe(response => {
-            console.log(response)
-        })
+        getCoupons();
+        handleAddCouponsclose();
     }, [])
+
+    const getCoupons = () => {
+        getAllCoupen().subscribe(response => {
+            setCoupons(response.response.data);
+        });
+    }
 
 
     const onSubmitSuccess = () => {
-
+        getCoupons();
     }
 
     const columns = [
         {
             name: "Code",
-            selector: "firstName",
+            selector: "coupencode",
             sortable: false,
             className: "header-col",
         },
         {
-            name: "Coupon Type",
-            selector: "emailAddress",
+            name: "Active From",
+            selector: "activefrom",
             sortable: false,
             className: "header-col",
         },
         {
-            name: "Coupon Amount",
-            selector: "noOfOrders",
+            name: "Expiry",
+            selector: "expiry",
             sortable: false,
             className: "header-col",
         },
         {
             name: "Usage / Limit",
-            selector: "joinedOn",
-            sortable: false,
-            className: "header-col",
-        },
-        {
-            name: "Expiry date",
-            selector: "joinedOn",
+            selector: "maxusagecount",
             sortable: false,
             className: "header-col",
         },
@@ -360,15 +361,7 @@ const Coupons = () => {
         },
     ];
 
-    useEffect(() => {
-        getallADUsers();
-    }, []);
 
-    useEffect(() => {
-        if (AllUsers.length) {
-            setUsers(AllUsers);
-        }
-    }, [AllUsers]);
     return (
         <>
             <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
@@ -392,7 +385,7 @@ const Coupons = () => {
 
                         <DataTable
                             columns={columns}
-                            data={Users}
+                            data={Coupons}
                             responsive={true}
                             pagination={true}
                         />

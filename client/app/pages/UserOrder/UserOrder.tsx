@@ -94,6 +94,7 @@ const UserOrder = (props) => {
       amountInCents: productPrice * 100,
       additionalFees: "",
       thetoken: localStorage.token,
+      saveAsDraft: false,
     };
     let fileToUpload;
     const formData = new FormData();
@@ -178,34 +179,31 @@ const UserOrder = (props) => {
 
 
 
-  const saveToDraft = () => {
+  const saveToDraft = (e) => {
+    e.preventDefault();
     showLoader();
     const apiData = {
       amountInCents: productPrice * 100,
       additionalFees: "",
       thetoken: localStorage.token,
+      saveAsDraft: true,
     };
     let fileToUpload;
     const formData = new FormData();
 
-    allFields.map((field) => {
-      if (field.type === "multipleAttachment") {
-        fileToUpload = field.value;
-      } else if (field.type === "multiSelect") {
-        apiData[field.id] = field.value
-          ? field.value.map((v) => {
-            return v.value;
-          })
-          : "";
+    Object.keys(dataValues).map((key) => {
+      if (key === "potentiallyRelevantDigitalAssets") {
+        fileToUpload = dataValues[key];
+      } else if (key === "temporaryActivities" || key == "specialtyTradeSelection") {
+        apiData[key] = dataValues[key] ? dataValues[key].map((v) => { return v.value; }) : "";
       } else {
-        apiData[field.id] = field.value;
+        apiData[key] = dataValues[key];
       }
     });
 
+    // console.log(apiData);
 
     const stringified = queryString.stringify(apiData);
-
-    return false;
 
     saveOrderData(formData, stringified).subscribe(
       (response: any) => {
