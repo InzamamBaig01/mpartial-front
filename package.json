@@ -136,6 +136,7 @@
     "react-dom": "^16.9.0",
     "react-dropzone": "^11.0.1",
     "react-flatten-children": "^1.0.0",
+    "react-floating-button-menu": "^2.0.8",
     "react-google-recaptcha": "^2.0.1",
     "react-google-recaptcha-v3": "^1.4.1",
     "react-helmet": "^6.0.0",

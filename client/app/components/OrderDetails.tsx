@@ -12,7 +12,7 @@ const OrderDetails = (props) => {
 
   const [order, setOrder] = useState(props.order);
 
-
+  console.log(order);
   useEffect(() => {
     if (props.order) {
       setOrder(props.order)
@@ -139,19 +139,28 @@ const OrderDetails = (props) => {
             </div>
           </div>
           <div className="order_details_footer">
-            <Link to={props.isAdmin ? `/allorders` : `/orders`}>
-              <button className="btn">Back</button>
-            </Link>
+            <div className="row">
+              <div className="col">
+                <Link to={props.isAdmin ? `/allorders` : `/orders`}>
+                  <button className="btn">Back</button>
+                </Link>
+              </div>
+              <div className="col text-right">
+                {
+                  order.paymentStatus == "DRAFT" && <Link to={`/order/${order.id}`}>
+                    <button className="btn">Load Draft</button>
+                  </Link>
 
-            <Link to={`/order/${order.id}`}>
-              <button className="btn">Load Draft</button>
-            </Link>
+                }
+                {
+                  order.paymentStatus == "UNPAID" && <Link to={`/checkout/${order.id}`}>
+                    <button className="btn">Pay Now</button>
+                  </Link>
 
-            <Link to={`/checkout/${order.id}`}>
-              <button className="btn">Pay Now</button>
-            </Link>
+                }
+              </div>
+            </div>
           </div>
-
         </div>
       ) : (
           ""

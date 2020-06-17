@@ -409,6 +409,18 @@ export const deletePaymentMenthod = (pmId) => {
   );
 };
 
+export const getPaymentIntendOfOrder = (payload) => {
+  return ajax({
+    headers: requestHeader(),
+    method: "POST",
+    url: `${baseURL}/Client/getPaymentIntendOfOrder?thetoken=${localStorage.token}&orderId=${payload.orderId}&coupedCode=${payload.coupedCode}`,
+  }).pipe(
+    catchError(handleError("logout")),
+
+  );
+};
+
+
 
 
 export const resetPassword = (payload) => {
@@ -422,3 +434,5 @@ export const resetPassword = (payload) => {
 
   );
 };
+
+

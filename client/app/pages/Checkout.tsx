@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
-import { payOrder } from "utils/api-routes/api-routes.util";
+import { payOrder, getPaymentIntendOfOrder, getPIC } from "utils/api-routes/api-routes.util";
 import history from "utils/history";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -19,6 +19,9 @@ import visa from "../../assets/visa.png";
 import mastercard from "../../assets/mastercard.png";
 import AmericanExpress from "../../assets/American-Express.png";
 import discover from "../../assets/discover.png";
+
+import ApplyCoupon from './UserOrder/_components/ApplyCoupon';
+
 
 const CheckoutForm = (props) => {
   const [error, setError] = useState(null);
@@ -67,7 +70,7 @@ const CheckoutForm = (props) => {
 
     stripe
       .confirmCardPayment(
-        localStorage.getItem("sessipn"),
+        props.PIC,
         !showNewCardForm
           ? {
             payment_method: selectedCard.paymentMethodId,
@@ -189,7 +192,9 @@ const CheckoutForm = (props) => {
 const Checkout = (props) => {
   const { userDetails } = useContext(AuthContext);
   const { getMyInfo, myInfo, price } = useContext(AppContext);
-
+  const [couponApplied, setCouponApplied] = useState(false);
+  const [ApplyCouponShow, setApplyCouponShow] = useState(false);
+  const [PIC, setPIC] = useState(false);
   const [product] = React.useState({
     name: "mpartial",
     price: price,
@@ -207,6 +212,7 @@ const Checkout = (props) => {
   // console.log("main_rendered");
   useEffect(() => {
     getMyInfo();
+    getPICO("off50");
   }, []);
 
   useEffect(() => {
@@ -215,11 +221,33 @@ const Checkout = (props) => {
     }
   }, [myInfo]);
 
-  useEffect(() => {
-    if (localStorage.getItem("sessipn") == null) {
-      history.push("/orders");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (props.PIC == null) {
+  //     history.push("/orders");
+  //   }
+  // }, []);
+
+  const getPICO = (coupedCode?) => {
+    getPaymentIntendOfOrder({
+      orderId: orderid,
+      coupedCode: coupedCode
+    }).subscribe(response => {
+      // console.log(response.response);
+      setPIC(response.response.message);
+    });
+  }
+
+
+  const handleApplyCouponclose = () => setApplyCouponShow(false);
+  const handleApplyCouponShow = () => setApplyCouponShow(true);
+
+
+  const onSubmitSuccess = (couponData) => {
+    handleApplyCouponclose();
+    setPrice(couponData.price);
+    setCouponApplied(couponData.coupon);
+  };
+
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
@@ -355,10 +383,27 @@ const Checkout = (props) => {
                     setCardValidation={handleCardAction}
                     cardValidation={cardValidation}
                     checkoutInfo={checkoutInfo}
+                    PIC={PIC}
                   />
                 </Elements>
                 {/* <input type="checkbox" /> Card Ending 7878 */}
               </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                {
+                  couponApplied.length ? (
+                    <>
+                      <span className="coupon_success">
+                        Coupon Applied: {couponApplied}
+                      </span>
+                    </>
+                  ) : (
+                      <button className="btn mt-2" type="button" onClick={handleApplyCouponShow}>Apply Coupon</button>
+                    )
+                }
+              </div>
+
             </div>
 
             <div className="row">
@@ -423,6 +468,15 @@ const Checkout = (props) => {
           </form>
         </div>
       </div>
+      {ApplyCouponShow && (
+        <ApplyCoupon
+          value={""}
+          onSubmitSuccess={onSubmitSuccess}
+          show={ApplyCouponShow}
+          handleClose={handleApplyCouponclose}
+          info={{}}
+        />
+      )}
     </>
   );
 };

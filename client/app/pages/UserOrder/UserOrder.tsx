@@ -13,13 +13,23 @@ import { AppContext } from "contexts/appContext";
 import { AppAlertsContext } from "contexts/appAlertsContext";
 import Loader from "app/components/Loader";
 import { Modal } from "react-bootstrap";
-
+import leftarrow from '../../../assets/first.svg';
 import OrderFields from '../../../OrderFormFields.json';
 
+import rightarrowdark from "../../../assets/up-arrow-white.svg";
 
 
 import DrawField from './_components/DrawField';
 import ApplyCoupon from './_components/ApplyCoupon';
+import { UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, ButtonGroup, Button } from "reactstrap";
+
+
+import {
+  FloatingMenu,
+  MainButton,
+  ChildButton,
+} from 'react-floating-button-menu';
+
 
 
 
@@ -37,6 +47,9 @@ const UserOrder = (props) => {
   const [matchingUrl, setMatchingUrl] = useState(false);
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const [dataValues, setDataValues] = useState({});
+  const { getMyOrders, myOrders } = useContext(AppContext);
+
+  const [order, setOrder] = useState(false);
 
   const top = React.createRef();
   const form = React.createRef();
@@ -49,10 +62,44 @@ const UserOrder = (props) => {
   }, [top.current]);
 
   useEffect(() => {
-    OrderFields[0].value = userDetails().emailAddress;
-    setAllFields(OrderFields);
     checkFormValidation();
+    if (orderId) {
+      getMyOrders();
+    } else {
+      OrderFields[0].value = userDetails().emailAddress;
+      setDataValues({
+        ...dataValues,
+        emailForDeliveryOfResults: userDetails().emailAddress
+      });
+      setAllFields(OrderFields);
+    }
   }, []);
+
+  useEffect(() => {
+    if (order) {
+      const dataV = {};
+      const fields = allFields.map(field => {
+        field.value = order[field.id] ? order[field.id] : ""; 
+        dataV[field.id] = order[field.id] ? order[field.id] : "";
+        return field;
+      })
+      setAllFields(fields);
+      setDataValues(dataV)
+    }
+  }, [order])
+
+
+  useEffect(() => {
+    if (orderId) {
+
+      const selectedOrder = myOrders.filter(ord => {
+        return ord.id == orderId
+      });
+      setOrder(selectedOrder.length ? selectedOrder[0] : false);
+    }
+  }, [myOrders]);
+
+
 
   useEffect(() => {
     checkFormValidation();
@@ -116,8 +163,12 @@ const UserOrder = (props) => {
     saveOrderData(formData, stringified).subscribe(
       (response: any) => {
         if (response.response.Requested_Action) {
-          localStorage.setItem("sessipn", response.response.message);
-          uploadFiles(response.response.data.id, fileToUpload, 0);
+          localStorage.setItem("sessipn", response.response.Message);
+          console.log(fileToUpload);
+          if (fileToUpload.length) { uploadFiles(response.response.data.id ? response.response.data.id : response.response.Message , fileToUpload, 0); } else {
+            hideLoader();
+            history.push(`/checkout/${response.response.Message}`);
+          }
         } else {
           hideLoader();
         }
@@ -127,18 +178,7 @@ const UserOrder = (props) => {
     );
   };
 
-  // const checkRequiredFieldsValue = () => {
-  //   let invalid = false;
-  //   allFields.map((field) => {
-  //     if (field.required) {
-  //       if (field.value && field.value.length) {
-  //       } else {
-  //         invalid = true;
-  //       }
-  //     }
-  //   });
-  //   return invalid;
-  // };
+
   const checkFormValidation = () => {
     if (form && form.current) {
       setSubmitBtnDisabled(!form.current.checkValidity());
@@ -181,6 +221,8 @@ const UserOrder = (props) => {
 
   const saveToDraft = (e) => {
     e.preventDefault();
+    console.log(e.currentTarget.tagName)
+    // if (e.currentTarget.tagName == "SPAN") return false;
     showLoader();
     const apiData = {
       amountInCents: productPrice * 100,
@@ -209,7 +251,15 @@ const UserOrder = (props) => {
       (response: any) => {
         if (response.response.Requested_Action) {
           localStorage.setItem("sessipn", response.response.message);
-          uploadFiles(response.response.data.id, fileToUpload, 0);
+          if (fileToUpload) {
+            hideLoader();
+            history.push(`/orders/`);
+            // TODO:// API change Required. 
+            // uploadFiles(response.response.data.id, fileToUpload, 0);
+          } else {
+            hideLoader();
+            history.push(`/orders/`);
+          }
         } else {
           hideLoader();
         }
@@ -218,7 +268,8 @@ const UserOrder = (props) => {
       }
     );
   }
-
+  const [saveBtn, setSaveBtn] = useState(false);
+  const [checkoutAs, setCheckoutAs] = useState("checkout")
   return (
     <>
       <Header isFixedColor={true}></Header>
@@ -273,21 +324,6 @@ const UserOrder = (props) => {
                       )
                   }
                 </div>
-                <div className="col">
-                  <div className="pull-right">
-                    {
-                      couponApplied.length ? (
-                        <>
-                          <span className="coupon_success">
-                            Coupon Applied: {couponApplied}
-                          </span>
-                        </>
-                      ) : (
-                          <button className="btn mt-2" onClick={handleApplyCouponShow}>Apply Coupon</button>
-                        )
-                    }
-                  </div>
-                </div>
               </div>
 
             </div>
@@ -303,31 +339,106 @@ const UserOrder = (props) => {
               </label>
             </div>
             <div className="form-group submit_btn_container">
-              <button
-                className="btn btn-green"
-                type="submit"
-                onClick={checkFormValidation}
-                id="formButton"
-                disabled={submitBtnDisabled}
-              >
-                <Loader text="Proceed to Checkout"></Loader>
-              </button>
+              {/*  */}
               {
+                !orderId ? (
+                  <ButtonGroup>
+                    <Button className="btn btn-green"
+                      type="submit"
+                      onClick={checkFormValidation}
+                      id="formButton"
+                      disabled={checkoutAs == "checkout" && submitBtnDisabled}>
+
+                      <Loader text={
+                        checkoutAs == "checkout" ? "Proceed to Checkout" : "Save as draft"
+                      }></Loader>
+                    </Button>
+                    <UncontrolledButtonDropdown className="">
+                      <DropdownToggle caret>
+                        <img src={rightarrowdark} />
+                      </DropdownToggle>
+                      <DropdownMenu>
+
+                        <DropdownItem onClick={saveToDraft} >Save as draft</DropdownItem>
+
+                      </DropdownMenu>
+                    </UncontrolledButtonDropdown>
+                  </ButtonGroup>
+
+                ) : (
+                    <button
+                      className="btn btn-green"
+                      type="submit"
+                      onClick={checkFormValidation}
+                      id="formButton"
+                      disabled={submitBtnDisabled}
+                    >
+                      <Loader text="Proceed to Checkout"></Loader>
+                    </button>
+                  )
+              }
+
+              {/* {
                 !orderId && <button
                   className="btn btn-green savetodrafts"
                   type="button"
-                  onClick={saveToDraft}
                   id="formButton"
 
                 >
-                  <Loader text="Save as draft"></Loader>
+                  <img src={leftarrow} />
+                  <Loader text="Save as draft" onClick={saveToDraft}></Loader>
                 </button>
-              }
+              } */}
 
+
+              {/* <FloatingMenu
+                slideSpeed={500}
+                direction="right"
+                spacing={8}
+                isOpen={saveBtn}
+                className="orderoptions"
+              >
+                <MainButton
+                  iconResting={<img src={rightarrowdark} />}
+                  iconActive={<img src={rightarrowdark} />}
+                  backgroundColor="black"
+                  onClick={() => setSaveBtn(!saveBtn)}
+                  size={56}
+                />
+                <ChildButton
+                  icon={<button
+                    className="btn btn-green"
+                    type="submit"
+                    onClick={checkFormValidation}
+                    id="formButton"
+                    disabled={submitBtnDisabled}
+                  >
+                    <Loader text="Proceed to Checkout"></Loader>
+                  </button>}
+                  type="submit"
+
+                  size={210}
+                  // onClick={(e) => { form.current.submit(); checkFormValidation }}
+                // onClick={() => console.log('First button clicked')}
+                />
+                <ChildButton
+                  icon={<button
+                    className="btn btn-green"
+                    type="button"
+                    id="formButton"
+                  >
+                    <Loader text="Save As Draft"></Loader>
+                  </button>}
+                  type="submit"
+                  // onClick={(e) => { form.current.submit(); checkFormValidation }}
+                  size={210}
+                />
+              </FloatingMenu>
+            */}
             </div>
           </form>
         </div>
-      </div>
+      </div >
       {ApplyCouponShow && (
         <ApplyCoupon
           value={""}

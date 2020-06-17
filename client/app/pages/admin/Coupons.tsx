@@ -37,6 +37,7 @@ const AddCoupons = (props) => {
     const [couponType, setCouponType] = useState("Percentage");
     const [couponFor, setCouponFor] = useState("public");
     const [Users, setUsers] = useState([]);
+    const [couponError, setCouponError] = useState(false);
 
     useEffect(() => {
         getallADUsers();
@@ -47,6 +48,17 @@ const AddCoupons = (props) => {
             setUsers(AllUsers);
         }
     }, [AllUsers]);
+
+    useEffect(() => {
+        const isAvailable = props.Coupons.filter(coupon => {
+            return coupon.coupencode == data.coupencode;
+        })
+        if (isAvailable.length) {
+            setCouponError(true);
+        } else {
+            setCouponError(false);
+        }
+    }, [data.coupencode]);
 
 
     const onsubmit = (e) => {
@@ -82,6 +94,7 @@ const AddCoupons = (props) => {
                                     coupencode: e.currentTarget.value
                                 })
                             } value={data.coupencode} />
+                            <span>{couponError ? `${data.coupencode} is already existed.` : ""}</span>
                         </div>
                         <div className="form-group">
                             <label>Coupon Type (Fixed or Percecntage)</label>
@@ -178,7 +191,12 @@ const AddCoupons = (props) => {
                             } value={data.maxusagecount} />
                         </div>
                         <div className="form-group text-center">
-                            <button className="btn btn-lg" type="submit">Save</button>
+                            <button className="btn btn-lg" type="submit"
+                                id="formButton"
+                                disabled={
+                                    couponError
+                                }
+                            >Save</button>
                         </div>
                     </form>
                 </Modal.Body>
@@ -399,6 +417,7 @@ const Coupons = () => {
                     show={AddCouponsShow}
                     handleClose={handleAddCouponsclose}
                     info={{}}
+                    Coupons={Coupons}
                 />
             )}
 

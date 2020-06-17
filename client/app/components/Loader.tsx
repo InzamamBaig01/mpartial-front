@@ -10,7 +10,7 @@ const Loader = (props) => {
   }, [loader]);
   return (
     <>
-      {props.text && !isLoader ? props.text : ""}
+      <span onClick={props.onClick ? props.onClick : () => {} }>{props.text && !isLoader ? props.text : ""}</span>
       <div className={`loader show_${isLoader}`}></div>
     </>
   );

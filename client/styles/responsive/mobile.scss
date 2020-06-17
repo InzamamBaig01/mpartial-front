@@ -196,9 +196,22 @@
     }
   }
 
-  .sketch-container{
+  .sketch-container {
     img {
-      min-height: 0 !important
+      min-height: 0 !important;
+    }
+  }
+  .orderoptions {
+    display: block !important;
+    img {
+      width: 40px;
+      height: 40px;
+    }
+    li {
+      box-shadow: none !important;
+      height: auto !important;
+      display: block;
+      margin: 10px 0;
     }
   }
 }
