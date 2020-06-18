@@ -205,7 +205,7 @@ export const signup5 = (payload) => {
 export const saveOrderData = (payload, apiData) => {
   return ajax({
     method: "POST",
-    url: `${baseURL}/Client/saveOrderData?${apiData}`,
+    url: `${baseURL}/Client/saveOrUpdateOrderData?${apiData}`,
     body: payload,
   }).pipe(
     catchError(handleError("claimForm")),

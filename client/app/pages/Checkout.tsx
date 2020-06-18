@@ -212,7 +212,7 @@ const Checkout = (props) => {
   // console.log("main_rendered");
   useEffect(() => {
     getMyInfo();
-    getPICO("off50");
+    getPICO("");
   }, []);
 
   useEffect(() => {

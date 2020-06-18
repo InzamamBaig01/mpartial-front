@@ -79,7 +79,7 @@ const UserOrder = (props) => {
     if (order) {
       const dataV = {};
       const fields = allFields.map(field => {
-        field.value = order[field.id] ? order[field.id] : ""; 
+        field.value = order[field.id] ? order[field.id] : "";
         dataV[field.id] = order[field.id] ? order[field.id] : "";
         return field;
       })
@@ -143,6 +143,7 @@ const UserOrder = (props) => {
       thetoken: localStorage.token,
       saveAsDraft: false,
     };
+    if (orderId) apiData['orderId'] = orderId;
     let fileToUpload;
     const formData = new FormData();
 
@@ -165,7 +166,7 @@ const UserOrder = (props) => {
         if (response.response.Requested_Action) {
           localStorage.setItem("sessipn", response.response.Message);
           console.log(fileToUpload);
-          if (fileToUpload.length) { uploadFiles(response.response.data.id ? response.response.data.id : response.response.Message , fileToUpload, 0); } else {
+          if (fileToUpload.length) { uploadFiles(response.response.data.id ? response.response.data.id : response.response.Message, fileToUpload, 0); } else {
             hideLoader();
             history.push(`/checkout/${response.response.Message}`);
           }
