@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react"; 
+import React, { useContext, useState } from "react";
 import { AppAlertsContext } from "contexts/appAlertsContext";
- import { AppContext } from "contexts/appContext"; 
- import { Modal } from "react-bootstrap"; 
- import Loader from "app/components/Loader";
+import { AppContext } from "contexts/appContext";
+import { Modal } from "react-bootstrap";
+import Loader from "app/components/Loader";
+import { applyCoupens } from "utils/api-routes/api-routes.util";
 
 const ApplyCoupon = (props) => {
     const { showLoader, hideLoader } = useContext(AppAlertsContext);
@@ -15,10 +16,20 @@ const ApplyCoupon = (props) => {
         showLoader();
         //  price - (price * (discount % / 100))
         const newPrice = price - (price * (50 / 100));
-        props.onSubmitSuccess({
+        console.log(coupon)
+        applyCoupens({
+            orderId: props.info.orderId,
             coupon: coupon,
-            price: newPrice,
-        });
+        }).subscribe(response => {
+            console.log(response)
+            if (response.response.Requested_Action) {
+                // success
+                props.onSubmitSuccess(response.response.data);
+            } else {
+                // error
+            }
+        })
+
         hideLoader();
     };
 

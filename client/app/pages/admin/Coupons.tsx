@@ -24,12 +24,12 @@ import moment from "moment";
 const AddCoupons = (props) => {
 
     const [data, setData] = useState({
-        coupencode: "",
+        coupencode: null,
         activefrom: new Date().toISOString(),
-        maxusagecount: "",
-        offpercentage: "",
-        subtractfixedamount: "",
-        forcustomeremail: "",
+        maxusagecount: null,
+        offpercentage: null,
+        subtractfixedamount: null,
+        forcustomeremail: null,
         expiry: new Date().toISOString()
     });
     const { getallADUsers, AllUsers } = useContext(AppContext);

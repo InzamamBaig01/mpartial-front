@@ -195,10 +195,14 @@ const Checkout = (props) => {
   const [couponApplied, setCouponApplied] = useState(false);
   const [ApplyCouponShow, setApplyCouponShow] = useState(false);
   const [PIC, setPIC] = useState(false);
-  const [product] = React.useState({
+  const [product, setProduct] = React.useState({
     name: "mpartial",
     price: price,
     description: "",
+    coupon: "",
+    amountreducned: "",
+    orignalprice: "",
+    newprice: ""
   });
   const orderid = props.match.params.orderid;
 
@@ -232,7 +236,7 @@ const Checkout = (props) => {
       orderId: orderid,
       coupedCode: coupedCode
     }).subscribe(response => {
-      // console.log(response.response);
+      console.log(response.response);
       setPIC(response.response.message);
     });
   }
@@ -244,8 +248,19 @@ const Checkout = (props) => {
 
   const onSubmitSuccess = (couponData) => {
     handleApplyCouponclose();
-    setPrice(couponData.price);
-    setCouponApplied(couponData.coupon);
+    setProduct({
+      name: "mpartial",
+      price: couponData.newprice,
+      description: "",
+      coupon: couponData.code,
+      amountreducned: couponData.amountreducned,
+      orignalprice: couponData.orignalprice,
+      newprice: couponData.newprice
+    });
+    getPICO();
+    // setPrice(couponData.price);
+    // getPICO(couponData.coupon);
+    // setCouponApplied(couponData.coupon);
   };
 
 
@@ -392,10 +407,10 @@ const Checkout = (props) => {
             <div className="row">
               <div className="col">
                 {
-                  couponApplied.length ? (
+                  product.coupon.length ? (
                     <>
                       <span className="coupon_success">
-                        Coupon Applied: {couponApplied}
+                        Coupon Applied: {product.coupon}
                       </span>
                     </>
                   ) : (
@@ -424,22 +439,44 @@ const Checkout = (props) => {
                       <td>Mpartial Deposit</td>
                       <td>${price}</td>
                     </tr>
+                    {
+                      product.coupon.length ? (
+                        <>
+                          <tr>
+                            <td>Coupon: {product.coupon}</td>
+                            <td>
+                              <div className="form_price">${product.newprice / 100} <sup>${product.orignalprice / 100} </sup></div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Subtotal</td>
+                            <td>${product.newprice / 100}</td>
+                          </tr>
 
-                    <tr>
-                      <td>Coupon: ABC</td>
-                      <td>${price / 2}</td>
-                    </tr>
 
-                    <tr>
-                      <td>Subtotal</td>
-                      <td>${price}</td>
-                    </tr>
+                          <tr>
+                            <td>Total</td>
+                            <td>${product.newprice / 100}</td>
+                          </tr>
+                        </>
+                      ) : (
+                          <>
+                            <tr>
+                              <td>Subtotal</td>
+                              <td>${price}</td>
+                            </tr>
 
 
-                    <tr>
-                      <td>Total</td>
-                      <td>${price}</td>
-                    </tr>
+                            <tr>
+                              <td>Total</td>
+                              <td>${price}</td>
+                            </tr>
+                          </>
+                        )
+                    }
+
+
+
                   </tbody>
                 </table>
               </div>
@@ -474,7 +511,9 @@ const Checkout = (props) => {
           onSubmitSuccess={onSubmitSuccess}
           show={ApplyCouponShow}
           handleClose={handleApplyCouponclose}
-          info={{}}
+          info={{
+            orderId: orderid,
+          }}
         />
       )}
     </>

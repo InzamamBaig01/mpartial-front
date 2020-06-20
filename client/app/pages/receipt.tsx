@@ -66,28 +66,50 @@ const Receipt = (props) => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Mpartial Deposit	</td>
-                    <td>${price}</td>
-                  </tr>
+                    <tr>
+                      <td>Mpartial Deposit</td>
+                      <td>${price}</td>
+                    </tr>
+                    {
+                      order.coupenapplied && order.coupenapplied.length ? (
+                        <>
+                          <tr>
+                            <td>Coupon: {order.coupenapplied}</td>
+                            <td>
+                              <div className="form_price">${order.amountInCents / 100} <sup>${price} </sup></div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Subtotal</td>
+                            <td>${order.amountInCents / 100}</td>
+                          </tr>
 
-                  <tr>
-                    <td>Discound: Code</td>
-                    <td>${price / 2}</td>
-                  </tr>
+
+                          <tr>
+                            <td>Total</td>
+                            <td>${order.amountInCents / 100}</td>
+                          </tr>
+                        </>
+                      ) : (
+                          <>
+                            <tr>
+                              <td>Subtotal</td>
+                              <td>${price}</td>
+                            </tr>
 
 
-                  <tr>
-                    <td>Subtotal</td>
-                    <td>${price}</td>
-                  </tr>
+                            <tr>
+                              <td>Total</td>
+                              <td>${price}</td>
+                            </tr>
+                          </>
+                        )
+                    }
 
-                  <tr>
-                    <td>Total</td>
-                    <td>${price}</td>
-                  </tr>
-                </tbody>
-              </table>
+
+
+                  </tbody>
+                </table>
             </div>
           </div>
           <div className="row">

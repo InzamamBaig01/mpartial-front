@@ -374,6 +374,22 @@ export const getPIC = () => {
 };
 
 
+
+export const applyCoupens = (payload) => {
+  return ajax({
+    headers: requestHeader(),
+    method: "POST",
+    url: `${baseURL}/Client/applyCoupen?thetoken=${localStorage.token}&orderId=${payload.orderId}&coupedCode=${payload.coupon}`,
+  }).pipe(
+    catchError(handleError("logout")),
+
+  );
+};
+
+
+
+
+
 export const setDefaultPaymentMenthod = (pmId) => {
   return ajax({
     headers: requestHeader(),
@@ -413,7 +429,7 @@ export const getPaymentIntendOfOrder = (payload) => {
   return ajax({
     headers: requestHeader(),
     method: "POST",
-    url: `${baseURL}/Client/getPaymentIntendOfOrder?thetoken=${localStorage.token}&orderId=${payload.orderId}&coupedCode=${payload.coupedCode}`,
+    url: `${baseURL}/Client/getPaymentIntendOfOrder?thetoken=${localStorage.token}&orderId=${payload.orderId}&coupedCode=${payload.couponCode}`,
   }).pipe(
     catchError(handleError("logout")),
 
