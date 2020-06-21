@@ -39,7 +39,7 @@ module.exports = merge(common, {
     rules: [
       {
         test: /\.(css|s[ac]ss)$/,
-        include: /node_modules/,
+        exclude: /node_modules/,
         use: [
           {
             loader: 'style-loader',

@@ -6,7 +6,7 @@ import { useDropzone } from "react-dropzone";
 import queryString from "query-string";
 import { profileUpdate } from "utils/api-routes/api-routes.util";
 import ReactCrop from 'react-image-crop';
-import './EditProfile.css';
+// import './EditProfile.css';
 
 export const EditProfile: React.FC<any> = (props) => {
 	/////////// Components States ////////////////////
@@ -160,20 +160,21 @@ export const EditProfile: React.FC<any> = (props) => {
 			crop.width,
 			crop.height);
 
-		return new Promise((resolve, reject) => {
-			canvas.toBlob(blob => {
-				if (!blob) {
-					//reject(new Error('Canvas is empty'));
-					console.error('Canvas is empty');
-					return;
-				}
-				let fileUrl = '';
-				blob.name = fileName;
-				window.URL.revokeObjectURL(fileUrl);
-				fileUrl = window.URL.createObjectURL(blob);
-				resolve(fileUrl);
-			}, 'image/jpeg');
-		});
+		// return new Promise((resolve, reject) => {
+		// 	canvas.toBlob(blob => {
+		// 		if (!blob) {
+		// 			//reject(new Error('Canvas is empty'));
+		// 			console.error('Canvas is empty');
+		// 			return;
+		// 		}
+		// 		let fileUrl = '';
+		// 		blob.name = fileName;
+		// 		window.URL.revokeObjectURL(fileUrl);
+		// 		fileUrl = window.URL.createObjectURL(blob);
+		// 		resolve(fileUrl);
+		// 	}, 'image/jpeg');
+		// });
+		return canvas.toDataURL('image/jpeg');
 	}
 	const	onSelectFile = e => {
 		if (e.target.files && e.target.files.length > 0) {
@@ -337,12 +338,7 @@ export const EditProfile: React.FC<any> = (props) => {
 													className="btn image-crop-action-btn"
 													type="button"
 													onClick={ () => {
-														const reader = new FileReader();
-														reader.addEventListener('load', () => {
-															// setImageSrc(reader.result);
-															console.log(reader.result)
-														});
-														reader.readAsDataURL(croppedImageUrl);
+														console.log(croppedImageUrl);
 														setProfileImage({
 															profilepicture: croppedImageUrl,
 															profileImage: croppedImageUrl,
