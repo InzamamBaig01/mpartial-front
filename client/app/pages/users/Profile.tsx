@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import Header from "app/components/Header";
 import userProfile from "../../../assets/userProfile.svg";
@@ -6,8 +6,6 @@ import visa from "../../../assets/visa.png";
 import mastercard from "../../../assets/mastercard.png";
 import AmericanExpress from "../../../assets/American-Express.png";
 import discover from "../../../assets/discover.png";
-// import stripe from "stripe";
-import InputMask from "react-input-mask";
 import appConfig from "../../../appconfig.json";
 // console.log(stripe);
 
@@ -16,9 +14,6 @@ import {
   Elements,
   CardNumberElement,
   CardExpiryElement,
-  CardCvcElement,
-  useStripe,
-  useElements,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Dropdown, Modal, Button } from "react-bootstrap";
@@ -30,13 +25,11 @@ import { useDropzone } from "react-dropzone";
 import queryString from "query-string";
 import {
   profileUpdate,
-  changePassword,
-  getPIC,
 } from "utils/api-routes/api-routes.util";
 import BankCard from "app/components/BankCard";
 import Loader from "app/components/Loader";
 import { AppAlertsContext } from "contexts/appAlertsContext";
-
+import { EditProfile } from './_components/EditProfile'
 const createOptions = (fontSize: string, padding?: string) => {
   return {
     style: {
@@ -150,246 +143,6 @@ const AddNewCard = (props) => {
   );
 };
 
-const EditProfile = (props) => {
-  const [data, setData] = useState({
-    firstName: "",
-    lastName: "",
-    phonenumber: "",
-    role: "",
-    thetoken: localStorage.token,
-  });
-
-  const [profileImage, setProfileImage] = useState({
-    profilepicture: false,
-    profileImage: false,
-  });
-
-  const [profileImageError, setProfileImageError] = useState(false);
-  const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
-
-    var sFileName = acceptedFiles[0].name;
-    var sFileExtension = sFileName
-      .split(".")
-      [sFileName.split(".").length - 1].toLowerCase();
-    var iFileSize = acceptedFiles[0].size;
-    var iConvert = (acceptedFiles[0].size / 1048576).toFixed(2);
-
-    /// OR together the accepted extensions and NOT it. Then OR the size cond.
-    /// It's easier to see this way, but just a suggestion - no requirement.
-    if (!(sFileExtension === "jpg" || sFileExtension === "jpeg")) {
-      /// 10 mb
-      setProfileImageError("ext");
-    } else if (iFileSize > 5485760) {
-      setProfileImageError("size");
-    } else {
-      setProfileImageError(false);
-
-      setProfileImage({
-        profilepicture: acceptedFiles[0],
-        profileImage: URL.createObjectURL(acceptedFiles[0]),
-      });
-    }
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
-  useEffect(() => {
-    setData({
-      firstName: props.info.firstName,
-      lastName: props.info.lastName,
-      phonenumber: props.info.phone,
-      role: props.info.role,
-      profilepicture: false,
-      profileImage: false,
-      thetoken: localStorage.token,
-    });
-    setProfileImage({
-      profilepicture: false,
-      profileImage: props.info.profilePicture
-        ? props.info.profilePicture
-        : false,
-    });
-  }, [props.info]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    const compObj = {
-      first_name: data["firstName"],
-      last_name: data["lastName"],
-      phone: data["phonenumber"],
-    };
-    const comObj2 = {
-      first_name: props.info.firstName,
-      last_name: props.info.lastName,
-      phone: props.info.phone,
-    };
-
-    const stringified = queryString.stringify(data);
-
-    formData.append("profilepicture", profileImage.profilepicture);
-    profileUpdate(formData, stringified).subscribe((response) => {
-      if (response.response.Requested_Action) {
-        props.onSubmitSuccess();
-        setProfileImage({
-          profilepicture: false,
-          profileImage: false,
-        });
-      }
-    });
-  };
-  const validateChange = () => {
-    return (
-      data.firstName == props.info.firstName &&
-      data.lastName == props.info.lastName &&
-      data.phonenumber == props.info.phone &&
-      profileImage.profilepicture == false
-    );
-  };
-  return (
-    <>
-      <Modal
-        show={props.show}
-        onHide={props.handleClose}
-        className="edit_profile"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title className="add_card_title">Edit Profile</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="support_body">
-          <form onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col">
-                <div className="form-group">
-                  <label>First Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={data.firstName}
-                    required
-                    onChange={(e) =>
-                      setData({
-                        ...data,
-                        firstName: e.currentTarget.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Last Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={data.lastName}
-                    required
-                    onChange={(e) =>
-                      setData({
-                        ...data,
-                        lastName: e.currentTarget.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Cell</label>
-
-                  <InputMask
-                    mask="999-999-9999"
-                    onChange={(e) =>
-                      setData({
-                        ...data,
-                        phonenumber: e.currentTarget.value,
-                      })
-                    }
-                    value={data.phonenumber}
-                  >
-                    {(inputProps) => (
-                      <input
-                        type="text"
-                        className="form-control"
-                        {...inputProps}
-                        required
-                      />
-                    )}
-                  </InputMask>
-                </div>
-              </div>
-              <div className="col">
-                <div className="form-group">
-                  <label>Profile Picture</label>
-                  {profileImage.profileImage ? (
-                    <>
-                      <div className="profile_image_preview">
-                        <div
-                          className="cross_icon"
-                          onClick={() =>
-                            setProfileImage({
-                              profilepicture: false,
-                              profileImage: false,
-                            })
-                          }
-                        >
-                          &times;
-                        </div>
-                        <img src={profileImage.profileImage} alt="" />
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div
-                        {...getRootProps()}
-                        className="upload_profile_picture"
-                      >
-                        <input {...getInputProps()} accept="image/jpeg" />
-                        {isDragActive ? (
-                          <p>
-                            <img src={dragimage} alt="" />
-                          </p>
-                        ) : (
-                          <p>
-                            <img src={dragimage} alt="" />
-                          </p>
-                        )}
-                      </div>
-                      {profileImageError == "size" ? (
-                        <p className="profile_upload_image_info">
-                          Uploaded file exceeds size limit, please upload image
-                          lower than 3MB
-                        </p>
-                      ) : (
-                        ""
-                      )}
-                      {profileImageError == "ext" ? (
-                        <p className="profile_upload_image_info">
-                          Invalid file extention, Please upload jpg file of
-                          150x150 pixels
-                        </p>
-                      ) : (
-                        ""
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="form-group edit_profile_submit_container">
-              <button
-                className="btn edit_profile_submit"
-                type="submit"
-                id="formButton"
-                disabled={validateChange()}
-              >
-                Update
-              </button>
-            </div>
-          </form>
-        </Modal.Body>
-      </Modal>
-    </>
-  );
-};
 
 const EditPassword = (props) => {
   const [passwords, setPasswords] = useState({

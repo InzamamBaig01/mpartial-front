@@ -1,0 +1,14 @@
+.image-crop-action-container {
+  align-items: center;
+  display: flex;
+  flex-basis: -16;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 5px;
+
+  .image-crop-action-btn {
+    max-width: 75px;
+		min-width: 75px;
+		margin: 3px;
+  }
+}

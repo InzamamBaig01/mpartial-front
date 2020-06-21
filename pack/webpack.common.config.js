@@ -36,7 +36,11 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
       },
-  
+      {
+        test: /\.css$/,
+        include: /node_modules/,
+        loaders: ['style-loader', 'css-loader'],
+      },
       {
         test: /\.svg$/,
         exclude: /node_modules/,
