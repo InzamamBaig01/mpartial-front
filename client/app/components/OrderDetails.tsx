@@ -122,7 +122,42 @@ const OrderDetails = (props) => {
                 );
               })}
             </div>
-            <div className="row order_details_info">
+            <div className="">
+              <div className={`form-group `} >
+                <label className="details_vew_list">
+                  Price Details
+                    </label>
+                <br />
+                <div className="order_details_value">
+                  
+                  <table className="table">
+                          <tr>
+                            <td>Price: </td>
+                            <td className="text-center">${order.amountInCents / 100}</td>
+                          </tr>
+                        </table>
+                  {
+                    order.coupenapplied ? (
+                      <>                         
+                        <table className="table">
+                          <tr>
+                            <td>Coupon Code: </td>
+                            <td>{order.coupenapplied}</td>
+                          </tr>
+                          <tr>
+                            <td>mpartial Price: </td>
+                            <td>${order.orignalprice / 100}</td>
+                          </tr>
+                          <tr>
+                            <td>You Saved: </td>
+                            <td>${order.amountsubtraced / 100}</td>
+                          </tr>
+                        </table>
+                      </>
+                    ) : ""
+                  }
+                </div>
+              </div>
               {/* {fields.map((field) => {
               return (
                 <div className={`col-md-4 col-sm-6 col-xs-6 field_${field.type}`}>

@@ -236,8 +236,19 @@ const Checkout = (props) => {
       orderId: orderid,
       coupedCode: coupedCode
     }).subscribe(response => {
-      console.log(response.response);
+      // console.log(response.response);
       setPIC(response.response.message);
+      const order = response.response.data;
+      console.log(order);
+      setProduct({
+        name: "mpartial",
+        price: order.orignalprice,
+        description: "",
+        coupon: order.coupenapplied,
+        amountreducned: order.amountreducned,
+        orignalprice: order.orignalprice,
+        newprice: order.amountInCents
+      });
     });
   }
 
@@ -407,7 +418,7 @@ const Checkout = (props) => {
             <div className="row">
               <div className="col">
                 {
-                  product.coupon.length ? (
+                  product.coupon && product.coupon.length ? (
                     <>
                       <span className="coupon_success">
                         Coupon Applied: {product.coupon}
@@ -440,7 +451,7 @@ const Checkout = (props) => {
                       <td>${price}</td>
                     </tr>
                     {
-                      product.coupon.length ? (
+                      product.coupon && product.coupon.length ? (
                         <>
                           <tr>
                             <td>Coupon: {product.coupon}</td>

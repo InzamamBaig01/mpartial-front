@@ -344,7 +344,7 @@ const UserOrder = (props) => {
               {
                 !orderId ? (
                   <ButtonGroup>
-                    <Button className="btn btn-green"
+                    <Button className="btn btn-green "
                       type="submit"
                       onClick={checkFormValidation}
                       id="formButton"
@@ -354,7 +354,7 @@ const UserOrder = (props) => {
                         checkoutAs == "checkout" ? "Proceed to Checkout" : "Save as draft"
                       }></Loader>
                     </Button>
-                    <UncontrolledButtonDropdown className="">
+                    <UncontrolledButtonDropdown className="btn-dropdown">
                       <DropdownToggle caret>
                         <img src={rightarrowdark} />
                       </DropdownToggle>

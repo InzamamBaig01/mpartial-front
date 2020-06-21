@@ -1892,3 +1892,9 @@ button.btn.payment_switch {
     height: auto !important;
   }
 }
+.btn-dropdown {
+  .dropdown-menu {
+    left: -200px !important;
+    width: 200px;
+  }
+}
