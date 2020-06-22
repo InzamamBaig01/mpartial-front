@@ -144,7 +144,7 @@ const UserOrder = (props) => {
       saveAsDraft: false,
     };
     if (orderId) apiData['orderId'] = orderId;
-    let fileToUpload;
+    let fileToUpload = [];
     const formData = new FormData();
 
     Object.keys(dataValues).map((key) => {
