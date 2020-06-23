@@ -142,6 +142,7 @@
     "react-helmet": "^6.0.0",
     "react-hook-form": "^4.10.1",
     "react-hot-loader": "^4.8.0",
+    "react-image-crop": "^8.6.4",
     "react-input-mask": "^2.0.4",
     "react-live-form": "^1.0.14",
     "react-measure": "^2.3.0",
