@@ -89,8 +89,9 @@ export const EditProfile: React.FC<any> = (props) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const formData = new FormData();
+		data['profilepicture'] = profileImage.profileImage;
 		const stringified = queryString.stringify(data);
-		formData.append("profilepicture", profileImage.profilepicture);
+		// formData.append("profilepicture", profileImage.profilepicture);
 		profileUpdate(formData, stringified).subscribe((response) => {
 			if (response.response.Requested_Action) {
 				props.onSubmitSuccess();
@@ -106,7 +107,7 @@ export const EditProfile: React.FC<any> = (props) => {
 			data.firstName == props.info.firstName &&
 			data.lastName == props.info.lastName &&
 			data.phonenumber == props.info.phone &&
-			profileImage.profilepicture == false
+			profileImage.profileImage == false
 		);
 	};
 

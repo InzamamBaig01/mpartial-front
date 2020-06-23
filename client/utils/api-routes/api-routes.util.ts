@@ -114,6 +114,17 @@ export const updateStatus = (payload) =>
   }).pipe(catchError(handleError('login')));
 
 
+  export const editCoupen = (payload) =>
+  ajax({
+    headers: {
+      authString: localStorage.topen,
+      "Content-Type": "application/json",
+    },
+    method: 'POST',
+    url: `${baseURL}/GIServer/editCoupen?coupenId=${payload.coupenId}&isCoupenActive=${payload.isCoupenActive}`,
+  }).pipe(catchError(handleError('login')));
+
+
   export const getAllCoupen = () =>
   ajax({
     headers: {
@@ -429,7 +440,7 @@ export const getPaymentIntendOfOrder = (payload) => {
   return ajax({
     headers: requestHeader(),
     method: "POST",
-    url: `${baseURL}/Client/getPaymentIntendOfOrder?thetoken=${localStorage.token}&orderId=${payload.orderId}&coupedCode=${payload.couponCode}`,
+    url: `${baseURL}/Client/getPaymentIntendOfOrder?thetoken=${localStorage.token}&orderId=${payload.orderId}`,
   }).pipe(
     catchError(handleError("logout")),
 

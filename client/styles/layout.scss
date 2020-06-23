@@ -886,7 +886,7 @@ input:-moz-placeholder {
     opacity: 1;
     sup {
       font-size: 13px;
-    text-decoration: line-through;
+      text-decoration: line-through;
     }
   }
   .coupon_success {
@@ -1590,13 +1590,21 @@ a {
       background: url(../assets/order.svg) no-repeat 10px 8px;
     }
     ul li:first-child:hover {
-      background: url(../assets/order-hover.svg) no-repeat 10px 8px;
-    }
-    ul li:last-child {
+      background: url(../assets/order.svg) no-repeat 10px 8px;
+        }
+    ul li:nth-child(2) {
       background: url(../assets/user-admin.svg) no-repeat 10px 8px;
     }
+    ul li:nth-child(2):hover {
+      background: url(../assets/user-admin.svg) no-repeat 10px 8px;
+    }
+    ul li:last-child {
+      background: url(../assets/coupon.svg) no-repeat 10px 7px;
+      background-size: 20px;
+    }
     ul li:last-child:hover {
-      background: url(../assets/user-hover.svg) no-repeat 10px 8px;
+      background: url(../assets/coupon.svg) no-repeat 10px 7px;
+      background-size: 20px;
     }
     ul li a,
     ul li a:hover {
@@ -1913,6 +1921,6 @@ button.btn.payment_switch {
 }
 
 .error {
-  color:red;
+  color: red;
   font-size: 13px;
 }

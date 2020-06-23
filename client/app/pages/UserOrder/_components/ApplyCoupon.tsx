@@ -27,7 +27,7 @@ const ApplyCoupon = (props) => {
                 setCouponError(false);
             } else {
                 // error
-                setCouponError(true)
+                setCouponError(response.response.Message)
             }
         })
 
@@ -50,7 +50,7 @@ const ApplyCoupon = (props) => {
                             <label>Coupon Code</label>
                             <input type="text" className="form-control" required value={coupon} onChange={e => setCoupon(e.currentTarget.value)} />
                             <div className="error">
-                                {couponError ? "Coupon is not valid." : ""}
+                                {couponError ? couponError : ""}
                             </div>
                         </div>
                         <div className="form-group text-center">
