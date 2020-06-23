@@ -8,7 +8,7 @@ import { applyCoupens } from "utils/api-routes/api-routes.util";
 const ApplyCoupon = (props) => {
     const { showLoader, hideLoader } = useContext(AppAlertsContext);
     const { price } = useContext(AppContext);
-
+    const [couponError, setCouponError] = useState(false);
     const [coupon, setCoupon] = useState("");
 
     const handleSubmit = (e) => {
@@ -16,7 +16,6 @@ const ApplyCoupon = (props) => {
         showLoader();
         //  price - (price * (discount % / 100))
         const newPrice = price - (price * (50 / 100));
-        console.log(coupon)
         applyCoupens({
             orderId: props.info.orderId,
             coupon: coupon,
@@ -25,8 +24,10 @@ const ApplyCoupon = (props) => {
             if (response.response.Requested_Action) {
                 // success
                 props.onSubmitSuccess(response.response.data);
+                setCouponError(false);
             } else {
                 // error
+                setCouponError(true)
             }
         })
 
@@ -48,6 +49,9 @@ const ApplyCoupon = (props) => {
                         <div className="form-group">
                             <label>Coupon Code</label>
                             <input type="text" className="form-control" required value={coupon} onChange={e => setCoupon(e.currentTarget.value)} />
+                            <div className="error">
+                                {couponError ? "Coupon is not valid." : ""}
+                            </div>
                         </div>
                         <div className="form-group text-center">
                             <button className="btn btn-lg" type="submit">

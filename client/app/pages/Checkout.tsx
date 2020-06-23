@@ -2,7 +2,11 @@ import React, { useEffect, useContext, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
-import { payOrder, getPaymentIntendOfOrder, getPIC } from "utils/api-routes/api-routes.util";
+import {
+  payOrder,
+  getPaymentIntendOfOrder,
+  getPIC,
+} from "utils/api-routes/api-routes.util";
 import history from "utils/history";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -20,8 +24,7 @@ import mastercard from "../../assets/mastercard.png";
 import AmericanExpress from "../../assets/American-Express.png";
 import discover from "../../assets/discover.png";
 
-import ApplyCoupon from './UserOrder/_components/ApplyCoupon';
-
+import ApplyCoupon from "./UserOrder/_components/ApplyCoupon";
 
 const CheckoutForm = (props) => {
   const [error, setError] = useState(null);
@@ -73,17 +76,17 @@ const CheckoutForm = (props) => {
         props.PIC,
         !showNewCardForm
           ? {
-            payment_method: selectedCard.paymentMethodId,
-          }
+              payment_method: selectedCard.paymentMethodId,
+            }
           : {
-            payment_method: {
-              card: card,
-              billing_details: {
-                name: `${props.checkoutInfo.firstName} ${props.checkoutInfo.lastName}`,
+              payment_method: {
+                card: card,
+                billing_details: {
+                  name: `${props.checkoutInfo.firstName} ${props.checkoutInfo.lastName}`,
+                },
               },
-            },
-            setup_future_usage: "off_session",
-          }
+              setup_future_usage: "off_session",
+            }
       )
       .then(async function (result) {
         console.log(result);
@@ -92,7 +95,23 @@ const CheckoutForm = (props) => {
           props.setIsFormSubmitted(false);
           setError(result.error.message);
           props.setCardValidation(false);
+          console.log(result.error);
+          // return;
+          hideLoader();
+          payOrder({
+            status: result.error.code,
+            orderId: props.orderid,
+            fullresponse: JSON.stringify(result.error),
+          }).subscribe((response) => {
+            console.log(response.response);
+            // if (response.response.Requested_Action) {
+            //   localStorage.removeItem("sessipn");
+            //   hideLoader();
+            //   history.push(`/receipt/${props.orderid}`);
+            // }
+          });
         } else {
+          hideLoader();
           if (result.paymentIntent.status === "succeeded") {
             payOrder({
               status: result.paymentIntent.status,
@@ -170,8 +189,8 @@ const CheckoutForm = (props) => {
             })}
         </>
       ) : (
-          ""
-        )}
+        ""
+      )}
       {showNewCardForm && (
         <div className="">
           <label htmlFor="card-element">Credit or debit card</label>
@@ -200,9 +219,9 @@ const Checkout = (props) => {
     price: price,
     description: "",
     coupon: "",
-    amountreducned: "",
+    amountsubtraced: "",
     orignalprice: "",
-    newprice: ""
+    newprice: "",
   });
   const orderid = props.match.params.orderid;
 
@@ -234,8 +253,8 @@ const Checkout = (props) => {
   const getPICO = (coupedCode?) => {
     getPaymentIntendOfOrder({
       orderId: orderid,
-      coupedCode: coupedCode
-    }).subscribe(response => {
+      coupedCode: coupedCode,
+    }).subscribe((response) => {
       // console.log(response.response);
       setPIC(response.response.message);
       const order = response.response.data;
@@ -245,17 +264,15 @@ const Checkout = (props) => {
         price: order.orignalprice,
         description: "",
         coupon: order.coupenapplied,
-        amountreducned: order.amountreducned,
+        amountsubtraced: order.amountsubtraced,
         orignalprice: order.orignalprice,
-        newprice: order.amountInCents
+        newprice: order.amountInCents,
       });
     });
-  }
-
+  };
 
   const handleApplyCouponclose = () => setApplyCouponShow(false);
   const handleApplyCouponShow = () => setApplyCouponShow(true);
-
 
   const onSubmitSuccess = (couponData) => {
     handleApplyCouponclose();
@@ -264,16 +281,15 @@ const Checkout = (props) => {
       price: couponData.newprice,
       description: "",
       coupon: couponData.code,
-      amountreducned: couponData.amountreducned,
+      amountsubtraced: couponData.amountsubtraced,
       orignalprice: couponData.orignalprice,
-      newprice: couponData.newprice
+      newprice: couponData.newprice,
     });
     getPICO();
     // setPrice(couponData.price);
     // getPICO(couponData.coupon);
     // setCouponApplied(couponData.coupon);
   };
-
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
@@ -343,8 +359,8 @@ const Checkout = (props) => {
                     First Name Is Required.
                   </span>
                 ) : (
-                    ""
-                  )}
+                  ""
+                )}
               </div>
             </div>
             <div className="row">
@@ -366,8 +382,8 @@ const Checkout = (props) => {
                     Last Name Is Required.
                   </span>
                 ) : (
-                    ""
-                  )}
+                  ""
+                )}
               </div>
             </div>
             <div className="row">
@@ -389,8 +405,8 @@ const Checkout = (props) => {
                     Email Address Is Required.
                   </span>
                 ) : (
-                    ""
-                  )}
+                  ""
+                )}
               </div>
             </div>
 
@@ -417,19 +433,23 @@ const Checkout = (props) => {
             </div>
             <div className="row">
               <div className="col">
-                {
-                  product.coupon && product.coupon.length ? (
-                    <>
-                      <span className="coupon_success">
-                        Coupon Applied: {product.coupon}
-                      </span>
-                    </>
-                  ) : (
-                      <button className="btn mt-2" type="button" onClick={handleApplyCouponShow}>Apply Coupon</button>
-                    )
-                }
+                {product.coupon && product.coupon.length ? (
+                  <>
+                    <span className="coupon_success">
+                      Coupon Applied: {product.coupon}
+                    </span>
+                  </>
+                ) : (
+                  ""
+                )}
+                <button
+                  className="btn mt-2"
+                  type="button"
+                  onClick={handleApplyCouponShow}
+                >
+                  Apply Coupon
+                </button>
               </div>
-
             </div>
 
             <div className="row">
@@ -450,44 +470,39 @@ const Checkout = (props) => {
                       <td>Mpartial Deposit</td>
                       <td>${price}</td>
                     </tr>
-                    {
-                      product.coupon && product.coupon.length ? (
-                        <>
-                          <tr>
-                            <td>Coupon: {product.coupon}</td>
-                            <td>
-                              <div className="form_price">${product.newprice / 100} <sup>${product.orignalprice / 100} </sup></div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Subtotal</td>
-                            <td>${product.newprice / 100}</td>
-                          </tr>
+                    {product.coupon && product.coupon.length ? (
+                      <>
+                        <tr>
+                          <td>Discount: {product.coupon}</td>
+                          <td>
+                            <div className="form_price">
+                              -${product.amountsubtraced / 100}
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Subtotal</td>
+                          <td>${product.newprice / 100}</td>
+                        </tr>
 
+                        <tr>
+                          <td>Total</td>
+                          <td>${product.newprice / 100}</td>
+                        </tr>
+                      </>
+                    ) : (
+                      <>
+                        <tr>
+                          <td>Subtotal</td>
+                          <td>${price}</td>
+                        </tr>
 
-                          <tr>
-                            <td>Total</td>
-                            <td>${product.newprice / 100}</td>
-                          </tr>
-                        </>
-                      ) : (
-                          <>
-                            <tr>
-                              <td>Subtotal</td>
-                              <td>${price}</td>
-                            </tr>
-
-
-                            <tr>
-                              <td>Total</td>
-                              <td>${price}</td>
-                            </tr>
-                          </>
-                        )
-                    }
-
-
-
+                        <tr>
+                          <td>Total</td>
+                          <td>${price}</td>
+                        </tr>
+                      </>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -502,9 +517,9 @@ const Checkout = (props) => {
                   onClick={checkValidation}
                   disabled={
                     checkoutInfo.firstName == "" ||
-                      checkoutInfo.lastName == "" ||
-                      checkoutInfo.emailAddress == "" ||
-                      !cardValidation
+                    checkoutInfo.lastName == "" ||
+                    checkoutInfo.emailAddress == "" ||
+                    !cardValidation
                       ? true
                       : false
                   }

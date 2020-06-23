@@ -9,6 +9,7 @@ const DrawField = (props) => {
 
   useEffect(() => {
     setValue(props.field.value);
+    setChanged(true);
   }, [props.field.value])
 
   const onChange = (e) => {

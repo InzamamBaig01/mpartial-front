@@ -19,6 +19,7 @@ import { data } from "jquery";
 import moment from "moment";
 
 
+import Switch from "react-switch";
 
 
 const AddCoupons = (props) => {
@@ -182,8 +183,18 @@ const AddCoupons = (props) => {
                                 })} />
                         </div>
                         <div className="form-group">
-                            <label>Usage Limit Per Coupon</label>
-                            <input type="number" placeholder="Usage Limit Per Coupon" className="form-control" required onChange={
+                            <label>Usage limit</label>
+                            <input type="number" placeholder="Usage limit" className="form-control" required onChange={
+                                (e) => setData({
+                                    ...data,
+                                    maxusagecount: e.currentTarget.value
+                                })
+                            } value={data.maxusagecount} />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Usage limit per user</label>
+                            <input type="number" placeholder="Usage Limit" className="form-control" required onChange={
                                 (e) => setData({
                                     ...data,
                                     maxusagecount: e.currentTarget.value
@@ -367,14 +378,12 @@ const Coupons = () => {
             className: "header-col",
         },
         {
-            name: "Action",
+            name: "Active",
             selector: "action",
             sortable: false,
             className: "header-col",
             format: (d) => (
-                <a href="javascript:;" onClick={handleEditCouponShow}>
-                    <img src={viewicon} alt="" />
-                </a>
+                <Switch onChange={() => {}} checked={true} checkedIcon={false} uncheckedIcon={false} />
             ),
         },
     ];

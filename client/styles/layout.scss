@@ -876,6 +876,19 @@ input:-moz-placeholder {
       text-decoration: line-through;
     }
   }
+  .main_price {
+    text-align: left;
+    font-weight: normal;
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: 0px;
+    color: #3ac280;
+    opacity: 1;
+    sup {
+      font-size: 13px;
+    text-decoration: line-through;
+    }
+  }
   .coupon_success {
     font-size: 15px;
     color: #212529;
@@ -1897,4 +1910,9 @@ button.btn.payment_switch {
     left: -200px !important;
     width: 200px;
   }
+}
+
+.error {
+  color:red;
+  font-size: 13px;
 }

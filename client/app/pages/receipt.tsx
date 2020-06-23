@@ -74,9 +74,9 @@ const Receipt = (props) => {
                       order.coupenapplied && order.coupenapplied.length ? (
                         <>
                           <tr>
-                            <td>Coupon: {order.coupenapplied}</td>
+                            <td>Discount: {order.coupenapplied}</td>
                             <td>
-                              <div className="form_price">${order.amountInCents / 100} <sup>${price} </sup></div>
+                              <div className="form_price">-${order.amountsubtraced / 100}</div>
                             </td>
                           </tr>
                           <tr>

@@ -5,20 +5,18 @@ import ADHeader from "app/components/ADHeader";
 import { AppContext } from "contexts/appContext";
 import AdminSidebar from "./_components/AdminSidebar";
 
-import OrderFields from '../../OrderFormFields.json';
-
+import OrderFields from "../../OrderFormFields.json";
 
 const OrderDetails = (props) => {
-
   const [order, setOrder] = useState(props.order);
 
   console.log(order);
   useEffect(() => {
     if (props.order) {
-      setOrder(props.order)
+      setOrder(props.order);
     }
     localStorage.setItem("sessipn", "sessipn");
-  }, [props.order])
+  }, [props.order]);
   // fields.sort((a, b) => {
   //     return a.type > b.type;
   // });
@@ -57,15 +55,15 @@ const OrderDetails = (props) => {
         Data = () => {
           return (
             <>
-              {props.order[props.field.id]
-                ? (
-                  <>
-                    <a href={props.order[props.field.id]} target="_blank" >
-                      {props.order[props.field.id]}
-                    </a>
-                  </>
-                )
-                : "Not Available"}
+              {props.order[props.field.id] ? (
+                <>
+                  <a href={props.order[props.field.id]} target="_blank">
+                    {props.order[props.field.id]}
+                  </a>
+                </>
+              ) : (
+                "Not Available"
+              )}
             </>
           );
         };
@@ -89,14 +87,13 @@ const OrderDetails = (props) => {
     );
   };
 
-
   return (
     <>
-
-
       {order ? (
         <div className="order_details ">
-          <div className="order_details_header">Project Name: {order.projectName}</div>
+          <div className="order_details_header">
+            Project Name: {order.projectName}
+          </div>
 
           <div className="order_form order_details_info">
             <div className="row">
@@ -123,39 +120,37 @@ const OrderDetails = (props) => {
               })}
             </div>
             <div className="">
-              <div className={`form-group `} >
-                <label className="details_vew_list">
-                  Price Details
-                    </label>
+              <div className={`form-group `}>
+                <label className="details_vew_list">Price Details</label>
                 <br />
                 <div className="order_details_value">
-                  
                   <table className="table">
-                          <tr>
-                            <td>Price: </td>
-                            <td className="text-center">${order.amountInCents / 100}</td>
-                          </tr>
-                        </table>
-                  {
-                    order.coupenapplied ? (
-                      <>                         
-                        <table className="table">
-                          <tr>
-                            <td>Coupon Code: </td>
-                            <td>{order.coupenapplied}</td>
-                          </tr>
-                          <tr>
-                            <td>mpartial Price: </td>
-                            <td>${order.orignalprice / 100}</td>
-                          </tr>
-                          <tr>
-                            <td>You Saved: </td>
-                            <td>${order.amountsubtraced / 100}</td>
-                          </tr>
-                        </table>
+                    <tr>
+                      <td>Price: </td>
+                      <td className="text-center">
+                        ${order.amountInCents / 100}
+                      </td>
+                    </tr>
+
+                    {order.coupenapplied ? (
+                      <>
+                        <tr>
+                          <td>Coupon Code: </td>
+                          <td className="text-center">{order.coupenapplied}</td>
+                        </tr>
+                        <tr>
+                          <td>mpartial Price: </td>
+                          <td className="text-center">${order.orignalprice / 100}</td>
+                        </tr>
+                        <tr>
+                          <td>You Saved: </td>
+                          <td className="text-center">${order.amountsubtraced / 100}</td>
+                        </tr>
                       </>
-                    ) : ""
-                  }
+                    ) : (
+                      ""
+                    )}
+                  </table>
                 </div>
               </div>
               {/* {fields.map((field) => {
@@ -181,29 +176,25 @@ const OrderDetails = (props) => {
                 </Link>
               </div>
               <div className="col text-right">
-                {
-                  order.paymentStatus == "DRAFT" && <Link to={`/order/${order.id}`}>
+                {order.paymentStatus == "DRAFT" && (
+                  <Link to={`/order/${order.id}`}>
                     <button className="btn">Load Draft</button>
                   </Link>
-
-                }
-                {
-                  order.paymentStatus == "UNPAID" && <Link to={`/checkout/${order.id}`}>
+                )}
+                {order.paymentStatus == "UNPAID" && (
+                  <Link to={`/checkout/${order.id}`}>
                     <button className="btn">Pay Now</button>
                   </Link>
-
-                }
+                )}
               </div>
             </div>
           </div>
         </div>
       ) : (
-          ""
-        )}
-
+        ""
+      )}
     </>
   );
 };
 
 export default OrderDetails;
-
