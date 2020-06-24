@@ -19,6 +19,7 @@ const App: React.FC<RouteComponentProps<any>> = (props) => {
     setPageIsPublicValue,
     isADAuthenticated,
     setPageIsAD,
+    setRouteChange
   } = useContext(AuthContext);
 
   useEffect(() => {
@@ -36,19 +37,37 @@ const App: React.FC<RouteComponentProps<any>> = (props) => {
       return route;
     });
     setPageIsPublicValue(isAD ? undefined : isPublic);
-
     setPageIsAD(isAD);
-    Sentry.init({dsn: appConfig.sentryDSN});
+    Sentry.init({ dsn: appConfig.sentryDSN });
 
-  },[]);
+  }, []);
+
+  useEffect(() => {
+    isUserAuthenticated();
+    let isPublic = false;
+    let isAD = false;
+    ROUTES.map((route) => {
+      if (
+        route.path.split("/").join("") ===
+        props.location.pathname.split("/").join("")
+      ) {
+        isPublic = route.checkLogin ? true : false;
+        isAD = route.checkADLogin ? true : false;
+      }
+      return route;
+    });
+    setPageIsPublicValue(isAD ? undefined : isPublic);
+    setRouteChange(Math.random())
+    setPageIsAD(isAD);
+  }, [props.location.pathname])
 
   return (
     <>
-     
-        <LocalApp
-          isAuthenticated={isUserAuthenticated()}
-          isADAuthenticated={isADAuthenticated()}
-        ></LocalApp>
+
+      <LocalApp
+        isAuthenticated={isUserAuthenticated()}
+        isADAuthenticated={isADAuthenticated()}
+      ></LocalApp>
     </>
   );
 };

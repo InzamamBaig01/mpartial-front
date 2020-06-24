@@ -311,7 +311,6 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    console.log(myInfo);
     if (myInfo) {
       hideLoader();
       setInfo(myInfo);

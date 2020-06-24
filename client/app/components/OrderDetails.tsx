@@ -10,7 +10,6 @@ import OrderFields from "../../OrderFormFields.json";
 const OrderDetails = (props) => {
   const [order, setOrder] = useState(props.order);
 
-  console.log(order);
   useEffect(() => {
     if (props.order) {
       setOrder(props.order);

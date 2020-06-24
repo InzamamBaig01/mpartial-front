@@ -49,7 +49,7 @@ const UserOrder = (props) => {
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const [dataValues, setDataValues] = useState({});
   const { getMyOrders, myOrders } = useContext(AppContext);
-
+  
   const [order, setOrder] = useState(false);
 
   const top = React.createRef();
@@ -67,15 +67,43 @@ const UserOrder = (props) => {
     if (orderId) {
       getMyOrders();
     } else {
-      OrderFields[0].value = userDetails().emailAddress;
+      console.clear();
+      console.log("loaded")
+      const userOrderFormFeilds = Object.assign([], OrderFields);
+      userOrderFormFeilds.map(field => {
+        field.value = "";
+        if (field.id == "emailForDeliveryOfResults") field.value = userDetails().emailAddress;
+        return field;
+      })
+
       setDataValues({
         ...dataValues,
         emailForDeliveryOfResults: userDetails().emailAddress,
       });
-      console.log(OrderFields,"OrderFields");
-      setAllFields(OrderFields);
+      setAllFields(userOrderFormFeilds);
     }
   }, []);
+
+  useEffect(() => {
+    if (orderId) {
+      getMyOrders();
+    } else {
+      console.log("loaded 2")
+      const userOrderFormFeilds = Object.assign([], OrderFields);
+      userOrderFormFeilds.map(field => {
+        field.value = "";
+        if (field.id == "emailForDeliveryOfResults") field.value = userDetails().emailAddress;
+        return field;
+      })
+
+      setDataValues({
+        ...dataValues,
+        emailForDeliveryOfResults: userDetails().emailAddress,
+      });
+      setAllFields(userOrderFormFeilds);
+      form.current.reset();
+    }
+  }, [orderId])
 
   useEffect(() => {
     if (order) {
@@ -91,7 +119,7 @@ const UserOrder = (props) => {
   }, [order]);
 
   useEffect(() => {
-    if (orderId) {
+    if (orderId && myOrders) {
       const selectedOrder = myOrders.filter((ord) => {
         return ord.id == orderId;
       });
@@ -152,8 +180,8 @@ const UserOrder = (props) => {
       ) {
         apiData[key] = dataValues[key]
           ? dataValues[key].map((v) => {
-              return v.value;
-            })
+            return v.value;
+          })
           : "";
       } else {
         apiData[key] = dataValues[key];
@@ -168,7 +196,6 @@ const UserOrder = (props) => {
       (response: any) => {
         if (response.response.Requested_Action) {
           localStorage.setItem("sessipn", response.response.Message);
-          console.log(fileToUpload);
           if (fileToUpload.length) {
             uploadFiles(
               response.response.data.id
@@ -185,7 +212,7 @@ const UserOrder = (props) => {
           hideLoader();
         }
       },
-      (response) => {}
+      (response) => { }
     );
   };
 
@@ -229,8 +256,7 @@ const UserOrder = (props) => {
 
   const saveToDraft = (e) => {
     e.preventDefault();
-    console.log(e.currentTarget.tagName);
-    // if (e.currentTarget.tagName == "SPAN") return false;
+    // if (e.currentTarget.tagName == "SPAN") return false;2u
     showLoader();
     const apiData = {
       amountInCents: productPrice * 100,
@@ -250,8 +276,8 @@ const UserOrder = (props) => {
       ) {
         apiData[key] = dataValues[key]
           ? dataValues[key].map((v) => {
-              return v.value;
-            })
+            return v.value;
+          })
           : "";
       } else {
         apiData[key] = dataValues[key];
@@ -279,7 +305,7 @@ const UserOrder = (props) => {
           hideLoader();
         }
       },
-      (response) => {}
+      (response) => { }
     );
   };
   const [saveBtn, setSaveBtn] = useState(false);
@@ -309,12 +335,12 @@ const UserOrder = (props) => {
                       className={`description small_${
                         field.id != "projectZipCode" &&
                         field.description?.length <= 42
-                      }
+                        }
                         small_${
-                          field.id == "temporaryActivities" ||
+                        field.id == "temporaryActivities" ||
                           field.id == "projectZipCode"
-                            ? "xs"
-                            : ""
+                          ? "xs"
+                          : ""
                         }
                         `}
                     >
@@ -340,8 +366,8 @@ const UserOrder = (props) => {
                       </div>
                     </>
                   ) : (
-                    <div className=" main_price">${productPrice}</div>
-                  )}
+                      <div className=" main_price">${productPrice}</div>
+                    )}
                 </div>
               </div>
             </div>

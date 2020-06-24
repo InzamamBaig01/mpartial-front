@@ -202,6 +202,7 @@ const AddCoupons = (props) => {
                 id="example-datepicker"
                 className="form-control"
                 required
+                minDate={new Date().toISOString()}
                 value={data.activefrom}
                 showClearButton={false}
                 placeholder="Coupon Active From"
@@ -221,6 +222,7 @@ const AddCoupons = (props) => {
                 className="form-control"
                 required
                 value={data.expiry}
+                minDate={new Date().toISOString()}
                 showClearButton={false}
                 placeholder="Coupon Expiry Date"
                 onChange={(v, f) =>

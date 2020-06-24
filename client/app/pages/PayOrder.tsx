@@ -83,7 +83,6 @@ const CheckoutForm = (props) => {
                     }
             )
             .then(async function (result) {
-                console.log(result);
                 // return;
                 if (result.error) {
                     props.setIsFormSubmitted(false);

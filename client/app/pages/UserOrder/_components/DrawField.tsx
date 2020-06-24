@@ -9,7 +9,12 @@ const DrawField = (props) => {
 
   useEffect(() => {
     setValue(props.field.value);
-    setChanged(true);
+    if (typeof props.field.value == "string" && props.field.value != "") {
+      setChanged(true);
+    } else {
+      setChanged(false);
+      
+    }
   }, [props.field.value])
 
   const onChange = (e) => {
@@ -24,8 +29,8 @@ const DrawField = (props) => {
 
       props.onChange(field, e.currentTarget.value);
       field.value = e.currentTarget.value;
+      setChanged(true);
     }
-    setChanged(true);
   };
 
   const removeFile = (index) => {

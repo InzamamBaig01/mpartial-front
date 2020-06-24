@@ -28,7 +28,6 @@ const Changepasswordwithtoken = (props) => {
         setPasswordMsg("true")
         // history.push("/login");
       } else {
-        console.log(response);
         setPasswordMsg("Link has expired")
       }
     });

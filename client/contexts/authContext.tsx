@@ -15,6 +15,7 @@ import {
 import history from "../utils/history";
 import { useState } from "react";
 import { AppAlertsContext } from "./appAlertsContext";
+import { FunctionInterpolation } from "emotion";
 
 interface IContextProps {
   profile: object;
@@ -45,6 +46,7 @@ interface IContextProps {
   dispatchADLogin: Function;
   setPageIsAD: any;
   adLogout: Function;
+  setRouteChange: Function;
 }
 
 export const AuthContext = React.createContext({} as IContextProps);
@@ -60,7 +62,7 @@ export default React.memo(({ children }) => {
 
   const [status, setStatus] = useState("");
   const [ADstatus, ADsetStatus] = useState("");
-
+  const [routeChanged, setRouteChange] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pageIsPublic, setPageIsPublic] = useState(undefined);
   const [pageIsAD, setPageIsAD] = useState(undefined);
@@ -81,8 +83,9 @@ export default React.memo(({ children }) => {
   let isValid = false;
 
   React.useEffect(() => {
+    console.log(pageIsPublic);
     if (pageIsPublic === true) {
-      console.log("pageIsPublic",pageIsPublic);
+      console.log("pageIsPublic", pageIsPublic);
       auth().subscribe(
         (response: any) => {
           if (response.response.Requested_Action) {
@@ -98,9 +101,26 @@ export default React.memo(({ children }) => {
   }, [pageIsPublic]);
 
   React.useEffect(() => {
+    if (pageIsPublic === true) {
+      console.log("pageIsPublic", pageIsPublic);
+      auth().subscribe(
+        (response: any) => {
+          if (response.response.Requested_Action) {
+          } else {
+            logout();
+          }
+        },
+        (response) => {
+          logout();
+        }
+      );
+    }
+  }, [routeChanged]);
+
+  React.useEffect(() => {
 
     if (pageIsAD === true) {
-      console.log("pageIsAD",pageIsAD);
+      console.log("pageIsAD", pageIsAD);
 
       AdValid();
     }
@@ -245,7 +265,7 @@ export default React.memo(({ children }) => {
         localStorage.removeItem("topen");
         history.push("/mpartialadmin");
       },
-      (response) => {}
+      (response) => { }
     );
   };
 
@@ -321,6 +341,7 @@ export default React.memo(({ children }) => {
     dispatchADLogin,
     setPageIsAD,
     adLogout,
+    setRouteChange,
   };
 
   return (

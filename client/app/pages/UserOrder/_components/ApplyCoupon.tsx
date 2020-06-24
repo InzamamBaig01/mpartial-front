@@ -20,7 +20,6 @@ const ApplyCoupon = (props) => {
             orderId: props.info.orderId,
             coupon: coupon,
         }).subscribe(response => {
-            console.log(response)
             if (response.response.Requested_Action) {
                 // success
                 props.onSubmitSuccess(response.response.data);

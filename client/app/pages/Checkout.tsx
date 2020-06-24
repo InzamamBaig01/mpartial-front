@@ -258,7 +258,6 @@ const Checkout = (props) => {
       // console.log(response.response);
       setPIC(response.response.message);
       const order = response.response.data;
-      console.log(order);
       setProduct({
         name: "mpartial",
         price: order.orignalprice,
