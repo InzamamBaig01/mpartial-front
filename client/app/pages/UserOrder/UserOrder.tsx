@@ -264,6 +264,8 @@ const UserOrder = (props) => {
       thetoken: localStorage.token,
       saveAsDraft: true,
     };
+    if (orderId) apiData["orderId"] = orderId;
+
     let fileToUpload;
     const formData = new FormData();
 
