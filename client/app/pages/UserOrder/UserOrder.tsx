@@ -17,7 +17,7 @@ import leftarrow from "../../../assets/first.svg";
 import OrderFields from "../../../OrderFormFields.json";
 
 import rightarrowdark from "../../../assets/up-arrow-white.svg";
-
+import saveImage from "../../../assets/save.svg"
 import DrawField from "./_components/DrawField";
 import ApplyCoupon from "./_components/ApplyCoupon";
 import {
@@ -27,6 +27,7 @@ import {
   DropdownItem,
   ButtonGroup,
   Button,
+  UncontrolledTooltip,
 } from "reactstrap";
 
 import {
@@ -49,7 +50,7 @@ const UserOrder = (props) => {
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const [dataValues, setDataValues] = useState({});
   const { getMyOrders, myOrders } = useContext(AppContext);
-  
+
   const [order, setOrder] = useState(false);
 
   const top = React.createRef();
@@ -63,6 +64,7 @@ const UserOrder = (props) => {
   }, [top.current]);
 
   useEffect(() => {
+    // showLoader();
     checkFormValidation();
     if (orderId) {
       getMyOrders();
@@ -198,7 +200,7 @@ const UserOrder = (props) => {
           localStorage.setItem("sessipn", response.response.Message);
           if (fileToUpload.length) {
             uploadFiles(
-              response.response.data.id
+              response.response.data
                 ? response.response.data.id
                 : response.response.Message,
               fileToUpload,
@@ -401,7 +403,7 @@ const UserOrder = (props) => {
                     }
                   ></Loader>
                 </Button>
-                <UncontrolledButtonDropdown className="btn-dropdown">
+                {/* <UncontrolledButtonDropdown className="btn-dropdown">
                   <DropdownToggle caret>
                     <img src={rightarrowdark} />
                   </DropdownToggle>
@@ -410,8 +412,21 @@ const UserOrder = (props) => {
                       Save as draft
                     </DropdownItem>
                   </DropdownMenu>
-                </UncontrolledButtonDropdown>
+                </UncontrolledButtonDropdown> */}
               </ButtonGroup>
+
+              <UncontrolledTooltip placement="top" target="UncontrolledTooltipExample">
+                Save as draft
+      </UncontrolledTooltip>
+              <button className="floating_draft_btn" id="UncontrolledTooltipExample" onClick={saveToDraft}>
+
+                <Loader
+                  text={
+                    (<img src={saveImage} />)
+                  }
+                ></Loader>
+
+              </button>
 
               {/* {
                 !orderId && <button
@@ -469,10 +484,12 @@ const UserOrder = (props) => {
                 />
               </FloatingMenu>
             */}
+
             </div>
           </form>
         </div>
       </div>
+
       {ApplyCouponShow && (
         <ApplyCoupon
           value={""}

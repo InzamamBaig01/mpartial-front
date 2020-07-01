@@ -43,7 +43,7 @@ const OrderDetails = (props) => {
             <>
               {props.order[props.field.id].map((d, index) => (
                 <a href={d} target="_blank" download>
-                  Asset {index + 1}
+                  {props.order.potentiallyRelevantDigitalAssetsRealNames[index].replace(/\.[^/.]+$/, "")}
                 </a>
               ))}
             </>
@@ -61,8 +61,8 @@ const OrderDetails = (props) => {
                   </a>
                 </>
               ) : (
-                "Not Available"
-              )}
+                  "Not Available"
+                )}
             </>
           );
         };
@@ -147,8 +147,8 @@ const OrderDetails = (props) => {
                         </tr>
                       </>
                     ) : (
-                      ""
-                    )}
+                        ""
+                      )}
                   </table>
                 </div>
               </div>
@@ -190,8 +190,8 @@ const OrderDetails = (props) => {
           </div>
         </div>
       ) : (
-        ""
-      )}
+          ""
+        )}
     </>
   );
 };

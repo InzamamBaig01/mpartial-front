@@ -139,7 +139,21 @@ export const updateStatus = (payload) =>
   }).pipe(catchError(handleError('')));
 
 
+
+  export const couponUsageHistory = (payload) =>
+  ajax({
+    headers: {
+      authString: localStorage.topen,
+      "Content-Type": "application/json",
+    },
+    method: 'POST',
+    url: `${baseURL}/GIServer/couponUsageHistory?couponCode=${payload.couponCode}`,
+  }).pipe(catchError(handleError('')));
+
+
+ 
   
+
   
 
 export const adLogin = payload =>

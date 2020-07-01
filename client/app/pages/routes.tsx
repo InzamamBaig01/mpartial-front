@@ -21,6 +21,7 @@ import BuildDetails from "./BuildDetails";
 import Coupons from "./admin/Coupons";
 import Committee from "./Committee";
 import PayOrder from "./PayOrder";
+import CouponDetails from "./admin/CouponDetails";
 
 export const ROUTES = [
   {
@@ -227,6 +228,15 @@ export const ROUTES = [
     path: "/coupons",
     slug: "admin/coupons",
     title: "admin/coupons",
+    redirectTo: "/mpartialadmin",
+    isAD: true,
+    checkADLogin: true,
+  },
+  {
+    component: CouponDetails,
+    path: "/coupons-details/:couponid",
+    slug: "coupons-details",
+    title: "coupons-details",
     redirectTo: "/mpartialadmin",
     isAD: true,
     checkADLogin: true,

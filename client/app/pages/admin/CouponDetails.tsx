@@ -1,41 +1,21 @@
-import React, { useEffect, useContext, useState } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom"
+import React, { useState, useEffect, useContext } from "react";
+import { getAllCoupen, couponUsageHistory, addCoupen, editCoupen } from "utils/api-routes/api-routes.util";
 import ADHeader from "app/components/ADHeader";
-import DataTable from "react-data-table-component";
-import Search from "../../../assets/search.svg";
-import First from "../../../assets/first.svg";
-import Last from "../../../assets/last.svg";
-import Next from "../../../assets/next.svg";
-import Previous from "../../../assets/previous.svg";
-import viewicon from "../../../assets/profile_edit.svg";
 import AdminSidebar from "./_components/AdminSidebar";
-import history from '../../../utils/history';
-import { Dropdown, Modal, Button } from "react-bootstrap";
-import DatePicker from "reactstrap-date-picker";
-import { AppContext } from "../../../contexts/appContext";
-import {
-  addCoupen,
-  getAllCoupen,
-  editCoupen,
-  couponUsageHistory,
-} from "utils/api-routes/api-routes.util";
-import { data } from "jquery";
+import viewicon from "../../../assets/view.svg";
+import Coupons from "./Coupons";
+import { AppContext } from "contexts/appContext";
 import moment from "moment";
-<img src={viewicon} alt="" />
+import { Modal } from "react-bootstrap";
+import DatePicker from "reactstrap-date-picker";
+import history from '../../../utils/history';
+import Switch from "react-switch";
 
-interface ICoupon {
-  coupencode: undefined | String | Number,
-  activefrom: undefined | String | Number,
-  maxusagecount: undefined | String | Number,
-  offpercentage: undefined | String | Number,
-  subtractfixedamount: undefined | String | Number,
-  forcustomeremail: undefined | String | Number,
-  maxusagecountperuser: undefined | String | Number,
-  expiry: undefined | String | Number,
-}
+
 
 const AddCoupons = (props) => {
-  const [data, setData] = useState<ICoupon>({
+  const [data, setData] = useState({
     coupencode: "",
     activefrom: new Date().toISOString(),
     maxusagecount: "",
@@ -99,7 +79,7 @@ const AddCoupons = (props) => {
     })
     addCoupen(data).subscribe((response) => {
       if (response.response.Requested_Action) {
-        props.onSubmitSuccess();
+        props.onSubmitSuccess(data.coupencode);
         props.handleClose();
       }
     });
@@ -340,81 +320,13 @@ const AddCoupons = (props) => {
 };
 
 
-const ViewCoupon = (props) => {
+const CouponDetails = (props) => {
+  const couponid = props.match.params.couponid;
+  const [coupon, setCoupon] = useState({});
+  const [coupons, setCoupons] = useState([]);
+  const [couponHistory, setCouponHistory] = useState([]);
+  const [duplicateCouponStatus, setduplicateCouponStatus] = useState(false);
 
-
-  couponUsageHistory({
-    couponCode: props.info.coupencode
-  }).subscribe(res => {
-    console.log(res);
-  });
-
-  return (
-    <>
-      <Modal
-        show={props.show}
-        onHide={props.handleClose}
-        className="view_coupon"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title className="add_card_title">
-            Coupon: {props.info.coupencode}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="support_body">
-          <div className="row">
-            <div className="col text-left">Active From:</div>
-            <div className="col text-left">{props.info.activefrom}</div>
-          </div>
-          <div className="row">
-            <div className="col text-left">Expiry:</div>
-            <div className="col text-left">{props.info.expiry}</div>
-          </div>
-          <div className="row">
-            <div className="col text-left">Usage:</div>
-            <div className="col text-left">{props.info.usedtimes}/{props.info.maxusagecount}</div>
-          </div>
-          <div className="row">
-            <div className="col text-left">Status:</div>
-            <div className="col text-left">{props.info.isactive ? "Active" : "Unactive"}</div>
-          </div>
-
-          <div className="row">
-            <div className="col text-left">Coupon Type:</div>
-            <div className="col text-left">{props.info.offpercentage != null ? "Percentage" : "Fixed"}</div>
-          </div>
-          <div className="row">
-            <div className="col text-left">Discount:</div>
-            <div className="col text-left">{props.info.offpercentage != null ? `${props.info.offpercentage}%` : props.info.subtractfixedamount}</div>
-          </div>
-          <div className="row">
-            <div className="col text-left">Coupon For:</div>
-            <div className="col text-left">{props.info.forcustomeremail != null ? "Customer" : "Public"}</div>
-          </div>
-          {
-            props.info.forcustomeremail != null ? (
-
-              <div className="row">
-                <div className="col text-left">Customer:</div>
-                <div className="col text-left">{props.info.forcustomeremail}</div>
-              </div>
-            ) : ""
-          }
-          <div className="row mt-3">
-            <div className="col text-center">
-              <button className="btn" onClick={props.onDplicateClick}>Make Duplicate</button>
-            </div>
-          </div>
-
-        </Modal.Body>
-      </Modal>
-    </>
-  );
-};
-
-const Coupons = () => {
-  const [Coupons, setCoupons] = useState([]);
-  const [selectedCoupon, setSelectedCoupon] = useState({});
   const [isDuplicating, setISDuplicating] = useState(false)
   const [AddCouponsShow, setAddCouponsShow] = useState(false);
   const handleAddCouponsclose = () => {
@@ -423,81 +335,56 @@ const Coupons = () => {
   }
   const handleAddCouponsShow = () => setAddCouponsShow(true);
 
-  const [ViewCouponsShow, setViewCouponsShow] = useState(false);
-  const handleViewCouponsclose = () => {
-    setViewCouponsShow(false);
-  }
-  const handleViewCouponsShow = () => setViewCouponsShow(true);
 
-  useEffect(() => {
-    getCoupons();
-    handleAddCouponsclose();
-  }, []);
-
-  const getCoupons = () => {
-    getAllCoupen().subscribe((response) => {
-      setCoupons(response.response.data);
+  const onChangeActive = (d, isActive) => {
+    editCoupen({
+      coupenId: d.id,
+      isCoupenActive: isActive,
+    }).subscribe((response) => {
+      getCouponDetail();
     });
   };
 
-  const onSubmitSuccess = () => {
-    getCoupons();
-  };
-  
- 
-  const columns = [
-    {
-      name: "Code",
-      selector: "coupencode",
-      sortable: false,
-      className: "header-col",
-    },
-    {
-      name: "Active From",
-      selector: "activefrom",
-      sortable: false,
-      className: "header-col",
-    },
-    {
-      name: "Expiry",
-      selector: "expiry",
-      sortable: false,
-      className: "header-col",
-    },
-    {
-      name: "Usage / Limit",
-      selector: "maxusagecount",
-      sortable: false,
-      className: "header-col",
-      format: (d) => `${d.usedtimes}/${d.maxusagecount}`,
-    },
-    {
-      name: "Active",
-      selector: "action",
-      sortable: false,
-      className: "header-col",
-      format: (d) => (
-        <Link to={`/coupons-details/${d.id}`} >
-          <img src={viewicon} alt="" />
-        </Link>
-          
-        ),
-    },
-  ];
-
-
-  const onRowClicked = (data) => {
-    console.log(data);
-    setSelectedCoupon(data);
-    // handleViewCouponsShow();
-    history.push(`/coupons-details/${data.id}`);
+  const getCouponDetail = () => {
+    getAllCoupen().subscribe(response => {
+      const couponsOP = response.response.data;
+      setCoupons(couponsOP);
+      const filtered = couponsOP.filter(c => { return c.id == couponid });
+      setCoupon(filtered.length ? filtered[0] : {});
+    })
   }
+
+  useEffect(() => {
+    getCouponDetail();
+  }, [])
+
+  useEffect(() => {
+    if (Object.keys(coupon).length) {
+      console.log(coupon)
+      couponUsageHistory({
+        couponCode: coupon.coupencode
+      }).subscribe(response => {
+
+        setCouponHistory(response.response.data);
+      })
+    }
+  }, [coupon]);
+
 
   const onDplicateClick = () => {
     setISDuplicating(true);
-    handleViewCouponsclose();
     handleAddCouponsShow();
   }
+
+  const onSubmitSuccess = (code) => {
+    setduplicateCouponStatus(`Coupon ${code} has been created.`);
+    setTimeout(() => {
+      history.push("/coupons");
+    }, 1000)
+  };
+
+
+
   return (
     <>
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
@@ -506,25 +393,96 @@ const Coupons = () => {
           <AdminSidebar></AdminSidebar>
 
           <section>
-            <div className={"section-head mb-3"}>
+            <div className={"section-head mb-3 row"}>
               <div className="col">
-                <h2>Coupons</h2>
+                <h2>Coupon: {coupon.coupencode}</h2>
               </div>
               <div className="col text-right">
-                <button className="btn" onClick={handleAddCouponsShow}>
-                  Create New Coupon
-                </button>
+                <button className="btn" onClick={onDplicateClick}>Make Duplicate</button>
+
+
               </div>
             </div>
+            <div className="">
+              <div className="row">
+                <div className="col text-left">Active From:</div>
+                <div className="col text-left">{coupon.activefrom}</div>
+              </div>
+              <div className="row">
+                <div className="col text-left">Expiry:</div>
+                <div className="col text-left">{coupon.expiry}</div>
+              </div>
+              <div className="row">
+                <div className="col text-left">Usage:</div>
+                <div className="col text-left">{coupon.usedtimes}/{coupon.maxusagecount}</div>
+              </div>
 
-            <DataTable
-              className="coupons_table"
-              columns={columns}
-              data={Coupons}
-              responsive={true}
-              pagination={true}
-              onRowClicked={onRowClicked}
-            />
+              <div className="row">
+                <div className="col text-left">Coupon Type:</div>
+                <div className="col text-left">{coupon.offpercentage != null ? "Percentage" : "Fixed"}</div>
+              </div>
+              <div className="row">
+                <div className="col text-left">Discount:</div>
+                <div className="col text-left">{coupon.offpercentage != null ? `${coupon.offpercentage}%` : coupon.subtractfixedamount}</div>
+              </div>
+              <div className="row">
+                <div className="col text-left">Coupon For:</div>
+                <div className="col text-left">{coupon.forcustomeremail != null ? "Customer" : "Public"}</div>
+              </div>
+              {
+                coupon.forcustomeremail != null ? (
+
+                  <div className="row">
+                    <div className="col text-left">Customer:</div>
+                    <div className="col text-left">{coupon.forcustomeremail}</div>
+                  </div>
+                ) : ""
+              }
+              <div className="row">
+                <div className="col text-left">Status:</div>
+                <div className="col text-left">
+                  {/* {coupon.isactive ? "Active" : "Unactive"} */}
+                  {/* <br /> */}
+                  <Switch
+                    onChange={(isActive) => onChangeActive(coupon, isActive)}
+                    checked={coupon.isactive}
+                    checkedIcon={false}
+                    uncheckedIcon={false}
+                  />
+                </div>
+              </div>
+
+              <div className="row  mt-3">
+                <div className="col text-left">
+                  <h2>Coupon History</h2>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col text-left">
+                  <table className="table">
+
+                    {
+                      couponHistory.length ? couponHistory.map(history => {
+                        return (
+                          <tr>
+                            <td><strong>Customer :</strong> {history.customeremail} </td>
+                            <td><strong>Order :</strong> {history.orderId} </td>
+                            <td>
+                              <Link to={`details/${history.orderId}`} ><img src={viewicon} alt="" /></Link>
+                            </td>
+
+                          </tr>
+
+                        )
+                      }) :
+                        <tr><td>No History available.</td></tr>
+                    }
+                  </table>
+
+                </div>
+              </div>
+
+            </div>
           </section>
         </div>
       </div>
@@ -534,24 +492,32 @@ const Coupons = () => {
           onSubmitSuccess={onSubmitSuccess}
           show={AddCouponsShow}
           handleClose={handleAddCouponsclose}
-          info={selectedCoupon}
+          info={coupon}
           isDuplicating={isDuplicating}
-          Coupons={Coupons}
+          Coupons={coupons}
         />
       )}
-      {ViewCouponsShow && (
-        <ViewCoupon
-          value={""}
-          onSubmitSuccess={() => { }}
-          show={ViewCouponsShow}
-          handleClose={handleViewCouponsclose}
-          onDplicateClick={onDplicateClick}
-          info={selectedCoupon}
-          Coupons={Coupons}
-        />
-      )}
+      {duplicateCouponStatus ? (
+        <div className="not_verified">
+          <div className="error_msg">
+            <div
+              className="close_verification_popup"
+              onClick={() => {
+                setduplicateCouponStatus(false);
+              }}
+            >
+              &times;
+            </div>
+              {duplicateCouponStatus}
+          </div>
+        </div>
+      ) : (
+          ""
+        )}
     </>
-  );
-};
+  )
+}
 
-export default withRouter(Coupons);
+
+
+export default withRouter(CouponDetails);
