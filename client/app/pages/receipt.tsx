@@ -61,30 +61,24 @@ const Receipt = (props) => {
               <table className="table">
                 <thead>
                   <tr>
-                    <th>Service</th>
+                    <th>Product</th>
                     <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>
                     <tr>
-                      <td>Mpartial Deposit</td>
+                      <td>Mpartial </td>
                       <td>${price}</td>
                     </tr>
                     {
-                      order.coupenapplied && order.coupenapplied.length ? (
+                      order.couponapplied && order.couponapplied.length ? (
                         <>
                           <tr>
-                            <td>Discount: {order.coupenapplied}</td>
+                            <td>Coupon Discount ({order.couponapplied})</td>
                             <td>
-                              <div className="form_price">-${order.amountsubtraced / 100}</div>
+                              <div>-${order.amountsubtraced / 100}</div>
                             </td>
                           </tr>
-                          <tr>
-                            <td>Subtotal</td>
-                            <td>${order.amountInCents / 100}</td>
-                          </tr>
-
-
                           <tr>
                             <td>Total</td>
                             <td>${order.amountInCents / 100}</td>

@@ -105,37 +105,37 @@ export const updateStatus = (payload) =>
   }).pipe(catchError(handleError('')));
 
 
-  export const addCoupen = (payload) =>
+  export const addCoupon = (payload) =>
   ajax({
     headers: {
       authString: localStorage.topen,
       "Content-Type": "application/json",
     },
     method: 'POST',
-    url: `${baseURL}/GIServer/addCoupen`,
+    url: `${baseURL}/GIServer/addcoupon`,
     body: payload
   }).pipe(catchError(handleError('')));
 
 
-  export const editCoupen = (payload) =>
+  export const editCoupon = (payload) =>
   ajax({
     headers: {
       authString: localStorage.topen,
       "Content-Type": "application/json",
     },
     method: 'POST',
-    url: `${baseURL}/GIServer/editCoupen?coupenId=${payload.coupenId}&isCoupenActive=${payload.isCoupenActive}`,
+    url: `${baseURL}/GIServer/editcoupon?couponId=${payload.couponId}&iscouponActive=${payload.isCouponActive}`,
   }).pipe(catchError(handleError('')));
 
 
-  export const getAllCoupen = () =>
+  export const getAllCoupon = () =>
   ajax({
     headers: {
       authString: localStorage.topen,
       "Content-Type": "application/json",
     },
     method: 'POST',
-    url: `${baseURL}/GIServer/getAllCoupens`,
+    url: `${baseURL}/GIServer/getAllcoupons`,
   }).pipe(catchError(handleError('')));
 
 
@@ -403,11 +403,11 @@ export const getPIC = () => {
 
 
 
-export const applyCoupens = (payload) => {
+export const applyCoupons = (payload) => {
   return ajax({
     headers: requestHeader(),
     method: "POST",
-    url: `${baseURL}/Client/applyCoupen?thetoken=${localStorage.token}&orderId=${payload.orderId}&coupedCode=${payload.coupon}`,
+    url: `${baseURL}/Client/applycoupon?thetoken=${localStorage.token}&orderId=${payload.orderId}&coupedCode=${payload.coupon}`,
   }).pipe(
     catchError(handleError("tokenCheck")),
 

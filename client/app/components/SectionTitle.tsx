@@ -9,11 +9,11 @@ const SectionTitle = (props) => {
                     <div className="title left">
                         <div className="row">
                             <div className="col-md-6 col-sm-12">
-                                <div className="section_title_text">
+                                <h1 className="section_title_text">
                                     {
                                         props.title
                                     }
-                                </div>
+                                </h1>
                             </div>
                             <div className="col-md-6 col-sm-12">
                                 <div className="section_title_description">
@@ -28,11 +28,11 @@ const SectionTitle = (props) => {
                     <div className="title center">
                     <div className="row">
                         <div className="col">
-                            <div className="section_title_text">
+                            <h1 className="section_title_text">
                                 {
                                     props.title
                                 }
-                            </div>
+                            </h1>
                         </div>
                     </div>
                 </div>

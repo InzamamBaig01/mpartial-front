@@ -1,6 +1,6 @@
 import { withRouter, Link } from "react-router-dom"
 import React, { useState, useEffect, useContext } from "react";
-import { getAllCoupen, couponUsageHistory, addCoupen, editCoupen } from "utils/api-routes/api-routes.util";
+import { getAllCoupon, couponUsageHistory, addCoupon, editCoupon } from "utils/api-routes/api-routes.util";
 import ADHeader from "app/components/ADHeader";
 import AdminSidebar from "./_components/AdminSidebar";
 import viewicon from "../../../assets/view.svg";
@@ -16,7 +16,7 @@ import Switch from "react-switch";
 
 const AddCoupons = (props) => {
   const [data, setData] = useState({
-    coupencode: "",
+    couponcode: "",
     activefrom: new Date().toISOString(),
     maxusagecount: "",
     offpercentage: "",
@@ -39,7 +39,7 @@ const AddCoupons = (props) => {
       const currentCouponFor = duData.forcustomeremail == null ? "Public" : "Customer";
       const currentCouponType = duData.offpercentage == null ? "Fixed" : "Percentage";
       setData({
-        coupencode: "",
+        couponcode: "",
         activefrom: new Date(duData.activefrom).toISOString(),
         maxusagecount: duData.maxusagecount,
         offpercentage: currentCouponType == "Percentage" ? duData.offpercentage : "",
@@ -61,14 +61,14 @@ const AddCoupons = (props) => {
 
   useEffect(() => {
     const isAvailable = props.Coupons.filter((coupon) => {
-      return coupon.coupencode == data.coupencode;
+      return coupon.couponcode == data.couponcode;
     });
     if (isAvailable.length) {
       setCouponError(true);
     } else {
       setCouponError(false);
     }
-  }, [data.coupencode]);
+  }, [data.couponcode]);
 
   const onsubmit = (e) => {
     e.preventDefault();
@@ -77,9 +77,9 @@ const AddCoupons = (props) => {
     Object.keys(data).map(key => {
       data[key] = typeof data[key] == "string" ? data[key].trim() != "" ? data[key] : null : data[key]
     })
-    addCoupen(data).subscribe((response) => {
+    addCoupon(data).subscribe((response) => {
       if (response.response.Requested_Action) {
-        props.onSubmitSuccess(data.coupencode);
+        props.onSubmitSuccess(data.couponcode);
         props.handleClose();
       }
     });
@@ -132,13 +132,13 @@ const AddCoupons = (props) => {
                 onChange={(e) =>
                   setData({
                     ...data,
-                    coupencode: e.currentTarget.value,
+                    couponcode: e.currentTarget.value,
                   })
                 }
-                value={data.coupencode}
+                value={data.couponcode}
               />
               <span>
-                {couponError ? `${data.coupencode} is already existed.` : ""}
+                {couponError ? `${data.couponcode} is already existed.` : ""}
               </span>
             </div>
             <div className="form-group">
@@ -337,16 +337,16 @@ const CouponDetails = (props) => {
 
 
   const onChangeActive = (d, isActive) => {
-    editCoupen({
-      coupenId: d.id,
-      isCoupenActive: isActive,
+    editCoupon({
+      couponId: d.id,
+      isCouponActive: isActive,
     }).subscribe((response) => {
       getCouponDetail();
     });
   };
 
   const getCouponDetail = () => {
-    getAllCoupen().subscribe(response => {
+    getAllCoupon().subscribe(response => {
       const couponsOP = response.response.data;
       setCoupons(couponsOP);
       const filtered = couponsOP.filter(c => { return c.id == couponid });
@@ -362,7 +362,7 @@ const CouponDetails = (props) => {
     if (Object.keys(coupon).length) {
       console.log(coupon)
       couponUsageHistory({
-        couponCode: coupon.coupencode
+        couponCode: coupon.couponcode
       }).subscribe(response => {
 
         setCouponHistory(response.response.data);
@@ -395,7 +395,7 @@ const CouponDetails = (props) => {
           <section>
             <div className={"section-head mb-3 row"}>
               <div className="col">
-                <h2>Coupon: {coupon.coupencode}</h2>
+                <h2>Coupon: {coupon.couponcode}</h2>
               </div>
               <div className="col text-right">
                 <button className="btn" onClick={onDplicateClick}>Make Duplicate</button>
@@ -468,7 +468,7 @@ const CouponDetails = (props) => {
                             <td><strong>Customer :</strong> {history.customeremail} </td>
                             <td><strong>Order :</strong> {history.orderId} </td>
                             <td>
-                              <Link to={`details/${history.orderId}`} ><img src={viewicon} alt="" /></Link>
+                              <Link to={`/details/${history.orderId}`} ><img src={viewicon} alt="" /></Link>
                             </td>
 
                           </tr>

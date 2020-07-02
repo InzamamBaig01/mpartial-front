@@ -12,6 +12,7 @@ const OrderDetails = (props) => {
 
   useEffect(() => {
     if (props.order) {
+      console.log(props.order)
       setOrder(props.order);
     }
     localStorage.setItem("sessipn", "sessipn");
@@ -124,26 +125,28 @@ const OrderDetails = (props) => {
                 <br />
                 <div className="order_details_value">
                   <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th className="text-center">Price</th>
+                      </tr>
+                    </thead>
                     <tr>
-                      <td>Price: </td>
+                      <td>Mpartial </td>
                       <td className="text-center">
                         ${order.amountInCents / 100}
                       </td>
                     </tr>
 
-                    {order.coupenapplied ? (
+                    {order.couponapplied ? (
                       <>
                         <tr>
-                          <td>Coupon Code: </td>
-                          <td className="text-center">{order.coupenapplied}</td>
+                          <td>Coupon Discount ({order.couponapplied}) </td>
+                          <td className="text-center">-${order.amountsubtraced / 100}</td>
                         </tr>
                         <tr>
-                          <td>mpartial Price: </td>
+                          <td>Total</td>
                           <td className="text-center">${order.orignalprice / 100}</td>
-                        </tr>
-                        <tr>
-                          <td>You Saved: </td>
-                          <td className="text-center">${order.amountsubtraced / 100}</td>
                         </tr>
                       </>
                     ) : (

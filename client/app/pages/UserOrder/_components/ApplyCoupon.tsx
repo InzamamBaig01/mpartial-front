@@ -3,7 +3,7 @@ import { AppAlertsContext } from "contexts/appAlertsContext";
 import { AppContext } from "contexts/appContext";
 import { Modal } from "react-bootstrap";
 import Loader from "app/components/Loader";
-import { applyCoupens } from "utils/api-routes/api-routes.util";
+import { applyCoupons } from "utils/api-routes/api-routes.util";
 
 const ApplyCoupon = (props) => {
     const { showLoader, hideLoader } = useContext(AppAlertsContext);
@@ -16,7 +16,7 @@ const ApplyCoupon = (props) => {
         showLoader();
         //  price - (price * (discount % / 100))
         const newPrice = price - (price * (50 / 100));
-        applyCoupens({
+        applyCoupons({
             orderId: props.info.orderId,
             coupon: coupon,
         }).subscribe(response => {

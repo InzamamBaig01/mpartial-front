@@ -7,24 +7,23 @@ import First from "../../../assets/first.svg";
 import Last from "../../../assets/last.svg";
 import Next from "../../../assets/next.svg";
 import Previous from "../../../assets/previous.svg";
-import viewicon from "../../../assets/profile_edit.svg";
+import viewicon from "../../../assets/view.svg";
 import AdminSidebar from "./_components/AdminSidebar";
 import history from '../../../utils/history';
 import { Dropdown, Modal, Button } from "react-bootstrap";
 import DatePicker from "reactstrap-date-picker";
 import { AppContext } from "../../../contexts/appContext";
 import {
-  addCoupen,
-  getAllCoupen,
-  editCoupen,
+  addCoupon,
+  getAllCoupon,
+  editCoupon,
   couponUsageHistory,
 } from "utils/api-routes/api-routes.util";
 import { data } from "jquery";
 import moment from "moment";
-<img src={viewicon} alt="" />
 
 interface ICoupon {
-  coupencode: undefined | String | Number,
+  couponcode: undefined | String | Number,
   activefrom: undefined | String | Number,
   maxusagecount: undefined | String | Number,
   offpercentage: undefined | String | Number,
@@ -36,14 +35,14 @@ interface ICoupon {
 
 const AddCoupons = (props) => {
   const [data, setData] = useState<ICoupon>({
-    coupencode: "",
+    couponcode: "",
     activefrom: new Date().toISOString(),
     maxusagecount: "",
     offpercentage: "",
     subtractfixedamount: "",
     forcustomeremail: "",
     maxusagecountperuser: "",
-    expiry: new Date().toISOString(),
+    expiry: new Date(moment().add("day", 1).format("YYYY-MM-DD")).toISOString(),
   });
   const { getallADUsers, AllUsers } = useContext(AppContext);
 
@@ -59,7 +58,7 @@ const AddCoupons = (props) => {
       const currentCouponFor = duData.forcustomeremail == null ? "Public" : "Customer";
       const currentCouponType = duData.offpercentage == null ? "Fixed" : "Percentage";
       setData({
-        coupencode: "",
+        couponcode: "",
         activefrom: new Date(duData.activefrom).toISOString(),
         maxusagecount: duData.maxusagecount,
         offpercentage: currentCouponType == "Percentage" ? duData.offpercentage : "",
@@ -81,14 +80,14 @@ const AddCoupons = (props) => {
 
   useEffect(() => {
     const isAvailable = props.Coupons.filter((coupon) => {
-      return coupon.coupencode == data.coupencode;
+      return coupon.couponcode == data.couponcode;
     });
     if (isAvailable.length) {
       setCouponError(true);
     } else {
       setCouponError(false);
     }
-  }, [data.coupencode]);
+  }, [data.couponcode]);
 
   const onsubmit = (e) => {
     e.preventDefault();
@@ -97,7 +96,7 @@ const AddCoupons = (props) => {
     Object.keys(data).map(key => {
       data[key] = typeof data[key] == "string" ? data[key].trim() != "" ? data[key] : null : data[key]
     })
-    addCoupen(data).subscribe((response) => {
+    addCoupon(data).subscribe((response) => {
       if (response.response.Requested_Action) {
         props.onSubmitSuccess();
         props.handleClose();
@@ -152,13 +151,13 @@ const AddCoupons = (props) => {
                 onChange={(e) =>
                   setData({
                     ...data,
-                    coupencode: e.currentTarget.value,
+                    couponcode: e.currentTarget.value,
                   })
                 }
-                value={data.coupencode}
+                value={data.couponcode}
               />
               <span>
-                {couponError ? `${data.coupencode} is already existed.` : ""}
+                {couponError ? `${data.couponcode} is already existed.` : ""}
               </span>
             </div>
             <div className="form-group">
@@ -260,6 +259,7 @@ const AddCoupons = (props) => {
                 required
                 minDate={new Date().toISOString()}
                 value={data.activefrom}
+                maxDate={data.expiry}
                 showClearButton={false}
                 placeholder="Coupon Active From"
                 onChange={(v, f) =>
@@ -278,7 +278,7 @@ const AddCoupons = (props) => {
                 className="form-control"
                 required
                 value={data.expiry}
-                minDate={new Date().toISOString()}
+                minDate={data.activefrom}
                 showClearButton={false}
                 placeholder="Coupon Expiry Date"
                 onChange={(v, f) =>
@@ -344,7 +344,7 @@ const ViewCoupon = (props) => {
 
 
   couponUsageHistory({
-    couponCode: props.info.coupencode
+    couponCode: props.info.couponcode
   }).subscribe(res => {
     console.log(res);
   });
@@ -358,7 +358,7 @@ const ViewCoupon = (props) => {
       >
         <Modal.Header closeButton>
           <Modal.Title className="add_card_title">
-            Coupon: {props.info.coupencode}
+            Coupon: {props.info.couponcode}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="support_body">
@@ -435,7 +435,7 @@ const Coupons = () => {
   }, []);
 
   const getCoupons = () => {
-    getAllCoupen().subscribe((response) => {
+    getAllCoupon().subscribe((response) => {
       setCoupons(response.response.data);
     });
   };
@@ -443,21 +443,16 @@ const Coupons = () => {
   const onSubmitSuccess = () => {
     getCoupons();
   };
-  
- 
+
+
   const columns = [
     {
       name: "Code",
-      selector: "coupencode",
+      selector: "couponcode",
       sortable: false,
       className: "header-col",
     },
-    {
-      name: "Active From",
-      selector: "activefrom",
-      sortable: false,
-      className: "header-col",
-    },
+
     {
       name: "Expiry",
       selector: "expiry",
@@ -472,7 +467,29 @@ const Coupons = () => {
       format: (d) => `${d.usedtimes}/${d.maxusagecount}`,
     },
     {
-      name: "Active",
+      name: "Discount Amount / % ",
+      selector: "maxusagecount",
+      sortable: false,
+      className: "header-col",
+      format: (d) => {
+        return (
+          <>
+            {
+              d.offpercentage ? (
+                <span>
+                  {d.offpercentage}%
+                </span>
+              ) : (
+                  <span>
+                    ${d.subtractfixedamount}
+                  </span>
+                )}
+          </>
+        )
+      },
+    },
+    {
+      name: "Action",
       selector: "action",
       sortable: false,
       className: "header-col",
@@ -480,8 +497,8 @@ const Coupons = () => {
         <Link to={`/coupons-details/${d.id}`} >
           <img src={viewicon} alt="" />
         </Link>
-          
-        ),
+
+      ),
     },
   ];
 

@@ -262,7 +262,7 @@ const Checkout = (props) => {
         name: "mpartial",
         price: order.orignalprice,
         description: "",
-        coupon: order.coupenapplied,
+        coupon: order.couponapplied,
         amountsubtraced: order.amountsubtraced,
         orignalprice: order.orignalprice,
         newprice: order.amountInCents,
@@ -460,30 +460,25 @@ const Checkout = (props) => {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>Service</th>
+                      <th>Product</th>
                       <th>Price</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>Mpartial Deposit</td>
+                      <td>Mpartial</td>
                       <td>${price}</td>
                     </tr>
                     {product.coupon && product.coupon.length ? (
                       <>
                         <tr>
-                          <td>Discount: {product.coupon}</td>
+                          <td>Coupon Discount ({product.coupon})</td>
                           <td>
-                            <div className="form_price">
+                            <div>
                               -${product.amountsubtraced / 100}
                             </div>
                           </td>
                         </tr>
-                        <tr>
-                          <td>Subtotal</td>
-                          <td>${product.newprice / 100}</td>
-                        </tr>
-
                         <tr>
                           <td>Total</td>
                           <td>${product.newprice / 100}</td>

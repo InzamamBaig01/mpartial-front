@@ -1,8 +1,19 @@
-
 @media screen and (min-width: 1441px) and (max-width: 1920px) {
-    
 }
 
 @media screen and (min-width: 1921px) {
-    
+}
+
+@media screen and (max-width: 1199px) {
+    .order_details_footer {
+        .col {
+            width: 100% !important;
+            text-align: center !important;
+            margin-top: 10px;
+        }
+    }
+    .modal .modal-dialog {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
 }
