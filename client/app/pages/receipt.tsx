@@ -50,7 +50,9 @@ const Receipt = (props) => {
             </div>
             <div className="col">
               <label>Total</label>
-              <div className="receipt_data">${price}.00</div>
+              <div className="receipt_data">${
+                order.couponapplied && order.couponapplied.length ? order.amountInCents / 100 : price
+              }.00</div>
             </div>
           </div>
           <div className="row">

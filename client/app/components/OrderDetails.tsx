@@ -132,9 +132,9 @@ const OrderDetails = (props) => {
                       </tr>
                     </thead>
                     <tr>
-                      <td>Mpartial </td>
+                      <td>Mpartial Deposit</td>
                       <td className="text-center">
-                        ${order.amountInCents / 100}
+                        ${order.orignalprice / 100}
                       </td>
                     </tr>
 
@@ -146,7 +146,7 @@ const OrderDetails = (props) => {
                         </tr>
                         <tr>
                           <td>Total</td>
-                          <td className="text-center">${order.orignalprice / 100}</td>
+                          <td className="text-center">${order.amountInCents / 100}</td>
                         </tr>
                       </>
                     ) : (
