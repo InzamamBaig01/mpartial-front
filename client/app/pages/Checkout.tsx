@@ -251,11 +251,13 @@ const Checkout = (props) => {
   // }, []);
 
   const getPICO = (coupedCode?) => {
+    
     getPaymentIntendOfOrder({
       orderId: orderid,
       coupedCode: coupedCode,
     }).subscribe((response) => {
-      // console.log(response.response);
+      if (response.response.Requested_Action) {
+        // console.log(response.response);
       setPIC(response.response.message);
       const order = response.response.data;
       setProduct({
@@ -267,6 +269,10 @@ const Checkout = (props) => {
         orignalprice: order.orignalprice,
         newprice: order.amountInCents,
       });
+      } else {
+        getPICO(coupedCode);
+      }
+      
     });
   };
 
@@ -280,10 +286,11 @@ const Checkout = (props) => {
       price: couponData.newprice,
       description: "",
       coupon: couponData.code,
-      amountsubtraced: couponData.amountsubtraced,
+      amountsubtraced: couponData.amountreducned,
       orignalprice: couponData.orignalprice,
       newprice: couponData.newprice,
     });
+    console.log(couponData);
     getPICO();
     // setPrice(couponData.price);
     // getPICO(couponData.coupon);
@@ -481,7 +488,7 @@ const Checkout = (props) => {
                         </tr>
                         <tr>
                           <td>Total</td>
-                          <td>${product.newprice / 100}</td>
+                          <td>${product.newprice > 0 ?  product.newprice / 100 : product.newprice}</td>
                         </tr>
                       </>
                     ) : (
