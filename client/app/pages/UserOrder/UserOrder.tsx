@@ -117,6 +117,8 @@ const UserOrder = (props) => {
       });
       setAllFields(fields);
       setDataValues(dataV);
+      setSubmitBtnDisabled(true);
+
     }
   }, [order]);
 
@@ -245,14 +247,16 @@ const UserOrder = (props) => {
       ...dataValues,
       [field.id]: value,
     });
-
-    let fieldsData = Object.assign([], allFields);
+    let fieldsData = Object.assign([], allFields);c
     fieldsData = fieldsData.map((f) => {
       if (f.id == field.id) {
-        f.value = value;
+        const cop = Object.assign({},f);
+        cop['value'] = value;
+        return cop;
       }
       return f;
     });
+
     setAllFields(fieldsData);
   };
 
