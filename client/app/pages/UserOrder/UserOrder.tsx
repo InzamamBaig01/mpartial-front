@@ -247,7 +247,7 @@ const UserOrder = (props) => {
       ...dataValues,
       [field.id]: value,
     });
-    let fieldsData = Object.assign([], allFields);c
+    let fieldsData = Object.assign([], allFields);
     fieldsData = fieldsData.map((f) => {
       if (f.id == field.id) {
         const cop = Object.assign({},f);
