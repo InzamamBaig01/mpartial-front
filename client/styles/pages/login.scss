@@ -17,7 +17,7 @@
       text-align: center;
       display: block;
     }
-    .sub-title{
+    .sub-title {
       font-weight: 400;
       font-size: 24px;
       line-height: 60px;
@@ -30,7 +30,6 @@
       width: 100%;
       margin: 0 auto;
       text-align: center;
-
 
       .forgotP_container {
         text-align: right;
@@ -80,7 +79,7 @@
         color: #3ac280;
         text-transform: uppercase;
         opacity: 1;
-        padding:0px 20px;
+        padding: 0px 20px;
         min-width: 257px;
       }
     }
@@ -88,7 +87,7 @@
 }
 
 .input-group {
-  background: #ffffff 0% 0% no-repeat padding-box;
+  background: #f6f9f9 0 0 no-repeat padding-box !important;
   border: 1px solid #7fa3b0;
   border-radius: 10px;
   opacity: 1;
@@ -111,12 +110,14 @@
     letter-spacing: 0px;
     color: rgba(0, 0, 0, 0.5);
     height: 47px;
+    background: #f6f9f9 0 0 no-repeat padding-box !important;
   }
 }
-.container .submit,.container submit:hover {
+.container .submit,
+.container submit:hover {
   height: 50px;
   background: #3ac280 0% 0% no-repeat padding-box !important;
-  border-color:  #3ac280 !important;
+  border-color: #3ac280 !important;
   border-radius: 25px;
   opacity: 1;
   display: inline-block;

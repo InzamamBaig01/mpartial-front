@@ -1980,6 +1980,12 @@ button.btn.payment_switch {
       }
     }
   }
+  .input-group {
+    .floating_label {
+      background: #f6f9f9 !important;
+
+    }
+  }
   &.nogroup {
     &.text-center {
       .floating_label {
