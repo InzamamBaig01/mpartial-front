@@ -1,29 +1,35 @@
-import * as React from "react";
-import { withRouter, Link } from "react-router-dom";
-import SectionTitle from "app/components/SectionTitle";
-import { AppAlertsContext } from "contexts/appAlertsContext";
-import InputMask from "react-input-mask";
-import { sendEmail, resetPassword } from "utils/api-routes/api-routes.util";
-import { useState, useContext } from "react";
-import Loader from "app/components/Loader";
-import { AuthContext } from "contexts/authContext";
+import * as React from 'react';
+import { withRouter, Link } from 'react-router-dom';
+import SectionTitle from 'app/components/SectionTitle';
+import { AppAlertsContext } from 'contexts/appAlertsContext';
+import InputMask from 'react-input-mask';
+import { sendEmail, resetPassword } from 'utils/api-routes/api-routes.util';
+import { useState, useContext } from 'react';
+import Loader from 'app/components/Loader';
+import { AuthContext } from 'contexts/authContext';
 
-import ReCAPTCHA from "react-google-recaptcha";
-import appConfig from "../../../../appconfig.json";
+import ReCAPTCHA from 'react-google-recaptcha';
+import appConfig from '../../../../appconfig.json';
+import FloatingLabel from 'app/components/FloatingLabel';
 
 interface ConatctUsProps {}
 export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
   const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
   const { userDetails, isUserAuthenticated } = useContext(AuthContext);
-
+  const refs = {
+    name: React.createRef(),
+    email: React.createRef(),
+    phone: React.createRef(),
+    message: React.createRef(),
+  };
   const [isLoggedIn, setIsLoggedIn] = useState(isUserAuthenticated());
 
   const userd = userDetails() ? userDetails() : false;
   const [contactDetails, setContactDetails] = useState({
-    name: userd ? `${userd.firstName} ${userd.lastName}` : "",
-    email: userd ? `${userd.emailAddress}` : "",
-    phone: userd ? `${userd.phone}` : "",
-    message: "",
+    name: userd ? `${userd.firstName} ${userd.lastName}` : '',
+    email: userd ? `${userd.emailAddress}` : '',
+    phone: userd ? `${userd.phone}` : '',
+    message: '',
   });
   const [messageDone, setMessageDone] = useState(false);
   const [isHuman, setIshuman] = useState(false);
@@ -39,10 +45,10 @@ export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
     }).subscribe((response) => {
       setMessageDone(true);
       setContactDetails({
-        name: userd ? `${userd.firstName} ${userd.lastName}` : "",
-        email: userd ? `${userd.emailAddress}` : "",
-        phone: userd ? `${userd.phone}` : "",
-        message: "",
+        name: userd ? `${userd.firstName} ${userd.lastName}` : '',
+        email: userd ? `${userd.emailAddress}` : '',
+        phone: userd ? `${userd.phone}` : '',
+        message: '',
       });
       hideLoader();
     });
@@ -62,102 +68,134 @@ export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
   return (
     <>
       <div
-        className="mpartial_section contact_us"
+        className='mpartial_section contact_us'
         css={{
-          backgroundColor: "#FFFFFF",
-          justifyContent: "center",
-          textAlign: "center",
-          color: "#0A5169",
-          padding: " 0",
+          backgroundColor: '#FFFFFF',
+          justifyContent: 'center',
+          textAlign: 'center',
+          color: '#0A5169',
+          padding: ' 0',
         }}
       >
-        <div className={"container"}>
+        <div className={'container'}>
           <SectionTitle
-            title={"Contact Us"}
-            description={""}
-            type="center"
+            title={'Contact Us'}
+            description={''}
+            type='center'
           ></SectionTitle>
-          <div className={"form-holder"}>
+          <div className={'form-holder'}>
             <form onSubmit={handleSubmit}>
-              <div className={"row"}>
-                <div className={"col-md-6 col-sm-12"}>
-                  <input
-                    type={"text"}
-                    placeholder={"Your Name"}
-                    name={"name"}
-                    required
-                    value={contactDetails.name}
-                    onChange={(e) => {
-                      onchange(e.currentTarget.value, "name");
-                    }}
-                  />
-                  <input
-                    type={"email"}
-                    placeholder={"Email"}
-                    name={"email"}
-                    required
-                    value={contactDetails.email}
-                    onChange={(e) => {
-                      onchange(e.currentTarget.value, "email");
-                    }}
-                  />
-                  <InputMask
-                    mask="999-999-9999"
-                    value={contactDetails.phone}
-                    onChange={(e) => {
-                      onchange(e.currentTarget.value, "phone");
-                    }}
-                  >
-                    {(inputProps) => (
-                      <input
-                        type="text"
-                        placeholder="Cell"
-                        min="1"
-                        required
-                        {...inputProps}
-                        step="any"
-                      />
-                    )}
-                  </InputMask>
+              <div className={'row'}>
+                <div className={'col-md-6 col-sm-12 '}>
+                  <div className='form-group nogroup'>
+                    <input
+                      type={'text'}
+                      placeholder={''}
+                      name={'name'}
+                      required
+                      value={contactDetails.name}
+                      ref={refs.name}
+                      onChange={(e) => {
+                        onchange(e.currentTarget.value, 'name');
+                      }}
+                    />
+                    <FloatingLabel
+                      inputRef={refs.name}
+                      label='Your Name'
+                      inputValue={contactDetails.name}
+                    />
+                  </div>
+                  <div className='form-group nogroup'>
+                    <input
+                      type={'email'}
+                      placeholder={''}
+                      name={'email'}
+                      required
+                      ref={refs.email}
+                      value={contactDetails.email}
+                      onChange={(e) => {
+                        onchange(e.currentTarget.value, 'email');
+                      }}
+                    />
+                    <FloatingLabel
+                      inputRef={refs.email}
+                      label='Email'
+                      inputValue={contactDetails.email}
+                    />
+                  </div>
+                  <div className='form-group nogroup'>
+                    <InputMask
+                      mask='999-999-9999'
+                      value={contactDetails.phone}
+                      onChange={(e) => {
+                        onchange(e.currentTarget.value, 'phone');
+                      }}
+                    >
+                      {(inputProps) => (
+                        <input
+                          type='text'
+                          placeholder=''
+                          min='1'
+                          required
+                          ref={refs.phone}
+                          {...inputProps}
+                          step='any'
+                        />
+                      )}
+                    </InputMask>
+                    <FloatingLabel
+                      inputRef={refs.phone}
+                      label='Cell'
+                      inputValue={contactDetails.phone}
+                    />
+                  </div>
                 </div>
-                <div className={"col-md-6 col-sm-12"}>
-                  <textarea
-                    value={contactDetails.message}
-                    placeholder={"Write your message..."}
-                    required
-                    onChange={(e) => {
-                      onchange(e.currentTarget.value, "message");
-                    }}
-                  ></textarea>
+                <div className={'col-md-6 col-sm-12'}>
+                  <div className='form-group nogroup'>
+                    <textarea
+                      value={contactDetails.message}
+                      placeholder={''}
+                      required
+                      ref={refs.message}
+                      onChange={(e) => {
+                        onchange(e.currentTarget.value, 'message');
+                      }}
+                    ></textarea>
+                    <FloatingLabel
+                      inputRef={refs.message}
+                      label='Write your message...'
+                      inputValue={contactDetails.message}
+                    />
+                  </div>
                 </div>
               </div>
               {!isLoggedIn && (
                 <ReCAPTCHA
                   sitekey={appConfig.captchaKey}
                   onChange={onCaptchaChange}
-                  className="captcha_box"
+                  className='captcha_box'
                 />
               )}
               <p>
                 {messageDone
-                  ? "Your message has been sent to the support team, you can expect a reply within 12 hours. "
-                  : ""}
+                  ? 'Your message has been sent to the support team, you can expect a reply within 12 hours. '
+                  : ''}
               </p>
 
               <button
-                type={"submit"}
-                className="btn btn-green"
-                value={"Submit"}
-                id="formButton"
+                type={'submit'}
+                className='btn btn-green'
+                value={'Submit'}
+                id='formButton'
                 disabled={
-                  contactDetails.name == "" ||
-                  contactDetails.email == "" ||
-                  contactDetails.phone == "" ||
-                  contactDetails.message == "" ||
+                  contactDetails.name == '' ||
+                  contactDetails.email == '' ||
+                  contactDetails.phone == '' ||
+                  contactDetails.message == '' ||
                   (!isLoggedIn && !isHuman)
                 }
               >
-                <Loader text="Submit"></Loader>
+                <Loader text='Submit'></Loader>
               </button>
             </form>
           </div>

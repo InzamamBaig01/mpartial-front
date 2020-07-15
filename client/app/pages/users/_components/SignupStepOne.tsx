@@ -1,9 +1,10 @@
-import * as React from "react";
-import { css } from "emotion";
-import Mail from "../../../../assets/email.svg";
-import { AuthContext } from "contexts/authContext";
-import Loader from "app/components/Loader";
-import { AppAlertsContext } from "contexts/appAlertsContext";
+import * as React from 'react';
+import { css } from 'emotion';
+import Mail from '../../../../assets/email.svg';
+import { AuthContext } from 'contexts/authContext';
+import Loader from 'app/components/Loader';
+import { AppAlertsContext } from 'contexts/appAlertsContext';
+import FloatingLabel from 'app/components/FloatingLabel';
 
 interface StepProps {
   step?: number;
@@ -37,41 +38,44 @@ export const SignupStepOne: React.FC<StepProps> = (props) => {
       }
     });
   };
+  const emailRef = React.createRef();
   return (
     <>
-      <div className={"container"}>
+      <div className={'container'}>
         <h2>
           Hello! I'm Joe. I'll get you signed up in <br /> seconds. Ready to go?
         </h2>
         <form onSubmit={onSubmit}>
           <div
-            className="form-group"
-            css={{ maxWidth: "464px", margin: "30px auto" }}
+            className='form-group'
+            css={{ maxWidth: '464px', margin: '30px auto' }}
           >
-            <div className="input-group">
-              <img className="input_icon" src={Mail} alt="" />
+            <div className='input-group'>
+              <img className='input_icon' src={Mail} alt='' />
               <input
-                type="email"
-                className="form-control"
-                placeholder="Email"
-                autoComplete="off"
+                type='email'
+                className='form-control'
+                placeholder=''
+                autoComplete='off'
                 required
+                ref={emailRef}
                 value={value}
                 onChange={(e) => {
                   setValue(e.currentTarget.value);
                 }}
               />
+              <FloatingLabel inputRef={emailRef} label='Email' inputValue={value} />
             </div>
-            {error ? <span className="password_not_matched">{error}</span> : ""}
+            {error ? <span className='password_not_matched'>{error}</span> : ''}
           </div>
           <button
-            css={{ maxWidth: "257px", marginTop: "30px" }}
-            type="submit"
+            css={{ maxWidth: '257px', marginTop: '30px' }}
+            type='submit'
             disabled={value.length == 0}
-            id="formButton"
-            className="btn btn-primary btn-block submit"
+            id='formButton'
+            className='btn btn-primary btn-block submit'
           >
-            <Loader text="Lets Do This"></Loader>
+            <Loader text='Lets Do This'></Loader>
           </button>
         </form>
       </div>
