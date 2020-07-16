@@ -15,10 +15,10 @@ const MyOrders = () => {
 
   useEffect(() => {
     if (myOrders) {
-      const allOrders = myOrders.sort((a, b) => {
-        return Number(a.id) - Number(b.id);
-      });
-      setOrders(allOrders);
+      // const allOrders = myOrders.sort((a, b) => {
+      //   return Number(a.id) - Number(b.id);
+      // });
+      setOrders(myOrders);
     }
 
   }, [myOrders]);

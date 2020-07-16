@@ -13,7 +13,6 @@ import { AppContext } from "contexts/appContext";
 import AdminSidebar from "./_components/AdminSidebar";
 const AdminOrders = () => {
   const { getallADOrders, AllOrders } = useContext(AppContext);
-  const sortedOrder = AllOrders.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
   const [orders, setOrders] = useState([]);
   const columns = [
     {
@@ -76,10 +75,10 @@ const AdminOrders = () => {
   }, []);
 
   useEffect(() => {
-    if (sortedOrder.length) {
-      setOrders(sortedOrder);
+    if (AllOrders.length) {
+      setOrders(AllOrders);
     }
-  }, [sortedOrder]);
+  }, [AllOrders]);
   return (
     <>
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>

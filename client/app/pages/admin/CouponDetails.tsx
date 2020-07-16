@@ -1,34 +1,37 @@
-import { withRouter, Link } from "react-router-dom"
-import React, { useState, useEffect, useContext } from "react";
-import { getAllCoupon, couponUsageHistory, addCoupon, editCoupon } from "utils/api-routes/api-routes.util";
-import ADHeader from "app/components/ADHeader";
-import AdminSidebar from "./_components/AdminSidebar";
-import viewicon from "../../../assets/view.svg";
-import Coupons from "./Coupons";
-import { AppContext } from "contexts/appContext";
-import moment from "moment";
-import { Modal } from "react-bootstrap";
-import DatePicker from "reactstrap-date-picker";
+import { withRouter, Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import {
+  getAllCoupon,
+  couponUsageHistory,
+  addCoupon,
+  editCoupon,
+} from 'utils/api-routes/api-routes.util';
+import ADHeader from 'app/components/ADHeader';
+import AdminSidebar from './_components/AdminSidebar';
+import viewicon from '../../../assets/view.svg';
+import Coupons from './Coupons';
+import { AppContext } from 'contexts/appContext';
+import moment from 'moment';
+import { Modal } from 'react-bootstrap';
+import DatePicker from 'reactstrap-date-picker';
 import history from '../../../utils/history';
-import Switch from "react-switch";
-
-
+import Switch from 'react-switch';
 
 const AddCoupons = (props) => {
   const [data, setData] = useState({
-    couponcode: "",
+    couponcode: '',
     activefrom: new Date().toISOString(),
-    maxusagecount: "",
-    offpercentage: "",
-    subtractfixedamount: "",
-    forcustomeremail: "",
-    maxusagecountperuser: "",
+    maxusagecount: '',
+    offpercentage: '',
+    subtractfixedamount: '',
+    forcustomeremail: '',
+    maxusagecountperuser: '',
     expiry: new Date().toISOString(),
   });
   const { getallADUsers, AllUsers } = useContext(AppContext);
 
-  const [couponType, setCouponType] = useState("Percentage");
-  const [couponFor, setCouponFor] = useState("public");
+  const [couponType, setCouponType] = useState('Percentage');
+  const [couponFor, setCouponFor] = useState('public');
   const [Users, setUsers] = useState([]);
   const [couponError, setCouponError] = useState(false);
 
@@ -36,16 +39,24 @@ const AddCoupons = (props) => {
     getallADUsers();
     if (props.isDuplicating) {
       const duData = props.info;
-      const currentCouponFor = duData.forcustomeremail == null ? "Public" : "Customer";
-      const currentCouponType = duData.offpercentage == null ? "Fixed" : "Percentage";
+      const currentCouponFor =
+        duData.forcustomeremail == null ? 'Public' : 'Customer';
+      const currentCouponType =
+        duData.offpercentage == null ? 'Fixed' : 'Percentage';
       setData({
-        couponcode: "",
+        couponcode: '',
         activefrom: new Date(duData.activefrom).toISOString(),
         maxusagecount: duData.maxusagecount,
-        offpercentage: currentCouponType == "Percentage" ? duData.offpercentage : "",
-        subtractfixedamount: currentCouponType == "Fixed" ? duData.subtractfixedamount : "",
-        forcustomeremail: currentCouponFor == "Customer" ? duData.forcustomeremail : "",
-        maxusagecountperuser: duData.maxusagecountperuser != null ? duData.maxusagecountperuser : "",
+        offpercentage:
+          currentCouponType == 'Percentage' ? duData.offpercentage : '',
+        subtractfixedamount:
+          currentCouponType == 'Fixed' ? duData.subtractfixedamount : '',
+        forcustomeremail:
+          currentCouponFor == 'Customer' ? duData.forcustomeremail : '',
+        maxusagecountperuser:
+          duData.maxusagecountperuser != null
+            ? duData.maxusagecountperuser
+            : '',
         expiry: new Date(duData.expiry).toISOString(),
       });
       setCouponType(currentCouponType);
@@ -72,11 +83,16 @@ const AddCoupons = (props) => {
 
   const onsubmit = (e) => {
     e.preventDefault();
-    data.expiry = moment(data.expiry).format("YYYY-MM-DD");
-    data.activefrom = moment(data.activefrom).format("YYYY-MM-DD");
-    Object.keys(data).map(key => {
-      data[key] = typeof data[key] == "string" ? data[key].trim() != "" ? data[key] : null : data[key]
-    })
+    data.expiry = moment(data.expiry).format('YYYY-MM-DD');
+    data.activefrom = moment(data.activefrom).format('YYYY-MM-DD');
+    Object.keys(data).map((key) => {
+      data[key] =
+        typeof data[key] == 'string'
+          ? data[key].trim() != ''
+            ? data[key]
+            : null
+          : data[key];
+    });
     addCoupon(data).subscribe((response) => {
       if (response.response.Requested_Action) {
         props.onSubmitSuccess(data.couponcode);
@@ -85,49 +101,45 @@ const AddCoupons = (props) => {
     });
   };
 
-
   const changeCouponType = (e) => {
-    if (e.currentTarget.value == "Fixed") {
+    if (e.currentTarget.value == 'Fixed') {
       setData({
         ...data,
-        offpercentage: "",
-      })
+        offpercentage: '',
+      });
     } else {
       setData({
         ...data,
-        subtractfixedamount: "",
-      })
+        subtractfixedamount: '',
+      });
     }
-    setCouponType(e.currentTarget.value)
-  }
+    setCouponType(e.currentTarget.value);
+  };
 
   useEffect(() => {
-    console.log(data)
-
-  }, [data])
+    console.log(data);
+  }, [data]);
 
   return (
     <>
       <Modal
         show={props.show}
         onHide={props.handleClose}
-        className="edit_profile"
+        className='edit_profile'
       >
         <Modal.Header closeButton>
-          <Modal.Title className="add_card_title">
-            {
-              props.isDuplicating ? "Duplicate Coupon" : "Create New Coupon"
-            }
+          <Modal.Title className='add_card_title'>
+            {props.isDuplicating ? 'Duplicate Coupon' : 'Create New Coupon'}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body className="support_body">
+        <Modal.Body className='support_body'>
           <form onSubmit={onsubmit}>
-            <div className="form-group">
+            <div className='form-group'>
               <label>Coupon Code</label>
               <input
-                type="text"
-                placeholder="Coupon Code"
-                className="form-control"
+                type='text'
+                placeholder='Coupon Code'
+                className='form-control'
                 required
                 onChange={(e) =>
                   setData({
@@ -138,14 +150,14 @@ const AddCoupons = (props) => {
                 value={data.couponcode}
               />
               <span>
-                {couponError ? `${data.couponcode} is already existed.` : ""}
+                {couponError ? `${data.couponcode} is already existed.` : ''}
               </span>
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <label>Coupon Type (Fixed or Percecntage)</label>
               <select
-                placeholder="Coupon Type"
-                className="form-control"
+                placeholder='Coupon Type'
+                className='form-control'
                 value={couponType}
                 onChange={changeCouponType}
               >
@@ -153,14 +165,14 @@ const AddCoupons = (props) => {
                 <option>Percentage</option>
               </select>
             </div>
-            {couponType == "Percentage" ? (
-              <div className="form-group">
+            {couponType == 'Percentage' ? (
+              <div className='form-group'>
                 <label>Coupon Percecntage</label>
 
                 <input
-                  type="number"
-                  placeholder="Coupon Percentage"
-                  className="form-control"
+                  type='number'
+                  placeholder='Coupon Percentage'
+                  className='form-control'
                   required
                   onChange={(e) =>
                     setData({
@@ -169,37 +181,37 @@ const AddCoupons = (props) => {
                     })
                   }
                   value={data.offpercentage}
-                  id="percentage"
-                  min="0"
-                  max="100"
-                  step="0.10"
+                  id='percentage'
+                  min='0'
+                  max='100'
+                  step='0.10'
                 />
               </div>
             ) : (
-                <div className="form-group">
-                  <label>Coupon Fixed Amount</label>
+              <div className='form-group'>
+                <label>Coupon Fixed Amount</label>
 
-                  <input
-                    type="number"
-                    placeholder="Coupon Fixed Amount"
-                    className="form-control"
-                    id="fixed"
-                    required
-                    onChange={(e) =>
-                      setData({
-                        ...data,
-                        subtractfixedamount: e.currentTarget.value,
-                      })
-                    }
-                    value={data.subtractfixedamount}
-                  />
-                </div>
-              )}
-            <div className="form-group">
+                <input
+                  type='number'
+                  placeholder='Coupon Fixed Amount'
+                  className='form-control'
+                  id='fixed'
+                  required
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      subtractfixedamount: e.currentTarget.value,
+                    })
+                  }
+                  value={data.subtractfixedamount}
+                />
+              </div>
+            )}
+            <div className='form-group'>
               <label>Coupon For (Customer or public)</label>
               <select
-                placeholder="Coupon Type"
-                className="form-control"
+                placeholder='Coupon Type'
+                className='form-control'
                 value={couponFor}
                 onChange={(e) => setCouponFor(e.currentTarget.value)}
               >
@@ -208,10 +220,10 @@ const AddCoupons = (props) => {
               </select>
             </div>
 
-            {couponFor == "Customer" ? (
-              <div className="form-group">
+            {couponFor == 'Customer' ? (
+              <div className='form-group'>
                 <select
-                  className="form-control"
+                  className='form-control'
                   value={data.forcustomeremail}
                   onChange={(e) =>
                     setData({
@@ -230,18 +242,18 @@ const AddCoupons = (props) => {
                 </select>
               </div>
             ) : (
-                ""
-              )}
-            <div className="form-group">
+              ''
+            )}
+            <div className='form-group'>
               <label>Coupon Active From</label>
               <DatePicker
-                id="example-datepicker"
-                className="form-control"
+                id='example-datepicker'
+                className='form-control'
                 required
                 minDate={new Date().toISOString()}
                 value={data.activefrom}
                 showClearButton={false}
-                placeholder="Coupon Active From"
+                placeholder='Coupon Active From'
                 onChange={(v, f) =>
                   setData({
                     ...data,
@@ -251,16 +263,16 @@ const AddCoupons = (props) => {
               />
             </div>
 
-            <div className="form-group">
+            <div className='form-group'>
               <label>Coupon Expiry Date</label>
               <DatePicker
-                id="example-datepickers"
-                className="form-control"
+                id='example-datepickers'
+                className='form-control'
                 required
                 value={data.expiry}
                 minDate={new Date().toISOString()}
                 showClearButton={false}
-                placeholder="Coupon Expiry Date"
+                placeholder='Coupon Expiry Date'
                 onChange={(v, f) =>
                   setData({
                     ...data,
@@ -269,12 +281,12 @@ const AddCoupons = (props) => {
                 }
               />
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <label>Usage limit</label>
               <input
-                type="number"
-                placeholder="Usage limit"
-                className="form-control"
+                type='number'
+                placeholder='Usage limit'
+                className='form-control'
                 required
                 onChange={(e) =>
                   setData({
@@ -286,12 +298,12 @@ const AddCoupons = (props) => {
               />
             </div>
 
-            <div className="form-group">
+            <div className='form-group'>
               <label>Usage limit per user</label>
               <input
-                type="number"
-                placeholder="Usage limit per user"
-                className="form-control"
+                type='number'
+                placeholder='Usage limit per user'
+                className='form-control'
                 required
                 onChange={(e) =>
                   setData({
@@ -302,11 +314,11 @@ const AddCoupons = (props) => {
                 value={data.maxusagecountperuser}
               />
             </div>
-            <div className="form-group text-center">
+            <div className='form-group text-center'>
               <button
-                className="btn btn-lg"
-                type="submit"
-                id="formButton"
+                className='btn btn-lg'
+                type='submit'
+                id='formButton'
                 disabled={couponError}
               >
                 Save
@@ -319,7 +331,6 @@ const AddCoupons = (props) => {
   );
 };
 
-
 const CouponDetails = (props) => {
   const couponid = props.match.params.couponid;
   const [coupon, setCoupon] = useState({});
@@ -327,14 +338,13 @@ const CouponDetails = (props) => {
   const [couponHistory, setCouponHistory] = useState([]);
   const [duplicateCouponStatus, setduplicateCouponStatus] = useState(false);
 
-  const [isDuplicating, setISDuplicating] = useState(false)
+  const [isDuplicating, setISDuplicating] = useState(false);
   const [AddCouponsShow, setAddCouponsShow] = useState(false);
   const handleAddCouponsclose = () => {
     setISDuplicating(false);
     setAddCouponsShow(false);
-  }
+  };
   const handleAddCouponsShow = () => setAddCouponsShow(true);
-
 
   const onChangeActive = (d, isActive) => {
     editCoupon({
@@ -346,101 +356,114 @@ const CouponDetails = (props) => {
   };
 
   const getCouponDetail = () => {
-    getAllCoupon().subscribe(response => {
+    getAllCoupon().subscribe((response) => {
       const couponsOP = response.response.data;
       setCoupons(couponsOP);
-      const filtered = couponsOP.filter(c => { return c.id == couponid });
+      const filtered = couponsOP.filter((c) => {
+        return c.id == couponid;
+      });
       setCoupon(filtered.length ? filtered[0] : {});
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     getCouponDetail();
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (Object.keys(coupon).length) {
-      console.log(coupon)
+      console.log(coupon);
       couponUsageHistory({
-        couponCode: coupon.couponcode
-      }).subscribe(response => {
-
+        couponCode: coupon.couponcode,
+      }).subscribe((response) => {
         setCouponHistory(response.response.data);
-      })
+      });
     }
   }, [coupon]);
-
 
   const onDplicateClick = () => {
     setISDuplicating(true);
     handleAddCouponsShow();
-  }
+  };
 
   const onSubmitSuccess = (code) => {
     setduplicateCouponStatus(`Coupon ${code} has been created.`);
     setTimeout(() => {
-      history.push("/coupons");
-    }, 1000)
+      history.push('/coupons');
+    }, 1000);
   };
-
-
 
   return (
     <>
-      <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
-      <div className="other_pages_container">
-        <div className={"admin-order-wrap"}>
+      <ADHeader isFixedColor={true} widthType={'full'}></ADHeader>
+      <div className='other_pages_container'>
+        <div className={'admin-order-wrap'}>
           <AdminSidebar></AdminSidebar>
 
           <section>
-            <div className={"section-head mb-3 row"}>
-              <div className="col">
+            <div className={'section-head mb-3 row'}>
+              <div className='col'>
                 <h2>Coupon: {coupon.couponcode}</h2>
               </div>
-              <div className="col text-right">
-                <button className="btn" onClick={onDplicateClick}>Make Duplicate</button>
-
-
+              <div className='col text-right'>
+                <button className='btn' onClick={onDplicateClick}>
+                  Make Duplicate
+                </button>
               </div>
             </div>
-            <div className="">
-              <div className="row">
-                <div className="col text-left">Active From:</div>
-                <div className="col text-left">{coupon.activefrom}</div>
+            <div className=''>
+              <div className='row'>
+                <div className='col text-left'>Active From:</div>
+                <div className='col text-left'>{coupon.activefrom}</div>
               </div>
-              <div className="row">
-                <div className="col text-left">Expiry:</div>
-                <div className="col text-left">{coupon.expiry}</div>
+              <div className='row'>
+                <div className='col text-left'>Expiry:</div>
+                <div className='col text-left'>{coupon.expiry}</div>
               </div>
-              <div className="row">
-                <div className="col text-left">Usage:</div>
-                <div className="col text-left">{coupon.usedtimes}/{coupon.maxusagecount}</div>
+              <div className='row'>
+                <div className='col text-left'>Usage:</div>
+                <div className='col text-left'>
+                  {coupon.usedtimes}/{coupon.maxusagecount}
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col text-left'>User limit per coupon:</div>
+                <div className='col text-left'>
+                  {coupon.maxusagecountperuser}
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col text-left'>Coupon Type:</div>
+                <div className='col text-left'>
+                  {coupon.offpercentage != null ? 'Percentage' : 'Fixed'}
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col text-left'>Discount:</div>
+                <div className='col text-left'>
+                  {coupon.offpercentage != null
+                    ? `${coupon.offpercentage}%`
+                    : coupon.subtractfixedamount}
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col text-left'>Coupon For:</div>
+                <div className='col text-left'>
+                  {coupon.forcustomeremail != null ? 'Customer' : 'Public'}
+                </div>
               </div>
 
-              <div className="row">
-                <div className="col text-left">Coupon Type:</div>
-                <div className="col text-left">{coupon.offpercentage != null ? "Percentage" : "Fixed"}</div>
-              </div>
-              <div className="row">
-                <div className="col text-left">Discount:</div>
-                <div className="col text-left">{coupon.offpercentage != null ? `${coupon.offpercentage}%` : coupon.subtractfixedamount}</div>
-              </div>
-              <div className="row">
-                <div className="col text-left">Coupon For:</div>
-                <div className="col text-left">{coupon.forcustomeremail != null ? "Customer" : "Public"}</div>
-              </div>
-              {
-                coupon.forcustomeremail != null ? (
-
-                  <div className="row">
-                    <div className="col text-left">Customer:</div>
-                    <div className="col text-left">{coupon.forcustomeremail}</div>
-                  </div>
-                ) : ""
-              }
-              <div className="row">
-                <div className="col text-left">Status:</div>
-                <div className="col text-left">
+              {coupon.forcustomeremail != null ? (
+                <div className='row'>
+                  <div className='col text-left'>Customer:</div>
+                  <div className='col text-left'>{coupon.forcustomeremail}</div>
+                </div>
+              ) : (
+                ''
+              )}
+              <div className='row'>
+                <div className='col text-left'>Status:</div>
+                <div className='col text-left'>
                   {/* {coupon.isactive ? "Active" : "Unactive"} */}
                   {/* <br /> */}
                   <Switch
@@ -452,43 +475,48 @@ const CouponDetails = (props) => {
                 </div>
               </div>
 
-              <div className="row  mt-3">
-                <div className="col text-left">
+              <div className='row  mt-3'>
+                <div className='col text-left'>
                   <h2>Coupon History</h2>
                 </div>
               </div>
-              <div className="row">
-                <div className="col text-left">
-                  <table className="table">
-
-                    {
-                      couponHistory.length ? couponHistory.map(history => {
+              <div className='row'>
+                <div className='col text-left'>
+                  <table className='table'>
+                    {couponHistory.length ? (
+                      couponHistory.map((history) => {
                         return (
                           <tr>
-                            <td><strong>Customer :</strong> {history.customeremail} </td>
-                            <td><strong>Order :</strong> {history.orderId} </td>
                             <td>
-                              <Link to={`/details/${history.orderId}`} ><img src={viewicon} alt="" /></Link>
+                              <strong>Customer :</strong>{' '}
+                              {history.customeremail}{' '}
                             </td>
-
+                            <td>
+                              <strong>Order :</strong> {history.orderId}{' '}
+                            </td>
+                            <td>
+                              <Link to={`/details/${history.orderId}`}>
+                                <img src={viewicon} alt='' />
+                              </Link>
+                            </td>
                           </tr>
-
-                        )
-                      }) :
-                        <tr><td>No History available.</td></tr>
-                    }
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <td>No History available.</td>
+                      </tr>
+                    )}
                   </table>
-
                 </div>
               </div>
-
             </div>
           </section>
         </div>
       </div>
       {AddCouponsShow && (
         <AddCoupons
-          value={""}
+          value={''}
           onSubmitSuccess={onSubmitSuccess}
           show={AddCouponsShow}
           handleClose={handleAddCouponsclose}
@@ -498,26 +526,24 @@ const CouponDetails = (props) => {
         />
       )}
       {duplicateCouponStatus ? (
-        <div className="not_verified">
-          <div className="error_msg">
+        <div className='not_verified'>
+          <div className='error_msg'>
             <div
-              className="close_verification_popup"
+              className='close_verification_popup'
               onClick={() => {
                 setduplicateCouponStatus(false);
               }}
             >
               &times;
             </div>
-              {duplicateCouponStatus}
+            {duplicateCouponStatus}
           </div>
         </div>
       ) : (
-          ""
-        )}
+        ''
+      )}
     </>
-  )
-}
-
-
+  );
+};
 
 export default withRouter(CouponDetails);

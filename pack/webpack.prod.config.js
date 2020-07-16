@@ -108,7 +108,6 @@ module.exports = merge(common, {
     }),
     // new LodashModuleReplacementPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new BundleAnalyzerPlugin(),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /ja|it/),
     // new CompressionPlugin({
     //   compressionOptions: {
