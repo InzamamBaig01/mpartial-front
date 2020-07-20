@@ -87,6 +87,15 @@ export const allADUsers = () =>
     url: `${baseURL}/GIServer/getAllCustomers`,
   }).pipe(catchError(handleError('')));
 
+export const deleteCoupon = (payload) =>
+  ajax({
+    headers: {
+      authString: localStorage.topen,
+    },
+    method: 'POST',
+    url: `${baseURL}/GIServer/deleteCoupon?thetoken=${localStorage.topen}&couponId=${payload.id}`,
+  }).pipe(catchError(handleError('')));
+
 export const updateStatus = (payload) =>
   ajax({
     headers: {

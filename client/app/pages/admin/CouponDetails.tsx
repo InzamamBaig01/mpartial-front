@@ -5,6 +5,7 @@ import {
   couponUsageHistory,
   addCoupon,
   editCoupon,
+  deleteCoupon,
 } from 'utils/api-routes/api-routes.util';
 import ADHeader from 'app/components/ADHeader';
 import AdminSidebar from './_components/AdminSidebar';
@@ -12,7 +13,7 @@ import viewicon from '../../../assets/view.svg';
 import Coupons from './Coupons';
 import { AppContext } from 'contexts/appContext';
 import moment from 'moment';
-import { Modal } from 'react-bootstrap';
+import { Modal, ButtonGroup, Button } from 'react-bootstrap';
 import DatePicker from 'reactstrap-date-picker';
 import history from '../../../utils/history';
 import Switch from 'react-switch';
@@ -337,7 +338,7 @@ const CouponDetails = (props) => {
   const [coupons, setCoupons] = useState([]);
   const [couponHistory, setCouponHistory] = useState([]);
   const [duplicateCouponStatus, setduplicateCouponStatus] = useState(false);
-
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isDuplicating, setISDuplicating] = useState(false);
   const [AddCouponsShow, setAddCouponsShow] = useState(false);
   const handleAddCouponsclose = () => {
@@ -393,6 +394,15 @@ const CouponDetails = (props) => {
     }, 1000);
   };
 
+  const deleteCouponOP = () => {
+    deleteCoupon({ id: coupon.id }).subscribe((res) => {
+      setduplicateCouponStatus(`Coupon has been deleted.`);
+      setTimeout(() => {
+        history.push('/coupons');
+      }, 1000);
+    });
+  };
+
   return (
     <>
       <ADHeader isFixedColor={true} widthType={'full'}></ADHeader>
@@ -402,13 +412,34 @@ const CouponDetails = (props) => {
 
           <section>
             <div className={'section-head mb-3 row'}>
-              <div className='col'>
+              <div className='col-4'>
                 <h2>Coupon: {coupon.couponcode}</h2>
               </div>
-              <div className='col text-right'>
+              <div className='col-8 text-right'>
                 <button className='btn' onClick={onDplicateClick}>
                   Make Duplicate
-                </button>
+                </button>{' '}
+                &nbsp;
+                {isDeleting ? (
+                  <ButtonGroup aria-label='Basic example'>
+                    <span className='btn btn-secondary disabled'>
+                      Are you Sure?
+                    </span>
+                    <Button variant='secondary' onClick={deleteCouponOP}>
+                      Yes
+                    </Button>
+                    <Button
+                      variant='secondary'
+                      onClick={() => setIsDeleting(false)}
+                    >
+                      No
+                    </Button>
+                  </ButtonGroup>
+                ) : (
+                  <button className='btn' onClick={() => setIsDeleting(true)}>
+                    Delete Coupon
+                  </button>
+                )}
               </div>
             </div>
             <div className=''>
