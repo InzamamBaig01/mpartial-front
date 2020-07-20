@@ -14,6 +14,8 @@ import {
   Elements,
   CardNumberElement,
   CardExpiryElement,
+  useStripe,
+  useElements,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Dropdown, Modal, Button } from "react-bootstrap";
@@ -25,6 +27,7 @@ import { useDropzone } from "react-dropzone";
 import queryString from "query-string";
 import {
   profileUpdate,
+  getPIC,
 } from "utils/api-routes/api-routes.util";
 import BankCard from "app/components/BankCard";
 import Loader from "app/components/Loader";
