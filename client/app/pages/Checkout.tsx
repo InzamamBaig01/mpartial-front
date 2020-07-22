@@ -235,7 +235,7 @@ const Checkout = (props) => {
   // console.log("main_rendered");
   useEffect(() => {
     getMyInfo();
-    getPICO("");
+    getPICO(false);
   }, []);
 
   useEffect(() => {
@@ -253,11 +253,10 @@ const Checkout = (props) => {
   //   }
   // }, []);
 
-  const getPICO = (coupedCode?) => {
+  const getPICO = (isCoupedCode?) => {
     
     getPaymentIntendOfOrder({
       orderId: orderid,
-      coupedCode: coupedCode,
     }).subscribe((response) => {
       if (response.response.Requested_Action) {
         // console.log(response.response);
@@ -267,13 +266,13 @@ const Checkout = (props) => {
         name: "mpartial",
         price: order.orignalprice,
         description: "",
-        coupon: order.couponapplied,
+        coupon: isCoupedCode ?  order.couponapplied : "",
         amountsubtraced: order.amountsubtraced,
         orignalprice: order.orignalprice,
         newprice: order.amountInCents,
       });
       } else {
-        getPICO(coupedCode);
+        getPICO(isCoupedCode);
       }
       
     });
@@ -294,7 +293,7 @@ const Checkout = (props) => {
       newprice: couponData.newprice,
     });
     console.log(couponData);
-    getPICO();
+    getPICO(true);
     // setPrice(couponData.price);
     // getPICO(couponData.coupon);
     // setCouponApplied(couponData.coupon);
