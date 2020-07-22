@@ -210,6 +210,8 @@ const CheckoutForm = (props) => {
 
 const Checkout = (props) => {
   const { userDetails } = useContext(AuthContext);
+  const { showLoader, hideLoader } = useContext(AppAlertsContext);
+
   const { getMyInfo, myInfo, price } = useContext(AppContext);
   const [couponApplied, setCouponApplied] = useState(false);
   const [ApplyCouponShow, setApplyCouponShow] = useState(false);
@@ -273,6 +275,7 @@ const Checkout = (props) => {
       } else {
         // getPICO(isCoupedCode);
         setCheckoutError('Server Error');
+        hideLoader();
       }
     });
   };
