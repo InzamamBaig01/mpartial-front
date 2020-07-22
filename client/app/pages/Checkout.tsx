@@ -243,8 +243,7 @@ const Checkout = (props) => {
       setInfo(myInfo);
     }
     return () => {
-      console.log("unmounted");
-      alert("unmounted");
+      
     }
   }, [myInfo]);
 
