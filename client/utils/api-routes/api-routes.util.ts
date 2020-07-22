@@ -337,7 +337,7 @@ export const applyCoupons = (payload) => {
   return ajax({
     headers: requestHeader(),
     method: 'POST',
-    url: `${baseURL}/Client/applycoupon?thetoken=${localStorage.token}&orderId=${payload.orderId}&coupedCode=${payload.coupon}`,
+    url: `${baseURL}/Client/applycoupon?thetoken=${localStorage.token}&orderId=${payload.orderId}&couponCode=${payload.coupon}`,
   }).pipe(catchError(handleError('tokenCheck')));
 };
 

@@ -1,30 +1,30 @@
-import React, { useEffect, useContext, useState } from "react";
-import { withRouter, Link } from "react-router-dom";
-import Header from "app/components/Header";
-import { AuthContext } from "contexts/authContext";
+import React, { useEffect, useContext, useState } from 'react';
+import { withRouter, Link } from 'react-router-dom';
+import Header from 'app/components/Header';
+import { AuthContext } from 'contexts/authContext';
 import {
   payOrder,
   getPaymentIntendOfOrder,
   getPIC,
-} from "utils/api-routes/api-routes.util";
-import history from "utils/history";
-import { loadStripe } from "@stripe/stripe-js";
+} from 'utils/api-routes/api-routes.util';
+import history from 'utils/history';
+import { loadStripe } from '@stripe/stripe-js';
 import {
   CardElement,
   Elements,
   useElements,
   useStripe,
-} from "@stripe/react-stripe-js";
-import { AppContext } from "contexts/appContext";
-import { AppAlertsContext } from "contexts/appAlertsContext";
-import Loader from "app/components/Loader";
-import appConfig from "../../appconfig.json";
-import visa from "../../assets/visa.png";
-import mastercard from "../../assets/mastercard.png";
-import AmericanExpress from "../../assets/American-Express.png";
-import discover from "../../assets/discover.png";
+} from '@stripe/react-stripe-js';
+import { AppContext } from 'contexts/appContext';
+import { AppAlertsContext } from 'contexts/appAlertsContext';
+import Loader from 'app/components/Loader';
+import appConfig from '../../appconfig.json';
+import visa from '../../assets/visa.png';
+import mastercard from '../../assets/mastercard.png';
+import AmericanExpress from '../../assets/American-Express.png';
+import discover from '../../assets/discover.png';
 
-import ApplyCoupon from "./UserOrder/_components/ApplyCoupon";
+import ApplyCoupon from './UserOrder/_components/ApplyCoupon';
 
 const CheckoutForm = (props) => {
   const [error, setError] = useState(null);
@@ -36,7 +36,7 @@ const CheckoutForm = (props) => {
     mastercard: mastercard,
     visa: visa,
     discover: discover,
-    "american express": AmericanExpress,
+    'american express': AmericanExpress,
   };
   const [showNewCardForm, setShowNewCardForm] = useState(
     props.stripeCustomerCard.length == 0
@@ -85,7 +85,7 @@ const CheckoutForm = (props) => {
                   name: `${props.checkoutInfo.firstName} ${props.checkoutInfo.lastName}`,
                 },
               },
-              setup_future_usage: "off_session",
+              setup_future_usage: 'off_session',
             }
       )
       .then(async function (result) {
@@ -112,14 +112,14 @@ const CheckoutForm = (props) => {
           });
         } else {
           hideLoader();
-          if (result.paymentIntent.status === "succeeded") {
+          if (result.paymentIntent.status === 'succeeded') {
             payOrder({
               status: result.paymentIntent.status,
               orderId: props.orderid,
               fullresponse: JSON.stringify(result.paymentIntent),
             }).subscribe((response) => {
               if (response.response.Requested_Action) {
-                localStorage.removeItem("sessipn");
+                localStorage.removeItem('sessipn');
                 hideLoader();
                 history.push(`/receipt/${props.orderid}`);
               }
@@ -142,8 +142,8 @@ const CheckoutForm = (props) => {
       {props.stripeCustomerCard.length ? (
         <>
           <button
-            className="btn payment_switch"
-            type="button"
+            className='btn payment_switch'
+            type='button'
             onClick={() => {
               setShowNewCardForm(!showNewCardForm);
               setSelectedCard(false);
@@ -151,16 +151,16 @@ const CheckoutForm = (props) => {
               setError(null);
             }}
           >
-            {showNewCardForm ? "Use Existing Card" : "Use New Card"}
+            {showNewCardForm ? 'Use Existing Card' : 'Use New Card'}
           </button>
           {!showNewCardForm &&
             props.stripeCustomerCard.map((card, index) => {
               return (
                 <div className={`form - group col - 12`} key={index}>
                   <input
-                    type="radio"
+                    type='radio'
                     id={`card_${index}`}
-                    name="card"
+                    name='card'
                     defaultChecked={
                       selectedCard.paymentMethodId == card.paymentMethodId
                     }
@@ -168,7 +168,7 @@ const CheckoutForm = (props) => {
                       if (!props.cardValidation) props.setCardValidation(true);
                       setSelectedCard(card);
                     }}
-                  />{" "}
+                  />{' '}
                   <label
                     htmlFor={`card_${index}`}
                     onClick={() => {
@@ -178,8 +178,8 @@ const CheckoutForm = (props) => {
                   >
                     <img
                       src={pmicons[card.brand]}
-                      className="brand_icons"
-                      alt=""
+                      className='brand_icons'
+                      alt=''
                     />
                     &nbsp; Card Ending {card.last4} -- {card.exp_month}/
                     {card.exp_year}
@@ -189,17 +189,17 @@ const CheckoutForm = (props) => {
             })}
         </>
       ) : (
-        ""
+        ''
       )}
       {showNewCardForm && (
-        <div className="">
-          <label htmlFor="card-element">Credit or debit card</label>
+        <div className=''>
+          <label htmlFor='card-element'>Credit or debit card</label>
           <CardElement
-            id="card-element"
-            className="form-control"
+            id='card-element'
+            className='form-control'
             onChange={handleChange}
           />
-          <div className="card-errors" role="alert">
+          <div className='card-errors' role='alert'>
             {error}
           </div>
         </div>
@@ -213,15 +213,16 @@ const Checkout = (props) => {
   const { getMyInfo, myInfo, price } = useContext(AppContext);
   const [couponApplied, setCouponApplied] = useState(false);
   const [ApplyCouponShow, setApplyCouponShow] = useState(false);
+  const [CheckoutError, setCheckoutError] = useState(false);
   const [PIC, setPIC] = useState(false);
   const [product, setProduct] = React.useState({
-    name: "mpartial",
+    name: 'mpartial',
     price: price,
-    description: "",
-    coupon: "",
-    amountsubtraced: "",
-    orignalprice: "",
-    newprice: "",
+    description: '',
+    coupon: '',
+    amountsubtraced: '',
+    orignalprice: '',
+    newprice: '',
   });
   const orderid = props.match.params.orderid;
 
@@ -235,16 +236,13 @@ const Checkout = (props) => {
   // console.log("main_rendered");
   useEffect(() => {
     getMyInfo();
-    getPICO(false);
   }, []);
 
   useEffect(() => {
     if (myInfo) {
       setInfo(myInfo);
     }
-    return () => {
-      
-    }
+    return () => {};
   }, [myInfo]);
 
   // useEffect(() => {
@@ -253,28 +251,29 @@ const Checkout = (props) => {
   //   }
   // }, []);
 
-  const getPICO = (isCoupedCode?) => {
-    
+  const getPICO = (isCoupedCode?, isCheckoutFormSubmitted?) => {
     getPaymentIntendOfOrder({
       orderId: orderid,
     }).subscribe((response) => {
       if (response.response.Requested_Action) {
         // console.log(response.response);
-      setPIC(response.response.message);
-      const order = response.response.data;
-      setProduct({
-        name: "mpartial",
-        price: order.orignalprice,
-        description: "",
-        coupon: isCoupedCode ?  order.couponapplied : "",
-        amountsubtraced: order.amountsubtraced,
-        orignalprice: order.orignalprice,
-        newprice: order.amountInCents,
-      });
+        setPIC(response.response.message);
+        const order = response.response.data;
+        setProduct({
+          name: 'mpartial',
+          price: order.orignalprice,
+          description: '',
+          coupon: isCoupedCode ? order.couponapplied : '',
+          amountsubtraced: order.amountsubtraced,
+          orignalprice: order.orignalprice,
+          newprice: order.amountInCents,
+        });
+        setCheckoutError(false);
+        if (isCheckoutFormSubmitted) setIsFormSubmitted(isCoupedCode);
       } else {
-        getPICO(isCoupedCode);
+        // getPICO(isCoupedCode);
+        setCheckoutError('Server Error');
       }
-      
     });
   };
 
@@ -284,16 +283,16 @@ const Checkout = (props) => {
   const onSubmitSuccess = (couponData) => {
     handleApplyCouponclose();
     setProduct({
-      name: "mpartial",
+      name: 'mpartial',
       price: couponData.newprice,
-      description: "",
+      description: '',
       coupon: couponData.code,
       amountsubtraced: couponData.amountreducned,
       orignalprice: couponData.orignalprice,
       newprice: couponData.newprice,
     });
     console.log(couponData);
-    getPICO(true);
+    // getPICO(true);
     // setPrice(couponData.price);
     // getPICO(couponData.coupon);
     // setCouponApplied(couponData.coupon);
@@ -329,100 +328,99 @@ const Checkout = (props) => {
   const handleCardAction = (bool) => {
     setCardValidation(bool);
   };
-  const handleFormSubmittion = (bool) => {
-    setIsFormSubmitted(bool);
-  };
+  const handleFormSubmittion = (bool) => {};
   return (
     <>
       <Header isFixedColor={true}></Header>
-      <div className="other_pages_container">
-        <h1 className="title text-center">Checkout</h1>
-        <div className="container">
+      <div className='other_pages_container'>
+        <h1 className='title text-center'>Checkout</h1>
+        <div className='container'>
           <form
-            className="order_form"
+            className='order_form'
             onSubmit={(e) => {
               e.preventDefault();
               setIsFormSubmitted(true);
+              getPICO(false, true);
             }}
           >
-            <div className="row">
-              <div className="col sub_titles">Billing Details</div>
+            <div className='row'>
+              <div className='col sub_titles'>Billing Details</div>
             </div>
-            <div className="row">
+            <div className='row'>
               <div className={`form - group col - 12`}>
                 <label>
-                  First Name <span className="red">*</span>
+                  First Name <span className='red'>*</span>
                 </label>
                 <input
-                  type="text"
-                  className="form-control"
+                  type='text'
+                  className='form-control'
                   value={checkoutInfo.firstName}
                   required
                   onChange={(e) =>
-                    onChangeValue(e.currentTarget.value, "firstName")
+                    onChangeValue(e.currentTarget.value, 'firstName')
                   }
                 />
                 {validation.fname ? (
-                  <span className="password_not_matched">
+                  <span className='password_not_matched'>
                     First Name Is Required.
                   </span>
                 ) : (
-                  ""
+                  ''
                 )}
               </div>
             </div>
-            <div className="row">
+            <div className='row'>
               <div className={`form - group col - 12`}>
                 <label>
-                  Last Name <span className="red">*</span>
+                  Last Name <span className='red'>*</span>
                 </label>
                 <input
-                  type="text"
-                  className="form-control"
+                  type='text'
+                  className='form-control'
                   value={checkoutInfo.lastName}
                   required
                   onChange={(e) =>
-                    onChangeValue(e.currentTarget.value, "lastName")
+                    onChangeValue(e.currentTarget.value, 'lastName')
                   }
                 />
                 {validation.lname ? (
-                  <span className="password_not_matched">
+                  <span className='password_not_matched'>
                     Last Name Is Required.
                   </span>
                 ) : (
-                  ""
+                  ''
                 )}
               </div>
             </div>
-            <div className="row">
+            <div className='row'>
               <div className={`form - group col - 12`}>
                 <label>
-                  Email Address <span className="red">*</span>
+                  Email Address <span className='red'>*</span>
                 </label>
                 <input
-                  type="text"
-                  className="form-control"
+                  type='text'
+                  className='form-control'
                   value={checkoutInfo.emailAddress}
                   required
                   onChange={(e) =>
-                    onChangeValue(e.currentTarget.value, "emailAddress")
+                    onChangeValue(e.currentTarget.value, 'emailAddress')
                   }
                 />
                 {validation.email ? (
-                  <span className="password_not_matched">
+                  <span className='password_not_matched'>
                     Email Address Is Required.
                   </span>
                 ) : (
-                  ""
+                  ''
                 )}
               </div>
             </div>
 
-            <div className="row">
-              <div className="col sub_titles">Payment Method</div>
+            <div className='row'>
+              <div className='col sub_titles'>Payment Method</div>
             </div>
 
-            <div className="row">
+            <div className='row'>
               <div className={`form - group col - 12`}>
                 <Elements stripe={stripePromise}>
                   <CheckoutForm
@@ -439,20 +437,20 @@ const Checkout = (props) => {
                 {/* <input type="checkbox" /> Card Ending 7878 */}
               </div>
             </div>
-            <div className="row">
-              <div className="col">
+            <div className='row'>
+              <div className='col'>
                 {product.coupon && product.coupon.length ? (
                   <>
-                    <span className="coupon_success">
+                    <span className='coupon_success'>
                       Coupon Applied: {product.coupon}
                     </span>
                   </>
                 ) : (
-                  ""
+                  ''
                 )}
                 <button
-                  className="btn mt-2"
-                  type="button"
+                  className='btn mt-2'
+                  type='button'
                   onClick={handleApplyCouponShow}
                 >
                   Apply Coupon
@@ -460,13 +458,13 @@ const Checkout = (props) => {
               </div>
             </div>
 
-            <div className="row">
-              <div className="col sub_titles">Your Order</div>
+            <div className='row'>
+              <div className='col sub_titles'>Your Order</div>
             </div>
 
-            <div className="order_checkout_details">
-              <div className="col-12">
-                <table className="table">
+            <div className='order_checkout_details'>
+              <div className='col-12'>
+                <table className='table'>
                   <thead>
                     <tr>
                       <th>Product</th>
@@ -483,14 +481,17 @@ const Checkout = (props) => {
                         <tr>
                           <td>Coupon Discount ({product.coupon})</td>
                           <td>
-                            <div>
-                              -${product.amountsubtraced / 100}
-                            </div>
+                            <div>-${product.amountsubtraced / 100}</div>
                           </td>
                         </tr>
                         <tr>
                           <td>Total</td>
-                          <td>${product.newprice > 0 ?  product.newprice / 100 : product.newprice}</td>
+                          <td>
+                            $
+                            {product.newprice > 0
+                              ? product.newprice / 100
+                              : product.newprice}
+                          </td>
                         </tr>
                       </>
                     ) : (
@@ -511,23 +512,30 @@ const Checkout = (props) => {
               </div>
             </div>
 
-            <div className="row">
-              <div className="col submit_btn_container">
+            <div className='row'>
+              {CheckoutError ? (
+                <span className='password_not_matched'>
+                  Server Error! Please try again.
+                </span>
+              ) : (
+                ''
+              )}
+              <div className='col submit_btn_container'>
                 <button
-                  className="btn"
-                  type="submit"
-                  id="formButton"
+                  className='btn'
+                  type='submit'
+                  id='formButton'
                   onClick={checkValidation}
                   disabled={
-                    checkoutInfo.firstName == "" ||
-                    checkoutInfo.lastName == "" ||
-                    checkoutInfo.emailAddress == "" ||
+                    checkoutInfo.firstName == '' ||
+                    checkoutInfo.lastName == '' ||
+                    checkoutInfo.emailAddress == '' ||
                     !cardValidation
                       ? true
                       : false
                   }
                 >
-                  <Loader text="Checkout"></Loader>
+                  <Loader text='Checkout'></Loader>
                 </button>
               </div>
             </div>
@@ -536,7 +544,7 @@ const Checkout = (props) => {
       </div>
       {ApplyCouponShow && (
         <ApplyCoupon
-          value={""}
+          value={''}
           onSubmitSuccess={onSubmitSuccess}
           show={ApplyCouponShow}
           handleClose={handleApplyCouponclose}
