@@ -331,6 +331,21 @@ const Checkout = (props) => {
   const handleCardAction = (bool) => {
     setCardValidation(bool);
   };
+
+  const saveFreeOrder = () => {
+    showLoader();
+    payOrder({
+      status: 'succeeded',
+      orderId: orderid,
+      fullresponse: '{}',
+    }).subscribe((response) => {
+      if (response.response.Requested_Action) {
+        localStorage.removeItem('sessipn');
+        hideLoader();
+        history.push(`/receipt/${orderid}`);
+      }
+    });
+  };
   const handleFormSubmittion = (bool) => {};
   return (
     <>
@@ -423,23 +438,27 @@ const Checkout = (props) => {
               <div className='col sub_titles'>Payment Method</div>
             </div>
 
-            <div className='row'>
-              <div className={`form - group col - 12`}>
-                <Elements stripe={stripePromise}>
-                  <CheckoutForm
-                    orderid={orderid}
-                    isFormSubmitted={isFormSubmitted}
-                    setIsFormSubmitted={handleFormSubmittion}
-                    stripeCustomerCard={info ? info.stripeCustomerCard : []}
-                    setCardValidation={handleCardAction}
-                    cardValidation={cardValidation}
-                    checkoutInfo={checkoutInfo}
-                    PIC={PIC}
-                  />
-                </Elements>
-                {/* <input type="checkbox" /> Card Ending 7878 */}
+            {product.coupon && product.newprice == 0 ? (
+              ''
+            ) : (
+              <div className='row'>
+                <div className={`form - group col - 12`}>
+                  <Elements stripe={stripePromise}>
+                    <CheckoutForm
+                      orderid={orderid}
+                      isFormSubmitted={isFormSubmitted}
+                      setIsFormSubmitted={handleFormSubmittion}
+                      stripeCustomerCard={info ? info.stripeCustomerCard : []}
+                      setCardValidation={handleCardAction}
+                      cardValidation={cardValidation}
+                      checkoutInfo={checkoutInfo}
+                      PIC={PIC}
+                    />
+                  </Elements>
+                  {/* <input type="checkbox" /> Card Ending 7878 */}
+                </div>
               </div>
-            </div>
+            )}
             <div className='row'>
               <div className='col'>
                 {product.coupon && product.coupon.length ? (
@@ -524,22 +543,33 @@ const Checkout = (props) => {
                 ''
               )}
               <div className='col submit_btn_container'>
-                <button
-                  className='btn'
-                  type='submit'
-                  id='formButton'
-                  onClick={checkValidation}
-                  disabled={
-                    checkoutInfo.firstName == '' ||
-                    checkoutInfo.lastName == '' ||
-                    checkoutInfo.emailAddress == '' ||
-                    !cardValidation
-                      ? true
-                      : false
-                  }
-                >
-                  <Loader text='Checkout'></Loader>
-                </button>
+                {product.coupon && product.newprice == 0 ? (
+                  <button
+                    className='btn'
+                    type='submit'
+                    id='formButton'
+                    onClick={saveFreeOrder}
+                  >
+                    <Loader text='Checkout'></Loader>
+                  </button>
+                ) : (
+                  <button
+                    className='btn'
+                    type='submit'
+                    id='formButton'
+                    onClick={checkValidation}
+                    disabled={
+                      checkoutInfo.firstName == '' ||
+                      checkoutInfo.lastName == '' ||
+                      checkoutInfo.emailAddress == '' ||
+                      !cardValidation
+                        ? true
+                        : false
+                    }
+                  >
+                    <Loader text='Checkout'></Loader>
+                  </button>
+                )}
               </div>
             </div>
           </form>
