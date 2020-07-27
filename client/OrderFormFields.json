@@ -77,8 +77,8 @@
     "required": true,
     "options": ["Cat 1", "Cat 2", "Cat 3", "N/A"],
     "value": ""
-	},
-	
+  },
+
   {
     "id": "residentialOrCommercial",
     "name": "Residential or Commercial",
@@ -87,16 +87,8 @@
     "required": true,
     "options": ["Residential", "Commercial"],
     "value": ""
-	},
-	{
-    "id": "AddOverheadProfit",
-    "name": "Add Overhead & Profit",
-    "description": "mpartial applies 10% as the default for O&P. Please specify in the \"Additional Information\" field if you want a different % to be applied",
-    "type": "select",
-    "required": true,
-    "options": ["Yes", "No"],
-    "value": ""
   },
+
   {
     "id": "durationOfTheProject",
     "name": "Duration of the Project",
@@ -165,8 +157,42 @@
       "Other - Please inform in the \"Additional Information\" field"
     ],
     "value": ""
-	},
-	{
+  },
+
+  {
+    "id": "temporaryActivities",
+    "name": "Temporary Activities",
+    "description": "Please describe the quantities in the \"Additional Information\" field",
+    "type": "multiSelect",
+    "hasSelectAll": true,
+    "required": true,
+    "options": [
+      "Temp Toilet",
+      "Temp Power",
+      "N/A",
+      "Other - Please describe in the \"Additional Information\" field"
+    ],
+    "value": ""
+  },
+  {
+    "id": "projectZipCode",
+    "name": "Project Zip Code",
+    "description": "Informs the applied price list",
+    "type": "number",
+    "placeholder": "Ex. 92037",
+    "required": true,
+    "value": ""
+  },
+  {
+    "id": "AddOverheadProfit",
+    "name": "Add Overhead & Profit",
+    "description": "mpartial applies 10% as the default for O&P. Please specify in the \"Additional Information\" field if you want a different % to be applied",
+    "type": "select",
+    "required": true,
+    "options": ["Yes", "No"],
+    "value": ""
+  },
+  {
     "id": "durationOfTheDemolition",
     "name": "Duration of Demolition",
     "description": "This field is only applied in Mitigation estimates",
@@ -235,30 +261,7 @@
     ],
     "value": ""
   },
-  {
-    "id": "temporaryActivities",
-    "name": "Temporary Activities",
-    "description": "Please describe the quantities in the \"Additional Information\" field",
-    "type": "multiSelect",
-    "hasSelectAll": true,
-    "required": true,
-    "options": [
-      "Temp Toilet",
-      "Temp Power",
-      "N/A",
-      "Other - Please describe in the \"Additional Information\" field"
-    ],
-    "value": ""
-  },
-  {
-    "id": "projectZipCode",
-    "name": "Project Zip Code",
-    "description": "Informs the applied price list",
-    "type": "number",
-    "placeholder": "Ex. 92037",
-    "required": true,
-    "value": ""
-  },
+
   {
     "id": "insuranceCarrier",
     "name": "Insurance Carrier",
