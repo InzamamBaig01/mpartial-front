@@ -647,22 +647,26 @@ span.numeric-character {
 textarea::-webkit-input-placeholder,
 input::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
-  font-weight: 600;
+  font-weight: 400;
+    color: rgba(179, 180, 181, 0.7) !important;
 }
 textarea::-moz-placeholder,
 input::-moz-placeholder {
   /* Firefox 19+ */
-  font-weight: 600;
+  font-weight: 400;
+    color: rgba(179, 180, 181, 0.7) !important;
 }
 textarea:-ms-input-placeholder,
 input:-ms-input-placeholder {
   /* IE 10+ */
-  font-weight: 600;
+  font-weight: 400;
+    color: rgba(179, 180, 181, 0.7) !important;
 }
 textarea:-moz-placeholder,
 input:-moz-placeholder {
   /* Firefox 18- */
-  font-weight: 600;
+  font-weight: 400;
+    color: rgba(179, 180, 181, 0.7) !important;
 }
 .dropdown-container .gray {
   font-weight: 600;
@@ -749,8 +753,8 @@ input:-moz-placeholder {
       }
     }
     &.changed_false {
-      font-weight: 600;
-      color: rgba(73, 80, 87, 0.9);
+      font-weight: 400;
+      color: rgba(179, 180, 181, 0.7);
     }
   }
 
@@ -1983,7 +1987,6 @@ button.btn.payment_switch {
   .input-group {
     .floating_label {
       background: #f6f9f9 !important;
-
     }
   }
   &.nogroup {
