@@ -148,8 +148,8 @@
 }
 .profile_image_preview {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   margin: 0 auto;
   img {
     width: 100%;
@@ -160,7 +160,7 @@
   }
   .cross_icon {
     position: absolute;
-    right: 0px;
+    right: 15px;
     top: 6px;
     /* font-size: 39px; */
     background-color: white;
