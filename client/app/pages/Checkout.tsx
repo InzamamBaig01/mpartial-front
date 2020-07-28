@@ -61,6 +61,7 @@ const CheckoutForm = (props) => {
 
   useEffect(() => {
     if (props.isFormSubmitted) {
+      console.log(props);
       handleSubmit({});
     }
   }, [props.isFormSubmitted]);
@@ -122,8 +123,14 @@ const CheckoutForm = (props) => {
                 localStorage.removeItem('sessipn');
                 hideLoader();
                 history.push(`/receipt/${props.orderid}`);
+              } else {
+                hideLoader();
+                setError('Server Error.');
               }
             });
+          } else {
+            hideLoader();
+            setError('payment  Error.');
           }
         }
       });
@@ -271,7 +278,8 @@ const Checkout = (props) => {
           newprice: order.amountInCents,
         });
         setCheckoutError(false);
-        if (isCheckoutFormSubmitted) setIsFormSubmitted(isCoupedCode);
+        setIsFormSubmitted(true);
+        // if (isCheckoutFormSubmitted) setIsFormSubmitted(isCoupedCode);
       } else {
         // getPICO(isCoupedCode);
         setCheckoutError('Server Error');
@@ -357,7 +365,7 @@ const Checkout = (props) => {
             className='order_form'
             onSubmit={(e) => {
               e.preventDefault();
-              setIsFormSubmitted(true);
+
               getPICO(false, true);
             }}
           >
