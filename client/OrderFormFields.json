@@ -184,7 +184,7 @@
     "value": ""
   },
   {
-    "id": "AddOverheadProfit",
+    "id": "addOverheadProfit",
     "name": "Add Overhead & Profit",
     "description": "mpartial applies 10% as the default for O&P. Please specify in the \"Additional Information\" field if you want a different % to be applied",
     "type": "select",

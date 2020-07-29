@@ -1,4 +1,13 @@
 @media (max-width: 500px) {
+  .select_box_field {
+    .description {
+      min-height: 0 !important;
+      &.small_true {
+        min-height: 0 !important;
+      }
+    }
+  }
+  
   button.btn.payment_switch {
     position: absolute;
     right: 0;
