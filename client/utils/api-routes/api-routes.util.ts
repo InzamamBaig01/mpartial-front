@@ -143,7 +143,7 @@ export const couponUsageHistory = (payload) =>
       'Content-Type': 'application/json',
     },
     method: 'POST',
-    url: `${baseURL}/GIServer/couponUsageHistory?couponCode=${payload.couponCode}`,
+    url: `${baseURL}/GIServer/couponUsageHistory?couponId=${payload.couponId}`,
   }).pipe(catchError(handleError('')));
 
 export const adLogin = (payload) =>
