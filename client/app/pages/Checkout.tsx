@@ -268,15 +268,15 @@ const Checkout = (props) => {
         // console.log(response.response);
         setPIC(response.response.message);
         const order = response.response.data;
-        setProduct({
-          name: 'mpartial',
-          price: order.orignalprice,
-          description: '',
-          coupon: isCoupedCode ? order.couponapplied : '',
-          amountsubtraced: order.amountsubtraced,
-          orignalprice: order.orignalprice,
-          newprice: order.amountInCents,
-        });
+        // setProduct({
+        //   name: 'mpartial',
+        //   price: order.orignalprice,
+        //   description: '',
+        //   coupon: isCoupedCode ? order.couponapplied : '',
+        //   amountsubtraced: order.amountsubtraced,
+        //   orignalprice: order.orignalprice,
+        //   newprice: order.amountInCents,
+        // });
         setCheckoutError(false);
         setIsFormSubmitted(true);
         // if (isCheckoutFormSubmitted) setIsFormSubmitted(isCoupedCode);
@@ -302,7 +302,6 @@ const Checkout = (props) => {
       orignalprice: couponData.orignalprice,
       newprice: couponData.newprice,
     });
-    console.log(couponData);
     // getPICO(true);
     // setPrice(couponData.price);
     // getPICO(couponData.coupon);
