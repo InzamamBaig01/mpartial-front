@@ -126,6 +126,17 @@ const DrawField = (props) => {
                   );
                 })
                 : ""}
+                 {field.potentiallyRelevantDigitalAssetsRealNames
+                ? field.potentiallyRelevantDigitalAssetsRealNames.map((file, index) => {
+                  return (
+                    <div className="selected_file_name" key={index}>
+                      <i className="">
+                        <small>{file}</small>
+                      </i>
+                    </div>
+                  );
+                })
+                : ""}
             </div>
             {/*<input type="file" className="custom-file-input-btn" onChange={(e) => {*/}
             {/*props.onChange(field, e.target.files);*/}

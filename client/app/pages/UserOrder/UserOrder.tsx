@@ -114,6 +114,7 @@ const UserOrder = (props) => {
       const dataV = {};
       const fields = allFields.map((field) => {
         field.value = order[field.id] ? order[field.id] : '';
+        field.potentiallyRelevantDigitalAssetsRealNames = order.potentiallyRelevantDigitalAssetsRealNames;
         dataV[field.id] = order[field.id] ? order[field.id] : '';
         return field;
       });
