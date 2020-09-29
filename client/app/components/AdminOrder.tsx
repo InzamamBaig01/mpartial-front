@@ -8,7 +8,7 @@ import OrderFields from '../../OrderFormFields.json';
 import { delDraft } from 'utils/api-routes/api-routes.util';
 import history from '../../utils/history';
 
-const OrderDetails = (props) => {
+const AdminOrder = (props) => {
   const [order, setOrder] = useState(props.order);
 
   useEffect(() => {
@@ -191,17 +191,7 @@ const OrderDetails = (props) => {
                 </Link>
               </div>
 
-              <div className='col text-right'>
-                {order.paymentStatus == 'DRAFT' && (
-                  <>
-                    <button className='btn' onClick={deleteDraft}>Delete Draft</button>
-
-                    <Link to={`/order/${order.id}`}>
-                      <button className='btn'>Load Draft</button>
-                    </Link>
-                  </>
-                )}
-         </div>
+              
              
             </div>
           </div>
@@ -213,4 +203,4 @@ const OrderDetails = (props) => {
   );
 };
 
-export default OrderDetails;
+export default AdminOrder;

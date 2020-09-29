@@ -57,6 +57,18 @@ const AdminUserDetails = (props) => {
 
     return (
         <>
+
+{ user ? true : <img src={require("../../../assets/loader.gif")} alt="loading..." 
+    style={{
+      position: "absolute",
+      height: "100px",
+      width: "100px",
+      top: "50%",
+      left: "50%",
+      marginleft: "-50px",
+      margintop: "-50px",
+  }}/>}
+
             <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
             <div className="other_pages_container">
                 <div className={"admin-order-wrap"}>

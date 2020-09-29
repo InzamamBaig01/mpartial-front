@@ -10,7 +10,8 @@ const MyOrderDetails = (props) => {
 
   const orderid = props.match.params.orderid;
   const [order, setOrder] = useState(false);
-
+  
+  
   useEffect(() => {
     getOrderById(orderid);
   }, []);
@@ -20,12 +21,22 @@ const MyOrderDetails = (props) => {
       setOrder(singleOrderDetails);
     }
   }, [singleOrderDetails]);
+
+  
+
+
+
   return (
     <>
+
+
+
+
       <Header isFixedColor={true}></Header>
       <div className="other_pages_container">
         <h1 className="title text-center">Order Details</h1>
         <div className="container">
+        
           <OrderDetails
             order={order}
           />

@@ -11,9 +11,11 @@ import viewicon from "../../../assets/view.svg";
 import editicon from "../../../assets/profile_edit.svg";
 import { AppContext } from "contexts/appContext";
 import AdminSidebar from "./_components/AdminSidebar";
+
 const AdminOrders = () => {
   const { getallADOrders, AllOrders } = useContext(AppContext);
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
   const columns = [
     {
       name: "Order No",
@@ -81,6 +83,18 @@ const AdminOrders = () => {
   }, [AllOrders]);
   return (
     <>
+
+    { loading ? true : <img src={require("../../../assets/loader.gif")} alt="loading..." 
+    style={{
+      position: "absolute",
+      height: "100px",
+      width: "100px",
+      top: "50%",
+      left: "50%",
+      marginleft: "-50px",
+      margintop: "-50px",
+  }}/>}
+   
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
       <div className="other_pages_container">
         <div className={"admin-order-wrap"}>
@@ -90,6 +104,7 @@ const AdminOrders = () => {
               <div>
                 <h2>Orders</h2>
               </div>
+              
               <div>
                 {/* <div className="form-group">
                   <div className="input-group">
@@ -152,6 +167,7 @@ const AdminOrders = () => {
           </section>
         </div>
       </div>
+      
     </>
   );
 };

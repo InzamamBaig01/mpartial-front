@@ -14,6 +14,7 @@ import * as Sentry from '@sentry/browser';
 
 import appConfig from '../appconfig.json';
 const App: React.FC<RouteComponentProps<any>> = (props) => {
+
   const {
     isUserAuthenticated,
     setPageIsPublicValue,
