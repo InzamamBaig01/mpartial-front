@@ -864,9 +864,6 @@ input:-moz-placeholder {
   }
   .red {
     color: #ff0000;
-    font-size: 30px;
-    position: absolute;
-    margin-top: 2px;
   }
   .description {
   }
@@ -2034,3 +2031,13 @@ button.btn.payment_switch {
   border-top-right-radius: 10px !important ;
   border-bottom-right-radius: 10px !important;
 }
+
+.col-resp {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.row-resp {
+  margin-right: 0;
+  margin-left: 0;
+  }

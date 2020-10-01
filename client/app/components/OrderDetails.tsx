@@ -3,6 +3,7 @@ import { withRouter, Link } from 'react-router-dom';
 import ADHeader from 'app/components/ADHeader';
 
 import { AppContext } from 'contexts/appContext';
+import AdminSidebar from './_components/AdminSidebar';
 
 import OrderFields from '../../OrderFormFields.json';
 import { delDraft } from 'utils/api-routes/api-routes.util';
@@ -184,25 +185,34 @@ const OrderDetails = (props) => {
             </div>
           </div>
           <div className='order_details_footer'>
-            <div className='row'>
-              <div className='col'>
+            <div className='row row-resp'>
+              <div className='col col-resp'>
                 <Link to={props.isAdmin ? `/allorders` : `/orders`}>
                   <button className='btn'>Back</button>
                 </Link>
               </div>
-
-              <div className='col text-right'>
+              <div className='row text-right'>
                 {order.paymentStatus == 'DRAFT' && (
                   <>
+                  
+                  <div className='col col-resp'>
                     <button className='btn' onClick={deleteDraft}>Delete Draft</button>
-
+                    </div>
+                    
+                    <div className='col col-resp'>
                     <Link to={`/order/${order.id}`}>
                       <button className='btn'>Load Draft</button>
                     </Link>
+                    </div>
+                   
                   </>
                 )}
-         </div>
-             
+                {order.paymentStatus == 'UNPAID' && (
+                  <Link to={`/checkout/${order.id}`}>
+                    <button className='btn'>Pay Now</button>
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         </div>
