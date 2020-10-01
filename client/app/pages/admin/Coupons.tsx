@@ -49,7 +49,7 @@ const AddCoupons = (props) => {
   const [couponType, setCouponType] = useState("Percentage");
   const [couponFor, setCouponFor] = useState("public");
   const [Users, setUsers] = useState([]);
-  const [couponError, setCouponError] = useState(false); 
+  const [couponError, setCouponError] = useState(false);
 
   useEffect(() => {
     getallADUsers();
@@ -127,8 +127,7 @@ const AddCoupons = (props) => {
 
   return (
     <>
-
-<Modal
+      <Modal
         show={props.show}
         onHide={props.handleClose}
         className="edit_profile"
@@ -418,7 +417,6 @@ const Coupons = () => {
   const [selectedCoupon, setSelectedCoupon] = useState({});
   const [isDuplicating, setISDuplicating] = useState(false)
   const [AddCouponsShow, setAddCouponsShow] = useState(false);
-  
   const [loading, setLoading] = useState(false);
   const handleAddCouponsclose = () => {
     setISDuplicating(false);
@@ -520,19 +518,17 @@ const Coupons = () => {
   }
   return (
     <>
-
-{ loading ? true : <img src={require("../../../assets/loader.gif")} alt="loading..." 
+    { loading ? true : <img src={require("../../../assets/loader.gif")} alt="loading..." 
     style={{
-      position: "absolute",
-      height: "100px",
-      width: "100px",
-      top: "50%",
-      left: "50%",
-      marginleft: "-50px",
-      margintop: "-50px",
-  }}/>}
-   
-
+              position: "absolute",
+              height: "100px",
+              width: "100px",
+              top: "50%",
+              left: "50%",
+              marginleft: "-50px",
+              margintop: "-50px",
+            }}/>
+            }
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
       <div className="other_pages_container">
         <div className={"admin-order-wrap"}>
