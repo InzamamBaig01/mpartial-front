@@ -4,7 +4,7 @@ import ADHeader from "app/components/ADHeader";
 
 import { AppContext } from "contexts/appContext";
 import AdminSidebar from "./_components/AdminSidebar";
-import AdminOrder from "app/components/AdminOrder";
+import OrderDetailsAdmin from "app/components/OrderDetailsAdmin";
 import { Dropdown, Modal, Button } from "react-bootstrap";
 import { updateStatus } from "utils/api-routes/api-routes.util";
 
@@ -97,20 +97,6 @@ const AdminOrderDetails = (props) => {
 
   return (
     <>
-
-    
-{ order ? true : <img src={require("../../../assets/loader.gif")} alt="loading..." 
-    style={{
-      position: "absolute",
-      height: "100px",
-      width: "100px",
-      top: "50%",
-      left: "50%",
-      marginleft: "-50px",
-      margintop: "-50px",
-  }}/>}
-
-
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
       <div className="other_pages_container">
         <div className={"admin-order-wrap"}>
@@ -127,7 +113,7 @@ const AdminOrderDetails = (props) => {
                 </div>
               </div>
             </div>
-            <AdminOrder
+            <OrderDetailsAdmin
               order={order}
               isAdmin={true}
             />
