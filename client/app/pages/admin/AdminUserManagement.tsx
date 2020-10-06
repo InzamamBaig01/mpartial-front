@@ -64,23 +64,23 @@ const AdminUserManagement = () => {
   }, [AllUsers]);
   return (
     <>
-    { loading ? true : <img src={require("../../../assets/loader.gif")} alt="loading..." 
-        style={{
-                  position: "absolute",
-                  height: "100px",
-                  width: "100px",
-                  top: "50%",
-                  left: "50%",
-                  marginleft: "-50px",
-                  margintop: "-50px",
-                }}/>
-                }
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
       <div className="other_pages_container">
         <div className={"admin-order-wrap"}>
           <AdminSidebar></AdminSidebar>
 
           <section>
+          { loading ? true : <img src={require("../../../assets/loader.gif")} alt="loading..." 
+              style={{
+                        position: "absolute",
+                        height: "100px",
+                        width: "100px",
+                        top: "50%",
+                        left: "50%",
+                        marginleft: "-50px",
+                        margintop: "-50px",
+                      }}/>
+                      }
             <div className={"section-head"}>
               <div>
                 <h2>Customers</h2>
@@ -104,6 +104,7 @@ const AdminUserManagement = () => {
               data={Users}
               responsive={true}
               pagination={true}
+              noDataComponent
             />
             {/* <div className={"table-pagination"}>
               <div className={"pagination"}>

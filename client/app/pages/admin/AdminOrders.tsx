@@ -82,7 +82,13 @@ const AdminOrders = () => {
   }, [AllOrders]);
   return (
     <>
-    { loading ? true : <img src={require("../../../assets/loader.gif")} alt="loading..." 
+    
+      <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
+      <div className="other_pages_container">
+        <div className={"admin-order-wrap"}>
+          <AdminSidebar></AdminSidebar>
+          <section>
+          { loading ? true : <img src={require("../../../assets/loader.gif")} alt="loading..." 
         style={{
                   position: "absolute",
                   height: "100px",
@@ -93,11 +99,6 @@ const AdminOrders = () => {
                   margintop: "-50px",
                 }}/>
                 }
-      <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
-      <div className="other_pages_container">
-        <div className={"admin-order-wrap"}>
-          <AdminSidebar></AdminSidebar>
-          <section>
             <div className={"section-head"}>
               <div>
                 <h2>Orders</h2>
@@ -121,6 +122,7 @@ const AdminOrders = () => {
               data={orders}
               responsive={true}
               pagination={true}
+              noDataComponent
             />
             {/* <div className={"table-pagination"}>
               <div className={"pagination"}>
