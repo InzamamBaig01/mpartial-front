@@ -155,7 +155,7 @@ const AddCoupons = (props) => {
               </span>
             </div>
             <div className='form-group'>
-              <label>Coupon Type (Fixed or Percecntage)</label>
+              <label>Coupon Type (Fixed or Percentage)</label>
               <select
                 placeholder='Coupon Type'
                 className='form-control'
@@ -168,7 +168,7 @@ const AddCoupons = (props) => {
             </div>
             {couponType == 'Percentage' ? (
               <div className='form-group'>
-                <label>Coupon Percecntage</label>
+                <label>Coupon Percentage</label>
 
                 <input
                   type='number'
