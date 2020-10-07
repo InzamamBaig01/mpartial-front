@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import ADHeader from 'app/components/ADHeader';
-
+import { Dropdown, Modal, Button } from "react-bootstrap";
 import { AppContext } from 'contexts/appContext';
 import AdminSidebar from './_components/AdminSidebar';
 
@@ -9,8 +9,87 @@ import OrderFields from '../../OrderFormFields.json';
 import { delDraft } from 'utils/api-routes/api-routes.util';
 import history from '../../utils/history';
 
+
+
+const Delete = (props) => {
+  const [status, setStatus] = useState();
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+
+    updateStatus({
+      orderId: props.info.id,
+      orderStatus: status
+    }).subscribe((response) => {
+      if (response.response.Requested_Action) {
+        props.onEditStatusSuccess();
+      }
+    });
+  };
+
+  return (
+    <>
+      <Modal
+        show={props.show}
+        onHide={props.handleClose}
+        className="Add_card "
+        delete={props.delete}
+
+      >
+        
+        <Modal.Body className="support_body">
+          <form onSubmit={handleSubmit}>
+
+            <div><h3>Are you sure you want to delete this draft?</h3></div>
+            
+            <div className="form-group">
+              <button
+                className="btn_deldraft btn"
+                type="submit"
+                id="formButton"
+                onClick={props.handleClose}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="btn_deldraft btn"
+                type="submit"
+                id="formButton"
+                onClick={props.delete}
+              >
+                Confirm
+              </button>
+            </div>
+          </form>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+};
+
+
+
+
+
+
+
+
 const OrderDetails = (props) => {
   const [order, setOrder] = useState(props.order);
+  
+  const [editStatusShow, setEditStatusShow] = useState(false);
+
+
+  const handleEditStatusclose = () => setEditStatusShow(false);
+  const handleEditStatusShow = () => setEditStatusShow(true);
+
+  const onSubmitStatusSuccess = () => {
+    handleEditStatusclose();
+    getADOrderById(order.id);
+  }
 
   useEffect(() => {
     if (props.order) {
@@ -196,7 +275,7 @@ const OrderDetails = (props) => {
                   <>
                   
                   <div className='col col-resp'>
-                    <button className='btn' onClick={deleteDraft}>Delete Draft</button>
+                    <button className='btn' onClick={handleEditStatusShow}>Delete Draft</button>
                     </div>
                     
                     <div className='col col-resp'>
@@ -219,6 +298,25 @@ const OrderDetails = (props) => {
       ) : (
         ''
       )}
+
+{
+        editStatusShow && (<Delete
+         
+          value={""}
+          onChange={() => {}}
+          onEditStatusSuccess={onSubmitStatusSuccess}
+          onStackSubmit={() => {}}
+          show={editStatusShow}
+          handleClose={handleEditStatusclose}
+          delete={() => {
+            delDraft({ id: order.id }).subscribe(res => {
+              history.push('/orders');
+            });
+          }}
+        />)
+      }
+
+
     </>
   );
 };
