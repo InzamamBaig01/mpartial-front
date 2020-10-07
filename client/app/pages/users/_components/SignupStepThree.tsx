@@ -12,6 +12,7 @@ import appConfig from '../../../../appconfig.json';
 import { AppAlertsContext } from 'contexts/appAlertsContext';
 import { useState } from 'react';
 import FloatingLabel from 'app/components/FloatingLabel';
+import ReactIsCapsLockActive from '@matsun/reactiscapslockactive';
 interface StepProps {
   step?: number;
   setStep?: Function;
@@ -124,6 +125,9 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
                 inputValue={cpassword}
               />
             </div>
+                <ReactIsCapsLockActive>
+                    {active => <span className="password_not_matched"> {active ? 'Your Caps lock is on' :''}</span>}
+                </ReactIsCapsLockActive>
             {!validPassword && cpassword.length !== 0 ? (
               <span className='password_not_matched'>
                 Passwords does not match

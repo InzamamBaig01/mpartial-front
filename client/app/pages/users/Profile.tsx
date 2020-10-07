@@ -32,7 +32,8 @@ import {
 import BankCard from "app/components/BankCard";
 import Loader from "app/components/Loader";
 import { AppAlertsContext } from "contexts/appAlertsContext";
-import { EditProfile } from './_components/EditProfile'
+import { EditProfile } from './_components/EditProfile';
+import ReactIsCapsLockActive from '@matsun/reactiscapslockactive';
 const createOptions = (fontSize: string, padding?: string) => {
   return {
     style: {
@@ -264,6 +265,9 @@ const EditPassword = (props) => {
                   confirmPassword(e.currentTarget.value);
                 }}
               />
+              <ReactIsCapsLockActive>
+                  {active => <span className="password_not_matched"> {active ? 'Your Caps lock is on' :''}</span>}
+              </ReactIsCapsLockActive>
               {!validPassword ? (
                 <span className="password_not_matched">
                   Passwords does not match

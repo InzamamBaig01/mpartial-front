@@ -16,6 +16,7 @@ import Loader from 'app/components/Loader';
 import ReCAPTCHA from 'react-google-recaptcha';
 import appConfig from '../../../appconfig.json';
 import FloatingLabel from 'app/components/FloatingLabel';
+import ReactIsCapsLockActive from '@matsun/reactiscapslockactive';
 
 interface IProps {}
 
@@ -132,6 +133,9 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
                   />
                   <FloatingLabel label='Password' inputRef={passwordref}  inputValue={data.password} />
                 </div>
+                <ReactIsCapsLockActive>
+                    {active => <span className="password_not_matched"> {active ? 'Your Caps lock is on' :''}</span>}
+                </ReactIsCapsLockActive>
               </div>
               <div className='forgotP_container'>
                 <Link to='/forgot-password'>Forgot Password?</Link>
