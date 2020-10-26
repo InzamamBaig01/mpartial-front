@@ -63,7 +63,7 @@
   {
     "id": "mitigationOrRepair",
     "name": "Scope",
-    "description": "Select Mitigation, Repair",
+    "description": "Select Mitigation or Repair",
     "required": true,
     "type": "select",
     "options": ["Mitigation", "Repair"],
