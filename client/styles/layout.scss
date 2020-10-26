@@ -134,7 +134,7 @@
     }
   }
   &:after {
-    content: ' ';
+    content: " ";
     width: 2px;
     height: 11px;
     background-color: #000;
@@ -149,7 +149,7 @@
 
 .title {
   .section_title_text {
-    font-family: 'Museo Sans Rounded 500';
+    font-family: "Museo Sans Rounded 500";
     text-align: center;
     font-weight: 400;
     font-size: 45px;
@@ -203,7 +203,7 @@
     background: #3ac280;
     box-shadow: 0px 0px 19px 3px #3ac280;
     &:after {
-      content: ' ';
+      content: " ";
       background-image: url(../assets/compare_handle.png);
       width: 115px;
       height: 40px;
@@ -365,7 +365,7 @@
   font-weight: 200;
 }
 .rangeslider .rangeslider__handle-tooltip:after {
-  content: ' ';
+  content: " ";
   position: absolute;
   width: 0;
   height: 0;
@@ -474,7 +474,7 @@
 }
 
 .rangeslider-vertical .rangeslider__labels .rangeslider__label-item::before {
-  content: '';
+  content: "";
   width: 10px;
   height: 2px;
   background: #000;
@@ -635,7 +635,7 @@ span.numeric-character {
   input {
     margin-bottom: 24px;
   }
-  input[type='submit'] {
+  input[type="submit"] {
     width: 159px;
     height: 40px;
     background: #3ac280 0% 0% no-repeat padding-box;
@@ -648,25 +648,25 @@ textarea::-webkit-input-placeholder,
 input::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   font-weight: 400;
-    color: rgba(179, 180, 181, 0.7) !important;
+  color: rgba(179, 180, 181, 0.7) !important;
 }
 textarea::-moz-placeholder,
 input::-moz-placeholder {
   /* Firefox 19+ */
   font-weight: 400;
-    color: rgba(179, 180, 181, 0.7) !important;
+  color: rgba(179, 180, 181, 0.7) !important;
 }
 textarea:-ms-input-placeholder,
 input:-ms-input-placeholder {
   /* IE 10+ */
   font-weight: 400;
-    color: rgba(179, 180, 181, 0.7) !important;
+  color: rgba(179, 180, 181, 0.7) !important;
 }
 textarea:-moz-placeholder,
 input:-moz-placeholder {
   /* Firefox 18- */
   font-weight: 400;
-    color: rgba(179, 180, 181, 0.7) !important;
+  color: rgba(179, 180, 181, 0.7) !important;
 }
 .dropdown-container .gray {
   font-weight: 600;
@@ -761,7 +761,7 @@ input:-moz-placeholder {
   .dropdown-heading-value {
     color: #495057;
   }
-  input[type='file'] {
+  input[type="file"] {
     display: none;
   }
   .custom-file-input-btn {
@@ -780,7 +780,7 @@ input:-moz-placeholder {
     visibility: hidden;
   }
   .custom-file-input-btn::before {
-    content: 'Select some files';
+    content: "Select some files";
     color: black;
     display: inline-block;
     background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
@@ -804,7 +804,7 @@ input:-moz-placeholder {
   .custom-file-input-btn:active::before {
     background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
   }
-  input[type='file'] {
+  input[type="file"] {
     position: absolute;
     z-index: -1;
     top: 8px;
@@ -1023,7 +1023,7 @@ input:-moz-placeholder {
   margin-bottom: 65px;
 }
 .signup_header:after {
-  content: '';
+  content: "";
   display: block;
   width: 110px;
   height: 110px;
@@ -1306,7 +1306,7 @@ input:-moz-placeholder {
     font-size: 20px;
     line-height: 30px;
     letter-spacing: 0px;
-    font-family: 'Museo Sans Rounded 500';
+    font-family: "Museo Sans Rounded 500";
     opacity: 1;
     max-width: 510px;
     margin: 0 auto;
@@ -1333,7 +1333,7 @@ input:-moz-placeholder {
       font-weight: 600;
       font-size: 20px;
       line-height: 24px;
-      font-family: 'Museo Sans Rounded 500';
+      font-family: "Museo Sans Rounded 500";
       letter-spacing: 0px;
       color: #000000;
     }
@@ -1359,13 +1359,13 @@ input:-moz-placeholder {
     width: 50%;
   }
 }
-[type='radio']:checked,
-[type='radio']:not(:checked) {
+[type="radio"]:checked,
+[type="radio"]:not(:checked) {
   position: absolute;
   left: -9999px;
 }
-[type='radio']:checked + label,
-[type='radio']:not(:checked) + label {
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label {
   position: relative;
   padding-left: 28px;
   cursor: pointer;
@@ -1373,9 +1373,9 @@ input:-moz-placeholder {
   display: inline-block;
   color: #666;
 }
-[type='radio']:checked + label:before,
-[type='radio']:not(:checked) + label:before {
-  content: '';
+[type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before {
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -1385,9 +1385,9 @@ input:-moz-placeholder {
   border-radius: 100%;
   background: #fff;
 }
-[type='radio']:checked + label:after,
-[type='radio']:not(:checked) + label:after {
-  content: '';
+[type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after {
+  content: "";
   width: 10px;
   height: 10px;
   background: #3ac280;
@@ -1398,12 +1398,12 @@ input:-moz-placeholder {
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
-[type='radio']:not(:checked) + label:after {
+[type="radio"]:not(:checked) + label:after {
   opacity: 0;
   -webkit-transform: scale(0);
   transform: scale(0);
 }
-[type='radio']:checked + label:after {
+[type="radio"]:checked + label:after {
   opacity: 1;
   -webkit-transform: scale(1);
   transform: scale(1);
@@ -1446,9 +1446,10 @@ span.password_not_matched {
 
 .red {
   color: red;
-  font-size: 30px;
+  font-size: 40px;
   position: absolute;
   margin-top: 2px;
+  margin-left: -1px;
 }
 
 .Add_card {
@@ -1741,10 +1742,10 @@ a {
 }
 
 .popver_text {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 .profile_upload_image_info {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   color: red;
   font-size: 12px;
   text-align: center;
@@ -1779,7 +1780,7 @@ a {
 .partial_fee_btn label,
 .waterfall_info_text,
 .form_price {
-  font-family: 'Museo Sans Rounded 500';
+  font-family: "Museo Sans Rounded 500";
 }
 
 .brand_icons {
@@ -1869,7 +1870,7 @@ button.btn.payment_switch {
       font-weight: 600;
       font-size: 20px;
       line-height: 24px;
-      font-family: 'Museo Sans Rounded 500';
+      font-family: "Museo Sans Rounded 500";
       letter-spacing: 0px;
       color: #000000;
     }
@@ -2043,8 +2044,8 @@ button.btn.payment_switch {
 .row-resp {
   margin-right: 0;
   margin-left: 0;
-  }
+}
 
-  .btn_deldraft{
-    margin: 20px!important;
-  }
+.btn_deldraft {
+  margin: 20px !important;
+}
