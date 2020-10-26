@@ -1,25 +1,25 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import Header from 'app/components/Header';
-import MultiSelect from 'react-multi-select-component';
-import { AuthContext } from 'contexts/authContext';
+import React, { useEffect, useState, useContext } from "react";
+import { withRouter, Link } from "react-router-dom";
+import Header from "app/components/Header";
+import MultiSelect from "react-multi-select-component";
+import { AuthContext } from "contexts/authContext";
 import {
   saveOrderData,
   saveFileOrderData,
-} from 'utils/api-routes/api-routes.util';
-import history from '../../../utils/history';
-import queryString from 'query-string';
-import { AppContext } from 'contexts/appContext';
-import { AppAlertsContext } from 'contexts/appAlertsContext';
-import Loader from 'app/components/Loader';
-import { Modal } from 'react-bootstrap';
-import leftarrow from '../../../assets/first.svg';
-import OrderFields from '../../../OrderFormFields.json';
+} from "utils/api-routes/api-routes.util";
+import history from "../../../utils/history";
+import queryString from "query-string";
+import { AppContext } from "contexts/appContext";
+import { AppAlertsContext } from "contexts/appAlertsContext";
+import Loader from "app/components/Loader";
+import { Modal } from "react-bootstrap";
+import leftarrow from "../../../assets/first.svg";
+import OrderFields from "../../../OrderFormFields.json";
 
-import rightarrowdark from '../../../assets/up-arrow-white.svg';
-import saveImage from '../../../assets/save.svg';
-import DrawField from './_components/DrawField';
-import ApplyCoupon from './_components/ApplyCoupon';
+import rightarrowdark from "../../../assets/up-arrow-white.svg";
+import saveImage from "../../../assets/save.svg";
+import DrawField from "./_components/DrawField";
+import ApplyCoupon from "./_components/ApplyCoupon";
 import {
   UncontrolledButtonDropdown,
   DropdownToggle,
@@ -28,13 +28,13 @@ import {
   ButtonGroup,
   Button,
   UncontrolledTooltip,
-} from 'reactstrap';
+} from "reactstrap";
 
 import {
   FloatingMenu,
   MainButton,
   ChildButton,
-} from 'react-floating-button-menu';
+} from "react-floating-button-menu";
 
 const UserOrder = (props) => {
   const { userDetails } = useContext(AuthContext);
@@ -58,7 +58,7 @@ const UserOrder = (props) => {
 
   useEffect(() => {
     if (top.current) {
-      window.scrollTo({ top: top.current.offsetTop, behavior: 'smooth' });
+      window.scrollTo({ top: top.current.offsetTop, behavior: "smooth" });
       form.current.reset();
     }
   }, [top.current]);
@@ -70,11 +70,11 @@ const UserOrder = (props) => {
       getMyOrders();
     } else {
       console.clear();
-      console.log('loaded');
+      console.log("loaded");
       const userOrderFormFeilds = Object.assign([], OrderFields);
       userOrderFormFeilds.map((field) => {
-        field.value = '';
-        if (field.id == 'emailForDeliveryOfResults')
+        field.value = "";
+        if (field.id == "emailForDeliveryOfResults")
           field.value = userDetails().emailAddress;
         return field;
       });
@@ -91,11 +91,11 @@ const UserOrder = (props) => {
     if (orderId) {
       getMyOrders();
     } else {
-      console.log('loaded 2');
+      console.log("loaded 2");
       const userOrderFormFeilds = Object.assign([], OrderFields);
       userOrderFormFeilds.map((field) => {
-        field.value = '';
-        if (field.id == 'emailForDeliveryOfResults')
+        field.value = "";
+        if (field.id == "emailForDeliveryOfResults")
           field.value = userDetails().emailAddress;
         return field;
       });
@@ -113,9 +113,10 @@ const UserOrder = (props) => {
     if (order) {
       const dataV = {};
       const fields = allFields.map((field) => {
-        field.value = order[field.id] ? order[field.id] : '';
-        field.potentiallyRelevantDigitalAssetsRealNames = order.potentiallyRelevantDigitalAssetsRealNames;
-        dataV[field.id] = order[field.id] ? order[field.id] : '';
+        field.value = order[field.id] ? order[field.id] : "";
+        field.potentiallyRelevantDigitalAssetsRealNames =
+          order.potentiallyRelevantDigitalAssetsRealNames;
+        dataV[field.id] = order[field.id] ? order[field.id] : "";
         return field;
       });
       setAllFields(fields);
@@ -151,7 +152,7 @@ const UserOrder = (props) => {
     if (files && files[index]) {
       const formData = new FormData();
 
-      formData.append('potentiallyRelevantDigitalAssets', files[index]);
+      formData.append("potentiallyRelevantDigitalAssets", files[index]);
 
       saveFileOrderData(formData, {
         orderId: id,
@@ -174,26 +175,26 @@ const UserOrder = (props) => {
     showLoader();
     const apiData = {
       amountInCents: productPrice * 100,
-      additionalFees: '',
+      additionalFees: "",
       thetoken: localStorage.token,
       saveAsDraft: false,
     };
-    if (orderId) apiData['orderId'] = orderId;
+    if (orderId) apiData["orderId"] = orderId;
     let fileToUpload = [];
     const formData = new FormData();
 
     Object.keys(dataValues).map((key) => {
-      if (key === 'potentiallyRelevantDigitalAssets') {
+      if (key === "potentiallyRelevantDigitalAssets") {
         fileToUpload = dataValues[key];
       } else if (
-        key === 'temporaryActivities' ||
-        key == 'specialtyTradeSelection'
+        key === "temporaryActivities" ||
+        key == "specialtyTradeSelection"
       ) {
         apiData[key] = dataValues[key]
           ? dataValues[key].map((v) => {
               return v.value;
             })
-          : '';
+          : "";
       } else {
         apiData[key] = dataValues[key];
       }
@@ -206,7 +207,7 @@ const UserOrder = (props) => {
     saveOrderData(formData, stringified).subscribe(
       (response: any) => {
         if (response.response.Requested_Action) {
-          localStorage.setItem('sessipn', response.response.Message);
+          localStorage.setItem("sessipn", response.response.Message);
           if (fileToUpload.length) {
             uploadFiles(
               response.response.data
@@ -235,10 +236,10 @@ const UserOrder = (props) => {
 
   const checkMatchingUrl = () => {
     const firstUrl = allFields.filter((field) => {
-      return field.id == 'preMitigationDemoModelURL';
+      return field.id == "preMitigationDemoModelURL";
     });
     const secondUrl = allFields.filter((field) => {
-      return field.id == 'postMitigationDemoModelURL';
+      return field.id == "postMitigationDemoModelURL";
     });
 
     if (firstUrl[0].value && secondUrl[0].value) {
@@ -258,7 +259,7 @@ const UserOrder = (props) => {
     fieldsData = fieldsData.map((f) => {
       if (f.id == field.id) {
         const cop = Object.assign({}, f);
-        cop['value'] = value;
+        cop["value"] = value;
         return cop;
       }
       return f;
@@ -273,27 +274,27 @@ const UserOrder = (props) => {
     showLoader();
     const apiData = {
       amountInCents: productPrice * 100,
-      additionalFees: '',
+      additionalFees: "",
       thetoken: localStorage.token,
       saveAsDraft: true,
     };
-    if (orderId) apiData['orderId'] = orderId;
+    if (orderId) apiData["orderId"] = orderId;
 
     let fileToUpload;
     const formData = new FormData();
 
     Object.keys(dataValues).map((key) => {
-      if (key === 'potentiallyRelevantDigitalAssets') {
+      if (key === "potentiallyRelevantDigitalAssets") {
         fileToUpload = dataValues[key];
       } else if (
-        key === 'temporaryActivities' ||
-        key == 'specialtyTradeSelection'
+        key === "temporaryActivities" ||
+        key == "specialtyTradeSelection"
       ) {
         apiData[key] = dataValues[key]
           ? dataValues[key].map((v) => {
               return v.value;
             })
-          : '';
+          : "";
       } else {
         apiData[key] = dataValues[key];
       }
@@ -306,9 +307,8 @@ const UserOrder = (props) => {
     saveOrderData(formData, stringified).subscribe(
       (response: any) => {
         if (response.response.Requested_Action) {
-          localStorage.setItem('sessipn', response.response.message);
+          localStorage.setItem("sessipn", response.response.message);
           if (fileToUpload) {
-
             // TODO:// API change Required.
             uploadFiles(response.response.Message, fileToUpload, 0, true);
           } else {
@@ -323,38 +323,38 @@ const UserOrder = (props) => {
     );
   };
   const [saveBtn, setSaveBtn] = useState(false);
-  const [checkoutAs, setCheckoutAs] = useState('checkout');
+  const [checkoutAs, setCheckoutAs] = useState("checkout");
   return (
     <>
       <Header isFixedColor={true}></Header>
-      <div className='other_pages_container'>
-        <h1 className='title text-center' ref={top}>
+      <div className="other_pages_container">
+        <h1 className="title text-center" ref={top}>
           mpartial Engine
         </h1>
-        <div className='container'>
-          <form className='order_form' onSubmit={onSubmit} ref={form}>
-            <div className='row'>
+        <div className="container">
+          <form className="order_form" onSubmit={onSubmit} ref={form}>
+            <div className="row">
               {allFields.map((field, index) => {
                 const gridCol =
                   (index > 3 && index < 8) || index == 10 || index == 11
-                    ? 'col-6 select_box_field'
-                    : 'col-12';
+                    ? "col-6 select_box_field"
+                    : "col-12";
                 return (
                   <div className={`form-group ${gridCol}`} key={index}>
                     <label>
-                      {field.name}{' '}
-                      {field.required ? <span className='red'>*</span> : ''}
+                      {field.name}{" "}
+                      {field.required ? <span className="sterick">*</span> : ""}
                     </label>
                     <div
                       className={`description small_${
-                        field.id != 'projectZipCode' &&
+                        field.id != "projectZipCode" &&
                         field.description?.length <= 42
                       }
                         small_${
-                          field.id == 'temporaryActivities' ||
-                          field.id == 'projectZipCode'
-                            ? 'xs'
-                            : ''
+                          field.id == "temporaryActivities" ||
+                          field.id == "projectZipCode"
+                            ? "xs"
+                            : ""
                         }
                         `}
                     >
@@ -369,47 +369,47 @@ const UserOrder = (props) => {
                 );
               })}
             </div>
-            <div className='form-group'>
+            <div className="form-group">
               <label>Price</label>
-              <div className='row'>
-                <div className='col-3'>
+              <div className="row">
+                <div className="col-3">
                   {couponApplied.length ? (
                     <>
-                      <div className=' main_price'>
+                      <div className=" main_price">
                         ${productPrice} <sup>${price} </sup>
                       </div>
                     </>
                   ) : (
-                    <div className=' main_price'>${productPrice}</div>
+                    <div className=" main_price">${productPrice}</div>
                   )}
                 </div>
               </div>
             </div>
 
-            <div className='form-group'>
-              <label className='terms'>
-                <input type='checkbox' required onClick={handleChange} /> I’ve
-                read and accept the mpartial{' '}
-                <Link to='/terms'>
-                  <span className='underline'>Terms & Conditions</span>
+            <div className="form-group">
+              <label className="terms">
+                <input type="checkbox" required onClick={handleChange} /> I’ve
+                read and accept the mpartial{" "}
+                <Link to="/terms">
+                  <span className="underline">Terms & Conditions</span>
                 </Link>
-                <span className='red'>*</span>
+                <span className="sterick">*</span>
               </label>
             </div>
-            <div className='form-group submit_btn_container'>
+            <div className="form-group submit_btn_container">
               <ButtonGroup>
                 <Button
-                  className='btn btn-green '
-                  type='submit'
+                  className="btn btn-green "
+                  type="submit"
                   onClick={checkFormValidation}
-                  id='formButton'
-                  disabled={checkoutAs == 'checkout' && submitBtnDisabled}
+                  id="formButton"
+                  disabled={checkoutAs == "checkout" && submitBtnDisabled}
                 >
                   <Loader
                     text={
-                      checkoutAs == 'checkout'
-                        ? 'Proceed to Checkout'
-                        : 'Save as draft'
+                      checkoutAs == "checkout"
+                        ? "Proceed to Checkout"
+                        : "Save as draft"
                     }
                   ></Loader>
                 </Button>
@@ -426,14 +426,14 @@ const UserOrder = (props) => {
               </ButtonGroup>
 
               <UncontrolledTooltip
-                placement='top'
-                target='UncontrolledTooltipExample'
+                placement="top"
+                target="UncontrolledTooltipExample"
               >
                 Save as draft
               </UncontrolledTooltip>
               <button
-                className='floating_draft_btn'
-                id='UncontrolledTooltipExample'
+                className="floating_draft_btn"
+                id="UncontrolledTooltipExample"
                 onClick={saveToDraft}
               >
                 <Loader text={<img src={saveImage} />}></Loader>
@@ -445,7 +445,7 @@ const UserOrder = (props) => {
 
       {ApplyCouponShow && (
         <ApplyCoupon
-          value={''}
+          value={""}
           onSubmitSuccess={onSubmitSuccess}
           show={ApplyCouponShow}
           handleClose={handleApplyCouponclose}

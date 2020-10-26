@@ -1446,10 +1446,15 @@ span.password_not_matched {
 
 .red {
   color: red;
+  font-size: 18px;
+}
+
+.sterick {
+  color: red;
   font-size: 40px;
   position: absolute;
   margin-top: 2px;
-  margin-left: -1px;
+  margin-left: -2px;
 }
 
 .Add_card {
