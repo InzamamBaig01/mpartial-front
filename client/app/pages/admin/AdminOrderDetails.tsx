@@ -70,7 +70,7 @@ const AdminOrderDetails = (props) => {
   const orderid = props.match.params.orderid;
   const [order, setOrder] = useState(false);
   const [editStatusShow, setEditStatusShow] = useState(false);
-  const [Loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const handleEditStatusclose = () => setEditStatusShow(false);
   const handleEditStatusShow = () => setEditStatusShow(true);
 
