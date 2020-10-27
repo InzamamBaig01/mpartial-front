@@ -25,15 +25,12 @@ import profile_edit from "../../../assets/profile_edit.svg";
 import dragimage from "../../../assets/userProfile.svg";
 import { useDropzone } from "react-dropzone";
 import queryString from "query-string";
-import {
-  profileUpdate,
-  getPIC,
-} from "utils/api-routes/api-routes.util";
+import { profileUpdate, getPIC } from "utils/api-routes/api-routes.util";
 import BankCard from "app/components/BankCard";
 import Loader from "app/components/Loader";
 import { AppAlertsContext } from "contexts/appAlertsContext";
-import { EditProfile } from './_components/EditProfile';
-import ReactIsCapsLockActive from '@matsun/reactiscapslockactive';
+import { EditProfile } from "./_components/EditProfile";
+import ReactIsCapsLockActive from "@matsun/reactiscapslockactive";
 const createOptions = (fontSize: string, padding?: string) => {
   return {
     style: {
@@ -146,7 +143,6 @@ const AddNewCard = (props) => {
     </>
   );
 };
-
 
 const EditPassword = (props) => {
   const [passwords, setPasswords] = useState({
@@ -266,7 +262,13 @@ const EditPassword = (props) => {
                 }}
               />
               <ReactIsCapsLockActive>
-                  {active => <span className="password_not_matched"> {active ? 'Your Caps lock is on' :''}</span>}
+                {(active) => (
+                  <i className="red">
+                    <span className="password_not_matched">
+                      <b>{active ? <i>WARNING! Caps lock is ON. </i> : ""}</b>
+                    </span>
+                  </i>
+                )}
               </ReactIsCapsLockActive>
               {!validPassword ? (
                 <span className="password_not_matched">
@@ -428,7 +430,6 @@ const Profile = () => {
                 <div className="divider"></div>
                 <Loader></Loader>
                 <div className="cards">
-                
                   {info
                     ? info.stripeCustomerCard.map((card, index) => {
                         return (

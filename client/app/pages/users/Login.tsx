@@ -1,22 +1,22 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from "react";
 
-import { AuthContext } from '../../../contexts/authContext';
-import { withRouter, Link } from 'react-router-dom';
-import Header from 'app/components/Header';
+import { AuthContext } from "../../../contexts/authContext";
+import { withRouter, Link } from "react-router-dom";
+import Header from "app/components/Header";
 
-import Mail from '../../../assets/email.svg';
-import Lock from '../../../assets/lock.svg';
+import Mail from "../../../assets/email.svg";
+import Lock from "../../../assets/lock.svg";
 import {
   resetPassword,
   forgotPasswordAPI,
   resendActivationEmail,
-} from 'utils/api-routes/api-routes.util';
-import Loader from 'app/components/Loader';
+} from "utils/api-routes/api-routes.util";
+import Loader from "app/components/Loader";
 
-import ReCAPTCHA from 'react-google-recaptcha';
-import appConfig from '../../../appconfig.json';
-import FloatingLabel from 'app/components/FloatingLabel';
-import ReactIsCapsLockActive from '@matsun/reactiscapslockactive';
+import ReCAPTCHA from "react-google-recaptcha";
+import appConfig from "../../../appconfig.json";
+import FloatingLabel from "app/components/FloatingLabel";
+import ReactIsCapsLockActive from "@matsun/reactiscapslockactive";
 
 interface IProps {}
 
@@ -32,8 +32,8 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
   } = useContext(AuthContext);
   const [loginStatus, setLoginStatus] = useState(false);
   const [data, setData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const handleEmailChange = (e: any) => {
     setData({
@@ -61,7 +61,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
     // console.log(loginError);
     if (loginError) {
       setLoginStatus(
-        loginError == 'A user could not be found with this email address.'
+        loginError == "A user could not be found with this email address."
           ? "Sorry, we couldn't find an account with that username or the password you entered isn't right."
           : loginError
       );
@@ -84,7 +84,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
     }).subscribe((response) => {
       if (response.response.Requested_Action) {
         setLoginStatus(
-          'Verification link has been sent. Please check your email.'
+          "Verification link has been sent. Please check your email."
         );
       }
     });
@@ -99,79 +99,93 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
   return (
     <>
       <Header isFixedColor={true}></Header>
-      <div className='login_page'>
-        <div className='login_container container'>
-          <span className='title'>Sign In with your mpartial account.</span>
+      <div className="login_page">
+        <div className="login_container container">
+          <span className="title">Sign In with your mpartial account.</span>
 
-          <div className='login_inner_Container'>
+          <div className="login_inner_Container">
             <form onSubmit={handleSubmitForm}>
               {/* <a href="#" className="forget_link">Forgot password?</a> */}
-              <div className='form-group'>
-                <div className='input-group'>
-                  <img className='input_icon' src={Mail} alt='' />
+              <div className="form-group">
+                <div className="input-group">
+                  <img className="input_icon" src={Mail} alt="" />
                   <input
-                    type='email'
-                    className='form-control'
+                    type="email"
+                    className="form-control"
                     onChange={handleEmailChange}
                     ref={loginref}
                     required
                   />
-                  <FloatingLabel label='Email' inputRef={loginref} inputValue={data.email} />
+                  <FloatingLabel
+                    label="Email"
+                    inputRef={loginref}
+                    inputValue={data.email}
+                  />
                 </div>
               </div>
 
-              <div className='form-group'>
-                <div className='input-group'>
-                  <img className='input_icon' src={Lock} alt='' />
+              <div className="form-group">
+                <div className="input-group">
+                  <img className="input_icon" src={Lock} alt="" />
                   <input
-                    type='password'
-                    className='form-control'
-                    placeholder=''
+                    type="password"
+                    className="form-control"
+                    placeholder=""
                     ref={passwordref}
                     onChange={handlePasswordChange}
                     required
                   />
-                  <FloatingLabel label='Password' inputRef={passwordref}  inputValue={data.password} />
+                  <FloatingLabel
+                    label="Password"
+                    inputRef={passwordref}
+                    inputValue={data.password}
+                  />
                 </div>
                 <ReactIsCapsLockActive>
-                    {active => <span className="password_not_matched"> {active ? 'Your Caps lock is on' :''}</span>}
+                  {(active) => (
+                    <i className="red">
+                      <span className="password_not_matched">
+                        <b>{active ? <i>WARNING! Caps lock is ON. </i> : ""}</b>
+                      </span>
+                    </i>
+                  )}
                 </ReactIsCapsLockActive>
               </div>
-              <div className='forgotP_container'>
-                <Link to='/forgot-password'>Forgot Password?</Link>
+              <div className="forgotP_container">
+                <Link to="/forgot-password">Forgot Password?</Link>
               </div>
               {loginAttempt > 5 && (
                 <ReCAPTCHA
                   sitekey={appConfig.captchaKey}
                   onChange={onCaptchaChange}
                   ref={captcha}
-                  className='captcha_box'
+                  className="captcha_box"
                 />
               )}
               <button
-                type='submit'
-                className='btn btn-primary btn-block submit'
-                id='formButton'
+                type="submit"
+                className="btn btn-primary btn-block submit"
+                id="formButton"
                 disabled={loginAttempt > 5 && !isHuman}
               >
-                <Loader text='Sign in'></Loader>
+                <Loader text="Sign in"></Loader>
               </button>
             </form>
-            <div className='login_devider'>
+            <div className="login_devider">
               <span>New to mpartial?</span>
             </div>
 
-            <Link to='/signup'>
-              <button className='btn create_account'>CREATE ACCOUNT</button>
+            <Link to="/signup">
+              <button className="btn create_account">CREATE ACCOUNT</button>
             </Link>
           </div>
         </div>
       </div>
       {loginStatus ? (
-        <div className='not_verified'>
-          <div className='error_msg'>
+        <div className="not_verified">
+          <div className="error_msg">
             <div
-              className='close_verification_popup'
+              className="close_verification_popup"
               onClick={() => {
                 setLoginStatus(false);
               }}
@@ -179,17 +193,17 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
               &times;
             </div>
             {loginStatus ==
-            'This user is not allowed to login. Please verify your email address first.' ? (
+            "This user is not allowed to login. Please verify your email address first." ? (
               <>
-                You have not verified your email address.{' '}
+                You have not verified your email address.{" "}
                 <a
-                  href='#'
+                  href="#"
                   onClick={() => {
                     resendEmail();
                   }}
                 >
                   Click here
-                </a>{' '}
+                </a>{" "}
                 to resend verification email.
               </>
             ) : (
@@ -198,7 +212,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
           </div>
         </div>
       ) : (
-        ''
+        ""
       )}
     </>
   );
