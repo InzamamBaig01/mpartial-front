@@ -104,19 +104,6 @@ const AdminOrderDetails = (props) => {
           <AdminSidebar></AdminSidebar>
 
           <section>
-            <div className={"section-head"}>
-              <div>{/* <h2>Orders</h2> */}</div>
-              <div>
-                <div className="text-right">
-                  <button
-                    className="btn btn-block"
-                    onClick={handleEditStatusShow}
-                  >
-                    Update Status
-                  </button>
-                </div>
-              </div>
-            </div>
             {loading ? (
               <img
                 src={require("../../../assets/loader.gif")}
@@ -134,6 +121,20 @@ const AdminOrderDetails = (props) => {
             ) : (
               ""
             )}
+            <div className={"section-head"}>
+              <div>{/* <h2>Orders</h2> */}</div>
+              <div>
+                <div className="text-right">
+                  <button
+                    className="btn btn-block"
+                    onClick={handleEditStatusShow}
+                  >
+                    Update Status
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <OrderDetailsAdmin order={order} isAdmin={true} />
           </section>
         </div>
