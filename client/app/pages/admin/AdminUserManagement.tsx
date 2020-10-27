@@ -14,7 +14,7 @@ import AdminSidebar from "./_components/AdminSidebar";
 const AdminUserManagement = () => {
   const { getallADUsers, AllUsers } = useContext(AppContext);
   const [Users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const columns = [
     {
       name: "Name",
@@ -57,6 +57,13 @@ const AdminUserManagement = () => {
     getallADUsers();
   }, []);
 
+  //Runing loader for 2 secs only
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
   useEffect(() => {
     if (AllUsers.length) {
       setUsers(AllUsers);
@@ -70,17 +77,23 @@ const AdminUserManagement = () => {
           <AdminSidebar></AdminSidebar>
 
           <section>
-          { loading ? true : <img src={require("../../../assets/loader.gif")} alt="loading..." 
-              style={{
-                        position: "absolute",
-                        height: "100px",
-                        width: "100px",
-                        top: "50%",
-                        left: "50%",
-                        marginleft: "-50px",
-                        margintop: "-50px",
-                      }}/>
-                      }
+            {loading ? (
+              <img
+                src={require("../../../assets/loader.gif")}
+                alt="loading..."
+                style={{
+                  position: "absolute",
+                  height: "100px",
+                  width: "100px",
+                  top: "50%",
+                  left: "50%",
+                  marginLeft: "-50px",
+                  marginTop: "-50px",
+                }}
+              />
+            ) : (
+              ""
+            )}
             <div className={"section-head"}>
               <div>
                 <h2>Customers</h2>

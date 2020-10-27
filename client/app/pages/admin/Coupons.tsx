@@ -9,7 +9,7 @@ import Next from "../../../assets/next.svg";
 import Previous from "../../../assets/previous.svg";
 import viewicon from "../../../assets/view.svg";
 import AdminSidebar from "./_components/AdminSidebar";
-import history from '../../../utils/history';
+import history from "../../../utils/history";
 import { Dropdown, Modal, Button } from "react-bootstrap";
 import DatePicker from "reactstrap-date-picker";
 import { AppContext } from "../../../contexts/appContext";
@@ -23,14 +23,14 @@ import { data } from "jquery";
 import moment from "moment";
 
 interface ICoupon {
-  couponcode: undefined | String | Number,
-  activefrom: undefined | String | Number,
-  maxusagecount: undefined | String | Number,
-  offpercentage: undefined | String | Number,
-  subtractfixedamount: undefined | String | Number,
-  forcustomeremail: undefined | String | Number,
-  maxusagecountperuser: undefined | String | Number,
-  expiry: undefined | String | Number,
+  couponcode: undefined | String | Number;
+  activefrom: undefined | String | Number;
+  maxusagecount: undefined | String | Number;
+  offpercentage: undefined | String | Number;
+  subtractfixedamount: undefined | String | Number;
+  forcustomeremail: undefined | String | Number;
+  maxusagecountperuser: undefined | String | Number;
+  expiry: undefined | String | Number;
 }
 
 const AddCoupons = (props) => {
@@ -55,16 +55,24 @@ const AddCoupons = (props) => {
     getallADUsers();
     if (props.isDuplicating) {
       const duData = props.info;
-      const currentCouponFor = duData.forcustomeremail == null ? "Public" : "Customer";
-      const currentCouponType = duData.offpercentage == null ? "Fixed" : "Percentage";
+      const currentCouponFor =
+        duData.forcustomeremail == null ? "Public" : "Customer";
+      const currentCouponType =
+        duData.offpercentage == null ? "Fixed" : "Percentage";
       setData({
         couponcode: "",
         activefrom: new Date(duData.activefrom).toISOString(),
         maxusagecount: duData.maxusagecount,
-        offpercentage: currentCouponType == "Percentage" ? duData.offpercentage : "",
-        subtractfixedamount: currentCouponType == "Fixed" ? duData.subtractfixedamount : "",
-        forcustomeremail: currentCouponFor == "Customer" ? duData.forcustomeremail : "",
-        maxusagecountperuser: duData.maxusagecountperuser != null ? duData.maxusagecountperuser : "",
+        offpercentage:
+          currentCouponType == "Percentage" ? duData.offpercentage : "",
+        subtractfixedamount:
+          currentCouponType == "Fixed" ? duData.subtractfixedamount : "",
+        forcustomeremail:
+          currentCouponFor == "Customer" ? duData.forcustomeremail : "",
+        maxusagecountperuser:
+          duData.maxusagecountperuser != null
+            ? duData.maxusagecountperuser
+            : "",
         expiry: new Date(duData.expiry).toISOString(),
       });
       setCouponType(currentCouponType);
@@ -93,9 +101,14 @@ const AddCoupons = (props) => {
     e.preventDefault();
     data.expiry = moment(data.expiry).format("YYYY-MM-DD");
     data.activefrom = moment(data.activefrom).format("YYYY-MM-DD");
-    Object.keys(data).map(key => {
-      data[key] = typeof data[key] == "string" ? data[key].trim() != "" ? data[key] : null : data[key]
-    })
+    Object.keys(data).map((key) => {
+      data[key] =
+        typeof data[key] == "string"
+          ? data[key].trim() != ""
+            ? data[key]
+            : null
+          : data[key];
+    });
     addCoupon(data).subscribe((response) => {
       if (response.response.Requested_Action) {
         props.onSubmitSuccess();
@@ -104,26 +117,24 @@ const AddCoupons = (props) => {
     });
   };
 
-
   const changeCouponType = (e) => {
     if (e.currentTarget.value == "Fixed") {
       setData({
         ...data,
         offpercentage: "",
-      })
+      });
     } else {
       setData({
         ...data,
         subtractfixedamount: "",
-      })
+      });
     }
-    setCouponType(e.currentTarget.value)
-  }
+    setCouponType(e.currentTarget.value);
+  };
 
   useEffect(() => {
-    console.log(data)
-
-  }, [data])
+    console.log(data);
+  }, [data]);
 
   return (
     <>
@@ -134,9 +145,7 @@ const AddCoupons = (props) => {
       >
         <Modal.Header closeButton>
           <Modal.Title className="add_card_title">
-            {
-              props.isDuplicating ? "Duplicate Coupon" : "Create New Coupon"
-            }
+            {props.isDuplicating ? "Duplicate Coupon" : "Create New Coupon"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="support_body">
@@ -195,25 +204,25 @@ const AddCoupons = (props) => {
                 />
               </div>
             ) : (
-                <div className="form-group">
-                  <label>Coupon Fixed Amount</label>
+              <div className="form-group">
+                <label>Coupon Fixed Amount</label>
 
-                  <input
-                    type="number"
-                    placeholder="Coupon Fixed Amount"
-                    className="form-control"
-                    id="fixed"
-                    required
-                    onChange={(e) =>
-                      setData({
-                        ...data,
-                        subtractfixedamount: e.currentTarget.value,
-                      })
-                    }
-                    value={data.subtractfixedamount}
-                  />
-                </div>
-              )}
+                <input
+                  type="number"
+                  placeholder="Coupon Fixed Amount"
+                  className="form-control"
+                  id="fixed"
+                  required
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      subtractfixedamount: e.currentTarget.value,
+                    })
+                  }
+                  value={data.subtractfixedamount}
+                />
+              </div>
+            )}
             <div className="form-group">
               <label>Coupon For (Customer or public)</label>
               <select
@@ -249,8 +258,8 @@ const AddCoupons = (props) => {
                 </select>
               </div>
             ) : (
-                ""
-              )}
+              ""
+            )}
             <div className="form-group">
               <label>Coupon Active From</label>
               <DatePicker
@@ -339,13 +348,10 @@ const AddCoupons = (props) => {
   );
 };
 
-
 const ViewCoupon = (props) => {
-
-
   couponUsageHistory({
-    couponCode: props.info.couponcode
-  }).subscribe(res => {
+    couponCode: props.info.couponcode,
+  }).subscribe((res) => {
     console.log(res);
   });
 
@@ -372,40 +378,52 @@ const ViewCoupon = (props) => {
           </div>
           <div className="row">
             <div className="col text-left">Usage:</div>
-            <div className="col text-left">{props.info.usedtimes}/{props.info.maxusagecount}</div>
+            <div className="col text-left">
+              {props.info.usedtimes}/{props.info.maxusagecount}
+            </div>
           </div>
           <div className="row">
             <div className="col text-left">Status:</div>
-            <div className="col text-left">{props.info.isactive ? "Active" : "Unactive"}</div>
+            <div className="col text-left">
+              {props.info.isactive ? "Active" : "Unactive"}
+            </div>
           </div>
 
           <div className="row">
             <div className="col text-left">Coupon Type:</div>
-            <div className="col text-left">{props.info.offpercentage != null ? "Percentage" : "Fixed"}</div>
+            <div className="col text-left">
+              {props.info.offpercentage != null ? "Percentage" : "Fixed"}
+            </div>
           </div>
           <div className="row">
             <div className="col text-left">Discount:</div>
-            <div className="col text-left">{props.info.offpercentage != null ? `${props.info.offpercentage}%` : props.info.subtractfixedamount}</div>
+            <div className="col text-left">
+              {props.info.offpercentage != null
+                ? `${props.info.offpercentage}%`
+                : props.info.subtractfixedamount}
+            </div>
           </div>
           <div className="row">
             <div className="col text-left">Coupon For:</div>
-            <div className="col text-left">{props.info.forcustomeremail != null ? "Customer" : "Public"}</div>
-          </div>
-          {
-            props.info.forcustomeremail != null ? (
-
-              <div className="row">
-                <div className="col text-left">Customer:</div>
-                <div className="col text-left">{props.info.forcustomeremail}</div>
-              </div>
-            ) : ""
-          }
-          <div className="row mt-3">
-            <div className="col text-center">
-              <button className="btn" onClick={props.onDplicateClick}>Make Duplicate</button>
+            <div className="col text-left">
+              {props.info.forcustomeremail != null ? "Customer" : "Public"}
             </div>
           </div>
-
+          {props.info.forcustomeremail != null ? (
+            <div className="row">
+              <div className="col text-left">Customer:</div>
+              <div className="col text-left">{props.info.forcustomeremail}</div>
+            </div>
+          ) : (
+            ""
+          )}
+          <div className="row mt-3">
+            <div className="col text-center">
+              <button className="btn" onClick={props.onDplicateClick}>
+                Make Duplicate
+              </button>
+            </div>
+          </div>
         </Modal.Body>
       </Modal>
     </>
@@ -415,20 +433,27 @@ const ViewCoupon = (props) => {
 const Coupons = () => {
   const [Coupons, setCoupons] = useState([]);
   const [selectedCoupon, setSelectedCoupon] = useState({});
-  const [isDuplicating, setISDuplicating] = useState(false)
+  const [isDuplicating, setISDuplicating] = useState(false);
   const [AddCouponsShow, setAddCouponsShow] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const handleAddCouponsclose = () => {
     setISDuplicating(false);
     setAddCouponsShow(false);
-  }
+  };
   const handleAddCouponsShow = () => setAddCouponsShow(true);
 
   const [ViewCouponsShow, setViewCouponsShow] = useState(false);
   const handleViewCouponsclose = () => {
     setViewCouponsShow(false);
-  }
+  };
   const handleViewCouponsShow = () => setViewCouponsShow(true);
+
+  //Running loader for 2 secs
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     getCoupons();
@@ -444,7 +469,6 @@ const Coupons = () => {
   const onSubmitSuccess = () => {
     getCoupons();
   };
-
 
   const columns = [
     {
@@ -475,18 +499,13 @@ const Coupons = () => {
       format: (d) => {
         return (
           <>
-            {
-              d.offpercentage ? (
-                <span>
-                  {d.offpercentage}%
-                </span>
-              ) : (
-                  <span>
-                    ${d.subtractfixedamount}
-                  </span>
-                )}
+            {d.offpercentage ? (
+              <span>{d.offpercentage}%</span>
+            ) : (
+              <span>${d.subtractfixedamount}</span>
+            )}
           </>
-        )
+        );
       },
     },
     {
@@ -495,47 +514,50 @@ const Coupons = () => {
       sortable: false,
       className: "header-col",
       format: (d) => (
-        <Link to={`/coupons-details/${d.id}`} >
+        <Link to={`/coupons-details/${d.id}`}>
           <img src={viewicon} alt="" />
         </Link>
-
       ),
     },
   ];
-
 
   const onRowClicked = (data) => {
     console.log(data);
     setSelectedCoupon(data);
     // handleViewCouponsShow();
     history.push(`/coupons-details/${data.id}`);
-  }
+  };
 
   const onDplicateClick = () => {
     setISDuplicating(true);
     handleViewCouponsclose();
     handleAddCouponsShow();
-  }
+  };
   return (
     <>
-    
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
       <div className="other_pages_container">
         <div className={"admin-order-wrap"}>
           <AdminSidebar></AdminSidebar>
 
           <section>
-          { loading ? true : <img src={require("../../../assets/loader.gif")} alt="loading..." 
-              style={{
-                        position: "absolute",
-                        height: "100px",
-                        width: "100px",
-                        top: "50%",
-                        left: "50%",
-                        marginleft: "-50px",
-                        margintop: "-50px",
-                      }}/>
-                      }
+            {loading ? (
+              <img
+                src={require("../../../assets/loader.gif")}
+                alt="loading..."
+                style={{
+                  position: "absolute",
+                  height: "100px",
+                  width: "100px",
+                  top: "50%",
+                  left: "50%",
+                  marginLeft: "-50px",
+                  marginTop: "-50px",
+                }}
+              />
+            ) : (
+              ""
+            )}
             <div className={"section-head mb-3"}>
               <div className="col">
                 <h2>Coupons</h2>
@@ -573,7 +595,7 @@ const Coupons = () => {
       {ViewCouponsShow && (
         <ViewCoupon
           value={""}
-          onSubmitSuccess={() => { }}
+          onSubmitSuccess={() => {}}
           show={ViewCouponsShow}
           handleClose={handleViewCouponsclose}
           onDplicateClick={onDplicateClick}

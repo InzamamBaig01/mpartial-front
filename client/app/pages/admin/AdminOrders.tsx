@@ -14,7 +14,7 @@ import AdminSidebar from "./_components/AdminSidebar";
 const AdminOrders = () => {
   const { getallADOrders, AllOrders } = useContext(AppContext);
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const columns = [
     {
       name: "Order No",
@@ -43,9 +43,8 @@ const AdminOrders = () => {
         // console.log(d)
         return (
           <>
-          {d.paymentStatus}
-          {/* <img  src={editicon} className="admin-order-edit" alt="" /> */}
-
+            {d.paymentStatus}
+            {/* <img  src={editicon} className="admin-order-edit" alt="" /> */}
           </>
         );
       },
@@ -63,16 +62,22 @@ const AdminOrders = () => {
       sortable: false,
       className: "header-col",
       format: (d) => (
-          <Link
-            to={`/details/${d.id}`}>
-             <img  src={viewicon} alt="" />
-          </Link>
+        <Link to={`/details/${d.id}`}>
+          <img src={viewicon} alt="" />
+        </Link>
       ),
     },
   ];
 
   useEffect(() => {
     getallADOrders();
+  }, []);
+
+  //Running loader for 2 secs
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   }, []);
 
   useEffect(() => {
@@ -82,23 +87,28 @@ const AdminOrders = () => {
   }, [AllOrders]);
   return (
     <>
-    
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
       <div className="other_pages_container">
         <div className={"admin-order-wrap"}>
           <AdminSidebar></AdminSidebar>
           <section>
-          { loading ? true : <img src={require("../../../assets/loader.gif")} alt="loading..." 
-        style={{
+            {loading ? (
+              <img
+                src={require("../../../assets/loader.gif")}
+                alt="loading..."
+                style={{
                   position: "absolute",
                   height: "100px",
                   width: "100px",
                   top: "50%",
                   left: "50%",
-                  marginleft: "-50px",
-                  margintop: "-50px",
-                }}/>
-                }
+                  marginLeft: "-50px",
+                  marginTop: "-50px",
+                }}
+              />
+            ) : (
+              ""
+            )}
             <div className={"section-head"}>
               <div>
                 <h2>Orders</h2>
