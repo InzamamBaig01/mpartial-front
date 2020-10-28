@@ -455,7 +455,7 @@ const Coupons = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 1800);
+    }, 1200);
   }, []);
 
   useEffect(() => {
