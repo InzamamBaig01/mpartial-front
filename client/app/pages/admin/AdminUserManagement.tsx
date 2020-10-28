@@ -2,7 +2,6 @@ import React, { useEffect, useContext, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
 import ADHeader from "app/components/ADHeader";
 import DataTable from "react-data-table-component";
-import Search from "../../../assets/search.svg";
 import First from "../../../assets/first.svg";
 import Last from "../../../assets/last.svg";
 import Next from "../../../assets/next.svg";
@@ -11,33 +10,39 @@ import viewicon from "../../../assets/view.svg";
 
 import { AppContext } from "contexts/appContext";
 import AdminSidebar from "./_components/AdminSidebar";
+import AdminSearch from "./_components/AdminSearch";
+
 const AdminUserManagement = () => {
   const { getallADUsers, AllUsers } = useContext(AppContext);
   const [Users, setUsers] = useState([]);
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const columns = [
     {
       name: "Name",
       selector: "firstName",
-      sortable: false,
+      sortable: true,
       className: "header-col",
     },
     {
       name: "Email",
       selector: "emailAddress",
-      sortable: false,
+      sortable: true,
       className: "header-col",
     },
     {
       name: "No. of Orders",
       selector: "noOfOrders",
-      sortable: false,
+      sortable: true,
       className: "header-col",
     },
     {
       name: "Member Since",
       selector: "joinedOn",
-      sortable: false,
+      sortable: true,
+      sortFunction: function (a, b) {
+        return +new Date(a.joinedOn) - +new Date(b.joinedOn);
+      },
       className: "header-col",
     },
     {
@@ -69,6 +74,20 @@ const AdminUserManagement = () => {
       setUsers(AllUsers);
     }
   }, [AllUsers]);
+
+  const onSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const newUsers = AllUsers.filter(
+    (users) =>
+      users.emailAddress.toLowerCase().includes(search.toLowerCase()) ||
+      users.firstName.toLowerCase().includes(search.toLowerCase()) ||
+      users.lastName.toLowerCase().includes(search.toLowerCase()) ||
+      users.noOfOrders.toString().includes(search.toLowerCase()) ||
+      users.joinedOn.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <>
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
@@ -98,23 +117,13 @@ const AdminUserManagement = () => {
               <div>
                 <h2>Customers</h2>
               </div>
-              <div>
-                {/* <div className="form-group">
-                  <div className="input-group">
-                    <img className="input_icon" src={Search} alt="" />
-                    <input
-                      type="email"
-                      className="form-control"
-                      placeholder="Search"
-                      required
-                    />
-                  </div>
-                </div> */}
+              <div style={{ maxWidth: "200px" }}>
+                <AdminSearch searchInput={search} onChange={onSearchChange} />
               </div>
             </div>
             <DataTable
               columns={columns}
-              data={Users}
+              data={newUsers}
               responsive={true}
               pagination={true}
               noDataComponent

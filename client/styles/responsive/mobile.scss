@@ -7,7 +7,7 @@
       }
     }
   }
-  
+
   button.btn.payment_switch {
     position: absolute;
     right: 0;
@@ -222,6 +222,11 @@
       display: block;
       margin: 10px 0;
     }
+  }
+
+  .search-head {
+    display: flex;
+    flex-direction: column;
   }
 }
 

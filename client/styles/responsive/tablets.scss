@@ -234,6 +234,14 @@
   .nav-item {
     text-align: center;
   }
+
+  .search-head {
+    display: flex;
+    flex-direction: column;
+  }
+  .search-input-group {
+    margin-bottom: 10px !important;
+  }
 }
 
 @media screen and (max-width: 2224) and (max-height: 1668) {
