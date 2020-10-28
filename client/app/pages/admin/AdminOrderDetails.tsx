@@ -71,18 +71,12 @@ const AdminOrderDetails = (props) => {
   const [order, setOrder] = useState(false);
   const [editStatusShow, setEditStatusShow] = useState(false);
   const [loading, setLoading] = useState(true);
+
   const handleEditStatusclose = () => setEditStatusShow(false);
   const handleEditStatusShow = () => setEditStatusShow(true);
 
   useEffect(() => {
     getADOrderById(orderid);
-  }, []);
-
-  //Running loader for 2 secs
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
   }, []);
 
   useEffect(() => {
@@ -96,6 +90,12 @@ const AdminOrderDetails = (props) => {
     getADOrderById(orderid);
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1800);
+  }, []);
+
   return (
     <>
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
@@ -103,40 +103,38 @@ const AdminOrderDetails = (props) => {
         <div className={"admin-order-wrap"}>
           <AdminSidebar></AdminSidebar>
 
-          <section>
-            {loading ? (
-              <img
-                src={require("../../../assets/loader.gif")}
-                alt="loading..."
-                style={{
-                  position: "absolute",
-                  height: "100px",
-                  width: "100px",
-                  top: "50%",
-                  left: "50%",
-                  marginLeft: "-50px",
-                  marginTop: "-50px",
-                }}
-              />
-            ) : (
-              ""
-            )}
-            <div className={"section-head"}>
-              <div>{/* <h2>Orders</h2> */}</div>
-              <div>
-                <div className="text-right">
-                  <button
-                    className="btn btn-block"
-                    onClick={handleEditStatusShow}
-                  >
-                    Update Status
-                  </button>
+          {loading ? (
+            <img
+              src={require("../../../assets/loader.gif")}
+              alt="loading..."
+              style={{
+                position: "absolute",
+                height: "100px",
+                width: "100px",
+                top: "50%",
+                left: "50%",
+                marginLeft: "-50px",
+                marginTop: "-50px",
+              }}
+            />
+          ) : (
+            <section>
+              <div className={"section-head"}>
+                <div>{/* <h2>Orders</h2> */}</div>
+                <div>
+                  <div className="text-right">
+                    <button
+                      className="btn btn-block"
+                      onClick={handleEditStatusShow}
+                    >
+                      Update Status
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <OrderDetailsAdmin order={order} isAdmin={true} />
-          </section>
+              <OrderDetailsAdmin order={order} isAdmin={true} />
+            </section>
+          )}
         </div>
       </div>
       {editStatusShow && (

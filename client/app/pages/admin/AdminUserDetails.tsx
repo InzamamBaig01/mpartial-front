@@ -43,6 +43,7 @@ const fields = [
 
 const AdminUserDetails = (props) => {
   const { getADUserById, singleUserDetails } = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
 
   const userid = props.match.params.userid
     ? window.atob(props.match.params.userid)
@@ -59,6 +60,12 @@ const AdminUserDetails = (props) => {
     }
   }, [singleUserDetails]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
+
   return (
     <>
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
@@ -66,59 +73,58 @@ const AdminUserDetails = (props) => {
         <div className={"admin-order-wrap"}>
           <AdminSidebar></AdminSidebar>
 
-          <section>
-            {user ? (
-              ""
-            ) : (
-              <img
-                src={require("../../../assets/loader.gif")}
-                alt="loading..."
-                style={{
-                  position: "absolute",
-                  height: "100px",
-                  width: "100px",
-                  top: "50%",
-                  left: "50%",
-                  marginLeft: "-50px",
-                  marginTop: "-50px",
-                }}
-              />
-            )}
-            <div className={"section-head"}>
-              <div>{/* <h2>Orders</h2> */}</div>
-              <div>
-                <div className="text-right"></div>
-              </div>
-            </div>
-            {user ? (
-              <div className="order_details">
-                <div className="order_details_header">
-                  Email: {user.emailAddress}
+          {loading ? (
+            <img
+              src={require("../../../assets/loader.gif")}
+              alt="loading..."
+              style={{
+                position: "absolute",
+                height: "100px",
+                width: "100px",
+                top: "50%",
+                left: "50%",
+                marginLeft: "-50px",
+                marginTop: "-50px",
+              }}
+            />
+          ) : (
+            <section>
+              <div className={"section-head"}>
+                <div>{/* <h2>Orders</h2> */}</div>
+                <div>
+                  <div className="text-right"></div>
                 </div>
-                <div className="row order_details_info">
-                  {fields.map((field) => {
-                    return (
-                      <div
-                        className={`col-md-4 col-sm-6 col-xs-6 field_${field.type}`}
-                      >
-                        <label>{field.name}</label>
-                        <div className="order_details_value">
-                          {user[field.id]}
+              </div>
+              {user ? (
+                <div className="order_details">
+                  <div className="order_details_header">
+                    Email: {user.emailAddress}
+                  </div>
+                  <div className="row order_details_info">
+                    {fields.map((field) => {
+                      return (
+                        <div
+                          className={`col-md-4 col-sm-6 col-xs-6 field_${field.type}`}
+                        >
+                          <label>{field.name}</label>
+                          <div className="order_details_value">
+                            {user[field.id]}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
+                  <div className="order_details_footer">
+                    <Link to={`/user-management`}>
+                      <button className="btn">Back</button>
+                    </Link>
+                  </div>
                 </div>
-                <div className="order_details_footer">
-                  <Link to={`/user-management`}>
-                    <button className="btn">Back</button>
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
-          </section>
+              ) : (
+                <></>
+              )}
+            </section>
+          )}
         </div>
       </div>
     </>

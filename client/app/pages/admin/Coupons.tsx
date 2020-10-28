@@ -51,6 +51,8 @@ const AddCoupons = (props) => {
   const [Users, setUsers] = useState([]);
   const [couponError, setCouponError] = useState(false);
 
+  console.log(props);
+
   useEffect(() => {
     getallADUsers();
     if (props.isDuplicating) {
@@ -448,11 +450,12 @@ const Coupons = () => {
   };
   const handleViewCouponsShow = () => setViewCouponsShow(true);
 
-  //Running loader for 2 secs
+  //Loader for 2 secs
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1800);
   }, []);
 
   useEffect(() => {
@@ -540,45 +543,44 @@ const Coupons = () => {
         <div className={"admin-order-wrap"}>
           <AdminSidebar></AdminSidebar>
 
-          <section>
-            {loading ? (
-              <img
-                src={require("../../../assets/loader.gif")}
-                alt="loading..."
-                style={{
-                  position: "absolute",
-                  height: "100px",
-                  width: "100px",
-                  top: "50%",
-                  left: "50%",
-                  marginLeft: "-50px",
-                  marginTop: "-50px",
-                }}
-              />
-            ) : (
-              ""
-            )}
-            <div className={"section-head mb-3"}>
-              <div className="col">
-                <h2>Coupons</h2>
-              </div>
-              <div className="col text-right">
-                <button className="btn" onClick={handleAddCouponsShow}>
-                  Create New Coupon
-                </button>
-              </div>
-            </div>
-
-            <DataTable
-              className="coupons_table"
-              columns={columns}
-              data={Coupons}
-              responsive={true}
-              pagination={true}
-              onRowClicked={onRowClicked}
-              noDataComponent
+          {loading ? (
+            <img
+              src={require("../../../assets/loader.gif")}
+              alt="loading..."
+              style={{
+                position: "absolute",
+                height: "100px",
+                width: "100px",
+                top: "50%",
+                left: "50%",
+                marginLeft: "-50px",
+                marginTop: "-50px",
+              }}
             />
-          </section>
+          ) : (
+            <section>
+              <div className={"section-head mb-3"}>
+                <div className="col">
+                  <h2>Coupons</h2>
+                </div>
+                <div className="col text-right">
+                  <button className="btn" onClick={handleAddCouponsShow}>
+                    Create New Coupon
+                  </button>
+                </div>
+              </div>
+
+              <DataTable
+                className="coupons_table"
+                columns={columns}
+                data={Coupons}
+                responsive={true}
+                pagination={true}
+                onRowClicked={onRowClicked}
+                noDataComponent
+              />
+            </section>
+          )}
         </div>
       </div>
       {AddCouponsShow && (
