@@ -70,7 +70,7 @@ const AdminUserManagement = () => {
   }, []);
 
   useEffect(() => {
-    if (AllUsers.length) {
+    if (AllUsers) {
       setUsers(AllUsers);
     }
   }, [AllUsers]);
@@ -79,12 +79,11 @@ const AdminUserManagement = () => {
     setSearch(e.target.value);
   };
 
-  const newUsers = AllUsers.filter(
+  const newUsers = Users.filter(
     (users) =>
       users.emailAddress.toLowerCase().includes(search.toLowerCase()) ||
       users.firstName.toLowerCase().includes(search.toLowerCase()) ||
       users.lastName.toLowerCase().includes(search.toLowerCase()) ||
-      users.noOfOrders.toString().includes(search.toLowerCase()) ||
       users.joinedOn.toLowerCase().includes(search.toLowerCase())
   );
 
