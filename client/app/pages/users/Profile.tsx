@@ -25,7 +25,11 @@ import profile_edit from "../../../assets/profile_edit.svg";
 import dragimage from "../../../assets/userProfile.svg";
 import { useDropzone } from "react-dropzone";
 import queryString from "query-string";
-import { profileUpdate, getPIC } from "utils/api-routes/api-routes.util";
+import {
+  profileUpdate,
+  getPIC,
+  changePassword,
+} from "utils/api-routes/api-routes.util";
 import BankCard from "app/components/BankCard";
 import Loader from "app/components/Loader";
 import { AppAlertsContext } from "contexts/appAlertsContext";

@@ -91,30 +91,29 @@ const AdminOrders = () => {
       <div className="other_pages_container">
         <div className={"admin-order-wrap"}>
           <AdminSidebar></AdminSidebar>
-          <section>
-            {loading ? (
-              <img
-                src={require("../../../assets/loader.gif")}
-                alt="loading..."
-                style={{
-                  position: "absolute",
-                  height: "100px",
-                  width: "100px",
-                  top: "50%",
-                  left: "50%",
-                  marginLeft: "-50px",
-                  marginTop: "-50px",
-                }}
-              />
-            ) : (
-              ""
-            )}
-            <div className={"section-head"}>
-              <div>
-                <h2>Orders</h2>
-              </div>
-              <div>
-                {/* <div className="form-group">
+
+          {loading ? (
+            <img
+              src={require("../../../assets/loader.gif")}
+              alt="loading..."
+              style={{
+                position: "absolute",
+                height: "100px",
+                width: "100px",
+                top: "50%",
+                left: "50%",
+                marginLeft: "-50px",
+                marginTop: "-50px",
+              }}
+            />
+          ) : (
+            <section>
+              <div className={"section-head"}>
+                <div>
+                  <h2>Orders</h2>
+                </div>
+                <div>
+                  {/* <div className="form-group">
                   <div className="input-group">
                     <img className="input_icon" src={Search} alt="" />
                     <input
@@ -125,16 +124,16 @@ const AdminOrders = () => {
                     />
                   </div>
                 </div> */}
+                </div>
               </div>
-            </div>
-            <DataTable
-              columns={columns}
-              data={orders}
-              responsive={true}
-              pagination={true}
-              noDataComponent
-            />
-            {/* <div className={"table-pagination"}>
+              <DataTable
+                columns={columns}
+                data={orders}
+                responsive={true}
+                pagination={true}
+                noDataComponent
+              />
+              {/* <div className={"table-pagination"}>
               <div className={"pagination"}>
                 <ul>
                   <li className={"first"}>
@@ -173,7 +172,8 @@ const AdminOrders = () => {
               </div>
             </div>
            */}
-          </section>
+            </section>
+          )}
         </div>
       </div>
     </>

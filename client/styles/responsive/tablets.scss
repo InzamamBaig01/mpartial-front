@@ -235,9 +235,9 @@
     text-align: center;
   }
 
-  .search-head {
+  .search-text {
     display: flex;
-    flex-direction: column;
+    flex-direction: column !important;
   }
   .search-input-group {
     margin-bottom: 10px !important;

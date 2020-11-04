@@ -94,40 +94,38 @@ const AdminUserManagement = () => {
         <div className={"admin-order-wrap"}>
           <AdminSidebar></AdminSidebar>
 
-          <section>
-            {loading ? (
-              <img
-                src={require("../../../assets/loader.gif")}
-                alt="loading..."
-                style={{
-                  position: "absolute",
-                  height: "100px",
-                  width: "100px",
-                  top: "50%",
-                  left: "50%",
-                  marginLeft: "-50px",
-                  marginTop: "-50px",
-                }}
-              />
-            ) : (
-              ""
-            )}
-            <div className={"section-head"}>
-              <div>
-                <h2>Customers</h2>
-              </div>
-              <div style={{ maxWidth: "200px" }}>
-                <AdminSearch searchInput={search} onChange={onSearchChange} />
-              </div>
-            </div>
-            <DataTable
-              columns={columns}
-              data={newUsers}
-              responsive={true}
-              pagination={true}
-              noDataComponent
+          {loading ? (
+            <img
+              src={require("../../../assets/loader.gif")}
+              alt="loading..."
+              style={{
+                position: "absolute",
+                height: "100px",
+                width: "100px",
+                top: "50%",
+                left: "50%",
+                marginLeft: "-50px",
+                marginTop: "-50px",
+              }}
             />
-            {/* <div className={"table-pagination"}>
+          ) : (
+            <section>
+              <div className={"section-head search-text"}>
+                <div>
+                  <h2>Customers</h2>
+                </div>
+                <div style={{ maxWidth: "200px" }}>
+                  <AdminSearch searchInput={search} onChange={onSearchChange} />
+                </div>
+              </div>
+              <DataTable
+                columns={columns}
+                data={newUsers}
+                responsive={true}
+                pagination={true}
+                noDataComponent
+              />
+              {/* <div className={"table-pagination"}>
               <div className={"pagination"}>
                 <ul>
                   <li className={"first"}>
@@ -166,7 +164,8 @@ const AdminUserManagement = () => {
               </div>
             </div>
            */}
-          </section>
+            </section>
+          )}
         </div>
       </div>
     </>
