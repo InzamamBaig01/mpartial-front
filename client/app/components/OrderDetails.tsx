@@ -261,7 +261,7 @@ const OrderDetails = (props) => {
                 {order.paymentStatus == "DRAFT" && (
                   <>
                     <div className="col col-resp">
-                      <button className="btn" onClick={handleEditStatusShow}>
+                      <button className="btn " onClick={handleEditStatusShow}>
                         Delete Draft
                       </button>
                     </div>
