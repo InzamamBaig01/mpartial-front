@@ -4,11 +4,11 @@ import { AppContext } from "../../../contexts/appContext";
 import { useContext } from "react";
 import { Slider } from "./_components/Slider";
 import { HeroSection } from "./_components/HeroSection";
-import { WaterFall } from "./_components/WaterFall";
+const WaterFall = React.lazy(() => import("./_components/WaterFall"));
 import { Deliverables } from "./_components/Deliverables";
 const ContactUs = React.lazy(() => import("./_components/ContactUs"));
 import Header from "app/components/Header";
-import { HowItWorks } from "./_components/HowItWorks";
+const HowItWorks = React.lazy(() => import("./_components/HowItWorks"));
 import { Footer } from "../../components/Footer";
 import queryString from "query-string";
 
@@ -77,10 +77,14 @@ export const HomePage: React.FC<any> = React.memo((props) => {
         <HeroSection />
       </div>
       <div ref={sectionRef.hIW}>
-        <HowItWorks />
+        <Suspense fallback={<div>loading ...</div>}>
+          <HowItWorks />
+        </Suspense>
       </div>
       <div ref={sectionRef.wFall}>
-        <WaterFall />
+        <Suspense fallback={<div>loading ...</div>}>
+          <WaterFall />
+        </Suspense>
       </div>
       <div ref={sectionRef.Deli}>
         <Deliverables />
