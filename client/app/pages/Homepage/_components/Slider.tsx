@@ -8,7 +8,7 @@ import { css } from "@emotion/core";
 interface SliderProps {
   nextSection: any;
 }
-export const Slider: React.FC<SliderProps> = ({ nextSection }) => {
+const Slider: React.FC<SliderProps> = ({ nextSection }) => {
   const [dimensions, setDimensions] = React.useState({
     height: window.innerHeight,
     width: window.innerWidth,
@@ -65,3 +65,5 @@ export const Slider: React.FC<SliderProps> = ({ nextSection }) => {
     </>
   );
 };
+
+export default Slider;
