@@ -373,7 +373,7 @@ const Profile = () => {
                   className="edit_profile_icon "
                   onClick={handleEditProfileShow}
                 >
-                  <img src={profile_edit} alt="" />
+                  <img src={profile_edit} alt="" loading="lazy" />
                 </div>
                 <div className="profile_image">
                   <img
@@ -381,6 +381,7 @@ const Profile = () => {
                       info.profilePicture ? info.profilePicture : userProfile
                     }
                     alt=""
+                    loading="lazy"
                   />
                 </div>
                 <div className="profile_name">
