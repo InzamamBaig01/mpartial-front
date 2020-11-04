@@ -19,6 +19,7 @@ export const DeliverablesBox: React.FC<DeliverablesBoxProps> = ({
             height="480"
             src={url}
             frameBorder="0"
+            loading="lazy"
             allowFullScreen
             allow="vr"
           ></iframe>
