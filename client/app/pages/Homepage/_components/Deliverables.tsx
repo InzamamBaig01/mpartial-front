@@ -29,7 +29,8 @@ export const Deliverables: React.FC<DeliverablesProps> = ({}) => {
             type="center"
           ></SectionTitle>
           <h3 className={"widget-title sub mt-1"}>
-            Pre-Mitigation Scan + Post-Mitigation Scan = ESX & SKX (TrueSketch PLUS)
+            Pre-Mitigation Scan + Post-Mitigation Scan = ESX & SKX (TrueSketch
+            PLUS)
           </h3>
           <div className={"deliver_widget_container"}>
             <DeliverablesBox
@@ -51,13 +52,16 @@ export const Deliverables: React.FC<DeliverablesProps> = ({}) => {
           </div>
           <div className={"sketch-widget"}>
             <h3 className={"widget-title sub mt-1"}>
-              <a href="https://support.matterport.com/hc/en-us/articles/360001452428-Matterport-TrueSketch-and-TrueSketch-PLUS-for-Xactimate" target="_blank">
+              <a
+                href="https://support.matterport.com/hc/en-us/articles/360001452428-Matterport-TrueSketch-and-TrueSketch-PLUS-for-Xactimate"
+                target="_blank"
+              >
                 TrueSketch PLUS [SKX]
               </a>
             </h3>
             <section className={"sketch-container"}>
-              <img src={sketch} />
-              <img src={sketch2} />
+              <img src={sketch} loading="lazy" />
+              <img src={sketch2} loading="lazy" />
               <div></div>
             </section>
           </div>
