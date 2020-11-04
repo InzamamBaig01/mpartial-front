@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { withRouter, Link } from "react-router-dom";
 import { AppContext } from "../../../contexts/appContext";
 import { useContext } from "react";
@@ -6,7 +6,7 @@ import { Slider } from "./_components/Slider";
 import { HeroSection } from "./_components/HeroSection";
 import { WaterFall } from "./_components/WaterFall";
 import { Deliverables } from "./_components/Deliverables";
-import { ContactUs } from "./_components/ContactUs";
+const ContactUs = React.lazy(() => import("./_components/ContactUs"));
 import Header from "app/components/Header";
 import { HowItWorks } from "./_components/HowItWorks";
 import { Footer } from "../../components/Footer";
@@ -86,7 +86,9 @@ export const HomePage: React.FC<any> = React.memo((props) => {
         <Deliverables />
       </div>
       <div ref={sectionRef.cont}>
-        <ContactUs />
+        <Suspense fallback={<div>loading ...</div>}>
+          <ContactUs />
+        </Suspense>
       </div>
       <div ref={sectionRef.footer}>
         <Footer />

@@ -1,10 +1,12 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
 import SectionTitle from "app/components/SectionTitle";
 import { DeliverablesBox } from "./deliverablesBoxWidget";
 import { DeliverSlider } from "./DelieverSlider";
 import mitigation from "../../../../assets/deliverable-1.png";
 import mitigation2 from "../../../../assets/deliverable-2.png";
+import LazyLoad from "react-lazyload";
 
 import sketch from "../../../../assets/TS_Plus_Front.png";
 import sketch2 from "../../../../assets/TS_Plus_Top_View.png";
@@ -32,17 +34,20 @@ export const Deliverables: React.FC<DeliverablesProps> = ({}) => {
             Pre-Mitigation Scan + Post-Mitigation Scan = ESX & SKX (TrueSketch
             PLUS)
           </h3>
-          <div className={"deliver_widget_container"}>
-            <DeliverablesBox
-              title={""}
-              url={"https://my.matterport.com/show/?m=e5Wxtu8Arbx"}
-            />
-            <span className={"numeric-character"}></span>
-            <DeliverablesBox
-              title={""}
-              url={"https://my.matterport.com/show/?m=DhqzGgT7M1E"}
-            />
-          </div>
+          <LazyLoad offset={50}>
+            <div className={"deliver_widget_container"}>
+              <DeliverablesBox
+                title={""}
+                url={"https://my.matterport.com/show/?m=e5Wxtu8Arbx"}
+              />
+              <span className={"numeric-character"}></span>
+              <DeliverablesBox
+                title={""}
+                url={"https://my.matterport.com/show/?m=DhqzGgT7M1E"}
+              />
+            </div>
+          </LazyLoad>
+
           <span className={"numeric-character"}></span>
           <div className={"deliver-slider"}>
             <h3 className={"widget-title sub mt-1"}>

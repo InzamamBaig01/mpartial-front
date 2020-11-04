@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useEffect } from "react";
 import { withRouter, Link } from "react-router-dom";
 import SectionTitle from "app/components/SectionTitle";
 import { AppAlertsContext } from "contexts/appAlertsContext";
@@ -14,7 +13,7 @@ import appConfig from "../../../../appconfig.json";
 import FloatingLabel from "app/components/FloatingLabel";
 
 interface ConatctUsProps {}
-export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
+const ContactUs: React.FC<ConatctUsProps> = ({}) => {
   const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
   const { userDetails, isUserAuthenticated } = useContext(AuthContext);
   const refs = {
@@ -34,7 +33,6 @@ export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
   });
   const [messageDone, setMessageDone] = useState(false);
   const [isHuman, setIshuman] = useState(false);
-  const [show, setShow] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     showLoader();
@@ -55,12 +53,6 @@ export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
       hideLoader();
     });
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setShow(true);
-    }, 6000);
-  }, []);
 
   const onchange = (value, key) => {
     const details = Object.assign({}, contactDetails);
@@ -177,15 +169,13 @@ export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
                   </div>
                 </div>
               </div>
-
-              {show && !isLoggedIn && (
+              {!isLoggedIn && (
                 <ReCAPTCHA
                   sitekey={appConfig.captchaKey}
                   onChange={onCaptchaChange}
                   className="captcha_box"
                 />
               )}
-
               <p>
                 {messageDone
                   ? "Your message has been sent to the support team, you can expect a reply within 12 hours. "
@@ -214,3 +204,5 @@ export const ContactUs: React.FC<ConatctUsProps> = ({}) => {
     </>
   );
 };
+
+export default ContactUs;
