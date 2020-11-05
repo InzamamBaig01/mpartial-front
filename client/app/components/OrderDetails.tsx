@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
 import ADHeader from "app/components/ADHeader";
-import { Dropdown, Modal, Button } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
 import { AppContext } from "contexts/appContext";
 import AdminSidebar from "./_components/AdminSidebar";
 

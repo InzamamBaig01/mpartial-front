@@ -142,13 +142,20 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
                   />
                 </div>
                 <ReactIsCapsLockActive>
-                  {(active) => (
-                    <i className="red">
-                      <span className="password_not_matched">
-                        <b>{active ? <i>WARNING! Caps lock is ON. </i> : ""}</b>
-                      </span>
-                    </i>
-                  )}
+                  {(active) =>
+                    active ? (
+                      <div>
+                        <i className="red">
+                          <span className="password_not_matched">
+                            Caps Lock is On, having Caps Lock on may cause you
+                            to enter your password incorrectly.
+                          </span>
+                        </i>
+                      </div>
+                    ) : (
+                      ""
+                    )
+                  }
                 </ReactIsCapsLockActive>
               </div>
               <div className="forgotP_container">

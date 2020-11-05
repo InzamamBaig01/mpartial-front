@@ -18,7 +18,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { Dropdown, Modal, Button } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
 import { AuthContext } from "contexts/authContext";
 import { AppContext } from "contexts/appContext";
 import profile_edit from "../../../assets/profile_edit.svg";
@@ -269,7 +269,16 @@ const EditPassword = (props) => {
                 {(active) => (
                   <i className="red">
                     <span className="password_not_matched">
-                      <b>{active ? <i>WARNING! Caps lock is ON. </i> : ""}</b>
+                      <b>
+                        {active ? (
+                          <i>
+                            Caps Lock is On, having Caps Lock on may cause you
+                            to enter your password incorrectly.{" "}
+                          </i>
+                        ) : (
+                          ""
+                        )}
+                      </b>
                     </span>
                   </i>
                 )}

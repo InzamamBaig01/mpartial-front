@@ -116,6 +116,7 @@ module.exports = merge(common, {
     //   algorithm(input, compressionOptions, callback) {
     //     return zopfli.gzip(input, compressionOptions, callback);
     //   },
-    // }),
+    // }),​​ webpack.optimize.ModuleConcatenationPlugin()
+  
   ],
 });

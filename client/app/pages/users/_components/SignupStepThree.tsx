@@ -129,7 +129,16 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
               {(active) => (
                 <i className="red">
                   <span className="password_not_matched">
-                    <b>{active ? <i>WARNING! Caps lock is ON. </i> : ""}</b>
+                    <b>
+                      {active ? (
+                        <i>
+                          Caps Lock is On, having Caps Lock on may cause you to
+                          enter your password incorrectly.
+                        </i>
+                      ) : (
+                        ""
+                      )}
+                    </b>
                   </span>
                 </i>
               )}
