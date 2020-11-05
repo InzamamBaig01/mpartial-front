@@ -79,9 +79,21 @@ module.exports = merge(common, {
       }),
       
       new OptimizeCSSAssetsPlugin({}),
+
+      new UglifyJsPlugin({ // minify js file
+        cache: true,
+        parallel: true,
+        sourceMap: false,
+        extractComments: 'all',
+        uglifyOptions: {
+            compress: true,
+            output: null
+        }
+    }),
     ]
   },
   plugins: [
+    
     new CleanWebpackPlugin([PATHS.static], {
       root: PATHS.output,
       dry: true,

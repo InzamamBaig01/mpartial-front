@@ -3,7 +3,7 @@ import { withRouter, Link } from "react-router-dom";
 import { AppContext } from "../../../contexts/appContext";
 import { useContext } from "react";
 import { Slider } from "./_components/Slider";
-import { HeroSection } from "./_components/HeroSection";
+const HeroSection = React.lazy(() => import("./_components/HeroSection"));
 const WaterFall = React.lazy(() => import("./_components/WaterFall"));
 import { Deliverables } from "./_components/Deliverables";
 const ContactUs = React.lazy(() => import("./_components/ContactUs"));
@@ -74,7 +74,9 @@ export const HomePage: React.FC<any> = React.memo((props) => {
         <Slider nextSection={sectionRef.hero} />
       </div>
       <div ref={sectionRef.hero}>
-        <HeroSection />
+        <Suspense fallback={<div>loading ...</div>}>
+          <HeroSection />
+        </Suspense>
       </div>
       <div ref={sectionRef.hIW}>
         <Suspense fallback={<div>loading ...</div>}>

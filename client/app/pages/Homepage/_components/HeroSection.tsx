@@ -16,7 +16,7 @@ const Handle = () => {
   );
 };
 
-export const HeroSection: React.FC<HeroSectionProps> = ({}) => {
+const HeroSection: React.FC<HeroSectionProps> = ({}) => {
   const [height, setHeight] = React.useState(null);
   const [width, setWidth] = React.useState(null);
   const div = React.useCallback((node) => {
@@ -55,3 +55,4 @@ export const HeroSection: React.FC<HeroSectionProps> = ({}) => {
     </>
   );
 };
+export default HeroSection;
