@@ -26,22 +26,22 @@ export const AdminLogin: React.FC<IProps> = ({ ...props }) => {
   const [loginStatus, setLoginStatus] = useState(false);
 
   const [details, setDetails] = useState({
-      username: '',
-      password: '',
-  })
+    username: "",
+    password: "",
+  });
   const handleSubmitForm = (e: any) => {
     e.preventDefault();
     dispatchADLogin(details);
   };
 
   useEffect(() => {
-    // console.log(loginError);
     if (ADloginError)
       setLoginStatus(
         ADloginError == "A user could not be found with this email address."
           ? "Sorry, we couldn't find an account with that username or the password you entered isn't right"
           : ADloginError
       );
+    //console.log(ADloginError);
   }, [ADstatus, ADloginError]);
 
   useEffect(() => {
@@ -85,10 +85,10 @@ export const AdminLogin: React.FC<IProps> = ({ ...props }) => {
                     className="form-control"
                     placeholder="Username"
                     onChange={(e) => {
-                        setDetails({
-                            ...details,
-                            username: e.currentTarget.value
-                        })
+                      setDetails({
+                        ...details,
+                        username: e.currentTarget.value,
+                      });
                     }}
                     value={details.username}
                     autoComplete="off"
@@ -106,10 +106,10 @@ export const AdminLogin: React.FC<IProps> = ({ ...props }) => {
                     placeholder="Password"
                     value={details.password}
                     onChange={(e) => {
-                        setDetails({
-                            ...details,
-                            password: e.currentTarget.value
-                        })
+                      setDetails({
+                        ...details,
+                        password: e.currentTarget.value,
+                      });
                     }}
                     autoComplete="off"
                     required
@@ -117,12 +117,12 @@ export const AdminLogin: React.FC<IProps> = ({ ...props }) => {
                 </div>
               </div>
 
-                <button
-                  type="submit"
-                  className="btn btn-primary btn-block submit"
-                >
-                  <Loader text="Sign in"></Loader>
-                </button>
+              <button
+                type="submit"
+                className="btn btn-primary btn-block submit"
+              >
+                <Loader text="Sign in"></Loader>
+              </button>
             </form>
           </div>
         </div>

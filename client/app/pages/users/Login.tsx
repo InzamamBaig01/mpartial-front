@@ -68,6 +68,8 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
       setLoginAttempt(loginAttempt + 1);
       if (captcha.current) captcha.current.reset();
     }
+
+    console.log(loginError);
   }, [status, loginError]);
 
   useEffect(() => {

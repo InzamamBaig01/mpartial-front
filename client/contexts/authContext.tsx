@@ -118,7 +118,6 @@ export default React.memo(({ children }) => {
   }, [routeChanged]);
 
   React.useEffect(() => {
-
     if (pageIsAD === true) {
       console.log("pageIsAD", pageIsAD);
 
@@ -220,6 +219,7 @@ export default React.memo(({ children }) => {
       (response: any) => {
         if (!response.response.Requested_Action) {
           ADsetLoginError(response.response.Message);
+          console.log(response.response.Message);
           ADsetStatus("error");
         } else {
           ADsetStatus("success");
@@ -265,7 +265,7 @@ export default React.memo(({ children }) => {
         localStorage.removeItem("topen");
         history.push("/mpartialadmin");
       },
-      (response) => { }
+      (response) => {}
     );
   };
 

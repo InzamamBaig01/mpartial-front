@@ -1464,10 +1464,20 @@ span.password_not_matched {
   text-align: center;
   margin: 0 auto;
   .modal-dialog {
-    max-width: 90%;
-    width: 640px;
-    margin: 0 auto;
-    margin-top: 10%;
+    max-width: 510px;
+    margin: 13% auto 0;
+    background: #fff 0 0 no-repeat padding-box;
+    -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.16078);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.16078);
+    border-radius: 10px;
+    letter-spacing: 0;
+    text-align: center;
+    padding: 60px 60px;
+
+    border: none;
+  }
+  .modal-content {
+    border: none;
   }
   .support_body {
     height: 200px;
@@ -1480,9 +1490,19 @@ span.password_not_matched {
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    max-width: 500px;
+    min-width: 129px !important;
     margin: 0 auto;
     margin-top: 20px;
+  }
+  .btn {
+    min-width: 129px;
+  }
+  .modal-body h3,
+  .support_body h3 {
+    font-weight: 600 !important;
+    font-size: 20px !important;
+    line-height: 30px !important;
+    margin-bottom: 40px;
   }
 }
 
