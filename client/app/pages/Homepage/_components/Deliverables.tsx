@@ -11,7 +11,7 @@ import LazyLoad from "react-lazyload";
 import sketch from "../../../../assets/TS_Plus_Front.png";
 import sketch2 from "../../../../assets/TS_Plus_Top_View.png";
 interface DeliverablesProps {}
-export const Deliverables: React.FC<DeliverablesProps> = ({}) => {
+const Deliverables: React.FC<DeliverablesProps> = ({}) => {
   return (
     <>
       <div
@@ -75,3 +75,5 @@ export const Deliverables: React.FC<DeliverablesProps> = ({}) => {
     </>
   );
 };
+
+export default Deliverables;

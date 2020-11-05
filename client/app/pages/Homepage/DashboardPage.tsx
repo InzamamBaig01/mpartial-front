@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { Slider } from "./_components/Slider";
 const HeroSection = React.lazy(() => import("./_components/HeroSection"));
 const WaterFall = React.lazy(() => import("./_components/WaterFall"));
-import { Deliverables } from "./_components/Deliverables";
+const Deliverables = React.lazy(() => import("./_components/Deliverables"));
 const ContactUs = React.lazy(() => import("./_components/ContactUs"));
 import Header from "app/components/Header";
 const HowItWorks = React.lazy(() => import("./_components/HowItWorks"));
@@ -89,7 +89,9 @@ export const HomePage: React.FC<any> = React.memo((props) => {
         </Suspense>
       </div>
       <div ref={sectionRef.Deli}>
-        <Deliverables />
+        <Suspense fallback={<div>loading ...</div>}>
+          <Deliverables />
+        </Suspense>
       </div>
       <div ref={sectionRef.cont}>
         <Suspense fallback={<div>loading ...</div>}>
