@@ -2,7 +2,7 @@ import React, { useEffect, useState, Suspense } from "react";
 import { withRouter, Link } from "react-router-dom";
 import { AppContext } from "../../../contexts/appContext";
 import { useContext } from "react";
-const Slider = React.lazy(() => import("./_components/Slider"));
+import { Slider } from "./_components/Slider";
 import { HeroSection } from "./_components/HeroSection";
 const WaterFall = React.lazy(() => import("./_components/WaterFall"));
 import { Deliverables } from "./_components/Deliverables";
@@ -71,9 +71,7 @@ export const HomePage: React.FC<any> = React.memo((props) => {
     <>
       <Header sectionRef={sectionRef}></Header>
       <div ref={sectionRef.home}>
-        <Suspense fallback={<div>loading ...</div>}>
-          <Slider nextSection={sectionRef.hero} />
-        </Suspense>
+        <Slider nextSection={sectionRef.hero} />
       </div>
       <div ref={sectionRef.hero}>
         <HeroSection />
