@@ -151,7 +151,7 @@
     "react-places-autocomplete": "^7.2.1",
     "react-pure-loaders": "^3.0.1",
     "react-rangeslider": "git+https://github.com/muffrank/react-rangeslider.git",
-    "react-responsive-carousel": "^3.1.57",
+    "react-responsive-carousel": "^3.2.10",
     "react-router-dom": "^5.1.2",
     "react-router-sitemap": "^1.2.0",
     "react-scripts": "^3.4.3",

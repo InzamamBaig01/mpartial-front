@@ -30,7 +30,7 @@ const Delete = (props) => {
       <Modal
         show={props.show}
         onHide={props.handleClose}
-        className="Add_card "
+        className="modal"
         delete={props.delete}
       >
         <Modal.Body className="support_body">
@@ -39,9 +39,9 @@ const Delete = (props) => {
               <h3>Are you sure you want to delete this draft?</h3>
             </div>
 
-            <div className="form-group">
+            <div className="popup-btn">
               <button
-                className="btn_deldraft btn"
+                className=" btn"
                 type="submit"
                 id="formButton"
                 onClick={props.handleClose}
@@ -49,14 +49,16 @@ const Delete = (props) => {
                 Cancel
               </button>
 
-              <button
-                className="btn_deldraft btn"
-                type="submit"
-                id="formButton"
-                onClick={props.delete}
-              >
-                Confirm
-              </button>
+              <a href="">
+                <button
+                  className=" btn"
+                  type="submit"
+                  id="formButton"
+                  onClick={props.delete}
+                >
+                  Confirm
+                </button>
+              </a>
             </div>
           </form>
         </Modal.Body>
