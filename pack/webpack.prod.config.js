@@ -1,8 +1,6 @@
 const CleanWebpackPlugin      = require('clean-webpack-plugin');
-const ExtractTextPlugin       = require('extract-text-webpack-plugin');
 const MiniCssExtractPlugin    = require('mini-css-extract-plugin');
 const StyleLintPlugin         = require('stylelint-webpack-plugin');
-const HtmlWebpackPlugin       = require('html-webpack-plugin');
 const UglifyJsPlugin          = require('uglifyjs-webpack-plugin');
 const TerserPlugin            = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -93,6 +91,7 @@ module.exports = merge(common, {
     ]
   },
   plugins: [
+    
     
     new CleanWebpackPlugin([PATHS.static], {
       root: PATHS.output,

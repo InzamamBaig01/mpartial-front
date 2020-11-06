@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Suspense } from "react";
 import SectionTitle from "app/components/SectionTitle";
 import { AppAlertsContext } from "contexts/appAlertsContext";
 import InputMask from "react-input-mask";
@@ -6,8 +7,7 @@ import { sendEmail, resetPassword } from "utils/api-routes/api-routes.util";
 import { useState, useContext } from "react";
 import Loader from "app/components/Loader";
 import { AuthContext } from "contexts/authContext";
-
-import ReCAPTCHA from "react-google-recaptcha";
+const ReCAPTCHA = React.lazy(() => import("react-google-recaptcha"));
 import appConfig from "../../../../appconfig.json";
 import FloatingLabel from "app/components/FloatingLabel";
 
@@ -169,11 +169,13 @@ const ContactUs: React.FC<ConatctUsProps> = ({}) => {
                 </div>
               </div>
               {!isLoggedIn && (
-                <ReCAPTCHA
-                  sitekey={appConfig.captchaKey}
-                  onChange={onCaptchaChange}
-                  className="captcha_box"
-                />
+                <Suspense fallback={<div>loading ...</div>}>
+                  <ReCAPTCHA
+                    sitekey={appConfig.captchaKey}
+                    onChange={onCaptchaChange}
+                    className="captcha_box"
+                  />{" "}
+                </Suspense>
               )}
               <p>
                 {messageDone
