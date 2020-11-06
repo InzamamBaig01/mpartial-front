@@ -1,10 +1,8 @@
 import * as React from "react";
-import { withRouter, Link } from "react-router-dom";
 import LazyLoad from "react-lazyload";
 import BackgroundVideo from "react-background-video-player";
 import appConfig from "../../../../appconfig.json";
 
-import { css } from "@emotion/core";
 interface SliderProps {
   nextSection: any;
 }

@@ -1,11 +1,7 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
-import { withRouter, Link } from "react-router-dom";
 import SectionTitle from "app/components/SectionTitle";
 import { DeliverablesBox } from "./deliverablesBoxWidget";
 import { DeliverSlider } from "./DelieverSlider";
-import mitigation from "../../../../assets/deliverable-1.png";
-import mitigation2 from "../../../../assets/deliverable-2.png";
 import LazyLoad from "react-lazyload";
 
 import sketch from "../../../../assets/TS_Plus_Front.png";

@@ -1,8 +1,6 @@
 import * as React from "react";
-import { withRouter, Link } from "react-router-dom";
 import SectionTitle from "app/components/SectionTitle";
 import Slider from "../../../../utils/react-rangeslider/";
-import { css } from "emotion";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 
 interface WaterFallProps {}
