@@ -9,7 +9,7 @@ const Deliverables = React.lazy(() => import("./_components/Deliverables"));
 const ContactUs = React.lazy(() => import("./_components/ContactUs"));
 import Header from "app/components/Header";
 const HowItWorks = React.lazy(() => import("./_components/HowItWorks"));
-import { Footer } from "../../components/Footer";
+const Footer = React.lazy(() => import("../../components/Footer"));
 import queryString from "query-string";
 
 interface IRef {
@@ -99,7 +99,9 @@ export const HomePage: React.FC<any> = React.memo((props) => {
         </Suspense>
       </div>
       <div ref={sectionRef.footer}>
-        <Footer />
+        <Suspense fallback={<div>loading ...</div>}>
+          <Footer />
+        </Suspense>
       </div>
     </>
   );
