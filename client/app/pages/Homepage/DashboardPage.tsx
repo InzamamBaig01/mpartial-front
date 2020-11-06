@@ -1,7 +1,5 @@
 import React, { useEffect, useState, Suspense } from "react";
 import { withRouter, Link } from "react-router-dom";
-import { AppContext } from "../../../contexts/appContext";
-import { useContext } from "react";
 import { Slider } from "./_components/Slider";
 const HeroSection = React.lazy(() => import("./_components/HeroSection"));
 const WaterFall = React.lazy(() => import("./_components/WaterFall"));
