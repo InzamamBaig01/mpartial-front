@@ -70,7 +70,6 @@
     "jest": "^24.5.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.14.1",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss": "^6.0.22",
     "postcss-import": "^11.1.0",
     "postcss-loader": "^2.1.5",

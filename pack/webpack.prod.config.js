@@ -63,9 +63,10 @@ module.exports = merge(common, {
     splitChunks: {
 			cacheGroups: {
 				commons: {
-					test: /[\\/]node_modules[\\/]/,
+					test: /[\\/]node_modules[\\/](react|react-dom)[\\/](react-google-recaptcha)[\\/](stripe)[\\/]/,
 					name: 'vendors',
-					chunks: 'all'
+          chunks: 'all',
+          
 				}
 			}
 		},
@@ -85,12 +86,18 @@ module.exports = merge(common, {
         extractComments: 'all',
         uglifyOptions: {
             compress: true,
+            loops: false,
+        inline: false,
+        dead_code: true,
+        evaluate: true,
             output: null
         }
     }),
     ]
   },
   plugins: [
+
+    
     
     
     new CleanWebpackPlugin([PATHS.static], {
