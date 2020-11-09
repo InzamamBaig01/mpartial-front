@@ -171,7 +171,7 @@ const ContactUs: React.FC<ConatctUsProps> = ({}) => {
               </div>
               {!isLoggedIn && (
                 <Suspense fallback={<div>loading ...</div>}>
-                  <LazyLoad height={200} offset={1000}>
+                  <LazyLoad height={50} offset={50}>
                     <ReCAPTCHA
                       sitekey={appConfig.captchaKey}
                       onChange={onCaptchaChange}
