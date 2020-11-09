@@ -7,6 +7,7 @@ import { sendEmail, resetPassword } from "utils/api-routes/api-routes.util";
 import { useState, useContext } from "react";
 import Loader from "app/components/Loader";
 import { AuthContext } from "contexts/authContext";
+import LazyLoad from "react-lazyload";
 const ReCAPTCHA = React.lazy(() => import("react-google-recaptcha"));
 import appConfig from "../../../../appconfig.json";
 import FloatingLabel from "app/components/FloatingLabel";
@@ -170,11 +171,13 @@ const ContactUs: React.FC<ConatctUsProps> = ({}) => {
               </div>
               {!isLoggedIn && (
                 <Suspense fallback={<div>loading ...</div>}>
-                  <ReCAPTCHA
-                    sitekey={appConfig.captchaKey}
-                    onChange={onCaptchaChange}
-                    className="captcha_box"
-                  />{" "}
+                  <LazyLoad>
+                    <ReCAPTCHA
+                      sitekey={appConfig.captchaKey}
+                      onChange={onCaptchaChange}
+                      className="captcha_box"
+                    />{" "}
+                  </LazyLoad>
                 </Suspense>
               )}
               <p>
