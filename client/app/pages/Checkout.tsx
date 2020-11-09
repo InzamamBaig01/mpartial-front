@@ -1,6 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
-import LazyLoad from "react-lazyload";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
 import {
@@ -326,14 +325,7 @@ const Checkout = (props) => {
     oldValues[key] = value;
     setCheckoutInfo(oldValues);
   };
-
-  let stripePromise;
-  const getStripe = () => {
-    if (!stripePromise) {
-      stripePromise = loadStripe(appConfig.stripe);
-    }
-    return stripePromise;
-  };
+  const stripePromise = loadStripe(appConfig.stripe);
 
   const checkValidation = () => {
     setvalidation({
@@ -458,20 +450,18 @@ const Checkout = (props) => {
             ) : (
               <div className="row">
                 <div className={`form - group col - 12`}>
-                  <LazyLoad height={50} offset={50}>
-                    <Elements stripe={getStripe()}>
-                      <CheckoutForm
-                        orderid={orderid}
-                        isFormSubmitted={isFormSubmitted}
-                        setIsFormSubmitted={handleFormSubmittion}
-                        stripeCustomerCard={info ? info.stripeCustomerCard : []}
-                        setCardValidation={handleCardAction}
-                        cardValidation={cardValidation}
-                        checkoutInfo={checkoutInfo}
-                        PIC={PIC}
-                      />
-                    </Elements>
-                  </LazyLoad>
+                  <Elements stripe={stripePromise}>
+                    <CheckoutForm
+                      orderid={orderid}
+                      isFormSubmitted={isFormSubmitted}
+                      setIsFormSubmitted={handleFormSubmittion}
+                      stripeCustomerCard={info ? info.stripeCustomerCard : []}
+                      setCardValidation={handleCardAction}
+                      cardValidation={cardValidation}
+                      checkoutInfo={checkoutInfo}
+                      PIC={PIC}
+                    />
+                  </Elements>
                   {/* <input type="checkbox" /> Card Ending 7878 */}
                 </div>
               </div>
