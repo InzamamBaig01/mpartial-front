@@ -5,7 +5,7 @@ const HeroSection = React.lazy(() => import("./_components/HeroSection"));
 const WaterFall = React.lazy(() => import("./_components/WaterFall"));
 const Deliverables = React.lazy(() => import("./_components/Deliverables"));
 const ContactUs = React.lazy(() => import("./_components/ContactUs"));
-import Header from "app/components/Header";
+const Header = React.lazy(() => import("app/components/Header"));
 const HowItWorks = React.lazy(() => import("./_components/HowItWorks"));
 const Footer = React.lazy(() => import("../../components/Footer"));
 import queryString from "query-string";
@@ -67,7 +67,9 @@ export const HomePage: React.FC<any> = React.memo((props) => {
   }, []);
   return (
     <>
-      <Header sectionRef={sectionRef}></Header>
+      <Suspense fallback={<div>loading ...</div>}>
+        <Header sectionRef={sectionRef}></Header>
+      </Suspense>
       <div ref={sectionRef.home}>
         <Slider nextSection={sectionRef.hero} />
       </div>

@@ -4,10 +4,12 @@ const StyleLintPlugin         = require('stylelint-webpack-plugin');
 const UglifyJsPlugin          = require('uglifyjs-webpack-plugin');
 const TerserPlugin            = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const merge                   = require('webpack-merge');
 const common                  = require('./webpack.common.config');
 const path = require('path')
 const CopyWebpackPlugin         = require('copy-webpack-plugin');
+const BrotliPlugin = require('brotli-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin');
 const zopfli = require('@gfx/zopfli');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -64,12 +66,13 @@ module.exports = merge(common, {
     splitChunks: {
 			cacheGroups: {
 				commons: {
-					test: /[\\/]node_modules[\\/](react|react-dom)[\\/](react-google-recaptcha)[\\/](stripe)[\\/](react-stripe-js)[\\/]/,
+					test: /[\\/]node_modules[\\/](react|react-dom)[\\/](react-google-recaptcha)[\\/](stripe)[\\/](react-bootstrap)[\\/](react-stripe-js)[\\/]/,
 					name: 'vendors',
           chunks: 'all',
           
 				}
-			}
+      },
+    
 		},
     minimizer: [
       new TerserPlugin({
@@ -78,7 +81,17 @@ module.exports = merge(common, {
         sourceMap: false,
       }),
       
-      new OptimizeCSSAssetsPlugin({}),
+      new OptimizeCSSAssetsPlugin({
+      }),
+      new CssMinimizerPlugin({minimizerOptions: {
+        preset: [
+          'default',
+          {
+            discardComments: { removeAll: true },
+          },
+        ],
+      },}),
+
 
       new UglifyJsPlugin({ // minify js file
         cache: true,
@@ -121,7 +134,12 @@ module.exports = merge(common, {
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
     }),
-
+    new BrotliPlugin({
+			asset: '[path].br[query]',
+			test: /\.(js|css|html|svg)$/,
+			threshold: 8240,
+			minRatio: 0.7
+		}),
    
     new EnvironmentPlugin({
       // * explicitly setting the node environment variable for clarity

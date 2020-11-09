@@ -239,3 +239,20 @@
     height: 248px !important;
   }
 }
+
+@media screen and (max-width: 400px) {
+  .modals .modal-dialog {
+    max-width: 300px;
+  }
+  .modals .modal-dialog {
+    padding: 40px 40px;
+  }
+}
+@media screen and (max-width: 350px) {
+  .modals .modal-dialog {
+    max-width: 280px;
+  }
+  .modals .modal-dialog {
+    padding: 60px 40px;
+  }
+}

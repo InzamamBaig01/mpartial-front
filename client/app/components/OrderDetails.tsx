@@ -30,7 +30,7 @@ const Delete = (props) => {
       <Modal
         show={props.show}
         onHide={props.handleClose}
-        className="modal"
+        className="modals"
         delete={props.delete}
       >
         <Modal.Body className="support_body">
