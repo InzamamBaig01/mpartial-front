@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
+import LazyLoad from "react-lazyload";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
 import {
@@ -457,18 +458,20 @@ const Checkout = (props) => {
             ) : (
               <div className="row">
                 <div className={`form - group col - 12`}>
-                  <Elements stripe={getStripe()}>
-                    <CheckoutForm
-                      orderid={orderid}
-                      isFormSubmitted={isFormSubmitted}
-                      setIsFormSubmitted={handleFormSubmittion}
-                      stripeCustomerCard={info ? info.stripeCustomerCard : []}
-                      setCardValidation={handleCardAction}
-                      cardValidation={cardValidation}
-                      checkoutInfo={checkoutInfo}
-                      PIC={PIC}
-                    />
-                  </Elements>
+                  <LazyLoad height={50} offset={50}>
+                    <Elements stripe={getStripe()}>
+                      <CheckoutForm
+                        orderid={orderid}
+                        isFormSubmitted={isFormSubmitted}
+                        setIsFormSubmitted={handleFormSubmittion}
+                        stripeCustomerCard={info ? info.stripeCustomerCard : []}
+                        setCardValidation={handleCardAction}
+                        cardValidation={cardValidation}
+                        checkoutInfo={checkoutInfo}
+                        PIC={PIC}
+                      />
+                    </Elements>
+                  </LazyLoad>
                   {/* <input type="checkbox" /> Card Ending 7878 */}
                 </div>
               </div>
