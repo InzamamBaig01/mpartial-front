@@ -3,13 +3,11 @@ const MiniCssExtractPlugin    = require('mini-css-extract-plugin');
 const StyleLintPlugin         = require('stylelint-webpack-plugin');
 const UglifyJsPlugin          = require('uglifyjs-webpack-plugin');
 const TerserPlugin            = require('terser-webpack-plugin');
-const glob = require('glob')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const merge                   = require('webpack-merge');
 const common                  = require('./webpack.common.config');
 const path                    = require('path');
 const CopyWebpackPlugin         = require('copy-webpack-plugin');
-const PurgecssPlugin = require('purgecss-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin');
 const zopfli = require('@gfx/zopfli');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -122,9 +120,7 @@ module.exports = merge(common, {
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
     }),
-    new PurgecssPlugin({
-      paths: glob.sync(`${PATHS.src}/**/*`,  { nodir: true }),
-    }),
+   
     new EnvironmentPlugin({
       // * explicitly setting the node environment variable for clarity
       NODE_ENV: 'production',
