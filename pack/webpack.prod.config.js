@@ -6,7 +6,7 @@ const TerserPlugin            = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const merge                   = require('webpack-merge');
 const common                  = require('./webpack.common.config');
-const path                    = require('path');
+const path = require('path')
 const CopyWebpackPlugin         = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const zopfli = require('@gfx/zopfli');
@@ -31,6 +31,7 @@ module.exports = merge(common, {
       {
         test: /\.(css|s[ac]ss)$/,
         exclude: /node_modules/,
+        sideEffects: true,
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -120,6 +121,7 @@ module.exports = merge(common, {
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
     }),
+
    
     new EnvironmentPlugin({
       // * explicitly setting the node environment variable for clarity
