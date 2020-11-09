@@ -74,7 +74,7 @@ export const HomePage: React.FC<any> = React.memo((props) => {
         <Slider nextSection={sectionRef.hero} />
       </div>
       <div ref={sectionRef.hero}>
-        <Suspense fallback={<div>loading ...</div>}>
+        <Suspense fallback={<div></div>}>
           <HeroSection />
         </Suspense>
       </div>

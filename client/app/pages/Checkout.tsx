@@ -325,7 +325,6 @@ const Checkout = (props) => {
     oldValues[key] = value;
     setCheckoutInfo(oldValues);
   };
-  const stripePromise = loadStripe(appConfig.stripe);
 
   const checkValidation = () => {
     setvalidation({
@@ -353,6 +352,12 @@ const Checkout = (props) => {
       }
     });
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      const stripePromise = loadStripe(appConfig.stripe);
+    }, 10000);
+  }, []);
   const handleFormSubmittion = (bool) => {};
   return (
     <>
