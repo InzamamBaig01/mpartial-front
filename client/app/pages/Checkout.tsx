@@ -8,7 +8,7 @@ import {
   getPIC,
 } from "utils/api-routes/api-routes.util";
 import history from "utils/history";
-import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js/pure";
 import {
   CardElement,
   Elements,
