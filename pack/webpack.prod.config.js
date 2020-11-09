@@ -140,7 +140,6 @@ module.exports = merge(common, {
 			threshold: 8240,
 			minRatio: 0.7
 		}),
-   
     new EnvironmentPlugin({
       // * explicitly setting the node environment variable for clarity
       NODE_ENV: 'production',
