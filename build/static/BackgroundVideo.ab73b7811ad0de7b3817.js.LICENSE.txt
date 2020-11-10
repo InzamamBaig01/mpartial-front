@@ -1,3 +1,0 @@
-/*! npm.im/intervalometer */
-
-/*! npm.im/iphone-inline-video 2.2.2 */
