@@ -137,9 +137,18 @@ module.exports = merge(common, {
     new BrotliPlugin({
 			asset: '[path].br[query]',
 			test: /\.(js|css|html|svg)$/,
-			threshold: 8240,
+			threshold: 840,
 			minRatio: 0.7
-		}),
+    }),
+
+    new CompressionPlugin({   
+      algorithm: "gzip",
+      filename: '[path].gz[query]',
+			test: /\.(js|css|html|svg)$/,
+			threshold: 4240,
+			minRatio: 0.7
+    }),
+    
     new EnvironmentPlugin({
       // * explicitly setting the node environment variable for clarity
       NODE_ENV: 'production',
