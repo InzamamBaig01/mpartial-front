@@ -60,6 +60,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
   useEffect(() => {
     // console.log(loginError);
     if (loginError) {
+      console.log(loginError);
       setLoginStatus(
         loginError == "A user could not be found with this email address."
           ? "Sorry, we couldn't find an account with that username or the password you entered isn't right."
@@ -69,7 +70,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
       if (captcha.current) captcha.current.reset();
     }
 
-    console.log(loginError);
+    //console.log(loginError);
   }, [status, loginError]);
 
   useEffect(() => {

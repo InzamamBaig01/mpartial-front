@@ -35,12 +35,12 @@ export const AdminLogin: React.FC<IProps> = ({ ...props }) => {
   };
 
   useEffect(() => {
-    if (ADloginError)
-      setLoginStatus(
-        ADloginError == "A user could not be found with this email address."
-          ? "Sorry, we couldn't find an account with that username or the password you entered isn't right"
-          : ADloginError
-      );
+    if (ADloginError) console.log(ADloginError);
+    setLoginStatus(
+      ADloginError == "A user could not be found with this email address."
+        ? "Sorry, we couldn't find an account with that username or the password you entered isn't right"
+        : ADloginError
+    );
     //console.log(ADloginError);
   }, [ADstatus, ADloginError]);
 

@@ -188,6 +188,7 @@ export default React.memo(({ children }) => {
       (response: any) => {
         if (!response.response.Requested_Action) {
           setLoginError(response.response.Message);
+          //console.log(response.response.Message);
           setStatus("error");
           setIsAuthenticated(false);
         } else {
@@ -219,7 +220,9 @@ export default React.memo(({ children }) => {
       (response: any) => {
         if (!response.response.Requested_Action) {
           ADsetLoginError(response.response.Message);
-          console.log(response.response.Message);
+          // console.log(response.response.Message);
+
+          // console.log(response.response.Message);
           ADsetStatus("error");
         } else {
           ADsetStatus("success");
