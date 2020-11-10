@@ -134,12 +134,12 @@ module.exports = merge(common, {
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
     }),
-    new BrotliPlugin({
-			asset: '[path].br[query]',
-			test: /\.(js|css|html|svg)$/,
-			threshold: 840,
-			minRatio: 0.7
-    }),
+    // new BrotliPlugin({
+		// 	asset: '[path].br[query]',
+		// 	test: /\.(js|css|html|svg)$/,
+		// 	threshold: 840,
+		// 	minRatio: 0.7
+    // }),
 
     new CompressionPlugin({   
       algorithm: "gzip",
