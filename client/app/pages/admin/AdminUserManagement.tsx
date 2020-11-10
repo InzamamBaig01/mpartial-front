@@ -20,7 +20,9 @@ const AdminUserManagement = () => {
   const columns = [
     {
       name: "Name",
-      selector: "firstName",
+      selector: function (a) {
+        return a.firstName + " " + a.lastName;
+      },
       sortable: true,
       className: "header-col",
     },
