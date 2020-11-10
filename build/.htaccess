@@ -1,27 +1,3 @@
-RewriteBase /
-
-# GZIP
-## allows you to have certain browsers uncompress information on the fly
-AddEncoding gzip .gz
-## serve gzip .css files if they exist and the client accepts gzip
-RewriteCond %{HTTP:Accept-encoding} gzip
-RewriteCond %{REQUEST_FILENAME}\.gz -s
-RewriteRule ^(.*)\.css $1\.css\.gz [QSA]
-## serve gzip .js files if they exist and the client accepts gzip
-RewriteCond %{HTTP:Accept-encoding} gzip
-RewriteCond %{REQUEST_FILENAME}\.gz -s
-RewriteRule ^(.*)\.js $1\.js\.gz [QSA]
-## serve gzip .html files if they exist and the client accepts gzip
-RewriteCond %{HTTP:Accept-encoding} gzip
-RewriteCond %{REQUEST_FILENAME}\.gz -s
-RewriteRule ^(.*)\.html $1\.html\.gz [QSA]
-## serve correct content types, and prevent mod_deflate double gzip
-RewriteRule \.css\.gz$ - [T=text/css,E=no-gzip:1,E=is_gzip:1]
-RewriteRule \.js\.gz$ - [T=text/javascript,E=no-gzip:1,E=is_gzip:1]
-RewriteRule \.html\.gz$ - [T=text/html,E=no-gzip:1,E=is_gzip:1]
-Header set Content-Encoding "gzip" env=is_gzip
-
-
 <ifModule mod_gzip.c>
 mod_gzip_on Yes
 mod_gzip_dechunk Yes
