@@ -66,7 +66,7 @@ module.exports = merge(common, {
     splitChunks: {
 			cacheGroups: {
 				commons: {
-					test: /[\\/]node_modules[\\/](react|react-dom)[\\/](react-google-recaptcha)[\\/](stripe)[\\/](react-bootstrap)[\\/](react-stripe-js)[\\/]/,
+					test: /[\\/]node_modules[\\/](react|react-dom)[\\/](stripe)[\\/](react-bootstrap)[\\/](react-stripe-js)[\\/]/,
 					name: 'vendors',
           chunks: 'all',
           

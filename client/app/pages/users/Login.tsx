@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, Suspense } from "react";
 
 import { AuthContext } from "../../../contexts/authContext";
 import { withRouter, Link } from "react-router-dom";
@@ -13,7 +13,10 @@ import {
 } from "utils/api-routes/api-routes.util";
 import Loader from "app/components/Loader";
 
-import ReCAPTCHA from "react-google-recaptcha";
+const ReCAPTCHA = React.lazy(
+  () =>
+    import(/* webpackChunkName: 'google captcha' */ "react-google-recaptcha")
+);
 import appConfig from "../../../appconfig.json";
 import FloatingLabel from "app/components/FloatingLabel";
 import ReactIsCapsLockActive from "@matsun/reactiscapslockactive";
@@ -165,12 +168,14 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
                 <Link to="/forgot-password">Forgot Password?</Link>
               </div>
               {loginAttempt > 5 && (
-                <ReCAPTCHA
-                  sitekey={appConfig.captchaKey}
-                  onChange={onCaptchaChange}
-                  ref={captcha}
-                  className="captcha_box"
-                />
+                <Suspense fallback={<div>loading ...</div>}>
+                  <ReCAPTCHA
+                    sitekey={appConfig.captchaKey}
+                    onChange={onCaptchaChange}
+                    ref={captcha}
+                    className="captcha_box"
+                  />
+                </Suspense>
               )}
               <button
                 type="submit"

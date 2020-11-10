@@ -1,8 +1,11 @@
 import * as React from "react";
+import { Suspense } from "react";
+
 import { withRouter, Link } from "react-router-dom";
 import SectionTitle from "app/components/SectionTitle";
-import ReactCompareImage from "react-compare-image";
-
+const ReactCompareImage = React.lazy(
+  () => import(/* webpackChunkName: 'compareslider' */ "react-compare-image")
+);
 import after from "../../../../assets/pre.jpg";
 import before from "../../../../assets/post.jpg";
 import handle from "../../../../assets/compare_handle.png";
@@ -38,12 +41,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({}) => {
             type="left"
           ></SectionTitle>
           <div className="compare_images_section" ref={div}>
-            <ReactCompareImage
-              leftImage={before}
-              rightImage={after}
-              handle={<Handle />}
-              sliderLineColor={"#3ac280"}
-            />
+            <Suspense fallback={<div></div>}>
+              <ReactCompareImage
+                leftImage={before}
+                rightImage={after}
+                handle={<Handle />}
+                sliderLineColor={"#3ac280"}
+              />
+            </Suspense>
           </div>
           <div className="try_now_btn">
             <Link to="/order">

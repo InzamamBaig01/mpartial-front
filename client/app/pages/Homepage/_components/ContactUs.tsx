@@ -8,7 +8,11 @@ import { useState, useContext } from "react";
 import Loader from "app/components/Loader";
 import { AuthContext } from "contexts/authContext";
 import LazyLoad from "react-lazyload";
-const ReCAPTCHA = React.lazy(() => import("react-google-recaptcha"));
+const ReCAPTCHA = React.lazy(
+  () =>
+    import(/* webpackChunkName: 'google captcha' */ "react-google-recaptcha")
+);
+// const ReCAPTCHA = React.lazy(() => import("react-google-recaptcha"));
 import appConfig from "../../../../appconfig.json";
 import FloatingLabel from "app/components/FloatingLabel";
 
