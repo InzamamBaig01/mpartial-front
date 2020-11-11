@@ -83,8 +83,7 @@ const ContactUs: React.FC<ConatctUsProps> = ({}) => {
       >
         <div className={"container"}>
           <SectionTitle
-            title={""}
-            title2={"Contact Us"}
+            title={"Contact Us"}
             description={""}
             type="center"
           ></SectionTitle>

@@ -10,7 +10,9 @@ const SectionTitle = (props) => {
               <h1 className="section_title_text">{props.title}</h1>
             </div>
             <div className="col-md-6 col-sm-12">
-              <p className="section_title_description">{props.description}</p>
+              <div className="section_title_description">
+                {props.description}
+              </div>
             </div>
           </div>
         </div>
@@ -18,11 +20,7 @@ const SectionTitle = (props) => {
         <div className="title center">
           <div className="row">
             <div className="col">
-              {props.title === "" ? (
-                <h2 className="section_title_text">{props.title2}</h2>
-              ) : (
-                <h1 className="section_title_text">{props.title}</h1>
-              )}
+              <h1 className="section_title_text">{props.title}</h1>
             </div>
           </div>
         </div>

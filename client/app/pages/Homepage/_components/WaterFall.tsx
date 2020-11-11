@@ -159,8 +159,7 @@ const WaterFall: React.FC<WaterFallProps> = ({}) => {
       >
         <div className="container">
           <SectionTitle
-            title={""}
-            title2={"Waterfall Fee Structure"}
+            title={"Waterfall Fee Structure"}
             description={""}
             type="center"
           ></SectionTitle>

@@ -17,8 +17,7 @@ const HowItWorks: React.FC<HowItWorksProps> = ({}) => {
       <div className="mpartial_section howitworks">
         <div className="container">
           <SectionTitle
-            title={""}
-            title2={"How It Works"}
+            title={"How It Works"}
             description={""}
             type="center"
           ></SectionTitle>
