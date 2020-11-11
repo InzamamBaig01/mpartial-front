@@ -22,7 +22,8 @@ const Deliverables: React.FC<DeliverablesProps> = ({}) => {
       >
         <div className="container">
           <SectionTitle
-            title={"Example Deliverables"}
+            title={""}
+            title2={"Example Deliverables"}
             description={""}
             type="center"
           ></SectionTitle>
