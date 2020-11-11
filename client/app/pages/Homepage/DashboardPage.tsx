@@ -1,7 +1,8 @@
 import React, { useEffect, useState, Suspense } from "react";
 import { withRouter } from "react-router-dom";
 import { Slider } from "./_components/Slider";
-const HeroSection = React.lazy(() => import("./_components/HeroSection"));
+import HeroSection from "./_components/HeroSection";
+//const HeroSection = React.lazy(() => import("./_components/HeroSection"));
 const WaterFall = React.lazy(() => import("./_components/WaterFall"));
 const Deliverables = React.lazy(() => import("./_components/Deliverables"));
 const ContactUs = React.lazy(() => import("./_components/ContactUs"));
@@ -74,9 +75,11 @@ export const HomePage: React.FC<any> = React.memo((props) => {
         <Slider nextSection={sectionRef.hero} />
       </div>
       <div ref={sectionRef.hero}>
-        <Suspense fallback={<div></div>}>
+        <HeroSection />
+
+        {/* <Suspense fallback={<div></div>}>
           <HeroSection />
-        </Suspense>
+        </Suspense> */}
       </div>
       <div ref={sectionRef.hIW}>
         <Suspense fallback={<div>loading ...</div>}>
