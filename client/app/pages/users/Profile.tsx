@@ -242,7 +242,7 @@ const EditPassword = (props) => {
             </div>
 
             <div className="form-group">
-              <label>New Confirm Password</label>
+              <label>Confirm New Password</label>
               <input
                 onClick={(e) => {
                   const caps_lock_on = e.getModifierState("CapsLock");

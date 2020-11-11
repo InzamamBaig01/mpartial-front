@@ -111,7 +111,8 @@ module.exports = merge(common, {
   },
   plugins: [
 
-    
+    // new BundleAnalyzerPlugin(),
+
     
     
     new CleanWebpackPlugin([PATHS.static], {

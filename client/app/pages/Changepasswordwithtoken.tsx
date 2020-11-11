@@ -9,12 +9,12 @@ import Password from "../../assets/password.svg";
 import { resetPasswordWithToken } from "utils/api-routes/api-routes.util";
 
 const Changepasswordwithtoken = (props) => {
-//   console.log(props.location.search);
+  //   console.log(props.location.search);
   const values = queryString.parse(props.location.search);
-//   console.log(values);
+  //   console.log(values);
   const [password, setpassword] = React.useState("");
   const [validPassword, setValidPassword] = React.useState(true);
-  const [passwordMsg,setPasswordMsg] = useState(false)
+  const [passwordMsg, setPasswordMsg] = useState(false);
   const onSubmit = (e) => {
     // props.setStep(2)
     e.preventDefault();
@@ -25,10 +25,10 @@ const Changepasswordwithtoken = (props) => {
       })
     ).subscribe((response) => {
       if (response.response.Requested_Action) {
-        setPasswordMsg("true")
+        setPasswordMsg("true");
         // history.push("/login");
       } else {
-        setPasswordMsg("Link has expired")
+        setPasswordMsg("Link has expired");
       }
     });
   };
@@ -81,7 +81,7 @@ const Changepasswordwithtoken = (props) => {
                 </div>
                 {!validPassword ? (
                   <span className="password_not_matched">
-                    Passwords does not match
+                    Passwords do not match
                   </span>
                 ) : (
                   ""
@@ -112,11 +112,18 @@ const Changepasswordwithtoken = (props) => {
             >
               &times;
             </div>
-            {passwordMsg ? passwordMsg == "true" ? (
-              <>
-              Your Password has been updated. <Link to="/login">Click Here</Link> to Login.
-              </>
-            ) : passwordMsg : ""}
+            {passwordMsg ? (
+              passwordMsg == "true" ? (
+                <>
+                  Your Password has been updated.{" "}
+                  <Link to="/login">Click Here</Link> to Login.
+                </>
+              ) : (
+                passwordMsg
+              )
+            ) : (
+              ""
+            )}
             {/*  */}
           </div>
         </div>

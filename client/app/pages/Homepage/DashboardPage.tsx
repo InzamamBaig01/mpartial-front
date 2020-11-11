@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Suspense } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Slider } from "./_components/Slider";
 const HeroSection = React.lazy(() => import("./_components/HeroSection"));
 const WaterFall = React.lazy(() => import("./_components/WaterFall"));
