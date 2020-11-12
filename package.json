@@ -155,6 +155,7 @@
     "react-scripts": "^3.4.3",
     "react-simple-auth": "^1.0.0",
     "react-stripe-checkout": "^2.6.3",
+    "react-stripe-script-loader": "^1.1.1",
     "react-switch": "^5.0.1",
     "react-toastr": "^3.0.0",
     "react-trello": "^2.2.3",

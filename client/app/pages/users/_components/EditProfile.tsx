@@ -1,20 +1,20 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import InputMask from 'react-input-mask';
-import { Modal } from 'react-bootstrap';
-import dragimage from 'assets/userProfile.svg';
-import { useDropzone } from 'react-dropzone';
-import queryString from 'query-string';
-import { profileUpdate } from 'utils/api-routes/api-routes.util';
-import ReactCrop from 'react-image-crop';
+import React, { useEffect, useState, useCallback } from "react";
+import InputMask from "react-input-mask";
+import { Modal } from "react-bootstrap";
+import dragimage from "assets/userProfile.svg";
+import { useDropzone } from "react-dropzone";
+import queryString from "query-string";
+import { profileUpdate } from "utils/api-routes/api-routes.util";
+import ReactCrop from "react-image-crop";
 // import './EditProfile.css';
 
 export const EditProfile: React.FC<any> = (props) => {
   /////////// Components States ////////////////////
   const [data, setData] = useState<any>({
-    firstName: '',
-    lastName: '',
-    phonenumber: '',
-    role: '',
+    firstName: "",
+    lastName: "",
+    phonenumber: "",
+    role: "",
     thetoken: localStorage.token,
   });
   const [profileImage, setProfileImage] = useState<any>({
@@ -24,9 +24,9 @@ export const EditProfile: React.FC<any> = (props) => {
   const [profileImageError, setProfileImageError] = useState<string | boolean>(
     false
   );
-  const [croppedImageUrl, setCroppedImageUrl] = useState<any>('');
+  const [croppedImageUrl, setCroppedImageUrl] = useState<any>("");
   const [crop, setCrop] = useState<any>({
-    unit: 'px',
+    unit: "px",
     width: 150,
     height: 150,
     x: 150,
@@ -41,17 +41,17 @@ export const EditProfile: React.FC<any> = (props) => {
 
     const sFileName = acceptedFiles[0].name;
     const sFileExtension = sFileName
-      .split('.')
-      [sFileName.split('.').length - 1].toLowerCase();
+      .split(".")
+      [sFileName.split(".").length - 1].toLowerCase();
     const iFileSize = acceptedFiles[0].size;
 
     /// OR together the accepted extensions and NOT it. Then OR the size cond.
     /// It's easier to see this way, but just a suggestion - no requirement.
-    if (!(sFileExtension === 'jpg' || sFileExtension === 'jpeg')) {
+    if (!(sFileExtension === "jpg" || sFileExtension === "jpeg")) {
       /// 10 mb
-      setProfileImageError('ext');
+      setProfileImageError("ext");
     } else if (iFileSize > 5485760) {
-      setProfileImageError('size');
+      setProfileImageError("size");
     } else {
       setProfileImageError(false);
       setProfileImage({
@@ -61,7 +61,7 @@ export const EditProfile: React.FC<any> = (props) => {
     }
     console.log(acceptedFiles[0]);
     const reader = new FileReader();
-    reader.addEventListener('load', () => {
+    reader.addEventListener("load", () => {
       setImageSrc(reader.result);
     });
     console.log(acceptedFiles[0]);
@@ -91,7 +91,7 @@ export const EditProfile: React.FC<any> = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    data['profilepicture'] = profileImage.profileImage;
+    data["profilepicture"] = profileImage.profileImage;
     const stringified = queryString.stringify(data);
     // formData.append("profilepicture", profileImage.profilepicture);
     profileUpdate(formData, stringified).subscribe((response) => {
@@ -138,7 +138,7 @@ export const EditProfile: React.FC<any> = (props) => {
       const croppedImageUrl = await getCroppedImg(
         imageEl,
         crop,
-        'newFile.jpeg'
+        "newFile.jpeg"
       );
       setCroppedImageUrl(croppedImageUrl);
       setProfileImage({ ...profileImage, profileImage: croppedImageUrl });
@@ -147,13 +147,13 @@ export const EditProfile: React.FC<any> = (props) => {
 
   const getCroppedImg = (image, crop, fileName) => {
     // console.log(image, crop, fileName);
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
     canvas.width = crop.width;
     canvas.height = crop.height;
     canvas
-      .getContext('2d')
+      .getContext("2d")
       ?.drawImage(
         image,
         crop.x * scaleX,
@@ -180,12 +180,12 @@ export const EditProfile: React.FC<any> = (props) => {
     // 		resolve(fileUrl);
     // 	}, 'image/jpeg');
     // });
-    return canvas.toDataURL('image/jpeg');
+    return canvas.toDataURL("image/jpeg");
   };
   const onSelectFile = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
-      reader.addEventListener('load', () => {
+      reader.addEventListener("load", () => {
         setImageSrc(reader.result);
       });
       console.log(e.target.files[0]);
@@ -197,20 +197,20 @@ export const EditProfile: React.FC<any> = (props) => {
       <Modal
         show={props.show}
         onHide={props.handleClose}
-        className='edit_profile'
+        className="edit_profile"
       >
         <Modal.Header closeButton>
-          <Modal.Title className='add_card_title'>Edit Profile</Modal.Title>
+          <Modal.Title className="add_card_title">Edit Profile</Modal.Title>
         </Modal.Header>
-        <Modal.Body className='support_body'>
+        <Modal.Body className="support_body">
           <form onSubmit={handleSubmit}>
-            <div className='row'>
-              <div className='col'>
-                <div className='form-group'>
+            <div className="row">
+              <div className="col">
+                <div className="form-group">
                   <label>First Name</label>
                   <input
-                    type='text'
-                    className='form-control'
+                    type="text"
+                    className="form-control"
                     value={data.firstName}
                     required
                     onChange={(e) =>
@@ -221,11 +221,11 @@ export const EditProfile: React.FC<any> = (props) => {
                     }
                   />
                 </div>
-                <div className='form-group'>
+                <div className="form-group">
                   <label>Last Name</label>
                   <input
-                    type='text'
-                    className='form-control'
+                    type="text"
+                    className="form-control"
                     value={data.lastName}
                     required
                     onChange={(e) =>
@@ -236,11 +236,11 @@ export const EditProfile: React.FC<any> = (props) => {
                     }
                   />
                 </div>
-                <div className='form-group'>
+                <div className="form-group">
                   <label>Cell</label>
 
                   <InputMask
-                    mask='999-999-9999'
+                    mask="999-999-9999"
                     onChange={(e) =>
                       setData({
                         ...data,
@@ -251,8 +251,8 @@ export const EditProfile: React.FC<any> = (props) => {
                   >
                     {(inputProps) => (
                       <input
-                        type='text'
-                        className='form-control'
+                        type="text"
+                        className="form-control"
                         {...inputProps}
                         required
                       />
@@ -260,16 +260,16 @@ export const EditProfile: React.FC<any> = (props) => {
                   </InputMask>
                 </div>
               </div>
-              <div className='col'>
-                <div className='form-group'>
+              <div className="col">
+                <div className="form-group">
                   <label>Profile Picture</label>
                   <div>
                     {/* <input type="file" accept="image/*" onChange={ onSelectFile } /> */}
                     {profileImage.profileImage ? (
                       <>
-                        <div className='profile_image_preview'>
+                        <div className="profile_image_preview">
                           <div
-                            className='cross_icon'
+                            className="cross_icon"
                             onClick={() =>
                               setProfileImage({
                                 profilepicture: false,
@@ -279,41 +279,41 @@ export const EditProfile: React.FC<any> = (props) => {
                           >
                             &times;
                           </div>
-                          <img src={profileImage.profileImage} alt='' />
+                          <img src={profileImage.profileImage} alt="" />
                         </div>
                       </>
                     ) : (
                       <>
                         <div
                           {...getRootProps()}
-                          className='upload_profile_picture'
+                          className="upload_profile_picture"
                         >
-                          <input {...getInputProps()} accept='image/jpeg' />
+                          <input {...getInputProps()} accept="image/jpeg" />
                           {isDragActive ? (
                             <p>
-                              <img src={dragimage} alt='' />
+                              <img src={dragimage} alt="" />
                             </p>
                           ) : (
                             <p>
-                              <img src={dragimage} alt='' />
+                              <img src={dragimage} alt="" />
                             </p>
                           )}
                         </div>
-                        {profileImageError == 'size' ? (
-                          <p className='profile_upload_image_info'>
+                        {profileImageError == "size" ? (
+                          <p className="profile_upload_image_info">
                             Uploaded file exceeds size limit, please upload
                             image lower than 3MB
                           </p>
                         ) : (
-                          ''
+                          ""
                         )}
-                        {profileImageError == 'ext' ? (
-                          <p className='profile_upload_image_info'>
+                        {profileImageError == "ext" ? (
+                          <p className="profile_upload_image_info">
                             Invalid file extention, Please upload jpg file of
                             150x150 pixels
                           </p>
                         ) : (
-                          ''
+                          ""
                         )}
                       </>
                     )}
@@ -334,10 +334,10 @@ export const EditProfile: React.FC<any> = (props) => {
                         locked={true}
                       />
                       {croppedImageUrl && (
-                        <div className='image-crop-action-container'>
+                        <div className="image-crop-action-container">
                           <button
-                            className='btn image-crop-action-btn'
-                            type='button'
+                            className="btn image-crop-action-btn"
+                            type="button"
                             onClick={() => {
                               setProfileImage({
                                 profilepicture: false,
@@ -347,12 +347,12 @@ export const EditProfile: React.FC<any> = (props) => {
                               setImageSrc(null);
                             }}
                           >
-                            {' '}
-                            Cancel{' '}
+                            {" "}
+                            Cancel{" "}
                           </button>
                           <button
-                            className='btn image-crop-action-btn'
-                            type='button'
+                            className="btn image-crop-action-btn"
+                            type="button"
                             onClick={() => {
                               console.log(croppedImageUrl);
                               setProfileImage({
@@ -362,8 +362,8 @@ export const EditProfile: React.FC<any> = (props) => {
                               setImageSrc(null);
                             }}
                           >
-                            {' '}
-                            OK{' '}
+                            {" "}
+                            OK{" "}
                           </button>
                         </div>
                       )}
@@ -373,11 +373,11 @@ export const EditProfile: React.FC<any> = (props) => {
                 </div>
               </div>
             </div>
-            <div className='form-group edit_profile_submit_container'>
+            <div className="form-group edit_profile_submit_container">
               <button
-                className='btn edit_profile_submit'
-                type='submit'
-                id='formButton'
+                className="btn edit_profile_submit"
+                type="submit"
+                id="formButton"
                 disabled={validateChange()}
               >
                 Update
