@@ -1,6 +1,4 @@
 import React, { useEffect, useContext, useState } from "react";
-import StripeScriptLoader from "react-stripe-script-loader";
-
 import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
@@ -452,24 +450,18 @@ const Checkout = (props) => {
             ) : (
               <div className="row">
                 <div className={`form - group col - 12`}>
-                  <StripeScriptLoader
-                    uniqueId="myUniqueId"
-                    script="https://js.stripe.com/v3/"
-                    loader="Loading..."
-                  >
-                    <Elements stripe={stripePromise}>
-                      <CheckoutForm
-                        orderid={orderid}
-                        isFormSubmitted={isFormSubmitted}
-                        setIsFormSubmitted={handleFormSubmittion}
-                        stripeCustomerCard={info ? info.stripeCustomerCard : []}
-                        setCardValidation={handleCardAction}
-                        cardValidation={cardValidation}
-                        checkoutInfo={checkoutInfo}
-                        PIC={PIC}
-                      />
-                    </Elements>
-                  </StripeScriptLoader>
+                  <Elements stripe={stripePromise}>
+                    <CheckoutForm
+                      orderid={orderid}
+                      isFormSubmitted={isFormSubmitted}
+                      setIsFormSubmitted={handleFormSubmittion}
+                      stripeCustomerCard={info ? info.stripeCustomerCard : []}
+                      setCardValidation={handleCardAction}
+                      cardValidation={cardValidation}
+                      checkoutInfo={checkoutInfo}
+                      PIC={PIC}
+                    />
+                  </Elements>
                   {/* <input type="checkbox" /> Card Ending 7878 */}
                 </div>
               </div>
