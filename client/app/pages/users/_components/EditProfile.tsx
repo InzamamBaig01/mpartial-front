@@ -47,11 +47,20 @@ export const EditProfile: React.FC<any> = (props) => {
 
     /// OR together the accepted extensions and NOT it. Then OR the size cond.
     /// It's easier to see this way, but just a suggestion - no requirement.
-    if (!(sFileExtension === "jpg" || sFileExtension === "jpeg")) {
+    if (
+      !(
+        sFileExtension === "jpg" ||
+        sFileExtension === "jpeg" ||
+        sFileExtension === "png"
+      )
+    ) {
       /// 10 mb
+      setImageSrc(0);
+
       setProfileImageError("ext");
     } else if (iFileSize > 5485760) {
       setProfileImageError("size");
+      setImageSrc(null);
     } else {
       setProfileImageError(false);
       setProfileImage({
@@ -167,18 +176,18 @@ export const EditProfile: React.FC<any> = (props) => {
       );
 
     // return new Promise((resolve, reject) => {
-    // 	canvas.toBlob(blob => {
-    // 		if (!blob) {
-    // 			//reject(new Error('Canvas is empty'));
-    // 			console.error('Canvas is empty');
-    // 			return;
-    // 		}
-    // 		let fileUrl = '';
-    // 		blob.name = fileName;
-    // 		window.URL.revokeObjectURL(fileUrl);
-    // 		fileUrl = window.URL.createObjectURL(blob);
-    // 		resolve(fileUrl);
-    // 	}, 'image/jpeg');
+    //   canvas.toBlob((blob) => {
+    //     if (!blob) {
+    //       //reject(new Error('Canvas is empty'));
+    //       console.error("Canvas is empty");
+    //       return;
+    //     }
+    //     let fileUrl = "";
+    //     blob.name = fileName;
+    //     window.URL.revokeObjectURL(fileUrl);
+    //     fileUrl = window.URL.createObjectURL(blob);
+    //     resolve(fileUrl);
+    //   }, "image/jpeg");
     // });
     return canvas.toDataURL("image/jpeg");
   };
@@ -302,15 +311,14 @@ export const EditProfile: React.FC<any> = (props) => {
                         {profileImageError == "size" ? (
                           <p className="profile_upload_image_info">
                             Uploaded file exceeds size limit, please upload
-                            image lower than 3MB
+                            image lower than 5MB
                           </p>
                         ) : (
                           ""
                         )}
                         {profileImageError == "ext" ? (
                           <p className="profile_upload_image_info">
-                            Invalid file extention, Please upload jpg file of
-                            150x150 pixels
+                            Invalid file extention.
                           </p>
                         ) : (
                           ""
@@ -325,13 +333,13 @@ export const EditProfile: React.FC<any> = (props) => {
                   {imageSrc && (
                     <>
                       <ReactCrop
-                        src={imageSrc}
+                        src={profileImageError ? "" : imageSrc}
                         crop={crop}
                         ruleOfThirds
                         onImageLoaded={onImageLoaded}
                         onComplete={onCropComplete}
                         onChange={onCropChange}
-                        locked={true}
+                        //locked={true}
                       />
                       {croppedImageUrl && (
                         <div className="image-crop-action-container">
