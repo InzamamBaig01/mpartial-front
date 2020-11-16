@@ -13,6 +13,7 @@ const BrotliPlugin = require('brotli-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin');
 const zopfli = require('@gfx/zopfli');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 
 
@@ -114,6 +115,7 @@ module.exports = merge(common, {
 
     // new BundleAnalyzerPlugin(),
 
+    new WorkboxPlugin.GenerateSW(),
     
     new CleanWebpackPlugin([PATHS.static], {
       root: PATHS.output,
