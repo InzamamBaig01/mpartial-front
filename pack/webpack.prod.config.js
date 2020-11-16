@@ -13,8 +13,6 @@ const BrotliPlugin = require('brotli-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin');
 const zopfli = require('@gfx/zopfli');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const WorkboxPlugin = require('workbox-webpack-plugin');
-
 
 
 const webpack = require('webpack');
@@ -115,11 +113,7 @@ module.exports = merge(common, {
 
     // new BundleAnalyzerPlugin(),
 
-    new WorkboxPlugin.GenerateSW({
-      clientsClaim: true,
-     skipWaiting: true
-
-    }),
+    
     
     new CleanWebpackPlugin([PATHS.static], {
       root: PATHS.output,
@@ -136,9 +130,7 @@ module.exports = merge(common, {
       {
         from: PATHS.client + "/.htaccess",
         to: PATHS.output,
-        
-      },
-      { from: 'public/manifest.json', to: 'manifest.json' }
+      }
     ]),
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
