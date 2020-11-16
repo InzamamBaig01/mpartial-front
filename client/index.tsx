@@ -27,8 +27,14 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 if ("serviceWorker" in navigator) {
-  // Use the window load event to keep the page load performant
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/static/service-worker.js");
+    navigator.serviceWorker
+      .register("/static/service-worker.js")
+      .then((registration) => {
+        console.log("SW registered: ", registration);
+      })
+      .catch((registrationError) => {
+        console.log("SW registration failed: ", registrationError);
+      });
   });
 }

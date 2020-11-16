@@ -115,7 +115,11 @@ module.exports = merge(common, {
 
     // new BundleAnalyzerPlugin(),
 
-    new WorkboxPlugin.GenerateSW(),
+    new WorkboxPlugin.GenerateSW({
+      clientsClaim: true,
+     skipWaiting: true
+
+    }),
     
     new CleanWebpackPlugin([PATHS.static], {
       root: PATHS.output,
@@ -132,7 +136,9 @@ module.exports = merge(common, {
       {
         from: PATHS.client + "/.htaccess",
         to: PATHS.output,
-      }
+        
+      },
+      { from: 'public/manifest.json', to: 'manifest.json' }
     ]),
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
