@@ -8,14 +8,11 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const merge                   = require('webpack-merge');
 const common                  = require('./webpack.common.config');
 const path = require('path')
-const htmlPlugin = require('html-webpack-plugin');
-
 const CopyWebpackPlugin         = require('copy-webpack-plugin');
 const BrotliPlugin = require('brotli-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin');
 const zopfli = require('@gfx/zopfli');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const {GenerateSW} = require('workbox-webpack-plugin');
 
 
 
@@ -116,27 +113,13 @@ module.exports = merge(common, {
   plugins: [
 
     // new BundleAnalyzerPlugin(),
-    new htmlPlugin({
-      filename: 'index.html',
-      title: 'Get Started With Workbox For Webpack'
-    }),
 
-    new GenerateSW({
-      // Exclude images from the precache
-      swDest: 'sw.js',
-      clientsClaim: true,
-      skipWaiting: true,
-      runtimeCaching: [{
-        urlPattern: new RegExp('https://dev.mpartial.io'),
-        handler: 'StaleWhileRevalidate'
-      }]
-    }),
-
+    
     
     new CleanWebpackPlugin([PATHS.static], {
       root: PATHS.output,
       dry: true,
-      cleanOnceBeforeBuildPatterns: ['**/*', '!./static/*', 'dist'],
+      cleanOnceBeforeBuildPatterns: ['**/*', '!./static/*'],
     }),
     new CopyWebpackPlugin([
       {

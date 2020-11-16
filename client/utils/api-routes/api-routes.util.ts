@@ -217,11 +217,13 @@ export const saveFileOrderData = (payload, apiData) => {
   }).pipe(catchError(handleError('tokenCheck')));
 };
 
-export const profileUpdate = (payload, apiData) => {
+export const profileUpdate = ( apiData, profilePic) => {
   return ajax({
+    headers: requestHeader(),
+
     method: 'POST',
     url: `${baseURL}/Client/updateCustomerInfo?${apiData}`,
-    body: payload,
+    body: profilePic,
   }).pipe(catchError(handleError('tokenCheck')));
 };
 

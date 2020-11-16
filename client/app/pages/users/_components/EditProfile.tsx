@@ -85,8 +85,8 @@ export const EditProfile: React.FC<any> = (props) => {
       lastName: props.info.lastName,
       phonenumber: props.info.phone,
       role: props.info.role,
-      profilepicture: false,
-      profileImage: false,
+      // profilepicture: false,
+      // profileImage: false,
       thetoken: localStorage.token,
     });
     setProfileImage({
@@ -100,10 +100,11 @@ export const EditProfile: React.FC<any> = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    data["profilepicture"] = profileImage.profileImage;
+    const profilePic = profileImage.profileImage;
     const stringified = queryString.stringify(data);
+
     // formData.append("profilepicture", profileImage.profilepicture);
-    profileUpdate(formData, stringified).subscribe((response) => {
+    profileUpdate(stringified, profilePic).subscribe((response) => {
       if (response.response.Requested_Action) {
         props.onSubmitSuccess();
         setProfileImage({
@@ -288,7 +289,10 @@ export const EditProfile: React.FC<any> = (props) => {
                           >
                             &times;
                           </div>
-                          <img src={profileImage.profileImage} alt="" />
+                          <img
+                            src={profileImage.profileImage}
+                            alt="profile_image"
+                          />
                         </div>
                       </>
                     ) : (
@@ -335,7 +339,6 @@ export const EditProfile: React.FC<any> = (props) => {
                       <ReactCrop
                         src={profileImageError ? "" : imageSrc}
                         crop={crop}
-                        ruleOfThirds
                         onImageLoaded={onImageLoaded}
                         onComplete={onCropComplete}
                         onChange={onCropChange}
@@ -362,7 +365,7 @@ export const EditProfile: React.FC<any> = (props) => {
                             className="btn image-crop-action-btn"
                             type="button"
                             onClick={() => {
-                              console.log(croppedImageUrl);
+                              //console.log(croppedImageUrl);
                               setProfileImage({
                                 profilepicture: croppedImageUrl,
                                 profileImage: croppedImageUrl,
