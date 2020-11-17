@@ -17,7 +17,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js/pure";
 import Modal from "react-bootstrap/Modal";
 import { AuthContext } from "contexts/authContext";
 import { AppContext } from "contexts/appContext";
@@ -125,7 +125,13 @@ const FormElement = (props) => {
 };
 
 const AddNewCard = (props) => {
-  const stripePromise = loadStripe(appConfig.stripe);
+  let stripePromise;
+  const getStripe = () => {
+    if (!stripePromise) {
+      stripePromise = loadStripe(appConfig.stripe);
+    }
+    return stripePromise;
+  };
 
   return (
     <>
@@ -136,7 +142,7 @@ const AddNewCard = (props) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="support_body">
-          <Elements stripe={stripePromise}>
+          <Elements stripe={getStripe()}>
             <FormElement
               PI={props.PI}
               handleClose={props.handleClose}
@@ -357,8 +363,6 @@ const Profile = () => {
     getPI();
     setaddcardpopupshow(true);
   };
-
-  const stripePromise = loadStripe("pk_test_BVYHeMmpLalkw9ro9W2IkTFJ");
 
   const onSubmitSuccess = () => {
     getMyInfo();

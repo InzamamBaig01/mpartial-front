@@ -8,7 +8,7 @@ import {
   getPIC,
 } from "utils/api-routes/api-routes.util";
 import history from "utils/history";
-import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js/pure";
 import {
   CardElement,
   Elements,
@@ -325,8 +325,13 @@ const Checkout = (props) => {
     oldValues[key] = value;
     setCheckoutInfo(oldValues);
   };
-  const stripePromise = loadStripe(appConfig.stripe);
-
+  let stripePromise;
+  const getStripe = () => {
+    if (!stripePromise) {
+      stripePromise = loadStripe(appConfig.stripe);
+    }
+    return stripePromise;
+  };
   const checkValidation = () => {
     setvalidation({
       fname: checkoutInfo.firstName.length == 0,
@@ -450,7 +455,7 @@ const Checkout = (props) => {
             ) : (
               <div className="row">
                 <div className={`form - group col - 12`}>
-                  <Elements stripe={stripePromise}>
+                  <Elements stripe={getStripe()}>
                     <CheckoutForm
                       orderid={orderid}
                       isFormSubmitted={isFormSubmitted}
