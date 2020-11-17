@@ -1,6 +1,5 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
 
 
 const {
@@ -104,12 +103,7 @@ module.exports = {
         to: 'assets/',
       }
     ]),
-    new SWPrecacheWebpackPlugin({
-      cacheId: 'my-project-name',
-      filename: 'my-sw-file.js',
-      maximumFileSizeToCacheInBytes: 4194304,
-      staticFileGlobsIgnorePatterns: [/\.json/, /\.map/, /\.xml/]
-    })
+    
   ],
   target: 'web',
   output: {
