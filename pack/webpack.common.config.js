@@ -1,6 +1,7 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
+
 const {
   NamedModulesPlugin
 } = require('webpack');
@@ -12,7 +13,6 @@ const {
 
 module.exports = {
   entry: { 
-    home: PATHS.home,
     app: PATHS.entry },
   resolve: {
     alias: {
