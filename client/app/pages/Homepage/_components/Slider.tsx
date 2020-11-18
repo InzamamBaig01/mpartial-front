@@ -28,7 +28,7 @@ export const Slider: React.FC<SliderProps> = ({ nextSection }) => {
   useEffect(() => {
     setTimeout(() => {
       setShow(true);
-    }, 5000);
+    }, 4000);
   }, []);
 
   return (
@@ -63,7 +63,7 @@ export const Slider: React.FC<SliderProps> = ({ nextSection }) => {
           <br /> Estimating Engine
         </div>
 
-        {/* <div
+        <div
           className="slider_down_btn"
           onClick={() => {
             window.scrollTo({
@@ -71,7 +71,7 @@ export const Slider: React.FC<SliderProps> = ({ nextSection }) => {
               behavior: "smooth",
             });
           }}
-        ></div> */}
+        ></div>
       </div>
     </>
   );

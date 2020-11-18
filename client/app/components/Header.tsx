@@ -59,7 +59,7 @@ const Header = (props) => {
     window.scrollTo({ top: ref.current.offsetTop, behavior: "smooth" });
   };
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     setUserD(userDetails());
   }, []);
   return (
@@ -100,7 +100,7 @@ const Header = (props) => {
                       <DropdownToggle nav caret>
                         <span className="nav-link" id="toBold">
                           Hi, {userD.lastName}
-                          {(headerClass == "" && window.innerWidth >= 1030  ) ? (
+                          {headerClass == "" && window.innerWidth >= 1030 ? (
                             <img src={rightarrow} alt="" />
                           ) : (
                             <img src={rightarrowdark} alt="" />
