@@ -1,5 +1,6 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const WorkboxPlugin = require( 'workbox-webpack-plugin');
 
 
 const {
@@ -92,6 +93,12 @@ module.exports = {
   },
   plugins: [
     new NamedModulesPlugin(),
+    new WorkboxPlugin.GenerateSW({
+      // these options encourage the ServiceWorkers to get in there fast
+      // and not allow any straggling "old" SWs to hang around
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
     new HTMLWebpackPlugin({
       filename: PATHS.index.output,
       template: PATHS.index.input
