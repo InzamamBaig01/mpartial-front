@@ -18,12 +18,22 @@ const Footer: React.FC<FooterProps> = () => {
           <div className={"col-md-6 col-sm-12"}>
             <ul className={"social-links"}>
               <li>
-                <a target="_blank" href="https://www.facebook.com/mpartial1/">
+                <a
+                  target="_blank"
+                  href="https://www.facebook.com/mpartial1/"
+                  aria-label="Facebook"
+                  rel="noopener"
+                >
                   <img src={fb} />{" "}
                 </a>{" "}
               </li>
               <li>
-                <a target="_blank" href="https://www.instagram.com/mpartial_/">
+                <a
+                  target="_blank"
+                  href="https://www.instagram.com/mpartial_/"
+                  aria-label="Instagram"
+                  rel="noopener"
+                >
                   <img src={inst} />{" "}
                 </a>
               </li>
@@ -31,6 +41,8 @@ const Footer: React.FC<FooterProps> = () => {
                 <a
                   target="_blank"
                   href="https://www.linkedin.com/company/mpartial-keep-building"
+                  aria-label="Linkedin"
+                  rel="noopener"
                 >
                   <img src={twt} />
                 </a>{" "}

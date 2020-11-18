@@ -101,25 +101,25 @@ const Header = (props) => {
                         <span className="nav-link" id="toBold">
                           Hi, {userD.lastName}
                           {headerClass == "" && window.innerWidth >= 1030 ? (
-                            <img src={rightarrow} alt="" />
+                            <img src={rightarrow} alt="right arrow" />
                           ) : (
-                            <img src={rightarrowdark} alt="" />
+                            <img src={rightarrowdark} alt="dark right arrow" />
                           )}
                         </span>
                       </DropdownToggle>
                       <DropdownMenu right>
                         <DropdownItem>
                           <Link to="/profile">
-                            <img src={usericon} alt="" /> My Account
+                            <img src={usericon} alt="user icon" /> My Account
                           </Link>
                         </DropdownItem>
                         <DropdownItem>
                           <Link to="/orders">
-                            <img src={cart} alt="" /> My Orders
+                            <img src={cart} alt="cart" /> My Orders
                           </Link>
                         </DropdownItem>
                         <DropdownItem onClick={logout}>
-                          <img src={logouticon} alt="" /> Sign Out
+                          <img src={logouticon} alt="logout icon" /> Sign Out
                         </DropdownItem>
                       </DropdownMenu>
                     </UncontrolledDropdown>

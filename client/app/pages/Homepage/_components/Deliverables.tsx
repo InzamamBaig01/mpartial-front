@@ -57,13 +57,14 @@ const Deliverables: React.FC<DeliverablesProps> = ({}) => {
               <a
                 href="https://support.matterport.com/hc/en-us/articles/360001452428-Matterport-TrueSketch-and-TrueSketch-PLUS-for-Xactimate"
                 target="_blank"
+                rel="noopener"
               >
                 TrueSketch PLUS [SKX]
               </a>
             </h3>
             <section className={"sketch-container"}>
-              <img src={sketch} loading="lazy" />
-              <img src={sketch2} loading="lazy" />
+              <img src={sketch} loading="lazy" alt="first sketch" />
+              <img src={sketch2} loading="lazy" alt="second sketch" />
               <div></div>
             </section>
           </div>

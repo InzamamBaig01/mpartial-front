@@ -79,7 +79,13 @@ export const DeliverSlider = (props) => {
         onExited={() => setAnimating(false)}
         key={item.key}
       >
-        <img src={item.src} alt={item.altText} loading="lazy" />
+        <img
+          src={item.src}
+          alt={item.altText}
+          loading="lazy"
+          width="100%"
+          height="100%"
+        />
         <CarouselCaption
           captionText={item.caption}
           captionHeader={item.caption}
