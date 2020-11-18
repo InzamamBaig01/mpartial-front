@@ -34,7 +34,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({}) => {
       <div className="container">
         <div className="mpartial_section" ref={div}>
           <SectionTitle
-            title={"Mpartial's GROUND-TRUTH DATA EVERYONE TRUSTS"}
+            title={"GROUND-TRUTH DATA EVERYONE TRUSTS"}
             description={
               "We have combined the best-of-breed technology platforms with an eye towards relieving you of administrative burden. Matterport 3D scans augmented by TrueSketch PLUS are used to generate consistent Xactimate sheets that are delivered in accord with Actionable Insights compliance rule sets. Each mpartial is produced with full transparency, unprecedented forensic photography, and infallible geospatial data that collectively result in rapid approvals."
             }

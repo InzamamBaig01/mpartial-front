@@ -1,0 +1,57 @@
+/* If set to "hover", pauses the cycling of the carousel on mouseenter and resumes the cycling of the carousel on
+   * mouseleave. If set to false, hovering over the carousel won't pause it. (default: "hover")
+   */
+
+/* WEBPACK VAR INJECTION */
+
+/* harmony default export */
+
+/* harmony export (binding) */
+
+/* harmony import */
+
+/* unused harmony default export */
+
+/*#__PURE__*/
+
+/***/
+
+// Autoplays the carousel after the user manually cycles the first item. If "carousel", autoplays the carousel on load.
+
+// Calculate the direction to turn
+
+// Don't swipe if Y-movement is bigger than X-movement
+
+// Rendering indicators, slides and controls
+
+// Rendering only slides
+
+// Rendering slides and controls
+
+// Set up the cycle
+
+// TODO: move this to the specific carousel like bootstrap. Currently it will trigger ALL carousels on the page.
+
+// This is how bootstrap defines it... I would prefer a bool named autoplay or something...
+
+// a function which should advance the carousel to the next slide (via activeIndex)
+
+// a function which should advance the carousel to the previous slide (via activeIndex)
+
+// called when the mouse enters the Carousel
+
+// called when the mouse exits the Carousel
+
+// controls if the left and right arrow keys should control the carousel
+
+// controls whether the slide animation on the Carousel works or not
+
+// eslint-disable-next-line react/no-unused-prop-types
+
+// getting this variable triggers a reflow
+
+// make sure not to have multiple intervals going...
+
+// the current active slide of the carousel
+
+// the interval at which the carousel automatically cycles (default: 5000)

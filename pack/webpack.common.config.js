@@ -1,7 +1,6 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
-
 const {
   NamedModulesPlugin
 } = require('webpack');
@@ -12,7 +11,9 @@ const {
 } = require('../settings');
 
 module.exports = {
-  entry: { app: PATHS.entry },
+  entry: { 
+    home: PATHS.home,
+    app: PATHS.entry },
   resolve: {
     alias: {
       app: PATHS.app,

@@ -8,12 +8,15 @@ const GENERAL = {
   description:  '',
 }
 
+
 //* Directory paths
 const path   = require('path');
 const root   =  process.cwd();
 const client = path.resolve(__dirname, 'client');
 const public = path.resolve(__dirname, 'public');
 const app =  path.resolve(client, 'app');
+const pages =  path.resolve(app, 'pages');
+const homepage = path.resolve(pages , 'Homepage')
 const output = path.resolve(__dirname, 'build');
 
 const PATHS = {
@@ -43,6 +46,7 @@ const PATHS = {
   app: path.resolve(client, 'app'),
   contexts: path.resolve(client, 'contexts'),
   pages: path.resolve(app, 'pages'),
+  home: path.resolve(homepage, 'DashboardPage'),
   components: path.resolve(app, 'components'),
   app,
   root,
