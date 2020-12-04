@@ -145,7 +145,7 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
             </ReactIsCapsLockActive>
             {!validPassword && cpassword.length !== 0 ? (
               <span className="password_not_matched">
-                Passwords does not match
+                Passwords do not match
               </span>
             ) : (
               ""

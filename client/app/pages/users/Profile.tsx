@@ -291,7 +291,7 @@ const EditPassword = (props) => {
               </ReactIsCapsLockActive>
               {!validPassword ? (
                 <span className="password_not_matched">
-                  Passwords does not match
+                  Passwords do not match
                 </span>
               ) : (
                 ""

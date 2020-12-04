@@ -29,8 +29,8 @@ export const EditProfile: React.FC<any> = (props) => {
     unit: "px",
     width: 150,
     height: 150,
-    x: 150,
-    y: 150,
+    x: 50,
+    y: 50,
   });
   const [imageSrc, setImageSrc] = useState<any>(null);
   const [imageEl, setImageEl] = useState<HTMLImageElement>();
