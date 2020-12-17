@@ -325,7 +325,7 @@ const Profile = () => {
     mastercard: mastercard,
     visa: visa,
     discover: discover,
-    "american express": AmericanExpress,
+    amex: AmericanExpress,
   };
   useEffect(() => {
     showLoader();

@@ -88,7 +88,7 @@ const AdminUserManagement = () => {
       users.lastName.toLowerCase().includes(search.toLowerCase()) ||
       users.joinedOn.toLowerCase().includes(search.toLowerCase())
   );
-
+  console.log(newUsers);
   return (
     <>
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>

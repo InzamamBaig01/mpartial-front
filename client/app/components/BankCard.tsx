@@ -3,6 +3,7 @@ import React, { useEffect, useContext, useState } from "react";
 import visa from "../../assets/visa.png";
 import mastercard from "../../assets/mastercard.png";
 import AmericanExpress from "../../assets/American-Express.png";
+import JCB from "../../assets/jcb.svg";
 import discover from "../../assets/discover.png";
 import remove from "../../assets/remove.svg";
 import isDefaultIcon from "../../assets/is-default.svg";
@@ -21,9 +22,10 @@ const BankCard = (props) => {
   const [loading, setLoading] = useState(false);
   const pmicons = {
     mastercard: mastercard,
+    jcb: JCB,
     visa: visa,
     discover: discover,
-    "american express": AmericanExpress,
+    amex: AmericanExpress,
   };
   const [card, setCard] = useState(props.card);
   // card.isDefault = false;
