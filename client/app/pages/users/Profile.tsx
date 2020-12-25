@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
+import { Badge } from "react-bootstrap";
+import moment from "moment";
+
 import Header from "app/components/Header";
 import userProfile from "../../../assets/userProfile.svg";
 import visa from "../../../assets/visa.png";
@@ -28,13 +31,19 @@ import queryString from "query-string";
 import {
   profileUpdate,
   getPIC,
+  getSubscriptionPlans,
   changePassword,
+  cancelSubscription,
+  subscriptionHistory,
 } from "utils/api-routes/api-routes.util";
+import history from "../../../utils/history";
+
 import BankCard from "app/components/BankCard";
 import Loader from "app/components/Loader";
 import { AppAlertsContext } from "contexts/appAlertsContext";
 import { EditProfile } from "./_components/EditProfile";
 import ReactIsCapsLockActive from "@matsun/reactiscapslockactive";
+import TransactionHistory from "./_components/TranscationHistory";
 const createOptions = (fontSize: string, padding?: string) => {
   return {
     style: {
@@ -321,6 +330,14 @@ const Profile = () => {
 
   const [info, setInfo] = useState(false);
   const [PI, setPI] = useState(false);
+  const [plans, setPlans] = useState([]);
+  const [filteredPlan, setFilteredPlan] = useState([]);
+  const [show, setShow] = useState(false);
+  const [histories, setHistory] = useState([]);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const pmicons = {
     mastercard: mastercard,
     visa: visa,
@@ -330,7 +347,14 @@ const Profile = () => {
   useEffect(() => {
     showLoader();
     getMyInfo();
+    getHistory();
+
+    getSubscriptionPlans().subscribe((response) => {
+      setPlans(response.response.data);
+    });
   }, []);
+
+  useEffect(() => {}, []);
 
   const getPI = () => {
     getPIC().subscribe((response) => {
@@ -338,16 +362,36 @@ const Profile = () => {
     });
   };
 
+  const getHistory = () => {
+    subscriptionHistory().subscribe((res) => {
+      setHistory(res.response.data ? res.response.data : []);
+    });
+  };
   useEffect(() => {
     if (myInfo) {
       hideLoader();
       setInfo(myInfo);
+      const x = plans.filter(
+        (plan) => plan.name === myInfo.subscriptionplanname
+      );
+
+      setFilteredPlan(x);
     }
   }, [myInfo]);
 
+  const cancelPlan = () => {
+    showLoader();
+    cancelSubscription().subscribe((response) => {
+      console.log(response);
+      getMyInfo();
+    });
+  };
+
+  console.log(filteredPlan);
   const [addcardpopupshow, setaddcardpopupshow] = useState(false);
   const [editProfileShow, setEditProfileShow] = useState(false);
   const [editPasswordShow, setEditPasswordShow] = useState(false);
+  const [toggleMembership, setToggleMembership] = useState(false);
 
   const handleEditProfileclose = () => setEditProfileShow(false);
   const handleEditProfileShow = () => setEditProfileShow(true);
@@ -373,8 +417,36 @@ const Profile = () => {
     handleEditPasswordclose();
   };
 
+  const onToggleMembership = () => {
+    setToggleMembership(!toggleMembership);
+  };
+
   return (
     <>
+      <Modal show={show} onHide={handleClose} className="cancel_subscription">
+        <Modal.Header closeButton>
+          <Modal.Title>Cancel Subscription</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to cancel your subscription? Your subscription
+          will be canceled immediately.
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="btn" onClick={handleClose}>
+            Cancel
+          </button>
+          <button
+            className="btn"
+            onClick={() => {
+              cancelPlan();
+
+              handleClose();
+            }}
+          >
+            Confirm{" "}
+          </button>
+        </Modal.Footer>
+      </Modal>
       <Header isFixedColor={true}></Header>
       <div className="other_pages_container">
         <h1 className="title text-center">My Account</h1>
@@ -433,40 +505,286 @@ const Profile = () => {
                 </div>
               </div>
             </div>
+
             <div className="col-md-8 col-sm-12 col-xs-12">
               <div className="profile_right_section">
                 <div className="row">
-                  <div className="col">
-                    <div className="profile_title">Payment Options</div>
-                  </div>
-                  <div className="col text-right">
-                    <button className="btn" onClick={handlecardshow}>
-                      ADD
-                    </button>
+                  <div
+                    className="col-lg-4  col-xs-6 mb-4"
+                    onClick={onToggleMembership}
+                  >
+                    <div
+                      className={
+                        !toggleMembership
+                          ? "profile_title green"
+                          : "profile_title faded"
+                      }
+                      style={{ cursor: "pointer" }}
+                    >
+                      Payment Options
+                    </div>
+                  </div>{" "}
+                  <div className="col-lg-8 ">
+                    <div className="row">
+                      <div
+                        className={
+                          !toggleMembership
+                            ? "profile_title faded col-lg-8"
+                            : "profile_title green col-lg-8"
+                        }
+                        onClick={onToggleMembership}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Membership
+                      </div>
+                      <div className="text-right col-lg-4 mb-4">
+                        {toggleMembership ? (
+                          <Link
+                            className={
+                              info.subscriptionstatus === "Active"
+                                ? "btn"
+                                : "btn disabled"
+                            }
+                            to="/manage_users"
+                          >
+                            Manage Users
+                          </Link>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
+
                 <div className="divider"></div>
                 <Loader></Loader>
-                <div className="cards">
-                  {info
-                    ? info.stripeCustomerCard.map((card, index) => {
-                        return (
-                          // <tr>
-                          //   <td key={index}><img src={pmicons[card.brand]} className="brand_icon" alt="" /></td>
-                          //   <td>XXXX XXXX XXXX {card.last4}</td>
-                          //   <td>
-                          //     {card.exp_month}/{card.exp_year}
-                          //   </td>
-                          //   {/* <td>
-                          //         <i>a</i>
-                          //         <i>b</i>
-                          //       </td> */}
-                          // </tr>
-                          <BankCard card={card} />
-                        );
-                      })
-                    : ""}
-                </div>
+                {!toggleMembership ? (
+                  <div className="cards">
+                    {info
+                      ? info.stripeCustomerCard.map((card, index) => {
+                          return <BankCard card={card} />;
+                        })
+                      : ""}
+                    <div className="divider"></div>
+                    <div className="col text-left">
+                      <button className="btn" onClick={handlecardshow}>
+                        ADD
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <Loader></Loader>
+
+                    {(filteredPlan.length > 0 &&
+                      info.subscriptionstatus === "Active") ||
+                    info.subscriptionstatus === "Cancelled" ||
+                    info.subscriptionstatus === "PausedDueToPaymentFailure" ? (
+                      <div className="packages">
+                        <div className="row align-items-center">
+                          <div className="col-lg-8 col-xs-12 text-left d-flex align-items-center">
+                            <span
+                              className="h3"
+                              style={{
+                                fontStyle: "bold",
+                                paddingRight: "5px",
+                              }}
+                            >
+                              {filteredPlan[0].name}
+                            </span>
+                            {info.subscriptionstatus === "Cancelled" ? (
+                              <Badge className="cancelled_badge">
+                                <p>Cancelled</p>
+                              </Badge>
+                            ) : info.subscriptionstatus === "Active" ? (
+                              <Badge className="active_badge">
+                                <p>Active</p>
+                              </Badge>
+                            ) : info.subscriptionstatus ===
+                              "PausedDueToPaymentFailure" ? (
+                              <Badge variant="Warning">Paused</Badge>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                          <div className="col-lg-4 col-xs-12 text-right d-flex align-items-center justify-content-end">
+                            <h3> ${filteredPlan[0].price}</h3>
+                            <span className="interval">
+                              /{filteredPlan[0].intervalUnit}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div
+                            className="col-lg-8 d-flex"
+                            style={{ paddingLeft: "0" }}
+                          >
+                            <div className="col-lg-6 text-left d-flex flex-column mt-2 justify-content-end">
+                              <p
+                                style={{ marginBottom: "0" }}
+                                className="faded"
+                              >
+                                Subscription Date
+                              </p>
+
+                              <p
+                                style={{
+                                  marginBottom: "0",
+                                  fontWeight: "600",
+                                }}
+                              >
+                                {moment(histories[0].createdAt).format(
+                                  "MMM DD - YYYY"
+                                )}
+                              </p>
+                            </div>
+                            <div className="col-lg-6 text-left d-flex flex-column mt-2 justify-content-end">
+                              <p
+                                style={{ marginBottom: "0" }}
+                                className="faded"
+                              >
+                                Next Billing Date
+                              </p>
+                              {info.subscriptionstatus === "Active" ? (
+                                <p
+                                  style={{
+                                    marginBottom: "0",
+                                    fontWeight: "600",
+                                  }}
+                                >
+                                  {moment(histories[0].nextbillingdate).format(
+                                    "MMM DD - YYYY"
+                                  )}
+                                </p>
+                              ) : (
+                                <p
+                                  style={{
+                                    marginBottom: "0",
+                                    fontWeight: "600",
+                                  }}
+                                >
+                                  NA
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="col-lg-4 d-flex mt-2 align-items-end justify-content-end">
+                            {info.subscriptionstatus === "Active" ? (
+                              <button className="btn" onClick={handleShow}>
+                                <Loader text="Cancel Subscription"></Loader>
+                              </button>
+                            ) : (
+                              <button
+                                className="btn"
+                                onClick={() => {
+                                  history.push(
+                                    `/subscriptioncheckout/${filteredPlan[0].name}`
+                                  );
+                                }}
+                              >
+                                Renew Subscription
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      plans.map((plan) => (
+                        <div className="packages">
+                          <div className="row align-items-center">
+                            <div className="col-lg-8 col-xs-12 text-left d-flex align-items-center">
+                              <span
+                                className="h3"
+                                style={{
+                                  fontStyle: "bold",
+                                  paddingRight: "5px",
+                                }}
+                              >
+                                {plan.name}
+                              </span>
+                            </div>
+                            <div className="col-lg-4 col-xs-12 text-right d-flex align-items-center justify-content-end">
+                              <h3> ${plan.price}</h3>
+                              <span className="interval">
+                                /{plan.intervalUnit}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="d-flex mt-2 align-items-end justify-content-end">
+                            <button
+                              className="btn"
+                              onClick={() => {
+                                localStorage.setItem("isPlan", true);
+                                localStorage.setItem(
+                                  "planName",
+                                  `${plan.name}`
+                                );
+                                localStorage.setItem(
+                                  "planPrice",
+                                  `${plan.price}`
+                                );
+
+                                history.push(
+                                  `/subscriptioncheckout/${plan.name}`
+                                );
+                              }}
+                            >
+                              Buy Subscription
+                            </button>{" "}
+                          </div>
+                        </div>
+                      ))
+                    )}
+
+                    <div className="row mt-4">
+                      <div className="col-lg-12">
+                        <div className="payment_section">
+                          <div className="payment_section_header">
+                            <div className="row">
+                              <div className="col text-left">
+                                <div className="payment_header_title">
+                                  Subscription Transaction History
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="payment_section_body transaction_history">
+                            <TransactionHistory />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-12">
+                        <div className="payment_section">
+                          <div className="payment_section_header">
+                            <div className="row">
+                              <div className="col text-left">
+                                <div className="payment_header_title">
+                                  Payment Method
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="payment_section_body cards subscription_cards">
+                            {info.stripeCustomerCard.map((card) => {
+                              if (card.isDefault) {
+                                return <BankCard card={card} />;
+                              }
+                            })}
+                            <hr />
+                            <div className="row'">
+                              <div className="col text-right">
+                                <Link className="btn mb-2">
+                                  Manage Payments
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

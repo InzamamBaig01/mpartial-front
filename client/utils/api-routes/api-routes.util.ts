@@ -209,6 +209,14 @@ export const saveOrderData = (payload, apiData) => {
   }).pipe(catchError(handleError('tokenCheck')));
 };
 
+export const getSubscriptionPlans = () => {
+  return ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/getSubscriptionPlans?thetoken=${localStorage.token}`,
+  }).pipe(catchError(handleError('')));
+};
+
 export const saveFileOrderData = (payload, apiData) => {
   return ajax({
     method: 'POST',
@@ -257,6 +265,18 @@ export const payOrder = (payload) => {
     url: `${baseURL}/Client/payForOrder?status=${payload.status}&orderId=${
       payload.orderId
     }&fullresponse=${encodeURIComponent(payload.fullresponse)}&thetoken=${
+      localStorage.token
+    }`,
+  }).pipe(catchError(handleError('tokenCheck')));
+};
+
+export const startSubscriptionPlan = (payload) => {
+  return ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/startSubscriptionPlan?planName=${payload.planName}&billingaddress=${
+      payload.billingaddress
+    }&PAYMENTMETHODID=${payload.PAYMENTMETHODID}&thetoken=${
       localStorage.token
     }`,
   }).pipe(catchError(handleError('tokenCheck')));
@@ -332,6 +352,22 @@ export const getPIC = () => {
     headers: requestHeader(),
     method: 'POST',
     url: `${baseURL}/Client/getSetupIntentForAddingCard?thetoken=${localStorage.token}`,
+  }).pipe(catchError(handleError('tokenCheck')));
+};
+
+export const cancelSubscription = () => {
+  return ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/cancelSubscriptionPlan?thetoken=${localStorage.token}`,
+  }).pipe(catchError(handleError('tokenCheck')));
+};
+
+export const subscriptionHistory = () => {
+  return ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/getSubscriptionHistory?thetoken=${localStorage.token}`,
   }).pipe(catchError(handleError('tokenCheck')));
 };
 

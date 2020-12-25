@@ -65,6 +65,8 @@ const UserOrder = (props) => {
 
   useEffect(() => {
     // showLoader();
+    localStorage.setItem("isPlan", false);
+
     checkFormValidation();
     if (orderId) {
       getMyOrders();
