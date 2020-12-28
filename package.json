@@ -158,6 +158,7 @@
     "react-stripe-checkout": "^2.6.3",
     "react-switch": "^5.0.1",
     "react-toastr": "^3.0.0",
+    "react-tooltip": "^4.2.11",
     "react-trello": "^2.2.3",
     "reactstrap": "^8.0.1",
     "reactstrap-date-picker": "0.0.7",

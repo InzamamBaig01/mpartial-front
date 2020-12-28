@@ -371,6 +371,38 @@ export const subscriptionHistory = () => {
   }).pipe(catchError(handleError('tokenCheck')));
 };
 
+export const inviteUsers = (payload) => {
+  return ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/inviteAUserAsChild?thetoken=${localStorage.token}&${payload}`,
+  }).pipe(catchError(handleError('tokenCheck')));
+};
+
+export const removeChildAccount = (payload) => {
+  return ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/removeChildAccount?thetoken=${localStorage.token}&toRemove=${payload}`,
+  }).pipe(catchError(handleError('tokenCheck')));
+};
+
+export const resendInvite = (payload) => {
+  return ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/resendInvite?thetoken=${localStorage.token}&toInvite=${payload}`,
+  }).pipe(catchError(handleError('tokenCheck')));
+};
+
+export const getMyChildAccounts = () => {
+  return ajax({
+    headers: requestHeader(),
+    method: 'POST',
+    url: `${baseURL}/Client/getMyChildAccounts?thetoken=${localStorage.token}`,
+  }).pipe(catchError(handleError('tokenCheck')));
+};
+
 export const applyCoupons = (payload) => {
   return ajax({
     headers: requestHeader(),

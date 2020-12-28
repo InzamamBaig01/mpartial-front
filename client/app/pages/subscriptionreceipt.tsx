@@ -143,9 +143,19 @@ const SubscriptionReceipt = (props) => {
             </div>
             <div className="row">
               <div className="col text-center">
-                <Link to="/orders">
-                  <button className="btn">My Orders</button>
-                </Link>
+                <button
+                  onClick={() => {
+                    history.push({
+                      pathname: "/profile",
+                      state: {
+                        flag: true,
+                      },
+                    });
+                  }}
+                  className="btn"
+                >
+                  My Subscription
+                </button>
               </div>
             </div>
           </div>

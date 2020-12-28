@@ -324,8 +324,15 @@ const EditPassword = (props) => {
   );
 };
 
-const Profile = () => {
-  const { getMyInfo, myInfo } = useContext(AppContext);
+const Profile = (props) => {
+  const {
+    getMyInfo,
+    myInfo,
+    myPlans,
+    getMyPlans,
+    getHistory,
+    histories,
+  } = useContext(AppContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
 
   const [info, setInfo] = useState(false);
@@ -333,7 +340,6 @@ const Profile = () => {
   const [plans, setPlans] = useState([]);
   const [filteredPlan, setFilteredPlan] = useState([]);
   const [show, setShow] = useState(false);
-  const [histories, setHistory] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -344,15 +350,19 @@ const Profile = () => {
     discover: discover,
     amex: AmericanExpress,
   };
+
+  console.log(props);
   useEffect(() => {
     showLoader();
     getMyInfo();
+    getMyPlans();
     getHistory();
-
-    getSubscriptionPlans().subscribe((response) => {
-      setPlans(response.response.data);
-    });
+    if (props.location.state) {
+      props.location.state.flag ? setToggleMembership(true) : "";
+    }
   }, []);
+
+  console.log("MUINFO", myInfo);
 
   useEffect(() => {}, []);
 
@@ -362,22 +372,26 @@ const Profile = () => {
     });
   };
 
-  const getHistory = () => {
-    subscriptionHistory().subscribe((res) => {
-      setHistory(res.response.data ? res.response.data : []);
-    });
-  };
+  // const getHistory = () => {
+  //   subscriptionHistory().subscribe((res) => {
+  //     setHistory(res.response.data ? res.response.data : []);
+  //   });
+  // };
   useEffect(() => {
     if (myInfo) {
       hideLoader();
       setInfo(myInfo);
-      const x = plans.filter(
-        (plan) => plan.name === myInfo.subscriptionplanname
-      );
+      if (myPlans) {
+        const x = myPlans.filter(
+          (plan) => plan.name === myInfo.subscriptionplanname
+        );
 
-      setFilteredPlan(x);
+        setFilteredPlan(x);
+      }
     }
   }, [myInfo]);
+
+  console.log("PLANS, ", plans);
 
   const cancelPlan = () => {
     showLoader();
@@ -407,6 +421,8 @@ const Profile = () => {
     getPI();
     setaddcardpopupshow(true);
   };
+
+  useEffect(() => {});
 
   const onSubmitSuccess = () => {
     getMyInfo();
@@ -443,7 +459,7 @@ const Profile = () => {
               handleClose();
             }}
           >
-            Confirm{" "}
+            Confirm
           </button>
         </Modal.Footer>
       </Modal>
@@ -577,7 +593,8 @@ const Profile = () => {
                   <div>
                     <Loader></Loader>
 
-                    {(filteredPlan.length > 0 &&
+                    {(filteredPlan.length &&
+                      filteredPlan.length > 0 &&
                       info.subscriptionstatus === "Active") ||
                     info.subscriptionstatus === "Cancelled" ||
                     info.subscriptionstatus === "PausedDueToPaymentFailure" ? (
@@ -689,8 +706,8 @@ const Profile = () => {
                           </div>
                         </div>
                       </div>
-                    ) : (
-                      plans.map((plan) => (
+                    ) : myPlans.length && myPlans.length > 0 ? (
+                      myPlans.map((plan) => (
                         <div className="packages">
                           <div className="row align-items-center">
                             <div className="col-lg-8 col-xs-12 text-left d-flex align-items-center">
@@ -715,15 +732,15 @@ const Profile = () => {
                             <button
                               className="btn"
                               onClick={() => {
-                                localStorage.setItem("isPlan", true);
-                                localStorage.setItem(
-                                  "planName",
-                                  `${plan.name}`
-                                );
-                                localStorage.setItem(
-                                  "planPrice",
-                                  `${plan.price}`
-                                );
+                                // localStorage.setItem("isPlan", true);
+                                // localStorage.setItem(
+                                //   "planName",
+                                //   `${plan.name}`
+                                // );
+                                // localStorage.setItem(
+                                //   "planPrice",
+                                //   `${plan.price}`
+                                // );
 
                                 history.push(
                                   `/subscriptioncheckout/${plan.name}`
@@ -731,10 +748,12 @@ const Profile = () => {
                               }}
                             >
                               Buy Subscription
-                            </button>{" "}
+                            </button>
                           </div>
                         </div>
                       ))
+                    ) : (
+                      ""
                     )}
 
                     <div className="row mt-4">
@@ -766,11 +785,12 @@ const Profile = () => {
                             </div>
                           </div>
                           <div className="payment_section_body cards subscription_cards">
-                            {info.stripeCustomerCard.map((card) => {
-                              if (card.isDefault) {
-                                return <BankCard card={card} />;
-                              }
-                            })}
+                            {info &&
+                              info.stripeCustomerCard.map((card) => {
+                                if (card.isDefault) {
+                                  return <BankCard card={card} />;
+                                }
+                              })}
                             <hr />
                             <div className="row'">
                               <div className="col text-right">

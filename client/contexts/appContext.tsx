@@ -2,8 +2,11 @@ import * as React from "react";
 import {
   getMyOrdersAPI,
   getMyInfoAPI,
+  subscriptionHistory,
+  getMyChildAccounts,
   allADOrders,
   allADUsers,
+  getSubscriptionPlans,
   setDefaultPaymentMenthod,
 } from "../utils/api-routes/api-routes.util";
 import { useState, useEffect, useContext } from "react";
@@ -16,8 +19,13 @@ import { AuthContext } from "./authContext";
 interface IContextProps {
   dashboard: boolean;
   getMyOrders: Function;
+  getMyPlans: Function;
   myOrder: any;
   getMyInfo: Function;
+  myPlans: any;
+  setMyPlans: Function;
+  getInvitedUsers: Function;
+  invitedUsers: any;
   myInfo: any;
   getOrderById: Function;
   singleOrderDetails: any;
@@ -30,6 +38,10 @@ interface IContextProps {
   singleADOrderDetails: any;
   getADUserById: Function;
   singleUserDetails: any;
+  getMyInvitedUser: Function;
+  histories: any;
+  setHistory: Function;
+  getHistory: Function;
 }
 
 export const AppContext = React.createContext({} as IContextProps);
@@ -37,7 +49,11 @@ export const AppContext = React.createContext({} as IContextProps);
 export default ({ children }) => {
   const dashboard = false;
   const [myOrders, setMyOrders] = useState([]);
+  const [histories, setHistory] = useState([]);
+
+  const [myPlans, setMyPlans] = useState([]);
   const [myInfo, setMyInfo] = useState(false);
+  const [invitedUsers, getInvitedUsers] = useState([]);
   const [singleOrderDetails, setSingleOrderDetails] = useState(false);
   const [singleADOrderDetails, setSingleADOrderDetails] = useState(false);
   const [price, setPrice] = useState(750);
@@ -47,11 +63,33 @@ export default ({ children }) => {
   const { logout } = useContext(AuthContext);
   const [singleUserDetails, setSingleUserDetails] = useState(false);
   // console.log(showLoader);
+  const getMyInvitedUser = () => {
+    // showLoader();
+    getMyChildAccounts().subscribe((response) => {
+      getInvitedUsers(response.response.data);
+      // hideLoader();
+    });
+  };
+
   const getMyOrders = () => {
     // showLoader();
     getMyOrdersAPI().subscribe((response) => {
       setMyOrders(response.response.data);
       // hideLoader();
+    });
+  };
+
+  const getHistory = () => {
+    // showLoader();
+    subscriptionHistory().subscribe((response) => {
+      setHistory(response.response.data);
+    });
+  };
+
+  const getMyPlans = () => {
+    // showLoader();
+    getSubscriptionPlans().subscribe((response) => {
+      setMyPlans(response.response.data);
     });
   };
 
@@ -142,20 +180,29 @@ export default ({ children }) => {
   const defaultContext = {
     dashboard,
     getMyOrders,
+    getMyPlans,
     myOrders,
     myInfo,
     getMyInfo,
+    getInvitedUsers,
+    invitedUsers,
     getOrderById,
     singleOrderDetails,
     price,
     getallADOrders,
     AllOrders,
     getallADUsers,
+    myPlans,
+    setMyPlans,
     AllUsers,
+    histories,
+    setHistory,
+    getMyInvitedUser,
     getADOrderById,
     singleADOrderDetails,
     getADUserById,
     singleUserDetails,
+    getHistory,
   };
 
   return (
