@@ -23,6 +23,10 @@ const ManageUsers = () => {
   });
 
   const [inviteMessage, setInviteMessage] = useState("");
+  const [activeCount, setActiveCount] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [deleteCount, setDeleteCount] = useState(0);
+  const[refresh, setRefresh] = useState(0)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,7 +72,7 @@ const ManageUsers = () => {
                 })
               }
             >
-              <p>Active</p>
+              <p>Active ({activeCount})</p>
             </div>
             <div
               className={
@@ -84,7 +88,7 @@ const ManageUsers = () => {
                 })
               }
             >
-              <p> Pending</p>
+              <p> Pending ({pendingCount}) </p>
             </div>
             <div
               className={
@@ -100,25 +104,24 @@ const ManageUsers = () => {
                 })
               }
             >
-              <p>Deleted</p>
+              <p>Deleted ({deleteCount}) </p>
             </div>
           </div>
           <div className="row mt-5">
             <div className="col-lg-8">
-              {activeTab.active ? (
-                <ActiveUsers email={formDetails.toInvite} />
+              {activeTab.active  ? (
+                <ActiveUsers  setActiveCount={setActiveCount} />
               ) : (
                 ""
               )}
-              {activeTab.pending ? (
-                <PendingUsers email={formDetails.toInvite} />
+              {activeTab.pending  ? (
+                <PendingUsers setPendingCount={setPendingCount} />
               ) : (
                 ""
               )}
-              {activeTab.deleted ? <DeletedUsers /> : ""}
+              {activeTab.deleted  ? ( <DeletedUsers setActiveCount={setActiveCount} setDeleteCount={setDeleteCount} />) : ""}
             </div>
             <div className="col-lg-4">
-              {" "}
               <div className="payment_section pl-2 pr-2">
                 <div className="payment_section_header ">
                   <div className="row ">

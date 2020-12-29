@@ -1,10 +1,8 @@
 import React, { useEffect, useContext, useState } from "react";
-import queryString from "query-string";
 import Modal from "react-bootstrap/Modal";
-import image from "../../../../assets/download.png";
+import image from "../../../../assets/userProfile.svg";
 import trash from "../../../../assets/trash.png";
-import resend from "../../../../assets/resend.png";
-import loader from "../../../../assets/loader.gif";
+
 
 import { removeChildAccount } from "utils/api-routes/api-routes.util";
 import { AppContext } from "contexts/appContext";
@@ -18,7 +16,7 @@ const ActiveUsers = (props) => {
   const deleteUser = () => {
     removeChildAccount(toRemove).subscribe((response) => {
       if (response.response.Requested_Action) {
-        setEmail("");
+        //setEmail("");
       }
       getMyInvitedUser();
     });
@@ -31,16 +29,18 @@ const ActiveUsers = (props) => {
     getMyInvitedUser();
   }, []);
 
-  useEffect(() => {
-    getMyInvitedUser();
-  }, [props.email]);
 
   useEffect(() => {
     const filter = invitedUsers.filter(
       (user) => user.invitestatus === "Accepted"
     );
     setFilteredUser(filter);
+    props.setActiveCount(filter.length)
+
   }, [invitedUsers]);
+
+
+
 
   return (
     <div>
@@ -88,6 +88,7 @@ const ActiveUsers = (props) => {
                   <img
                     src={trash}
                     alt="image"
+                    width='38px'
                     onClick={() => {
                       handleShow();
                       setEmail(user.email);

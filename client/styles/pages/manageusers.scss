@@ -1,5 +1,7 @@
 .active_section p {
-  font: normal normal 600 20px/24px Gilroy;
+  font-family: 'Gilroy' !important;
+  font-weight: 600;
+  font-size: 16px;
   letter-spacing: 0px;
   color: #3ac280;
   display: inline-block;
@@ -34,7 +36,7 @@
     font: normal normal bold 16px/34px Gilroy;
     letter-spacing: 0px;
     color: #000000;
-    max-width: 100px;
+    max-width: 500px;
   }
   .email {
     font: normal normal medium 16px/34px Gilroy;
