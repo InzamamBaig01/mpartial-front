@@ -198,7 +198,7 @@ const CheckoutForm = (props) => {
       ) : (
         ""
       )}
-      {showNewCardForm && (
+      {showNewCardForm && !props.ischildaccount ? (
         <div className="">
           <label htmlFor="card-element">Credit or debit card</label>
           <CardElement
@@ -210,6 +210,8 @@ const CheckoutForm = (props) => {
             {error}
           </div>
         </div>
+      ) : (
+        ""
       )}
     </>
   );
@@ -459,6 +461,7 @@ const Checkout = (props) => {
                     <CheckoutForm
                       orderid={orderid}
                       isFormSubmitted={isFormSubmitted}
+                      ischildaccount={info.ischildaccount}
                       setIsFormSubmitted={handleFormSubmittion}
                       stripeCustomerCard={info ? info.stripeCustomerCard : []}
                       setCardValidation={handleCardAction}

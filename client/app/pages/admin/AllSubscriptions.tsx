@@ -2,64 +2,63 @@ import React, { useEffect, useContext, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
 import ADHeader from "app/components/ADHeader";
 import DataTable from "react-data-table-component";
-import First from "../../../assets/first.svg";
-import Last from "../../../assets/last.svg";
-import Next from "../../../assets/next.svg";
-import Previous from "../../../assets/previous.svg";
 import viewicon from "../../../assets/view.svg";
-
+import editicon from "../../../assets/profile_edit.svg";
 import { AppContext } from "contexts/appContext";
-import AdminSidebar from "./_components/AdminSidebar";
 import AdminSearch from "./_components/AdminSearch";
-import Loader from "app/components/Loader";
 
-const AdminUserManagement = () => {
-  const { getallADUsers, AllUsers } = useContext(AppContext);
-  const [Users, setUsers] = useState([]);
-  const [search, setSearch] = useState("");
+import AdminSidebar from "./_components/AdminSidebar";
+const AllSubscriptions = () => {
+  const { getallADOrders, AllOrders } = useContext(AppContext);
+  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const columns = [
     {
-      name: "Name",
-      selector: function (a) {
-        return a.firstName + " " + a.lastName;
+      name: "Company Name",
+      selector: "id",
+      sortable: true,
+      className: "header-col",
+    },
+    {
+      name: "First Name",
+      selector: "emailForDeliveryOfResults",
+      sortable: true,
+      className: "header-col",
+    },
+    {
+      name: "Last Name",
+      selector: "createdAt",
+      sortable: true,
+      className: "header-col",
+    },
+    {
+      name: "Status",
+      selector: "paymentStatus",
+      sortable: true,
+      className: "header-col",
+      format: (d) => {
+        // console.log(d)
+        return (
+          <>
+            {d.paymentStatus}
+            {/* <img  src={editicon} className="admin-order-edit" alt="" /> */}
+          </>
+        );
       },
-      sortable: true,
-      className: "header-col",
     },
     {
-      name: "Email",
-      selector: "emailAddress",
-      sortable: true,
-      className: "header-col",
-    },
-    {
-      name: "Account Type",
-      selector: "ischildaccount",
-
+      name: "Start Date",
+      selector: "amountInCents",
       sortable: false,
       className: "header-col",
-      format: (d) =>
-        d.ischildaccount === true
-          ? "Child"
-          : d.subscriptionstatus === "NotActive"
-          ? "Orphan"
-          : "Enterprise",
+      format: (d) => `$${d.amountInCents / 100}`,
     },
     {
-      name: "No. of Orders",
-      selector: "noOfOrders",
-      sortable: true,
+      name: "Next Payment Date",
+      selector: "amountInCents",
+      sortable: false,
       className: "header-col",
-    },
-    {
-      name: "Member Since",
-      selector: "joinedOn",
-      sortable: true,
-      sortFunction: function (a, b) {
-        return +new Date(a.joinedOn) - +new Date(b.joinedOn);
-      },
-      className: "header-col",
+      format: (d) => `$${d.amountInCents / 100}`,
     },
     {
       name: "Action",
@@ -67,7 +66,7 @@ const AdminUserManagement = () => {
       sortable: false,
       className: "header-col",
       format: (d) => (
-        <Link to={`/usersdetails/${window.btoa(d.emailAddress)}`}>
+        <Link to={`/details/${d.id}`}>
           <img src={viewicon} alt="" />
         </Link>
       ),
@@ -75,39 +74,28 @@ const AdminUserManagement = () => {
   ];
 
   useEffect(() => {
-    getallADUsers();
+    getallADOrders();
   }, []);
 
-  //Runing loader for 2 secs only
+  //Running loader for 2 secs
   useEffect(() => {
-    setTimeout(() => {}, 1000);
-  }, []);
-
-  useEffect(() => {
-    if (AllUsers.length > 0) {
-      setUsers(AllUsers);
+    setTimeout(() => {
       setLoading(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    if (AllOrders.length) {
+      setOrders(AllOrders);
     }
-  }, [AllUsers]);
-
-  const onSearchChange = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const newUsers = Users.filter(
-    (users) =>
-      users.emailAddress.toLowerCase().includes(search.toLowerCase()) ||
-      users.firstName.toLowerCase().includes(search.toLowerCase()) ||
-      users.lastName.toLowerCase().includes(search.toLowerCase()) ||
-      users.joinedOn.toLowerCase().includes(search.toLowerCase())
-  );
-  console.log(newUsers);
+  }, [AllOrders]);
   return (
     <>
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
       <div className="other_pages_container">
         <div className={"admin-order-wrap"}>
           <AdminSidebar></AdminSidebar>
+
           {loading ? (
             <img
               src={require("../../../assets/loader.gif")}
@@ -124,17 +112,31 @@ const AdminUserManagement = () => {
             />
           ) : (
             <section>
-              <div className={"section-head search-text"}>
+              <div className={"section-head search-text align-items-center"}>
                 <div>
-                  <h2>Customers</h2>
+                  <h2>All Subscriptions</h2>
                 </div>
-                <div style={{ maxWidth: "200px" }}>
-                  <AdminSearch searchInput={search} onChange={onSearchChange} />
+                <div className="statuses d-flex justify-content-space align-items-center">
+                  <div>
+                    <p>All</p>
+                  </div>
+                  <div>
+                    <p>Active</p>
+                  </div>
+                  <div>
+                    <p>Paused</p>
+                  </div>
+                  <div>
+                    <p>Cancelled</p>
+                  </div>
+                  <div style={{ width: "250px", maxWidth: "300px" }}>
+                    <AdminSearch />
+                  </div>
                 </div>
               </div>
               <DataTable
                 columns={columns}
-                data={newUsers}
+                data={orders}
                 responsive={true}
                 pagination={true}
                 noDataComponent
@@ -186,4 +188,4 @@ const AdminUserManagement = () => {
   );
 };
 
-export default withRouter(AdminUserManagement);
+export default withRouter(AllSubscriptions);

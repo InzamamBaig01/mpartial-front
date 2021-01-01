@@ -14,6 +14,9 @@ import { AppAlertsContext } from "contexts/appAlertsContext";
 import Loader from "app/components/Loader";
 import { Modal } from "react-bootstrap";
 import leftarrow from "../../../assets/first.svg";
+import loading from "../../../assets/loader.gif";
+import chat from "../../../assets/chat.png";
+
 import OrderFields from "../../../OrderFormFields.json";
 
 import rightarrowdark from "../../../assets/up-arrow-white.svg";
@@ -39,16 +42,16 @@ import {
 const UserOrder = (props) => {
   const { userDetails } = useContext(AuthContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
-
   const orderId = props.match.params.orderId;
   const [allFields, setAllFields] = useState(OrderFields);
-  const { price } = useContext(AppContext);
+  const { price, getMyInfo, myInfo } = useContext(AppContext);
   const [productPrice, setPrice] = useState(price);
   const [couponApplied, setCouponApplied] = useState(false);
   const [ApplyCouponShow, setApplyCouponShow] = useState(false);
   const [matchingUrl, setMatchingUrl] = useState(false);
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false);
   const [dataValues, setDataValues] = useState({});
+  const [show, setShow] = useState(true);
   const { getMyOrders, myOrders } = useContext(AppContext);
 
   const [order, setOrder] = useState(false);
@@ -59,14 +62,15 @@ const UserOrder = (props) => {
   useEffect(() => {
     if (top.current) {
       window.scrollTo({ top: top.current.offsetTop, behavior: "smooth" });
-      form.current.reset();
+      //form.current.reset();
     }
   }, [top.current]);
 
   useEffect(() => {
-    // showLoader();
-    localStorage.setItem("isPlan", false);
-
+    getMyInfo();
+    setTimeout(() => {
+      setShow(false);
+    }, 2000);
     checkFormValidation();
     if (orderId) {
       getMyOrders();
@@ -89,6 +93,8 @@ const UserOrder = (props) => {
     }
   }, []);
 
+  console.log("userdetails", myInfo);
+
   useEffect(() => {
     if (orderId) {
       getMyOrders();
@@ -107,7 +113,8 @@ const UserOrder = (props) => {
         emailForDeliveryOfResults: userDetails().emailAddress,
       });
       setAllFields(userOrderFormFeilds);
-      form.current.reset();
+      // form.current.reset();
+      // console.log("form", form.current.reset());
     }
   }, [orderId]);
 
@@ -329,29 +336,60 @@ const UserOrder = (props) => {
   return (
     <>
       <Header isFixedColor={true}></Header>
-      <div className="other_pages_container">
-        <h1 className="title text-center" ref={top}>
-          mpartial Engine
-        </h1>
-        <div className="container">
-          <form className="order_form" onSubmit={onSubmit} ref={form}>
-            <div className="row">
-              {allFields.map((field, index) => {
-                const gridCol =
-                  (index > 3 && index < 8) || index == 10 || index == 11
-                    ? "col-6 select_box_field"
-                    : "col-12";
-                return (
-                  <div className={`form-group ${gridCol}`} key={index}>
-                    <label>
-                      {field.name}{" "}
-                      {field.required ? <span className="sterick">*</span> : ""}
-                    </label>
-                    <div
-                      className={`description small_${
-                        field.id != "projectZipCode" &&
-                        field.description?.length <= 42
-                      }
+      {show ? (
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ marginTop: "20%" }}
+        >
+          <img src={loading} />
+        </div>
+      ) : (
+        <div className="other_pages_container">
+          {myInfo.subscriptionstatus === "NotActive" ||
+          myInfo.subscriptionstatus === "PausedDueToPaymentFailure" ||
+          myInfo.subscriptionstatus === "Cancelled" ? (
+            <div
+              className="container d-flex flex-column justify-content-center align-items-center m-auto"
+              style={{ margin: "0 auto", height: "85vh" }}
+            >
+              <div className="order_check d-flex flex-column justify-content-center align-items-center m-auto">
+                <img src={chat} />
+                <h3 className="mt-3">
+                  You need active subscription plan to order. Please{" "}
+                  <Link to="/profile">click here </Link>
+                  to review your subscription details.
+                </h3>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <h1 className="title text-center" ref={top}>
+                mpartial Engine
+              </h1>
+
+              <div className="container">
+                <form className="order_form" onSubmit={onSubmit} ref={form}>
+                  <div className="row">
+                    {allFields.map((field, index) => {
+                      const gridCol =
+                        (index > 3 && index < 8) || index == 10 || index == 11
+                          ? "col-6 select_box_field"
+                          : "col-12";
+                      return (
+                        <div className={`form-group ${gridCol}`} key={index}>
+                          <label>
+                            {field.name}{" "}
+                            {field.required ? (
+                              <span className="sterick">*</span>
+                            ) : (
+                              ""
+                            )}
+                          </label>
+                          <div
+                            className={`description small_${
+                              field.id != "projectZipCode" &&
+                              field.description?.length <= 42
+                            }
                         small_${
                           field.id == "temporaryActivities" ||
                           field.id == "projectZipCode"
@@ -359,63 +397,63 @@ const UserOrder = (props) => {
                             : ""
                         }
                         `}
-                    >
-                      {field.description}
-                    </div>
-                    <DrawField
-                      field={field}
-                      onChange={handleChange}
-                      matchingUrl={matchingUrl}
-                    ></DrawField>
+                          >
+                            {field.description}
+                          </div>
+                          <DrawField
+                            field={field}
+                            onChange={handleChange}
+                            matchingUrl={matchingUrl}
+                          ></DrawField>
+                        </div>
+                      );
+                    })}
                   </div>
-                );
-              })}
-            </div>
-            <div className="form-group">
-              <label>Price</label>
-              <div className="row">
-                <div className="col-3">
-                  {couponApplied.length ? (
-                    <>
-                      <div className=" main_price">
-                        ${productPrice} <sup>${price} </sup>
+                  <div className="form-group">
+                    <label>Price</label>
+                    <div className="row">
+                      <div className="col-3">
+                        {couponApplied.length ? (
+                          <>
+                            <div className=" main_price">
+                              ${productPrice} <sup>${price} </sup>
+                            </div>
+                          </>
+                        ) : (
+                          <div className=" main_price">${productPrice}</div>
+                        )}
                       </div>
-                    </>
-                  ) : (
-                    <div className=" main_price">${productPrice}</div>
-                  )}
-                </div>
-              </div>
-            </div>
+                    </div>
+                  </div>
 
-            <div className="form-group">
-              <label className="terms">
-                <input type="checkbox" required onClick={handleChange} /> I’ve
-                read and accept the mpartial{" "}
-                <Link to="/terms">
-                  <span className="underline">Terms & Conditions</span>
-                </Link>
-                <span className="sterick">*</span>
-              </label>
-            </div>
-            <div className="form-group submit_btn_container">
-              <ButtonGroup>
-                <Button
-                  className="btn btn-green "
-                  type="submit"
-                  onClick={checkFormValidation}
-                  id="formButton"
-                  disabled={checkoutAs == "checkout" && submitBtnDisabled}
-                >
-                  <Loader
-                    text={
-                      checkoutAs == "checkout"
-                        ? "Proceed to Checkout"
-                        : "Save as draft"
-                    }
-                  ></Loader>
-                </Button>
-                {/* <UncontrolledButtonDropdown className="btn-dropdown">
+                  <div className="form-group">
+                    <label className="terms">
+                      <input type="checkbox" required onClick={handleChange} />{" "}
+                      I’ve read and accept the mpartial{" "}
+                      <Link to="/terms">
+                        <span className="underline">Terms & Conditions</span>
+                      </Link>
+                      <span className="sterick">*</span>
+                    </label>
+                  </div>
+                  <div className="form-group submit_btn_container">
+                    <ButtonGroup>
+                      <Button
+                        className="btn btn-green "
+                        type="submit"
+                        onClick={checkFormValidation}
+                        id="formButton"
+                        disabled={checkoutAs == "checkout" && submitBtnDisabled}
+                      >
+                        <Loader
+                          text={
+                            checkoutAs == "checkout"
+                              ? "Proceed to Checkout"
+                              : "Save as draft"
+                          }
+                        ></Loader>
+                      </Button>
+                      {/* <UncontrolledButtonDropdown className="btn-dropdown">
                   <DropdownToggle caret>
                     <img src={rightarrowdark} />
                   </DropdownToggle>
@@ -425,26 +463,28 @@ const UserOrder = (props) => {
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledButtonDropdown> */}
-              </ButtonGroup>
+                    </ButtonGroup>
 
-              <UncontrolledTooltip
-                placement="top"
-                target="UncontrolledTooltipExample"
-              >
-                Save as draft
-              </UncontrolledTooltip>
-              <button
-                className="floating_draft_btn"
-                id="UncontrolledTooltipExample"
-                onClick={saveToDraft}
-              >
-                <Loader text={<img src={saveImage} />}></Loader>
-              </button>
+                    <UncontrolledTooltip
+                      placement="top"
+                      target="UncontrolledTooltipExample"
+                    >
+                      Save as draft
+                    </UncontrolledTooltip>
+                    <button
+                      className="floating_draft_btn"
+                      id="UncontrolledTooltipExample"
+                      onClick={saveToDraft}
+                    >
+                      <Loader text={<img src={saveImage} />}></Loader>
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-          </form>
+          )}
         </div>
-      </div>
-
+      )}
       {ApplyCouponShow && (
         <ApplyCoupon
           value={""}

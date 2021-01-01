@@ -18,7 +18,12 @@ const AdminSidebar = () => {
           </li>
           <li>
             <Link to="/coupons">
-              <span></span> Coupons
+              <span></span>Coupons
+            </Link>
+          </li>
+          <li>
+            <Link to="/allsubscriptions">
+              <span></span> Subscriptions
             </Link>
           </li>
         </ul>

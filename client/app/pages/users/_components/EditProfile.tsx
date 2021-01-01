@@ -271,7 +271,8 @@ export const EditProfile: React.FC<any> = (props) => {
                     )}
                   </InputMask>
                 </div>
-                {props.info.subscriptionstatus === "NotActive" ? (
+                {props.info.subscriptionstatus === "NotActive" ||
+                props.info.ischildaccount ? (
                   ""
                 ) : (
                   <div className="form-group">

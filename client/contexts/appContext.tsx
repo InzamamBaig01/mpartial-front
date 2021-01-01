@@ -37,6 +37,7 @@ interface IContextProps {
   getADOrderById: Function;
   singleADOrderDetails: any;
   getADUserById: Function;
+  setSingleUserDetails: Function;
   singleUserDetails: any;
   getMyInvitedUser: Function;
   histories: any;
@@ -160,20 +161,22 @@ export default ({ children }) => {
   };
 
   const getADUserById = (id) => {
+    setSingleUserDetails(false);
+
     // showLoader();
     allADUsers().subscribe((response) => {
       setAllUsers(response.response.data);
-      // hideLoader();
+      // hideLoader();()
       setSingleUserDetails(getADUserByID(id, response.response.data));
     });
   };
 
   const getallADUsers = () => {
-    // showLoader();
+    //showLoader();
     allADUsers().subscribe((response) => {
       setAllUsers(response.response.data);
       console.log(response.response.data);
-      // hideLoader();
+      //hideLoader();
     });
   };
 
@@ -201,6 +204,7 @@ export default ({ children }) => {
     getADOrderById,
     singleADOrderDetails,
     getADUserById,
+    setSingleUserDetails,
     singleUserDetails,
     getHistory,
   };

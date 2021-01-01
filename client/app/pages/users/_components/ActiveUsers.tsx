@@ -3,7 +3,6 @@ import Modal from "react-bootstrap/Modal";
 import image from "../../../../assets/userProfile.svg";
 import trash from "../../../../assets/trash.png";
 
-
 import { removeChildAccount } from "utils/api-routes/api-routes.util";
 import { AppContext } from "contexts/appContext";
 
@@ -29,18 +28,23 @@ const ActiveUsers = (props) => {
     getMyInvitedUser();
   }, []);
 
-
   useEffect(() => {
     const filter = invitedUsers.filter(
       (user) => user.invitestatus === "Accepted"
     );
     setFilteredUser(filter);
-    props.setActiveCount(filter.length)
+    props.setActiveCount(filter.length);
 
+    const deletedFilter = invitedUsers.filter(
+      (user) => user.invitestatus === "Deleted"
+    );
+    props.setDeleteCount(deletedFilter.length);
+
+    const pendingFilter = invitedUsers.filter(
+      (user) => user.invitestatus === "Pending"
+    );
+    props.setPendingCount(pendingFilter.length);
   }, [invitedUsers]);
-
-
-
 
   return (
     <div>
@@ -88,7 +92,7 @@ const ActiveUsers = (props) => {
                   <img
                     src={trash}
                     alt="image"
-                    width='38px'
+                    width="38px"
                     onClick={() => {
                       handleShow();
                       setEmail(user.email);

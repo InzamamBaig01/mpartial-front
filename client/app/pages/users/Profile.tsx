@@ -6,6 +6,8 @@ import moment from "moment";
 import Header from "app/components/Header";
 import userProfile from "../../../assets/userProfile.svg";
 import visa from "../../../assets/visa.png";
+import check from "../../../assets/chat.png";
+
 import loader from "../../../assets/loader.gif";
 import mastercard from "../../../assets/mastercard.png";
 import AmericanExpress from "../../../assets/American-Express.png";
@@ -342,9 +344,12 @@ const Profile = (props) => {
   const [plans, setPlans] = useState([]);
   const [filteredPlan, setFilteredPlan] = useState([]);
   const [show, setShow] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   const pmicons = {
     mastercard: mastercard,
@@ -397,7 +402,7 @@ const Profile = (props) => {
     }
   }, [myInfo]);
 
-  console.log("PLANS, ", plans);
+  console.log("PLANS, ", myInfo.stripeCustomerCard == 0);
 
   const cancelPlan = () => {
     showLoader();
@@ -469,6 +474,26 @@ const Profile = (props) => {
           </button>
         </Modal.Footer>
       </Modal>
+      <Modal
+        show={showModal}
+        onHide={handleCloseModal}
+        className="cancel_subscription"
+      >
+        <Modal.Body style={{ margin: "0 auto" }}>
+          <div
+            className="d-flex align-items-center justify-content-center mt-3"
+            style={{ margin: "0 auto" }}
+          >
+            <img src={check} width="60px" />
+          </div>
+          <div className="mt-4">Please add a payment method.</div>
+        </Modal.Body>
+        <Modal.Footer style={{ borderTop: "none", margin: "0 auto" }}>
+          <button className="btn" onClick={handleCloseModal}>
+            Cancel
+          </button>
+        </Modal.Footer>
+      </Modal>
       <Header isFixedColor={true}></Header>
       <div className="other_pages_container">
         <h1 className="title text-center">My Account</h1>
@@ -516,7 +541,8 @@ const Profile = (props) => {
                     <div className="col">Cell</div>
                     <div className="col text-right">{info.phone}</div>
                   </div>
-                  {info.subscriptionstatus === "NotActive" ? (
+                  {info.subscriptionstatus === "NotActive" ||
+                  info.ischildaccount ? (
                     ""
                   ) : (
                     <div className="row">
@@ -581,8 +607,11 @@ const Profile = (props) => {
                             <b>{info.companyname}</b>
                           </h4>
                         </div>
-                        <div className="col-lg-4 col-xs-12 mb-3 " style={{marginRight: '0px'}}>
-                        <h4
+                        <div
+                          className="col-lg-4 col-xs-12 mb-3 "
+                          style={{ marginRight: "0px" }}
+                        >
+                          <h4
                             className="faded text-left"
                             style={{
                               fontFamily: "Gilroy",
@@ -604,7 +633,7 @@ const Profile = (props) => {
                           </h4>
                         </div>
                         <div className="col-lg-4  col-xs-12 mb-3 text-left">
-                        <h4
+                          <h4
                             className="faded "
                             style={{
                               fontFamily: "Gilroy",
@@ -642,7 +671,7 @@ const Profile = (props) => {
                             }
                             style={{ cursor: "pointer" }}
                           >
-                            <Loader text="Payment Options"></Loader>
+                            Payment Options{" "}
                           </div>
                         </div>{" "}
                         <div className="col-lg-8 ">
@@ -656,7 +685,7 @@ const Profile = (props) => {
                               onClick={onToggleMembership}
                               style={{ cursor: "pointer" }}
                             >
-                              <Loader text="Membership"></Loader>
+                              Membership{" "}
                             </div>
                             <div className="text-right col-lg-4 ">
                               {toggleMembership ? (
@@ -682,11 +711,15 @@ const Profile = (props) => {
                       <Loader></Loader>
                       {!toggleMembership ? (
                         <div className="cards">
-                          {info
-                            ? info.stripeCustomerCard.map((card, index) => {
-                                return <BankCard card={card} />;
-                              })
-                            : ""}
+                          {info && info.stripeCustomerCard.length > 0 ? (
+                            info.stripeCustomerCard.map((card, index) => {
+                              return <BankCard card={card} />;
+                            })
+                          ) : (
+                            <div className="text-left">
+                              <b>No Payment method found! </b>
+                            </div>
+                          )}
                           <div className="divider"></div>
                           <div className="col text-left">
                             <button className="btn" onClick={handlecardshow}>
@@ -827,6 +860,10 @@ const Profile = (props) => {
                                     >
                                       {plan.name}
                                     </span>
+
+                                    <Badge className="pause_badge">
+                                      <p>Inactive</p>
+                                    </Badge>
                                   </div>
                                   <div className="col-lg-4 col-xs-12 text-right d-flex align-items-center justify-content-end">
                                     <h3> ${plan.price}</h3>
@@ -835,81 +872,96 @@ const Profile = (props) => {
                                     </span>
                                   </div>
                                 </div>
-                                <div className="d-flex mt-2 align-items-end justify-content-end">
-                                  <button
-                                    className="btn"
-                                    onClick={() => {
-                                      // localStorage.setItem("isPlan", true);
-                                      // localStorage.setItem(
-                                      //   "planName",
-                                      //   `${plan.name}`
-                                      // );
-                                      // localStorage.setItem(
-                                      //   "planPrice",
-                                      //   `${plan.price}`
-                                      // );
-
-                                      history.push(
-                                        `/subscriptioncheckout/${plan.name}`
-                                      );
-                                    }}
-                                  >
-                                    Buy Subscription
-                                  </button>
+                                <div className="d-flex flex-column mt-2 align-items-end justify-content-end">
+                                  <div>
+                                    <button
+                                      className="btn"
+                                      //disabled={myInfo.stripeCustomerCard == 0}
+                                      onClick={() => {
+                                        // localStorage.setItem("isPlan", true);
+                                        // localStorage.setItem(
+                                        //   "planName",
+                                        //   `${plan.name}`
+                                        // );
+                                        // localStorage.setItem(
+                                        //   "planPrice",
+                                        //   `${plan.price}`
+                                        // );
+                                        myInfo.stripeCustomerCard == 0
+                                          ? handleShowModal()
+                                          : history.push(
+                                              `/subscriptioncheckout/${plan.name}`
+                                            );
+                                      }}
+                                    >
+                                      Buy Subscription
+                                    </button>
+                                    <Link to="/#Contact-US">
+                                      <p className="mt-2 text-center demo">
+                                        Request demo
+                                      </p>
+                                    </Link>
+                                  </div>
                                 </div>
                               </div>
                             ))
                           ) : (
                             ""
                           )}
-
-                          <div className="row mt-4">
-                            <div className="col-lg-12">
-                              <div className="payment_section">
-                                <div className="payment_section_header">
-                                  <div className="row">
-                                    <div className="col text-left">
-                                      <div className="payment_header_title">
-                                        Subscription Transaction History
+                          {info.subscriptionstatus === "NotActive" ? (
+                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. The pricing down by 57%"
+                          ) : (
+                            <div className="row mt-4">
+                              <div className="col-lg-12">
+                                <div className="payment_section">
+                                  <div className="payment_section_header">
+                                    <div className="row">
+                                      <div className="col text-left">
+                                        <div className="payment_header_title">
+                                          Subscription Transaction History
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="payment_section_body transaction_history">
+                                    <TransactionHistory />
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-lg-12">
+                                <div className="payment_section">
+                                  <div className="payment_section_header">
+                                    <div className="row">
+                                      <div className="col text-left">
+                                        <div className="payment_header_title">
+                                          Payment Method
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="payment_section_body cards subscription_cards">
+                                    {info &&
+                                      info.stripeCustomerCard.map((card) => {
+                                        if (card.isDefault) {
+                                          return <BankCard card={card} />;
+                                        }
+                                      })}
+                                    <hr />
+                                    <div className="row'">
+                                      <div
+                                        className="col text-right"
+                                        onClick={onToggleMembership}
+                                      >
+                                        <Link className="btn mb-2">
+                                          Manage Payments
+                                        </Link>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                                <div className="payment_section_body transaction_history">
-                                  <TransactionHistory />
-                                </div>
                               </div>
                             </div>
-                            <div className="col-lg-12">
-                              <div className="payment_section">
-                                <div className="payment_section_header">
-                                  <div className="row">
-                                    <div className="col text-left">
-                                      <div className="payment_header_title">
-                                        Payment Method
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="payment_section_body cards subscription_cards">
-                                  {info &&
-                                    info.stripeCustomerCard.map((card) => {
-                                      if (card.isDefault) {
-                                        return <BankCard card={card} />;
-                                      }
-                                    })}
-                                  <hr />
-                                  <div className="row'">
-                                    <div className="col text-right">
-                                      <Link className="btn mb-2">
-                                        Manage Payments
-                                      </Link>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                          )}
                         </div>
                       )}
                     </div>

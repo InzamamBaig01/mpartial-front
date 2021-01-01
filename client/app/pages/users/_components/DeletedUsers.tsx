@@ -3,6 +3,7 @@ import queryString from "query-string";
 import Modal from "react-bootstrap/Modal";
 import image from "../../../../assets/userProfile.svg";
 import reinvite from "../../../../assets/reinvite.png";
+import check from "../../../../assets/checkBig.png";
 import { inviteUsers } from "utils/api-routes/api-routes.util";
 import { AppContext } from "contexts/appContext";
 
@@ -23,7 +24,6 @@ const DeletedUsers = (props) => {
       if (response.response.Requested_Action) {
       }
       getMyInvitedUser();
-
     });
   };
   const handleClose = () => setModal(false);
@@ -33,7 +33,7 @@ const DeletedUsers = (props) => {
     getMyInvitedUser();
   }, []);
 
-  console.log('PROPS', props.email)
+  console.log("PROPS", props.email);
 
   useEffect(() => {
     const filter = invitedUsers.filter(
@@ -44,28 +44,27 @@ const DeletedUsers = (props) => {
     const activeFilter = invitedUsers.filter(
       (user) => user.invitestatus === "Accepted"
     );
-    props.setActiveCount(activeFilter.length)
+    props.setActiveCount(activeFilter.length);
   }, [invitedUsers]);
 
-  props.setDeleteCount(filteredUsers.length)
+  props.setDeleteCount(filteredUsers.length);
 
   return (
     <div>
       <Modal show={modal} onHide={handleClose} className="cancel_subscription">
-        <Modal.Header toggle={handleClose}>Alert</Modal.Header>
-        <Modal.Body>Do you want to delete the user?</Modal.Body>
-        <Modal.Footer>
-          <button className="btn" onClick={handleClose}>
-            Cancel{" "}
-          </button>{" "}
-          <button
-            className="btn"
-            onClick={() => {
-              deleteUser();
-              handleClose();
-            }}
+        <Modal.Body style={{ margin: "0 auto" }}>
+          <div
+            className="d-flex align-items-center justify-content-center mt-3"
+            style={{ margin: "0 auto" }}
           >
-            Delete
+            <img src={check} width="60px" />
+          </div>
+
+          <div className="mt-4">User Reactivated</div>
+        </Modal.Body>{" "}
+        <Modal.Footer style={{ borderTop: "none", margin: "0 auto" }}>
+          <button className="btn" onClick={handleClose}>
+            Close
           </button>
         </Modal.Footer>
       </Modal>
@@ -97,6 +96,7 @@ const DeletedUsers = (props) => {
                     }}
                     onClick={() => {
                       onClick();
+                      handleShow();
                     }}
                     style={{ cursor: "pointer" }}
                   />

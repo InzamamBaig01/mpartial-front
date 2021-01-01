@@ -69,6 +69,7 @@ const Delete = (props) => {
 
 const OrderDetails = (props) => {
   const [order, setOrder] = useState(props.order);
+  const { getMyInfo, myInfo } = useContext(AppContext);
 
   const [editStatusShow, setEditStatusShow] = useState(false);
 
@@ -81,8 +82,12 @@ const OrderDetails = (props) => {
   };
 
   useEffect(() => {
+    getMyInfo();
+  });
+  console.log("info", myInfo);
+  useEffect(() => {
     if (props.order) {
-      console.log(props.order);
+      console.log("props", props.order);
       setOrder(props.order);
     }
     localStorage.setItem("sessipn", "sessipn");
@@ -262,17 +267,26 @@ const OrderDetails = (props) => {
               <div className="row text-right">
                 {order.paymentStatus == "DRAFT" && (
                   <>
-                    <div className="col col-resp">
-                      <button className="btn " onClick={handleEditStatusShow}>
-                        Delete Draft
-                      </button>
-                    </div>
-
-                    <div className="col col-resp">
-                      <Link to={`/order/${order.id}`}>
-                        <button className="btn">Load Draft</button>
-                      </Link>
-                    </div>
+                    {props.order.emailForDeliveryOfResults ===
+                    myInfo.emailAddress ? (
+                      <div className="col col-resp">
+                        <button className="btn " onClick={handleEditStatusShow}>
+                          Delete Draft
+                        </button>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {props.order.emailForDeliveryOfResults ===
+                    myInfo.emailAddress ? (
+                      <div className="col col-resp">
+                        <Link to={`/order/${order.id}`}>
+                          <button className="btn">Load Draft</button>
+                        </Link>
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </>
                 )}
                 {order.paymentStatus == "UNPAID" && (

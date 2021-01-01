@@ -87,6 +87,15 @@ export const allADUsers = () =>
     url: `${baseURL}/GIServer/getAllCustomers`,
   }).pipe(catchError(handleError('')));
 
+  export const subscriptionHistoryAD = (payload) =>
+  ajax({
+    headers: {
+      authString: localStorage.topen,
+    },
+    method: 'POST',
+    url: `${baseURL}/GIServer/getSubscriptionHistoryForCustomer?email=${payload}`,
+  }).pipe(catchError(handleError('')));
+
 export const deleteCoupon = (payload) =>
   ajax({
     headers: {
@@ -104,6 +113,8 @@ export const updateStatus = (payload) =>
     method: 'POST',
     url: `${baseURL}/GIServer/updateOrderStatus?orderId=${payload.orderId}&orderStatus=${payload.orderStatus}`,
   }).pipe(catchError(handleError('')));
+
+ 
 
 export const addCoupon = (payload) =>
   ajax({

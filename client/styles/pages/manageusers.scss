@@ -1,5 +1,5 @@
 .active_section p {
-  font-family: 'Gilroy' !important;
+  font-family: "Gilroy" !important;
   font-weight: 600;
   font-size: 16px;
   letter-spacing: 0px;
@@ -39,7 +39,10 @@
     max-width: 500px;
   }
   .email {
-    font: normal normal medium 16px/34px Gilroy;
+    font-family: "Gilroy";
+    font-weight: 400;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
     letter-spacing: 0px;
     color: #000000;
     opacity: 0.5;
@@ -53,7 +56,10 @@
     width: 42px;
     height: 42px;
   }
+}
+@media screen and (max-width: 600px) {
   .email {
-    max-width: 90px;
+    max-width: 150px !important;
+    margin-bottom: 10px;
   }
 }

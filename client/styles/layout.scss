@@ -1,3 +1,24 @@
+.statuses div p {
+  padding: 0 25px;
+}
+
+.label-text label {
+  font-family: "Gilroy";
+  font-weight: bold !important;
+  color: #000000;
+}
+
+.order_check {
+  h3 {
+    font-family: "Gilroy";
+    text-align: center;
+    color: #000000;
+    font-weight: bold;
+    font-size: 24px;
+    max-width: 600px;
+  }
+}
+
 .btn {
   background: #3ac280 0% 0% no-repeat padding-box;
   border-color: #3ac280;
@@ -1207,7 +1228,7 @@ input:-moz-placeholder {
     color: #000000;
     opacity: 1;
     border-bottom: 1px solid rgba(112, 112, 112, 0.2);
-    padding: 20px 43px;
+    padding: 20px 23px;
     margin-bottom: 35px;
   }
   .order_details_info {

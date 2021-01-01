@@ -3,6 +3,8 @@ import ReactTooltip from "react-tooltip";
 import Alert from "react-bootstrap/Alert";
 import Modal from "react-bootstrap/Modal";
 import image from "../../../../assets/userProfile.svg";
+import check from "../../../../assets/checkBig.png";
+
 import trash from "../../../../assets/trash.png";
 import resend from "../../../../assets/resend.png";
 
@@ -17,17 +19,14 @@ const PendingUsers = (props) => {
   const [filteredUsers, setFilteredUser] = useState([]);
   const [toRemove, setEmail] = useState("");
   const [modal, setModal] = useState(false);
-  const[message, setMessage] = useState('Do you want to delete the user?')
-
+  const [message, setMessage] = useState("Do you want to delete the user?");
 
   const deleteUser = () => {
-
-        removeChildAccount(toRemove).subscribe((response) => {
+    removeChildAccount(toRemove).subscribe((response) => {
       if (response.response.Requested_Action) {
-        setMessage('User Deleted!')
+        setMessage("User Deleted!");
         setEmail("");
         handleShow();
-
       }
       getMyInvitedUser();
     });
@@ -35,13 +34,11 @@ const PendingUsers = (props) => {
   const InviteUser = (email) => {
     resendInvite(email).subscribe((response) => {
       if (response.response.Requested_Action) {
-        setMessage('Invitation Sent')
+        setMessage("Invitation Sent");
         handleShow();
       }
       getMyInvitedUser();
-
     });
-
   };
 
   const handleClose = () => setModal(false);
@@ -62,37 +59,54 @@ const PendingUsers = (props) => {
     setFilteredUser(filter);
   }, [invitedUsers]);
 
-props.setRefresh(1)
-  props.setPendingCount(filteredUsers.length)
+  props.setPendingCount(filteredUsers.length);
 
   return (
-    
     <div>
-    
-
       <Modal show={modal} onHide={handleClose} className="cancel_subscription">
-      { message === 'Do you want to delete the user?' ?
-    <Modal.Header toggle={handleClose}>Alert</Modal.Header> : ('')}
-        <Modal.Body>{message}</Modal.Body>
-        <Modal.Footer>
-          <button className="btn" onClick={() => {
-            handleClose();
-            setMessage('Do you want to delete the user?');
-          }}>
-            Cancel{" "}
-          </button>{" "}
-          { message === 'Do you want to delete the user?' ?
+        {message === "Do you want to delete the user?" ? (
+          <Modal.Header toggle={handleClose}>Alert</Modal.Header>
+        ) : (
+          ""
+        )}
+        <Modal.Body style={{ margin: "0 auto" }}>
+          {message === "Do you want to delete the user?" ? (
+            ""
+          ) : (
+            <div
+              className="d-flex align-items-center justify-content-center mt-3"
+              style={{ margin: "0 auto" }}
+            >
+              <img src={check} width="60px" />
+            </div>
+          )}
+          <div className="mt-4">{message}</div>
+        </Modal.Body>
+        <Modal.Footer style={{ borderTop: "none", margin: "0 auto" }}>
           <button
             className="btn"
             onClick={() => {
-              deleteUser();
               handleClose();
+              setTimeout(() => {
+                setMessage("Do you want to delete the user?");
+              }, 1000);
             }}
           >
-            Delete
+            {message === "Do you want to delete the user?" ? "Cancel" : "Close"}
           </button>
-          : ('')
-}
+          {message === "Do you want to delete the user?" ? (
+            <button
+              className="btn"
+              onClick={() => {
+                deleteUser();
+                handleClose();
+              }}
+            >
+              Delete
+            </button>
+          ) : (
+            ""
+          )}
         </Modal.Footer>
       </Modal>
       <div className="manager_users">
@@ -104,7 +118,10 @@ props.setRefresh(1)
                   <div className="image_user d-flex align-items-center">
                     <img src={image} alt="image" />
                   </div>
-                  <div className="details_user d-flex flex-column">
+                  <div
+                    className="details_user d-flex flex-column justify-content-center
+                  "
+                  >
                     <div className="name">{user.name}</div>
                     <div className="email">{user.email}</div>
                     <div className="email">Child</div>

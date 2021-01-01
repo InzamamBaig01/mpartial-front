@@ -16,6 +16,8 @@ import SubscriptionReceipt from "./subscriptionreceipt";
 
 import AdminLogin from "./admin/AdminLogin";
 import AdminOrders from "./admin/AdminOrders";
+import AllSubscriptions from "./admin/AllSubscriptions";
+
 import AdminUserManagement from "./admin/AdminUserManagement";
 import { ForgotPassword } from "./users/ForgotPassword";
 import TermsCondition from "./TermsCondition";
@@ -233,6 +235,15 @@ export const ROUTES = [
     path: "/allorders",
     slug: "admin/orders",
     title: "admin/orders",
+    redirectTo: "/mpartialadmin",
+    checkADLogin: true,
+    isAD: true,
+  },
+  {
+    component: AllSubscriptions,
+    path: "/allsubscriptions",
+    slug: "admin/allsubscriptions",
+    title: "admin/allsubscriptions",
     redirectTo: "/mpartialadmin",
     checkADLogin: true,
     isAD: true,

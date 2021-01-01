@@ -1,12 +1,30 @@
 .disabled_link {
   cursor: none;
 }
-
+.demo {
+  font-family: "Gilroy";
+  font-size: 12px;
+  text-decoration: underline;
+  text-align: center !important;
+  color: #3ac280;
+}
 .active_badge {
   background: rgba(56, 173, 162, 0.3);
   border-radius: 6px;
   p {
     color: #38ada2 !important;
+    padding: 6px 17px;
+    text-align: center;
+    font-size: 14px;
+    font-family: "Raleway";
+    margin: 0 auto;
+  }
+}
+.pause_badge {
+  background: rgba(204, 177, 0, 0.3);
+  border-radius: 6px;
+  p {
+    color: #ccb100 !important;
     padding: 6px 17px;
     text-align: center;
     font-size: 14px;
