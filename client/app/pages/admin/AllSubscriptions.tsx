@@ -9,56 +9,68 @@ import AdminSearch from "./_components/AdminSearch";
 
 import AdminSidebar from "./_components/AdminSidebar";
 const AllSubscriptions = () => {
-  const { getallADOrders, AllOrders } = useContext(AppContext);
-  const [orders, setOrders] = useState([]);
+  const { getAllSubscriptions, subscriptions } = useContext(AppContext);
+  const [activeTab, setActiveTab] = useState({
+    all: true,
+    active: false,
+    cancelled: false,
+    paused: false,
+  });
+  const [sub, setSub] = useState([]);
+  const [activeSub, setActiveSub] = useState([]);
+  const [pausedSub, setpausedSub] = useState([]);
+  const [cancelledSub, setcancelledSub] = useState([]);
+  const [search, setSearch] = useState("");
+
   const [loading, setLoading] = useState(true);
   const columns = [
     {
       name: "Company Name",
-      selector: "id",
+      selector: "companyname",
       sortable: true,
       className: "header-col",
+      format: (d) => {
+        return <>{d.companyname ? d.companyname : "NA"}</>;
+      },
     },
     {
       name: "First Name",
-      selector: "emailForDeliveryOfResults",
+      selector: "firstName",
       sortable: true,
       className: "header-col",
     },
     {
       name: "Last Name",
-      selector: "createdAt",
+      selector: "lastName",
       sortable: true,
       className: "header-col",
     },
     {
       name: "Status",
-      selector: "paymentStatus",
+      selector: "subscriptionstatus",
       sortable: true,
       className: "header-col",
-      format: (d) => {
-        // console.log(d)
-        return (
-          <>
-            {d.paymentStatus}
-            {/* <img  src={editicon} className="admin-order-edit" alt="" /> */}
-          </>
-        );
-      },
     },
     {
       name: "Start Date",
-      selector: "amountInCents",
+      selector: "subscriptionstartdate",
       sortable: false,
       className: "header-col",
-      format: (d) => `$${d.amountInCents / 100}`,
     },
     {
       name: "Next Payment Date",
-      selector: "amountInCents",
+      selector: "subscriptionnextbillingdate",
       sortable: false,
       className: "header-col",
-      format: (d) => `$${d.amountInCents / 100}`,
+      format: (d) => {
+        return (
+          <>
+            {d.subscriptionnextbillingdate
+              ? d.subscriptionnextbillingdate
+              : "NA"}
+          </>
+        );
+      },
     },
     {
       name: "Action",
@@ -66,15 +78,15 @@ const AllSubscriptions = () => {
       sortable: false,
       className: "header-col",
       format: (d) => (
-        <Link to={`/details/${d.id}`}>
-          <img src={viewicon} alt="" />
+        <Link to={`/usersdetails/${window.btoa(d.emailAddress)}`}>
+          <img src={viewicon} alt="view-icon" />
         </Link>
       ),
     },
   ];
 
   useEffect(() => {
-    getallADOrders();
+    getAllSubscriptions();
   }, []);
 
   //Running loader for 2 secs
@@ -85,10 +97,42 @@ const AllSubscriptions = () => {
   }, []);
 
   useEffect(() => {
-    if (AllOrders.length) {
-      setOrders(AllOrders);
+    if (subscriptions.length) {
+      setSub(subscriptions);
+      setActiveSub(
+        subscriptions.filter(
+          (subscription) => subscription.subscriptionstatus === "Active"
+        )
+      );
+
+      setcancelledSub(
+        subscriptions.filter(
+          (subscription) => subscription.subscriptionstatus === "Cancelled"
+        )
+      );
+
+      setpausedSub(
+        subscriptions.filter(
+          (subscription) =>
+            subscription.subscriptionstatus === "PausedDueToPaymentFailure"
+        )
+      );
     }
-  }, [AllOrders]);
+  }, [subscriptions]);
+
+  const onSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const filteredSub = sub.filter(
+    (sub) =>
+      sub.emailAddress.toLowerCase().includes(search.toLowerCase()) ||
+      (sub.companyname
+        ? sub.companyname.toLowerCase().includes(search.toLowerCase())
+        : "") ||
+      sub.firstName.toLowerCase().includes(search.toLowerCase()) ||
+      sub.lastName.toLowerCase().includes(search.toLowerCase())
+  );
   return (
     <>
       <ADHeader isFixedColor={true} widthType={"full"}></ADHeader>
@@ -112,74 +156,141 @@ const AllSubscriptions = () => {
             />
           ) : (
             <section>
-              <div className={"section-head search-text align-items-center"}>
-                <div>
+              <div className="section-head   row ">
+                <div className=" col-lg-2">
                   <h2>All Subscriptions</h2>
                 </div>
-                <div className="statuses d-flex justify-content-space align-items-center">
-                  <div>
-                    <p>All</p>
+                <div className="statuses  col-lg-10 row">
+                  <div
+                    className={
+                      activeTab.all
+                        ? "col-lg-2 col-sm-6 active_sections "
+                        : "col-lg-2 col-sm-6 faded"
+                    }
+                    onClick={() =>
+                      setActiveTab({
+                        all: true,
+                        active: false,
+                        cancelled: false,
+                        paused: false,
+                      })
+                    }
+                  >
+                    <p>All ({sub.length})</p>
                   </div>
-                  <div>
-                    <p>Active</p>
+                  <div
+                    className={
+                      activeTab.active
+                        ? "col-lg-2 col-sm-6 active_sections "
+                        : "col-lg-2 col-sm-6 faded"
+                    }
+                    onClick={() =>
+                      setActiveTab({
+                        all: false,
+                        active: true,
+                        cancelled: false,
+                        paused: false,
+                      })
+                    }
+                  >
+                    <p>Active ({activeSub.length})</p>
                   </div>
-                  <div>
-                    <p>Paused</p>
+                  <div
+                    className={
+                      activeTab.paused
+                        ? "col-lg-2 col-sm-6 active_sections "
+                        : "col-lg-2 col-sm-6 faded"
+                    }
+                    onClick={() =>
+                      setActiveTab({
+                        all: false,
+                        active: false,
+                        cancelled: false,
+                        paused: true,
+                      })
+                    }
+                  >
+                    <p>Paused ({pausedSub.length})</p>
                   </div>
-                  <div>
-                    <p>Cancelled</p>
+                  <div
+                    className={
+                      activeTab.cancelled
+                        ? "col-lg-2 col-sm-6 active_sections "
+                        : "col-lg-2 col-sm-6 faded"
+                    }
+                    onClick={() =>
+                      setActiveTab({
+                        all: false,
+                        active: false,
+                        cancelled: true,
+                        paused: false,
+                      })
+                    }
+                  >
+                    <p>Cancelled ({cancelledSub.length})</p>
                   </div>
-                  <div style={{ width: "250px", maxWidth: "300px" }}>
-                    <AdminSearch />
+                  <div
+                    className="col-lg-4 col-sm-12 "
+                    style={{ margin: "0 auto", alignItems: "center" }}
+                  >
+                    <AdminSearch
+                      searchInput={search}
+                      onChange={onSearchChange}
+                    />
                   </div>
                 </div>
               </div>
-              <DataTable
-                columns={columns}
-                data={orders}
-                responsive={true}
-                pagination={true}
-                noDataComponent
-              />
-              {/* <div className={"table-pagination"}>
-              <div className={"pagination"}>
-                <ul>
-                  <li className={"first"}>
-                    <a href="#">
-                      <img className="input_icon" src={First} alt="" />
-                    </a>
-                  </li>
-                  <li className={"previous"}>
-                    <a href="#">
-                      <img className="input_icon" src={Previous} alt="" />
-                    </a>
-                  </li>
-                  <li className={"active"}>
-                    <a href="#"> 1</a>
-                  </li>
-                  <li>
-                    <a href="#"> 2</a>
-                  </li>
-                  <li className={"next"}>
-                    <a href="#">
-                      <img className="input_icon" src={Next} alt="" />
-                    </a>{" "}
-                  </li>
-                  <li className={"last"}>
-                    <a href="#">
-                      <img className="input_icon" src={Last} alt="" />
-                    </a>{" "}
-                  </li>
-                </ul>
-              </div>
-              <div className={"pages"}>
-                <div></div>
-                <div className={"info"}>
-                  Showing <span>1</span> - <span>9</span> of <span>40</span>
+              {activeTab.all ? (
+                <div>
+                  <DataTable
+                    columns={columns}
+                    data={filteredSub}
+                    responsive={true}
+                    pagination={true}
+                  />
                 </div>
-              </div>
-            </div>
-           */}
+              ) : (
+                ""
+              )}
+
+              {activeTab.active ? (
+                <div>
+                  <DataTable
+                    columns={columns}
+                    data={activeSub}
+                    responsive={true}
+                    pagination={true}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+
+              {activeTab.paused ? (
+                <div>
+                  <DataTable
+                    columns={columns}
+                    data={pausedSub}
+                    responsive={true}
+                    pagination={true}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+
+              {activeTab.cancelled ? (
+                <div>
+                  <DataTable
+                    columns={columns}
+                    data={cancelledSub}
+                    responsive={true}
+                    pagination={true}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
             </section>
           )}
         </div>

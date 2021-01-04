@@ -8,6 +8,7 @@ import {
   allADUsers,
   getSubscriptionPlans,
   setDefaultPaymentMenthod,
+  allSubscriptions,
 } from "../utils/api-routes/api-routes.util";
 import { useState, useEffect, useContext } from "react";
 import * as jsoncompare from "js-object-compare";
@@ -27,6 +28,7 @@ interface IContextProps {
   getInvitedUsers: Function;
   invitedUsers: any;
   myInfo: any;
+  subscriptions: any;
   getOrderById: Function;
   singleOrderDetails: any;
   price: any;
@@ -40,6 +42,7 @@ interface IContextProps {
   setSingleUserDetails: Function;
   singleUserDetails: any;
   getMyInvitedUser: Function;
+  getAllSubscriptions: Function;
   histories: any;
   setHistory: Function;
   getHistory: Function;
@@ -54,6 +57,7 @@ export default ({ children }) => {
 
   const [myPlans, setMyPlans] = useState([]);
   const [myInfo, setMyInfo] = useState(false);
+  const [subscriptions, setSubscriptions] = useState(false);
   const [invitedUsers, getInvitedUsers] = useState([]);
   const [singleOrderDetails, setSingleOrderDetails] = useState(false);
   const [singleADOrderDetails, setSingleADOrderDetails] = useState(false);
@@ -156,6 +160,14 @@ export default ({ children }) => {
     });
   };
 
+  const getAllSubscriptions = () => {
+    // showLoader();
+    allSubscriptions().subscribe((response) => {
+      setSubscriptions(response.response.data);
+      // hideLoader();
+    });
+  };
+
   const getADUserByID = (id, orders?) => {
     return orders.filter((order) => order.emailAddress == id)[0];
   };
@@ -187,6 +199,7 @@ export default ({ children }) => {
     myOrders,
     myInfo,
     getMyInfo,
+    subscriptions,
     getInvitedUsers,
     invitedUsers,
     getOrderById,
@@ -201,6 +214,7 @@ export default ({ children }) => {
     histories,
     setHistory,
     getMyInvitedUser,
+    getAllSubscriptions,
     getADOrderById,
     singleADOrderDetails,
     getADUserById,

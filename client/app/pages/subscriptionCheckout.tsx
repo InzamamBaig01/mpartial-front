@@ -141,27 +141,6 @@ const CheckoutForm = (props) => {
         props.setPaymentError(response.response.Message);
       }
     });
-    //     } else {
-    //       payOrder({
-    //         status: result.paymentIntent.status,
-    //         orderId: props.orderid,
-    //         fullresponse: JSON.stringify(result.paymentIntent),
-    //       }).subscribe((response) => {
-    //         if (response.response.Requested_Action) {
-    //           localStorage.removeItem("sessipn");
-    //           hideLoader();
-    //           history.push(`/receipt/${props.orderid}`);
-    //         } else {
-    //           hideLoader();
-    //           setError("Server Error.");
-    //         }
-    //       });
-    //     }
-    //   } else {
-    //     hideLoader();
-    //     setError("payment  Error.");
-    //   }
-    // }
   };
   useEffect(() => {
     props.stripeCustomerCard.map((card, index) => {
@@ -176,18 +155,11 @@ const CheckoutForm = (props) => {
     <>
       {props.stripeCustomerCard.length ? (
         <>
-          <button
-            className="btn payment_switch"
-            type="button"
-            onClick={() => {
-              setShowNewCardForm(!showNewCardForm);
-              setSelectedCard(false);
-              props.setCardValidation(false);
-              setError(null);
-            }}
-          >
-            {showNewCardForm ? "Use Existing Card" : "Use New Card"}
-          </button>
+          <a href="/profile">
+            <button className="btn payment_switch" type="button">
+              Add New Card
+            </button>
+          </a>
           {!showNewCardForm &&
             props.stripeCustomerCard.map((card, index) => {
               return (

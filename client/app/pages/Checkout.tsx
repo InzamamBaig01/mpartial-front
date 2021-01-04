@@ -38,15 +38,10 @@ const CheckoutForm = (props) => {
     discover: discover,
     "american express": AmericanExpress,
   };
-  const [showNewCardForm, setShowNewCardForm] = useState(
-    props.stripeCustomerCard.length == 0
-  );
+
   // console.log(props.stripeCustomerCard.length == 0);
   const [selectedCard, setSelectedCard] = useState(false);
 
-  useEffect(() => {
-    setShowNewCardForm(props.stripeCustomerCard.length == 0);
-  }, [props.stripeCustomerCard]);
   // Handle real-time validation errors from the card Element.
   const handleChange = (event) => {
     if (event.error) {
@@ -70,70 +65,16 @@ const CheckoutForm = (props) => {
   const handleSubmit = async (event) => {
     // event.preventDefault();
     showLoader();
-    const card = elements.getElement(CardElement);
 
-    stripe
-      .confirmCardPayment(
-        props.PIC,
-        !showNewCardForm
-          ? {
-              payment_method: selectedCard.paymentMethodId,
-            }
-          : {
-              payment_method: {
-                card: card,
-                billing_details: {
-                  name: `${props.checkoutInfo.firstName} ${props.checkoutInfo.lastName}`,
-                },
-              },
-              setup_future_usage: "off_session",
-            }
-      )
-      .then(async function (result) {
-        console.log(result);
-        // return;
-        if (result.error) {
-          props.setIsFormSubmitted(false);
-          setError(result.error.message);
-          props.setCardValidation(false);
-          console.log(result.error);
-          // return;
-          hideLoader();
-          payOrder({
-            status: result.error.code,
-            orderId: props.orderid,
-            fullresponse: JSON.stringify(result.error),
-          }).subscribe((response) => {
-            console.log(response.response);
-            // if (response.response.Requested_Action) {
-            //   localStorage.removeItem("sessipn");
-            //   hideLoader();
-            //   history.push(`/receipt/${props.orderid}`);
-            // }
-          });
-        } else {
-          hideLoader();
-          if (result.paymentIntent.status === "succeeded") {
-            payOrder({
-              status: result.paymentIntent.status,
-              orderId: props.orderid,
-              fullresponse: JSON.stringify(result.paymentIntent),
-            }).subscribe((response) => {
-              if (response.response.Requested_Action) {
-                localStorage.removeItem("sessipn");
-                hideLoader();
-                history.push(`/receipt/${props.orderid}`);
-              } else {
-                hideLoader();
-                setError("Server Error.");
-              }
-            });
-          } else {
-            hideLoader();
-            setError("payment  Error.");
-          }
-        }
-      });
+    payOrder({
+      orderId: props.orderid,
+    }).subscribe((response) => {
+      if (response.response.Requested_Action) {
+        localStorage.removeItem("sessipn");
+        hideLoader();
+        history.push(`/receipt/${props.orderid}`);
+      }
+    });
   };
   useEffect(() => {
     props.stripeCustomerCard.map((card, index) => {
@@ -148,68 +89,47 @@ const CheckoutForm = (props) => {
     <>
       {props.stripeCustomerCard.length ? (
         <>
-          <button
-            className="btn payment_switch"
-            type="button"
-            onClick={() => {
-              setShowNewCardForm(!showNewCardForm);
-              setSelectedCard(false);
-              props.setCardValidation(false);
-              setError(null);
-            }}
-          >
-            {showNewCardForm ? "Use Existing Card" : "Use New Card"}
-          </button>
-          {!showNewCardForm &&
-            props.stripeCustomerCard.map((card, index) => {
-              return (
-                <div className={`form - group col - 12`} key={index}>
-                  <input
-                    type="radio"
-                    id={`card_${index}`}
-                    name="card"
-                    defaultChecked={
-                      selectedCard.paymentMethodId == card.paymentMethodId
-                    }
-                    onClick={() => {
-                      if (!props.cardValidation) props.setCardValidation(true);
-                      setSelectedCard(card);
-                    }}
-                  />{" "}
-                  <label
-                    htmlFor={`card_${index}`}
-                    onClick={() => {
-                      if (!props.cardValidation) props.setCardValidation(true);
-                      setSelectedCard(card);
-                    }}
-                  >
-                    <img
-                      src={pmicons[card.brand]}
-                      className="brand_icons"
-                      alt=""
-                    />
-                    &nbsp; Card Ending {card.last4} -- {card.exp_month}/
-                    {card.exp_year}
-                  </label>
-                </div>
-              );
-            })}
+          <a href="/profile">
+            <button className="btn payment_switch" type="button">
+              Add New Card
+            </button>
+          </a>
+          {props.stripeCustomerCard.map((card, index) => {
+            return (
+              <div className={`form - group col - 12`} key={index}>
+                <input
+                  type="radio"
+                  id={`card_${index}`}
+                  name="card"
+                  checked={
+                    selectedCard.paymentMethodId == card.paymentMethodId
+                      ? "checked"
+                      : ""
+                  }
+                  onClick={() => {
+                    if (!props.cardValidation) props.setCardValidation(true);
+                    setSelectedCard(card);
+                  }}
+                />
+                <label
+                  htmlFor={`card_${index}`}
+                  onClick={() => {
+                    if (!props.cardValidation) props.setCardValidation(true);
+                    setSelectedCard(card);
+                  }}
+                >
+                  <img
+                    src={pmicons[card.brand]}
+                    className="brand_icons"
+                    alt=""
+                  />
+                  &nbsp; Card Ending {card.last4} -- {card.exp_month}/
+                  {card.exp_year}
+                </label>
+              </div>
+            );
+          })}
         </>
-      ) : (
-        ""
-      )}
-      {showNewCardForm && !props.ischildaccount ? (
-        <div className="">
-          <label htmlFor="card-element">Credit or debit card</label>
-          <CardElement
-            id="card-element"
-            className="form-control"
-            onChange={handleChange}
-          />
-          <div className="card-errors" role="alert">
-            {error}
-          </div>
-        </div>
       ) : (
         ""
       )}
@@ -263,31 +183,31 @@ const Checkout = (props) => {
   // }, []);
 
   const getPICO = (isCoupedCode?, isCheckoutFormSubmitted?) => {
-    getPaymentIntendOfOrder({
-      orderId: orderid,
-    }).subscribe((response) => {
-      if (response.response.Requested_Action) {
-        // console.log(response.response);
-        setPIC(response.response.message);
-        const order = response.response.data;
-        // setProduct({
-        //   name: 'mpartial',
-        //   price: order.orignalprice,
-        //   description: '',
-        //   coupon: isCoupedCode ? order.couponapplied : '',
-        //   amountsubtraced: order.amountsubtraced,
-        //   orignalprice: order.orignalprice,
-        //   newprice: order.amountInCents,
-        // });
-        setCheckoutError(false);
-        setIsFormSubmitted(true);
-        // if (isCheckoutFormSubmitted) setIsFormSubmitted(isCoupedCode);
-      } else {
-        // getPICO(isCoupedCode);
-        setCheckoutError("Server Error");
-        hideLoader();
-      }
-    });
+    // getPaymentIntendOfOrder({
+    //   orderId: orderid,
+    // }).subscribe((response) => {
+    //   if (response.response.Requested_Action) {
+    //     // console.log(response.response);
+    //     setPIC(response.response.message);
+    //     const order = response.response.data;
+    // setProduct({
+    //   name: 'mpartial',
+    //   price: order.orignalprice,
+    //   description: '',
+    //   coupon: isCoupedCode ? order.couponapplied : '',
+    //   amountsubtraced: order.amountsubtraced,
+    //   orignalprice: order.orignalprice,
+    //   newprice: order.amountInCents,
+    // });
+    setCheckoutError(false);
+    setIsFormSubmitted(true);
+    //     // if (isCheckoutFormSubmitted) setIsFormSubmitted(isCoupedCode);
+    //   } else {
+    //     // getPICO(isCoupedCode);
+    //     setCheckoutError("Server Error");
+    //     hideLoader();
+    //   }
+    // });
   };
 
   const handleApplyCouponclose = () => setApplyCouponShow(false);
@@ -346,20 +266,6 @@ const Checkout = (props) => {
     setCardValidation(bool);
   };
 
-  const saveFreeOrder = () => {
-    showLoader();
-    payOrder({
-      status: "succeeded",
-      orderId: orderid,
-      fullresponse: "{}",
-    }).subscribe((response) => {
-      if (response.response.Requested_Action) {
-        localStorage.removeItem("sessipn");
-        hideLoader();
-        history.push(`/receipt/${orderid}`);
-      }
-    });
-  };
   const handleFormSubmittion = (bool) => {};
   return (
     <>
@@ -467,7 +373,6 @@ const Checkout = (props) => {
                       setCardValidation={handleCardAction}
                       cardValidation={cardValidation}
                       checkoutInfo={checkoutInfo}
-                      PIC={PIC}
                     />
                   </Elements>
                   {/* <input type="checkbox" /> Card Ending 7878 */}
@@ -559,12 +464,7 @@ const Checkout = (props) => {
               )}
               <div className="col submit_btn_container">
                 {product.coupon && product.newprice == 0 ? (
-                  <button
-                    className="btn"
-                    type="submit"
-                    id="formButton"
-                    onClick={saveFreeOrder}
-                  >
+                  <button className="btn" type="submit" id="formButton">
                     <Loader text="Checkout"></Loader>
                   </button>
                 ) : (

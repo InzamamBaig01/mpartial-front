@@ -82,6 +82,8 @@ const FormElement = (props) => {
     ev.preventDefault();
     showLoader();
 
+    console.log("PI", props.PI);
+
     const result = await stripe.confirmCardSetup(props.PI, {
       payment_method: {
         card: elements.getElement(CardElement),
@@ -379,7 +381,8 @@ const Profile = (props) => {
 
   const getPI = () => {
     getPIC().subscribe((response) => {
-      setPI(response.response.Message);
+      console.log(response, "REPONSE");
+      setPI(response.response.data);
     });
   };
 
