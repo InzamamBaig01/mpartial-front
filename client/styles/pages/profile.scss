@@ -20,6 +20,18 @@
     margin: 0 auto;
   }
 }
+.paused_badge {
+  background: rgba(204, 177, 0, 0.3);
+  border-radius: 6px;
+  p {
+    color: #ccb100 !important;
+    padding: 6px 17px;
+    text-align: center;
+    font-size: 14px;
+    font-family: "Raleway";
+    margin: 0 auto;
+  }
+}
 .pause_badge {
   background: rgba(204, 177, 0, 0.3);
   border-radius: 6px;

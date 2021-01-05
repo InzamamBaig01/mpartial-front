@@ -10,7 +10,7 @@ const HowItWorks: React.FC<HowItWorksProps> = ({}) => {
   const dataPoints = [
     "Perform pre-mitigation and post-mitigation scans with a Matterport Pro Series camera.",
     "Submit the Matterport scans via the mpartial portal and then go back to what you do great.",
-    "Receive a well-formatted, fully documented Xactimate PDF, ESX & Matterport TrueSketch PLUS SKX.",
+    "Receive a well-formatted, fully documented Xactimate PDF, ESX & Matterport TruePlan PLUS SKX.",
   ];
   return (
     <>

@@ -94,7 +94,7 @@ const CheckoutForm = (props) => {
         hideLoader();
       } else {
         hideLoader();
-        props.setPaymentError(response.response.Message);
+        props.setPaymentError(response.response.message);
       }
     });
   };

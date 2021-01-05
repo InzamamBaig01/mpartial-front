@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
+import Modal from "react-bootstrap/Modal";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
 import {
@@ -25,6 +26,99 @@ import AmericanExpress from "../../assets/American-Express.png";
 import discover from "../../assets/discover.png";
 
 import ApplyCoupon from "./UserOrder/_components/ApplyCoupon";
+const FormElement = (props) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const { getMyInfo, myInfo } = useContext(AppContext);
+  const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
+  const [cardError, setCardError] = useState(false);
+  const [name, setName] = useState("");
+
+  const handleSubmitCard = async (ev) => {
+    ev.preventDefault();
+    const result = await stripe.confirmCardSetup(props.PI, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+        billing_details: {
+          name: name,
+        },
+      },
+    });
+
+    if (result.error) {
+      // Display result.error.message in your UI.
+      setCardError(result.error.message);
+      hideLoader();
+    } else {
+      // The setup has succeeded. Display a success message and send
+      // result.setupIntent.payment_method to your server to save the
+      // card to a Customer
+      // hideLoader();
+      getMyInfo(true);
+      setCardError(false);
+      props.handleClose();
+    }
+  };
+
+  return (
+    <>
+      <form>
+        <input
+          type="text"
+          className="form-control"
+          onChange={(e) => setName(e.currentTarget.value)}
+          required
+          placeholder="Name on card"
+        />
+        <CardElement className="card_element_form"></CardElement>
+        {cardError ? (
+          <>
+            <i className="red">
+              <small>{cardError}</small>
+            </i>
+            <br />
+            <br />
+          </>
+        ) : (
+          <> </>
+        )}
+        <button onClick={handleSubmitCard} className="btn btn-lg">
+          Save
+        </button>
+      </form>
+    </>
+  );
+};
+
+const AddNewCard = (props) => {
+  let stripePromise;
+  const getStripe = () => {
+    if (!stripePromise) {
+      stripePromise = loadStripe(appConfig.stripe);
+    }
+    return stripePromise;
+  };
+
+  return (
+    <>
+      <Modal show={props.show} onHide={props.handleClose} className="Add_card">
+        <Modal.Header closeButton>
+          <Modal.Title className="add_card_title">
+            Add Payment Option
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="support_body">
+          <Elements stripe={getStripe()}>
+            <FormElement
+              PI={props.PI}
+              handleClose={props.handleClose}
+            ></FormElement>
+          </Elements>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+};
 
 const CheckoutForm = (props) => {
   const [error, setError] = useState(null);
@@ -44,8 +138,22 @@ const CheckoutForm = (props) => {
     discover: discover,
     "american express": AmericanExpress,
   };
+  const [PI, setPI] = useState(false);
+  const [addcardpopupshow, setaddcardpopupshow] = useState(false);
 
-  // console.log(props.stripeCustomerCard.length == 0);
+  const handlecardclose = () => setaddcardpopupshow(false);
+  const handlecardshow = () => {
+    getPI();
+    setaddcardpopupshow(true);
+  };
+
+  const getPI = () => {
+    getPIC().subscribe((response) => {
+      console.log(response, "REPONSE");
+      setPI(response.response.data);
+    });
+  };
+
   const [selectedCard, setSelectedCard] = useState(false);
 
   // Handle real-time validation errors from the card Element.
@@ -94,13 +202,24 @@ const CheckoutForm = (props) => {
 
   return (
     <>
+      <AddNewCard
+        value={""}
+        onChange={() => {}}
+        onStackSubmit={() => {}}
+        show={addcardpopupshow}
+        PI={PI}
+        handleClose={handlecardclose}
+      />
       {props.stripeCustomerCard.length ? (
         <>
-          <a href="/profile">
-            <button className="btn payment_switch" type="button">
-              Add New Card
-            </button>
-          </a>
+          <button
+            className="btn payment_switch"
+            type="button"
+            onClick={handlecardshow}
+          >
+            Add New Card
+          </button>
+
           {props.stripeCustomerCard.map((card, index) => {
             return (
               <div className={`form - group col - 12`} key={index}>
@@ -190,31 +309,8 @@ const Checkout = (props) => {
   // }, []);
 
   const getPICO = (isCoupedCode?, isCheckoutFormSubmitted?) => {
-    // getPaymentIntendOfOrder({
-    //   orderId: orderid,
-    // }).subscribe((response) => {
-    //   if (response.response.Requested_Action) {
-    //     // console.log(response.response);
-    //     setPIC(response.response.message);
-    //     const order = response.response.data;
-    // setProduct({
-    //   name: 'mpartial',
-    //   price: order.orignalprice,
-    //   description: '',
-    //   coupon: isCoupedCode ? order.couponapplied : '',
-    //   amountsubtraced: order.amountsubtraced,
-    //   orignalprice: order.orignalprice,
-    //   newprice: order.amountInCents,
-    // });
     setCheckoutError(false);
     setIsFormSubmitted(true);
-    //     // if (isCheckoutFormSubmitted) setIsFormSubmitted(isCoupedCode);
-    //   } else {
-    //     // getPICO(isCoupedCode);
-    //     setCheckoutError("Server Error");
-    //     hideLoader();
-    //   }
-    // });
   };
 
   const handleApplyCouponclose = () => setApplyCouponShow(false);
@@ -231,10 +327,6 @@ const Checkout = (props) => {
       orignalprice: couponData.orignalprice,
       newprice: couponData.newprice,
     });
-    // getPICO(true);
-    // setPrice(couponData.price);
-    // getPICO(couponData.coupon);
-    // setCouponApplied(couponData.coupon);
   };
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -478,7 +570,7 @@ const Checkout = (props) => {
                   <button
                     className="btn"
                     type="submit"
-                    id="formButton"
+                    // id="formButton"
                     onClick={checkValidation}
                     disabled={
                       checkoutInfo.firstName == "" ||

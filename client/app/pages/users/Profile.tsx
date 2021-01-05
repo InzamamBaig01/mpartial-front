@@ -386,11 +386,6 @@ const Profile = (props) => {
     });
   };
 
-  // const getHistory = () => {
-  //   subscriptionHistory().subscribe((res) => {
-  //     setHistory(res.response.data ? res.response.data : []);
-  //   });
-  // };
   useEffect(() => {
     if (myInfo) {
       hideLoader();
@@ -760,7 +755,9 @@ const Profile = (props) => {
                                     </Badge>
                                   ) : info.subscriptionstatus ===
                                     "PausedDueToPaymentFailure" ? (
-                                    <Badge variant="Warning">Paused</Badge>
+                                    <Badge className="paused_badge">
+                                      <p>Paused</p>
+                                    </Badge>
                                   ) : (
                                     ""
                                   )}
@@ -838,9 +835,11 @@ const Profile = (props) => {
                                     <button
                                       className="btn"
                                       onClick={() => {
-                                        history.push(
-                                          `/subscriptioncheckout/${filteredPlan[0].name}`
-                                        );
+                                        myInfo.stripeCustomerCard == 0
+                                          ? handleShowModal()
+                                          : history.push(
+                                              `/subscriptioncheckout/${filteredPlan[0].name}`
+                                            );
                                       }}
                                     >
                                       Renew Subscription
@@ -879,17 +878,7 @@ const Profile = (props) => {
                                   <div>
                                     <button
                                       className="btn"
-                                      //disabled={myInfo.stripeCustomerCard == 0}
                                       onClick={() => {
-                                        // localStorage.setItem("isPlan", true);
-                                        // localStorage.setItem(
-                                        //   "planName",
-                                        //   `${plan.name}`
-                                        // );
-                                        // localStorage.setItem(
-                                        //   "planPrice",
-                                        //   `${plan.price}`
-                                        // );
                                         myInfo.stripeCustomerCard == 0
                                           ? handleShowModal()
                                           : history.push(
