@@ -28,7 +28,7 @@ const Deliverables: React.FC<DeliverablesProps> = ({}) => {
             type="center"
           ></SectionTitle>
           <h3 className={"widget-title sub mt-1"}>
-            Pre-Mitigation Scan + Post-Mitigation Scan = ESX & SKX (TrueSketch
+            Pre-Mitigation Scan + Post-Mitigation Scan = ESX & SKX (TruePlan
             PLUS)
           </h3>
           <LazyLoad offset={50}>
