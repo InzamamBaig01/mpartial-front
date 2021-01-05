@@ -59,7 +59,7 @@ const Deliverables: React.FC<DeliverablesProps> = ({}) => {
                 target="_blank"
                 rel="noopener"
               >
-                TrueSketch PLUS [SKX]
+                TruePlan PLUS [SKX]
               </a>
             </h3>
             <section className={"sketch-container"}>
