@@ -31,7 +31,13 @@ const CheckoutForm = (props) => {
   const stripe = useStripe();
   const elements = useElements();
   const { userDetails } = useContext(AuthContext);
+  const [showNewCardForm, setShowNewCardForm] = useState(
+    props.stripeCustomerCard.length == 0
+  );
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
+  useEffect(() => {
+    setShowNewCardForm(props.stripeCustomerCard.length == 0);
+  }, [props.stripeCustomerCard]);
   const pmicons = {
     mastercard: mastercard,
     visa: visa,
@@ -65,9 +71,10 @@ const CheckoutForm = (props) => {
   const handleSubmit = async (event) => {
     // event.preventDefault();
     showLoader();
-
+    console.log(props.stripeCustomerCard);
     payOrder({
       orderId: props.orderid,
+      paymentMethodId: !selectedCard ? "" : selectedCard.paymentMethodId,
     }).subscribe((response) => {
       if (response.response.Requested_Action) {
         localStorage.removeItem("sessipn");
@@ -110,7 +117,7 @@ const CheckoutForm = (props) => {
                     if (!props.cardValidation) props.setCardValidation(true);
                     setSelectedCard(card);
                   }}
-                />
+                />{" "}
                 <label
                   htmlFor={`card_${index}`}
                   onClick={() => {
@@ -477,9 +484,11 @@ const Checkout = (props) => {
                       checkoutInfo.firstName == "" ||
                       checkoutInfo.lastName == "" ||
                       checkoutInfo.emailAddress == "" ||
-                      !cardValidation
+                      (info.ischildaccount
+                        ? ""
+                        : !cardValidation
                         ? true
-                        : false
+                        : false)
                     }
                   >
                     <Loader text="Checkout"></Loader>

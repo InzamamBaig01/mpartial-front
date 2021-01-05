@@ -57,9 +57,9 @@ const PendingUsers = (props) => {
       (user) => user.invitestatus === "Pending"
     );
     setFilteredUser(filter);
-  }, [invitedUsers]);
 
-  props.setPendingCount(filteredUsers.length);
+    props.setPendingCount(filter.length);
+  }, [invitedUsers]);
 
   return (
     <div>

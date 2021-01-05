@@ -280,7 +280,7 @@ export const payOrder = (payload) => {
   return ajax({
     headers: requestHeader(),
     method: "POST",
-    url: `${baseURL}/Client/payForOrder?&thetoken=${localStorage.token}&orderId=${payload.orderId}`,
+    url: `${baseURL}/Client/payForOrder?&thetoken=${localStorage.token}&orderId=${payload.orderId}&PaymentMethodID=${payload.paymentMethodId}`,
   }).pipe(catchError(handleError("tokenCheck")));
 };
 

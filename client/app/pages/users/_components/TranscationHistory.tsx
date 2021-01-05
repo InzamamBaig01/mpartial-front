@@ -22,9 +22,9 @@ const TransactionHistory = () => {
       <table className="table">
         <tbody>
           {histories.length > 0 ? (
-            histories.map((his) => {
+            histories.map((his, i) => {
               return (
-                <tr>
+                <tr key={i}>
                   <td>{moment(his.createdAt).format("MMM DD - YYYY")}</td>
                   <td>${his.amountincents / 100}</td>
                   <td>{his.status == "Succeeded" ? "Paid" : his.status}</td>

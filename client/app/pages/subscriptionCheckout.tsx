@@ -80,50 +80,6 @@ const CheckoutForm = (props) => {
     showLoader();
     const card = elements.getElement(CardElement);
 
-    // stripe
-    //   .confirmCardPayment(
-    //     props.PIC,
-    //     !showNewCardForm
-    //       ? {
-    //           payment_method: selectedCard.paymentMethodId,
-    //         }
-    //       : {
-    //           payment_method: {
-    //             card: card,
-    //             billing_details: {
-    //               name: `${props.checkoutInfo.firstName} ${props.checkoutInfo.lastName}`,
-    //             },
-    //           },
-    //           setup_future_usage: "off_session",
-    //         }
-    //   )
-    //   .then(async function (result) {
-    //     console.log(result);
-    //     // return;
-    //     if (result.error) {
-    //       props.setIsFormSubmitted(false);
-    //       setError(result.error.message);
-    //       props.setCardValidation(false);
-    //       console.log(result.error);
-    //       // return;
-    //       hideLoader();
-    //       if (localStorage.isPlan === "true") {
-    //       } else {
-    //     payOrder({
-    //       status: result.error.code,
-    //       orderId: props.orderid,
-    //       fullresponse: JSON.stringify(result.error),
-    //     }).subscribe((response) => {
-    //       console.log(response.response);
-    //       // if (response.response.Requested_Action) {
-    //       //   localStorage.removeItem("sessipn");
-    //       //   hideLoader();
-    //       //   history.push(`/receipt/${props.orderid}`);
-    //       // }
-    //     });
-    //   }
-    // } else {
-
     startSubscriptionPlan({
       planName: props.planName,
       billingaddress: props.checkoutInfo.billingaddress,
@@ -160,56 +116,44 @@ const CheckoutForm = (props) => {
               Add New Card
             </button>
           </a>
-          {!showNewCardForm &&
-            props.stripeCustomerCard.map((card, index) => {
-              return (
-                <div className={`form - group col - 12`} key={index}>
-                  <input
-                    type="radio"
-                    id={`card_${index}`}
-                    name="card"
-                    defaultChecked={
-                      selectedCard.paymentMethodId == card.paymentMethodId
-                    }
-                    onClick={() => {
-                      if (!props.cardValidation) props.setCardValidation(true);
-                      setSelectedCard(card);
-                    }}
-                  />{" "}
-                  <label
-                    htmlFor={`card_${index}`}
-                    onClick={() => {
-                      if (!props.cardValidation) props.setCardValidation(true);
-                      setSelectedCard(card);
-                    }}
-                  >
-                    <img
-                      src={pmicons[card.brand]}
-                      className="brand_icons"
-                      alt=""
-                    />
-                    &nbsp; Card Ending {card.last4} -- {card.exp_month}/
-                    {card.exp_year}
-                  </label>
-                </div>
-              );
-            })}
+          {props.stripeCustomerCard.map((card, index) => {
+            return (
+              <div className={`form - group col - 12`} key={index}>
+                <input
+                  type="radio"
+                  id={`card_${index}`}
+                  name="card"
+                  checked={
+                    selectedCard.paymentMethodId == card.paymentMethodId
+                      ? "checked"
+                      : ""
+                  }
+                  onClick={() => {
+                    if (!props.cardValidation) props.setCardValidation(true);
+                    setSelectedCard(card);
+                  }}
+                />{" "}
+                <label
+                  htmlFor={`card_${index}`}
+                  onClick={() => {
+                    if (!props.cardValidation) props.setCardValidation(true);
+                    setSelectedCard(card);
+                  }}
+                >
+                  <img
+                    src={pmicons[card.brand]}
+                    className="brand_icons"
+                    alt=""
+                  />
+                  &nbsp; Card Ending {card.last4} -- {card.exp_month}/
+                  {card.exp_year}
+                </label>
+              </div>
+            );
+          })}
         </>
       ) : (
         ""
-      )}
-      {showNewCardForm && (
-        <div className="">
-          <label htmlFor="card-element">Credit or debit card</label>
-          <CardElement
-            id="card-element"
-            className="form-control"
-            onChange={handleChange}
-          />
-          <div className="card-errors" role="alert">
-            {error}
-          </div>
-        </div>
       )}
     </>
   );
@@ -276,16 +220,7 @@ const SubscriptionCheckout = (props) => {
       if (response.response.Requested_Action) {
         // console.log(response.response);
         setPIC(response.response.message);
-        // const order = response.response.data;
-        // setProduct({
-        //   name: 'mpartial',
-        //   price: order.orignalprice,
-        //   description: '',
-        //   coupon: isCoupedCode ? order.couponapplied : '',
-        //   amountsubtraced: order.amountsubtraced,
-        //   orignalprice: order.orignalprice,
-        //   newprice: order.amountInCents,
-        // });
+
         setCheckoutError(false);
         setIsFormSubmitted(false);
 
@@ -358,20 +293,6 @@ const SubscriptionCheckout = (props) => {
     setCardValidation(bool);
   };
 
-  //   const saveFreeOrder = () => {
-  //     showLoader();
-  //     payOrder({
-  //       status: "succeeded",
-  //       orderId: orderid,
-  //       fullresponse: "{}",
-  //     }).subscribe((response) => {
-  //       if (response.response.Requested_Action) {
-  //         localStorage.removeItem("sessipn");
-  //         hideLoader();
-  //         history.push(`/receipt/${orderid}`);
-  //       }
-  //     });
-  //   };
   const handleFormSubmittion = (bool) => {};
   return (
     <>

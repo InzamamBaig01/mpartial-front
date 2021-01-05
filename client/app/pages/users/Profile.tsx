@@ -131,7 +131,7 @@ const FormElement = (props) => {
           <> </>
         )}
         <button type="submit" className="btn btn-lg">
-          <Loader text="Save"></Loader>
+          Save
         </button>
       </form>
     </>

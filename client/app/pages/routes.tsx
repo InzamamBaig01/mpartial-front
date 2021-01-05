@@ -27,6 +27,7 @@ import AdminOrderDetails from "./admin/AdminOrderDetails";
 import AdminUserDetails from "./admin/AdminUserDetails";
 import BuildDetails from "./BuildDetails";
 import Coupons from "./admin/Coupons";
+import SubscriptionCoupons from "./admin/subscription_coupons";
 import Committee from "./Committee";
 import PayOrder from "./PayOrder";
 import CouponDetails from "./admin/CouponDetails";
@@ -280,6 +281,15 @@ export const ROUTES = [
     path: "/coupons",
     slug: "admin/coupons",
     title: "admin/coupons",
+    redirectTo: "/mpartialadmin",
+    isAD: true,
+    checkADLogin: true,
+  },
+  {
+    component: SubscriptionCoupons,
+    path: "/subscription_coupons",
+    slug: "admin/subscription_coupons",
+    title: "admin/subscription_coupons",
     redirectTo: "/mpartialadmin",
     isAD: true,
     checkADLogin: true,

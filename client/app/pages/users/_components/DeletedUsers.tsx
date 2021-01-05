@@ -33,8 +33,6 @@ const DeletedUsers = (props) => {
     getMyInvitedUser();
   }, []);
 
-  console.log("PROPS", props.email);
-
   useEffect(() => {
     const filter = invitedUsers.filter(
       (user) => user.invitestatus === "Deleted"
@@ -45,9 +43,9 @@ const DeletedUsers = (props) => {
       (user) => user.invitestatus === "Accepted"
     );
     props.setActiveCount(activeFilter.length);
-  }, [invitedUsers]);
 
-  props.setDeleteCount(filteredUsers.length);
+    props.setDeleteCount(filter.length);
+  }, [invitedUsers]);
 
   return (
     <div>

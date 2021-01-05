@@ -22,6 +22,11 @@ const AdminSidebar = () => {
             </Link>
           </li>
           <li>
+            <Link to="/subscription_coupons">
+              <span></span>Subscription Coupons
+            </Link>
+          </li>
+          <li>
             <Link to="/allsubscriptions">
               <span></span> Subscriptions
             </Link>
