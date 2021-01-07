@@ -7,6 +7,7 @@ import Header from "app/components/Header";
 import userProfile from "../../../assets/userProfile.svg";
 import visa from "../../../assets/visa.png";
 import check from "../../../assets/chat.png";
+import chat from "../../../assets/checkBig.png";
 
 import loader from "../../../assets/loader.gif";
 import mastercard from "../../../assets/mastercard.png";
@@ -177,7 +178,11 @@ const EditPassword = (props) => {
   });
   const [validPassword, setValidPassword] = React.useState(true);
   const [isCapsOn, setIsCapsOn] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
 
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+  const [errorMessage, setErrorMessage] = useState(false);
   const confirmPassword = (cp) => {
     setValidPassword(cp == passwords.newPassword);
   };
@@ -188,13 +193,18 @@ const EditPassword = (props) => {
 
     changePassword(stringified).subscribe((response) => {
       if (response.response.Requested_Action) {
+        props.setMessage("Password Updated");
         props.onEditPasswordSuccess();
+        handleShowModal();
         setPasswords({
           oldPassword: "",
           newPassword: "",
           confirm: "",
           thetoken: localStorage.token,
         });
+        props.handleShow();
+      } else {
+        setErrorMessage(response.response.Message);
       }
     });
   };
@@ -310,6 +320,21 @@ const EditPassword = (props) => {
               ) : (
                 ""
               )}
+
+              {errorMessage ? (
+                <div>
+                  {" "}
+                  <i className="red">
+                    <span className="password_not_matched">
+                      <b>
+                        <i>{errorMessage}</i>
+                      </b>
+                    </span>
+                  </i>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
 
             <div className="form-group text-center">
@@ -347,7 +372,7 @@ const Profile = (props) => {
   const [filteredPlan, setFilteredPlan] = useState([]);
   const [show, setShow] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
+  const [message, setMessage] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleShowModal = () => setShowModal(true);
@@ -482,13 +507,28 @@ const Profile = (props) => {
             className="d-flex align-items-center justify-content-center mt-3"
             style={{ margin: "0 auto" }}
           >
-            <img src={check} width="60px" />
+            {message ? (
+              <img src={chat} width="60px" />
+            ) : (
+              <img src={check} width="60px" />
+            )}
           </div>
-          <div className="mt-4">Please add a payment method.</div>
+          {message ? (
+            <div className="mt-4">{message}</div>
+          ) : (
+            <div className="mt-4">Please add a payment method.</div>
+          )}
         </Modal.Body>
         <Modal.Footer style={{ borderTop: "none", margin: "0 auto" }}>
-          <button className="btn" onClick={handleCloseModal}>
-            Cancel
+          <button
+            className="btn"
+            onClick={() => {
+              handleCloseModal();
+              setMessage(false);
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            Close
           </button>
         </Modal.Footer>
       </Modal>
@@ -982,11 +1022,13 @@ const Profile = (props) => {
           info={info}
         />
       )}
-
+      {console.log("Profile", info)}
       {editPasswordShow && (
         <EditPassword
           value={""}
           onEditPasswordSuccess={onSubmitPasswordSuccess}
+          setMessage={setMessage}
+          handleShow={handleShowModal}
           show={editPasswordShow}
           handleClose={handleEditPasswordclose}
           info={info}

@@ -197,7 +197,7 @@ export default React.memo(({ children }) => {
           //console.log(response)
           profile = response.response.data;
           localStorage.setItem("profile", JSON.stringify(profile));
-          localStorage.setItem("token", response.response.message);
+          localStorage.setItem("token", response.response.Message);
           history.push("/");
         }
         hideLoader();

@@ -94,7 +94,7 @@ const CheckoutForm = (props) => {
         hideLoader();
       } else {
         hideLoader();
-        props.setPaymentError(response.response.message);
+        props.setPaymentError(response.response.Message);
       }
     });
   };
@@ -219,7 +219,7 @@ const SubscriptionCheckout = (props) => {
     getPIC().subscribe((response) => {
       if (response.response.Requested_Action) {
         // console.log(response.response);
-        setPIC(response.response.message);
+        setPIC(response.response.Message);
 
         setCheckoutError(false);
         setIsFormSubmitted(false);

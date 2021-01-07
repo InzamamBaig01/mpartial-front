@@ -111,7 +111,7 @@ export const deleteCoupon = (payload) =>
       authString: localStorage.topen,
     },
     method: "POST",
-    url: `${baseURL}/GIServer/deleteCoupon?thetoken=${localStorage.topen}&couponId=${payload.id}`,
+    url: `${baseURL}/GIServer/deleteCoupon?thetoken=${localStorage.topen}&couponId=${payload.id}&isSubscriptionCoupon=${payload.isSubscriptionCoupon}`,
   }).pipe(catchError(handleError("")));
 
 export const updateStatus = (payload) =>
@@ -134,6 +134,17 @@ export const addCoupon = (payload) =>
     body: payload,
   }).pipe(catchError(handleError("")));
 
+export const addSubscriptionCoupon = (payload) =>
+  ajax({
+    headers: {
+      authString: localStorage.topen,
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    url: `${baseURL}/GIServer/addSubscriptionCoupon`,
+    body: payload,
+  }).pipe(catchError(handleError("")));
+
 export const editCoupon = (payload) =>
   ajax({
     headers: {
@@ -141,7 +152,7 @@ export const editCoupon = (payload) =>
       "Content-Type": "application/json",
     },
     method: "POST",
-    url: `${baseURL}/GIServer/editcoupon?couponId=${payload.couponId}&iscouponActive=${payload.isCouponActive}`,
+    url: `${baseURL}/GIServer/editcoupon?couponId=${payload.couponId}&iscouponActive=${payload.isCouponActive}&isSubscriptionCoupon=${payload.isSubscriptionCoupon}`,
   }).pipe(catchError(handleError("")));
 
 export const getAllCoupon = () =>
@@ -152,6 +163,16 @@ export const getAllCoupon = () =>
     },
     method: "POST",
     url: `${baseURL}/GIServer/getAllcoupons`,
+  }).pipe(catchError(handleError("")));
+
+export const getAllSubscriptionCoupon = () =>
+  ajax({
+    headers: {
+      authString: localStorage.topen,
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    url: `${baseURL}/GIServer/getAllSubscriptionCoupon`,
   }).pipe(catchError(handleError("")));
 
 export const couponUsageHistory = (payload) =>

@@ -31,6 +31,7 @@ import SubscriptionCoupons from "./admin/subscription_coupons";
 import Committee from "./Committee";
 import PayOrder from "./PayOrder";
 import CouponDetails from "./admin/CouponDetails";
+import SubscriptionCouponDetails from "./admin/SubscriptionCouponDetails";
 
 export const ROUTES = [
   {
@@ -299,6 +300,15 @@ export const ROUTES = [
     path: "/coupons-details/:couponid",
     slug: "coupons-details",
     title: "coupons-details",
+    redirectTo: "/mpartialadmin",
+    isAD: true,
+    checkADLogin: true,
+  },
+  {
+    component: SubscriptionCouponDetails,
+    path: "/subscription-coupons-details/:couponid",
+    slug: "subscription-coupons-details",
+    title: "subscription-coupons-details",
     redirectTo: "/mpartialadmin",
     isAD: true,
     checkADLogin: true,

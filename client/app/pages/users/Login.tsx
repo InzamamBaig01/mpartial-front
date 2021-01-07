@@ -5,6 +5,8 @@ import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 
 import Mail from "../../../assets/email.svg";
+import Chat from "../../../assets/chat.png";
+
 import Lock from "../../../assets/lock.svg";
 import {
   resetPassword,
@@ -198,7 +200,7 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
       </div>
       {loginStatus ? (
         <div className="not_verified">
-          <div className="error_msg">
+          <div className="error_msg d-flex flex-column">
             <div
               className="close_verification_popup"
               onClick={() => {
@@ -206,6 +208,9 @@ export const Login: React.FC<IProps> = ({ ...props }) => {
               }}
             >
               &times;
+            </div>
+            <div className="mb-4">
+              <img src={Chat} />
             </div>
             {loginStatus ==
             "This user is not allowed to login. Please verify your email address first." ? (

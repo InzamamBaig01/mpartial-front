@@ -1,9 +1,9 @@
 import { withRouter, Link } from "react-router-dom";
 import React, { useState, useEffect, useContext } from "react";
 import {
-  getAllCoupon,
+  getAllSubscriptionCoupon,
   couponUsageHistory,
-  addCoupon,
+  addSubscriptionCoupon,
   editCoupon,
   deleteCoupon,
 } from "utils/api-routes/api-routes.util";
@@ -19,15 +19,17 @@ import history from "../../../utils/history";
 import Switch from "react-switch";
 
 const AddCoupons = (props) => {
-  const [data, setData] = useState({
+  const [data, setData] = useState<ICoupon>({
     couponcode: "",
     activefrom: new Date().toISOString(),
-    maxusagecount: "",
-    offpercentage: "",
-    subtractfixedamount: "",
-    forcustomeremail: "",
-    maxusagecountperuser: "",
-    expiry: new Date().toISOString(),
+    usagelimit: "",
+    duration: "",
+    description: "",
+    discountpercentage: "",
+    usagelimitpercustomer: "",
+    expirydate: new Date(
+      moment().add("day", 1).format("YYYY-MM-DD")
+    ).toISOString(),
   });
   const { getallADUsers, AllUsers } = useContext(AppContext);
 
@@ -40,28 +42,19 @@ const AddCoupons = (props) => {
     getallADUsers();
     if (props.isDuplicating) {
       const duData = props.info;
-      const currentCouponFor =
-        duData.forcustomeremail == null ? "Public" : "Customer";
-      const currentCouponType =
-        duData.offpercentage == null ? "Fixed" : "Percentage";
+
       setData({
         couponcode: "",
         activefrom: new Date(duData.activefrom).toISOString(),
-        maxusagecount: duData.maxusagecount,
-        offpercentage:
-          currentCouponType == "Percentage" ? duData.offpercentage : "",
-        subtractfixedamount:
-          currentCouponType == "Fixed" ? duData.subtractfixedamount : "",
-        forcustomeremail:
-          currentCouponFor == "Customer" ? duData.forcustomeremail : "",
-        maxusagecountperuser:
-          duData.maxusagecountperuser != null
-            ? duData.maxusagecountperuser
-            : "",
-        expiry: new Date(duData.expiry).toISOString(),
+        usagelimit: duData.usagelimit,
+        discountpercentage: duData.discountpercentage,
+        description: duData.description,
+        duration: duData.duration,
+        usagelimitpercustomer: duData.usagelimitpercustomer,
+        expirydate: new Date(duData.expirydate).toISOString(),
       });
-      setCouponType(currentCouponType);
-      setCouponFor(currentCouponFor);
+      //   setCouponType(currentCouponType);
+      //   setCouponFor(currentCouponFor);
     }
   }, []);
 
@@ -94,7 +87,7 @@ const AddCoupons = (props) => {
             : null
           : data[key];
     });
-    addCoupon(data).subscribe((response) => {
+    addSubscriptionCoupon(data).subscribe((response) => {
       if (response.response.Requested_Action) {
         props.onSubmitSuccess(data.couponcode);
         props.handleClose();
@@ -154,97 +147,64 @@ const AddCoupons = (props) => {
                 {couponError ? `${data.couponcode} is already existed.` : ""}
               </span>
             </div>
-            <div className="form-group">
-              <label>Coupon Type (Fixed or Percentage)</label>
-              <select
-                placeholder="Coupon Type"
-                className="form-control"
-                value={couponType}
-                onChange={changeCouponType}
-              >
-                <option>Fixed</option>
-                <option>Percentage</option>
-              </select>
-            </div>
-            {couponType == "Percentage" ? (
-              <div className="form-group">
-                <label>Coupon Percentage</label>
 
-                <input
-                  type="number"
-                  placeholder="Coupon Percentage"
-                  className="form-control"
-                  required
-                  onChange={(e) =>
-                    setData({
-                      ...data,
-                      offpercentage: e.currentTarget.value,
-                    })
-                  }
-                  value={data.offpercentage}
-                  id="percentage"
-                  min="0"
-                  max="100"
-                  step="0.10"
-                />
-              </div>
-            ) : (
-              <div className="form-group">
-                <label>Coupon Fixed Amount</label>
-
-                <input
-                  type="number"
-                  placeholder="Coupon Fixed Amount"
-                  className="form-control"
-                  id="fixed"
-                  required
-                  onChange={(e) =>
-                    setData({
-                      ...data,
-                      subtractfixedamount: e.currentTarget.value,
-                    })
-                  }
-                  value={data.subtractfixedamount}
-                />
-              </div>
-            )}
             <div className="form-group">
-              <label>Coupon For (Customer or public)</label>
-              <select
-                placeholder="Coupon Type"
+              <label>Description</label>
+              <textarea
+                type="text"
+                placeholder="Coupon Description"
                 className="form-control"
-                value={couponFor}
-                onChange={(e) => setCouponFor(e.currentTarget.value)}
-              >
-                <option>Public</option>
-                <option>Customer</option>
-              </select>
+                required
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    description: e.currentTarget.value,
+                  })
+                }
+                value={data.description}
+                style={{ resize: "none" }}
+              />
             </div>
 
-            {couponFor == "Customer" ? (
-              <div className="form-group">
-                <select
-                  className="form-control"
-                  value={data.forcustomeremail}
-                  onChange={(e) =>
-                    setData({
-                      ...data,
-                      forcustomeremail: e.currentTarget.value,
-                    })
-                  }
-                >
-                  {Users.map((user) => {
-                    return (
-                      <option value={user.emailAddress}>
-                        {user.firstName} {user.lastName} - {user.emailAddress}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            ) : (
-              ""
-            )}
+            <div className="form-group">
+              <label>Duration</label>
+              <input
+                type="text"
+                placeholder="Coupon Duration"
+                className="form-control"
+                required
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    duration: e.currentTarget.value,
+                  })
+                }
+                value={data.duration}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Coupon Percentage</label>
+
+              <input
+                type="number"
+                placeholder="Coupon Percentage"
+                className="form-control"
+                required
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    discountpercentage: e.currentTarget.value,
+                  })
+                }
+                value={data.discountpercentage}
+                id="percentage"
+                min="0"
+                max="100"
+                step="0.10"
+              />
+            </div>
+
             <div className="form-group">
               <label>Coupon Active From</label>
               <DatePicker
@@ -253,6 +213,7 @@ const AddCoupons = (props) => {
                 required
                 minDate={new Date().toISOString()}
                 value={data.activefrom}
+                maxDate={data.expirydate}
                 showClearButton={false}
                 placeholder="Coupon Active From"
                 onChange={(v, f) =>
@@ -270,14 +231,14 @@ const AddCoupons = (props) => {
                 id="example-datepickers"
                 className="form-control"
                 required
-                value={data.expiry}
-                minDate={new Date().toISOString()}
+                value={data.expirydate}
+                minDate={data.activefrom}
                 showClearButton={false}
                 placeholder="Coupon Expiry Date"
                 onChange={(v, f) =>
                   setData({
                     ...data,
-                    expiry: v,
+                    expirydate: v,
                   })
                 }
               />
@@ -292,10 +253,10 @@ const AddCoupons = (props) => {
                 onChange={(e) =>
                   setData({
                     ...data,
-                    maxusagecount: e.currentTarget.value,
+                    usagelimit: e.currentTarget.value,
                   })
                 }
-                value={data.maxusagecount}
+                value={data.usagelimit}
               />
             </div>
 
@@ -309,10 +270,10 @@ const AddCoupons = (props) => {
                 onChange={(e) =>
                   setData({
                     ...data,
-                    maxusagecountperuser: e.currentTarget.value,
+                    usagelimitpercustomer: e.currentTarget.value,
                   })
                 }
-                value={data.maxusagecountperuser}
+                value={data.usagelimitpercustomer}
               />
             </div>
             <div className="form-group text-center">
@@ -332,7 +293,7 @@ const AddCoupons = (props) => {
   );
 };
 
-const CouponDetails = (props) => {
+const SubscriptionCouponDetails = (props) => {
   const couponid = props.match.params.couponid;
   const [coupon, setCoupon] = useState({});
   const [coupons, setCoupons] = useState([]);
@@ -351,7 +312,7 @@ const CouponDetails = (props) => {
   const onChangeActive = (d, isActive) => {
     editCoupon({
       couponId: d.id,
-      isSubscriptionCoupon: false,
+      isSubscriptionCoupon: true,
       isCouponActive: isActive,
     }).subscribe((response) => {
       getCouponDetail();
@@ -366,8 +327,9 @@ const CouponDetails = (props) => {
   }, []);
 
   const getCouponDetail = () => {
-    getAllCoupon().subscribe((response) => {
+    getAllSubscriptionCoupon().subscribe((response) => {
       const couponsOP = response.response.data;
+      console.log("man", couponsOP);
       setCoupons(couponsOP);
       const filtered = couponsOP.filter((c) => {
         return c.id == couponid;
@@ -399,16 +361,16 @@ const CouponDetails = (props) => {
   const onSubmitSuccess = (code) => {
     setduplicateCouponStatus(`Coupon ${code} has been created.`);
     setTimeout(() => {
-      history.push("/coupons");
+      history.push("/subscription_coupons");
     }, 1000);
   };
 
   const deleteCouponOP = () => {
-    deleteCoupon({ id: coupon.id, isSubscriptionCoupon: false }).subscribe(
+    deleteCoupon({ id: coupon.id, isSubscriptionCoupon: true }).subscribe(
       (res) => {
         setduplicateCouponStatus(`Coupon has been deleted.`);
         setTimeout(() => {
-          history.push("/coupons");
+          history.push("/subscription_coupons");
         }, 1000);
       }
     );
@@ -437,136 +399,162 @@ const CouponDetails = (props) => {
             />
           ) : (
             <section>
-              <div className={"section-head mb-3 row"}>
-                <div className="col-4">
-                  <h2>Coupon: {coupon.couponcode}</h2>
+              <div className={"section-head"}>
+                <div>
+                  <h2>Subscription Coupon Details</h2>
                 </div>
-                <div className="col-8 text-right">
-                  <button className="btn" onClick={onDplicateClick}>
-                    Make Duplicate
-                  </button>{" "}
-                  &nbsp;
-                  {isDeleting ? (
-                    <ButtonGroup aria-label="Basic example">
-                      <span className="btn btn-secondary disabled">
-                        Are you Sure?
-                      </span>
-                      <Button variant="secondary" onClick={deleteCouponOP}>
-                        Yes
-                      </Button>
-                      <Button
-                        variant="secondary"
-                        onClick={() => setIsDeleting(false)}
-                      >
-                        No
-                      </Button>
-                    </ButtonGroup>
-                  ) : (
-                    <button className="btn" onClick={() => setIsDeleting(true)}>
-                      Delete Coupon
-                    </button>
-                  )}
+                <div>
+                  <div className="text-right"></div>
                 </div>
               </div>
-              <div className="">
-                <div className="row">
-                  <div className="col text-left">Active From:</div>
-                  <div className="col text-left">{coupon.activefrom}</div>
-                </div>
-                <div className="row ">
-                  <div className="col text-left">Expiry:</div>
-                  <div className="col text-left">{coupon.expiry}</div>
-                </div>
-                <div className="row">
-                  <div className="col text-left">Usage:</div>
-                  <div className="col text-left">
-                    {coupon.usedtimes}/{coupon.maxusagecount}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col text-left">User limit per coupon:</div>
-                  <div className="col text-left">
-                    {coupon.maxusagecountperuser}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col text-left">Coupon Type:</div>
-                  <div className="col text-left">
-                    {coupon.offpercentage != null ? "Percentage" : "Fixed"}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col text-left">Discount:</div>
-                  <div className="col text-left">
-                    {coupon.offpercentage != null
-                      ? `${coupon.offpercentage}%`
-                      : coupon.subtractfixedamount}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col text-left">Coupon For:</div>
-                  <div className="col text-left">
-                    {coupon.forcustomeremail != null ? "Customer" : "Public"}
-                  </div>
-                </div>
-
-                {coupon.forcustomeremail != null ? (
+              <div className="order_details">
+                <div className={"order_details_header"}>
                   <div className="row">
-                    <div className="col text-left">Customer:</div>
-                    <div className="col text-left">
-                      {coupon.forcustomeremail}
+                    <div className="col-4">
+                      <h2>Coupon: {coupon.couponcode}</h2>
+                    </div>
+                    <div className="col-8 text-right">
+                      <button className="btn" onClick={onDplicateClick}>
+                        Make Duplicate
+                      </button>{" "}
+                      &nbsp;
+                      {isDeleting ? (
+                        <ButtonGroup aria-label="Basic example">
+                          <span className="btn btn-secondary disabled">
+                            Are you Sure?
+                          </span>
+                          <Button variant="secondary" onClick={deleteCouponOP}>
+                            Yes
+                          </Button>
+                          <Button
+                            variant="secondary"
+                            onClick={() => setIsDeleting(false)}
+                          >
+                            No
+                          </Button>
+                        </ButtonGroup>
+                      ) : (
+                        <button
+                          className="btn"
+                          onClick={() => setIsDeleting(true)}
+                        >
+                          Delete Coupon
+                        </button>
+                      )}
                     </div>
                   </div>
-                ) : (
-                  ""
-                )}
-                <div className="row">
-                  <div className="col text-left">Status:</div>
-                  <div className="col text-left">
-                    {/* {coupon.isactive ? "Active" : "Unactive"} */}
-                    {/* <br /> */}
-                    <Switch
-                      onChange={(isActive) => onChangeActive(coupon, isActive)}
-                      checked={coupon.isactive}
-                      checkedIcon={false}
-                      uncheckedIcon={false}
-                    />
-                  </div>
                 </div>
 
-                <div className="row  mt-3">
-                  <div className="col text-left">
-                    <h2>Coupon History</h2>
+                <div className=" order_details_info">
+                  <div className="row">
+                    <div className="col text-left">
+                      <b>Active From:</b>
+                    </div>
+                    <div className="col text-left">
+                      {moment(coupon.activefrom).format("MMM Do, YYYY")}
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col text-left">
-                    <table className="table">
-                      {couponHistory.length ? (
-                        couponHistory.map((history) => {
-                          return (
-                            <tr>
-                              <td>
-                                <strong>Customer :</strong>{" "}
-                                {history.customeremail}{" "}
-                              </td>
-                              <td>
-                                <strong>Order :</strong> {history.orderId}{" "}
-                              </td>
-                              <td>
-                                <Link to={`/details/${history.orderId}`}>
-                                  <img src={viewicon} alt="" />
-                                </Link>
-                              </td>
-                            </tr>
-                          );
-                        })
-                      ) : (
-                        <tr>
-                          <td>No History available.</td>
-                        </tr>
-                      )}
-                    </table>
+                  <div className="row ">
+                    <div className="col text-left mt-3">
+                      <b>Expiry:</b>
+                    </div>
+                    <div className="col text-left mt-3">
+                      {moment(coupon.expirydate).format("MMM Do, YYYY")}
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col text-left mt-3">
+                      <b>Usage Limit:</b>
+                    </div>
+                    <div className="col text-left mt-3">
+                      {coupon.usagelimit}
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col text-left mt-3">
+                      <b> User limit per customer: </b>
+                    </div>
+                    <div className="col text-left mt-3">
+                      {coupon.usagelimitpercustomer}
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col text-left mt-3">
+                      <b>Discount:</b>
+                    </div>
+                    <div className="col text-left mt-3">
+                      {coupon.discountpercentage}%
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col text-left mt-3">
+                      <b>Duration</b>
+                    </div>
+                    <div className="col text-left mt-3">
+                      {coupon.duration} Month(s)
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col text-left mt-3">
+                      <b>Status:</b>
+                    </div>
+                    <div className="col text-left mt-3">
+                      {/* {coupon.isactive ? "Active" : "Unactive"} */}
+                      {/* <br /> */}
+                      <Switch
+                        onChange={(isActive) =>
+                          onChangeActive(coupon, isActive)
+                        }
+                        checked={coupon.isactive}
+                        checkedIcon={false}
+                        uncheckedIcon={false}
+                      />
+                    </div>
+                  </div>
+                  <div className="row ">
+                    <div className="col text-left mt-3">
+                      <b>Description</b>
+                    </div>
+                    <div className="col text-left mt-3">
+                      {coupon.description}
+                    </div>
+                  </div>
+
+                  <div className="row  mt-4 pt-4">
+                    <div className="col text-left">
+                      <h2>Coupon History</h2>
+                    </div>
+                  </div>
+                  <div className="row mt-2">
+                    <div className="col text-left">
+                      <table className="table">
+                        {couponHistory.length ? (
+                          couponHistory.map((history) => {
+                            return (
+                              <tr>
+                                <td>
+                                  <strong>Customer :</strong>{" "}
+                                  {history.customeremail}{" "}
+                                </td>
+                                <td>
+                                  <strong>Order :</strong> {history.orderId}{" "}
+                                </td>
+                                <td>
+                                  <Link to={`/details/${history.orderId}`}>
+                                    <img src={viewicon} alt="" />
+                                  </Link>
+                                </td>
+                              </tr>
+                            );
+                          })
+                        ) : (
+                          <tr>
+                            <td>No History available.</td>
+                          </tr>
+                        )}
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -606,4 +594,4 @@ const CouponDetails = (props) => {
   );
 };
 
-export default withRouter(CouponDetails);
+export default withRouter(SubscriptionCouponDetails);

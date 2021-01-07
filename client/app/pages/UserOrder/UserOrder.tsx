@@ -196,8 +196,8 @@ const UserOrder = (props) => {
       if (key === "potentiallyRelevantDigitalAssets") {
         fileToUpload = dataValues[key];
       } else if (
-        key === "temporaryActivities" ||
-        key == "specialtyTradeSelection"
+        key === "temporaryActivities" &&
+        key === "specialtyTradeSelection"
       ) {
         apiData[key] = dataValues[key]
           ? dataValues[key].map((v) => {
@@ -316,7 +316,7 @@ const UserOrder = (props) => {
     saveOrderData(formData, stringified).subscribe(
       (response: any) => {
         if (response.response.Requested_Action) {
-          localStorage.setItem("sessipn", response.response.message);
+          localStorage.setItem("sessipn", response.response.Message);
           if (fileToUpload) {
             // TODO:// API change Required.
             uploadFiles(response.response.Message, fileToUpload, 0, true);

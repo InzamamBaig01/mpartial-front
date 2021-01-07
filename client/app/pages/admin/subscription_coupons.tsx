@@ -15,7 +15,8 @@ import DatePicker from "reactstrap-date-picker";
 import { AppContext } from "../../../contexts/appContext";
 import {
   addCoupon,
-  getAllCoupon,
+  addSubscriptionCoupon,
+  getAllSubscriptionCoupon,
   editCoupon,
   couponUsageHistory,
 } from "utils/api-routes/api-routes.util";
@@ -24,25 +25,28 @@ import moment from "moment";
 
 interface ICoupon {
   couponcode: undefined | String | Number;
+  duration: undefined | String | Number;
   activefrom: undefined | String | Number;
-  maxusagecount: undefined | String | Number;
-  offpercentage: undefined | String | Number;
-  subtractfixedamount: undefined | String | Number;
+  usagelimit: undefined | String | Number;
+  discountpercentage: undefined | String | Number;
+  description: undefined | String | Number;
   forcustomeremail: undefined | String | Number;
-  maxusagecountperuser: undefined | String | Number;
-  expiry: undefined | String | Number;
+  usagelimitpercustomer: undefined | String | Number;
+  expirydate: undefined | String | Number;
 }
 
 const AddCoupons = (props) => {
   const [data, setData] = useState<ICoupon>({
     couponcode: "",
     activefrom: new Date().toISOString(),
-    maxusagecount: "",
-    offpercentage: "",
-    subtractfixedamount: "",
-    forcustomeremail: "",
-    maxusagecountperuser: "",
-    expiry: new Date(moment().add("day", 1).format("YYYY-MM-DD")).toISOString(),
+    usagelimit: "",
+    duration: "",
+    description: "",
+    discountpercentage: "",
+    usagelimitpercustomer: "",
+    expirydate: new Date(
+      moment().add("day", 1).format("YYYY-MM-DD")
+    ).toISOString(),
   });
   const { getallADUsers, AllUsers } = useContext(AppContext);
 
@@ -55,27 +59,20 @@ const AddCoupons = (props) => {
 
   useEffect(() => {
     getallADUsers();
+
     if (props.isDuplicating) {
       const duData = props.info;
-      const currentCouponFor =
-        duData.forcustomeremail == null ? "Public" : "Customer";
-      const currentCouponType =
-        duData.offpercentage == null ? "Fixed" : "Percentage";
       setData({
         couponcode: "",
-        activefrom: new Date(duData.activefrom).toISOString(),
-        maxusagecount: duData.maxusagecount,
-        offpercentage:
-          currentCouponType == "Percentage" ? duData.offpercentage : "",
-        subtractfixedamount:
-          currentCouponType == "Fixed" ? duData.subtractfixedamount : "",
-        forcustomeremail:
-          currentCouponFor == "Customer" ? duData.forcustomeremail : "",
-        maxusagecountperuser:
-          duData.maxusagecountperuser != null
-            ? duData.maxusagecountperuser
-            : "",
-        expiry: new Date(duData.expiry).toISOString(),
+        activefrom: new Date().toISOString(),
+        usagelimit: "",
+        duration: "",
+        description: "",
+        discountpercentage: "",
+        usagelimitpercustomer: "",
+        expirydate: new Date(
+          moment().add("day", 1).format("YYYY-MM-DD")
+        ).toISOString(),
       });
       setCouponType(currentCouponType);
       setCouponFor(currentCouponFor);
@@ -90,7 +87,11 @@ const AddCoupons = (props) => {
 
   useEffect(() => {
     const isAvailable = props.Coupons.filter((coupon) => {
-      return coupon.couponcode == data.couponcode;
+      if (!coupon.archived) {
+        return coupon.couponcode == data.couponcode;
+      } else {
+        return "";
+      }
     });
     if (isAvailable.length) {
       setCouponError(true);
@@ -101,7 +102,7 @@ const AddCoupons = (props) => {
 
   const onsubmit = (e) => {
     e.preventDefault();
-    data.expiry = moment(data.expiry).format("YYYY-MM-DD");
+    data.expirydate = moment(data.expirydate).format("YYYY-MM-DD");
     data.activefrom = moment(data.activefrom).format("YYYY-MM-DD");
     Object.keys(data).map((key) => {
       data[key] =
@@ -111,7 +112,7 @@ const AddCoupons = (props) => {
             : null
           : data[key];
     });
-    addCoupon(data).subscribe((response) => {
+    addSubscriptionCoupon(data).subscribe((response) => {
       if (response.response.Requested_Action) {
         props.onSubmitSuccess();
         props.handleClose();
@@ -171,97 +172,64 @@ const AddCoupons = (props) => {
                 {couponError ? `${data.couponcode} is already existed.` : ""}
               </span>
             </div>
-            <div className="form-group">
-              <label>Coupon Type (Fixed or Percentage)</label>
-              <select
-                placeholder="Coupon Type"
-                className="form-control"
-                value={couponType}
-                onChange={changeCouponType}
-              >
-                <option>Fixed</option>
-                <option>Percentage</option>
-              </select>
-            </div>
-            {couponType == "Percentage" ? (
-              <div className="form-group">
-                <label>Coupon Percentage</label>
 
-                <input
-                  type="number"
-                  placeholder="Coupon Percentage"
-                  className="form-control"
-                  required
-                  onChange={(e) =>
-                    setData({
-                      ...data,
-                      offpercentage: e.currentTarget.value,
-                    })
-                  }
-                  value={data.offpercentage}
-                  id="percentage"
-                  min="0"
-                  max="100"
-                  step="0.10"
-                />
-              </div>
-            ) : (
-              <div className="form-group">
-                <label>Coupon Fixed Amount</label>
-
-                <input
-                  type="number"
-                  placeholder="Coupon Fixed Amount"
-                  className="form-control"
-                  id="fixed"
-                  required
-                  onChange={(e) =>
-                    setData({
-                      ...data,
-                      subtractfixedamount: e.currentTarget.value,
-                    })
-                  }
-                  value={data.subtractfixedamount}
-                />
-              </div>
-            )}
             <div className="form-group">
-              <label>Coupon For (Customer or public)</label>
-              <select
-                placeholder="Coupon Type"
+              <label>Description</label>
+              <textarea
+                type="text"
+                placeholder="Coupon Description"
                 className="form-control"
-                value={couponFor}
-                onChange={(e) => setCouponFor(e.currentTarget.value)}
-              >
-                <option>Public</option>
-                <option>Customer</option>
-              </select>
+                required
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    description: e.currentTarget.value,
+                  })
+                }
+                value={data.description}
+                style={{ resize: "none" }}
+              />
             </div>
 
-            {couponFor == "Customer" ? (
-              <div className="form-group">
-                <select
-                  className="form-control"
-                  value={data.forcustomeremail}
-                  onChange={(e) =>
-                    setData({
-                      ...data,
-                      forcustomeremail: e.currentTarget.value,
-                    })
-                  }
-                >
-                  {Users.map((user) => {
-                    return (
-                      <option value={user.emailAddress}>
-                        {user.firstName} {user.lastName} - {user.emailAddress}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            ) : (
-              ""
-            )}
+            <div className="form-group">
+              <label>Duration</label>
+              <input
+                type="text"
+                placeholder="Coupon Duration"
+                className="form-control"
+                required
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    duration: e.currentTarget.value,
+                  })
+                }
+                value={data.duration}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Coupon Percentage</label>
+
+              <input
+                type="number"
+                placeholder="Coupon Percentage"
+                className="form-control"
+                required
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    discountpercentage: e.currentTarget.value,
+                  })
+                }
+                value={data.discountpercentage}
+                id="percentage"
+                min="0"
+                max="100"
+                step="0.10"
+              />
+            </div>
+
             <div className="form-group">
               <label>Coupon Active From</label>
               <DatePicker
@@ -270,7 +238,7 @@ const AddCoupons = (props) => {
                 required
                 minDate={new Date().toISOString()}
                 value={data.activefrom}
-                maxDate={data.expiry}
+                maxDate={data.expirydate}
                 showClearButton={false}
                 placeholder="Coupon Active From"
                 onChange={(v, f) =>
@@ -288,14 +256,14 @@ const AddCoupons = (props) => {
                 id="example-datepickers"
                 className="form-control"
                 required
-                value={data.expiry}
+                value={data.expirydate}
                 minDate={data.activefrom}
                 showClearButton={false}
                 placeholder="Coupon Expiry Date"
                 onChange={(v, f) =>
                   setData({
                     ...data,
-                    expiry: v,
+                    expirydate: v,
                   })
                 }
               />
@@ -310,10 +278,10 @@ const AddCoupons = (props) => {
                 onChange={(e) =>
                   setData({
                     ...data,
-                    maxusagecount: e.currentTarget.value,
+                    usagelimit: e.currentTarget.value,
                   })
                 }
-                value={data.maxusagecount}
+                value={data.usagelimit}
               />
             </div>
 
@@ -327,10 +295,10 @@ const AddCoupons = (props) => {
                 onChange={(e) =>
                   setData({
                     ...data,
-                    maxusagecountperuser: e.currentTarget.value,
+                    usagelimitpercustomer: e.currentTarget.value,
                   })
                 }
-                value={data.maxusagecountperuser}
+                value={data.usagelimitpercustomer}
               />
             </div>
             <div className="form-group text-center">
@@ -464,7 +432,7 @@ const SubscriptionCoupons = () => {
   }, []);
 
   const getCoupons = () => {
-    getAllCoupon().subscribe((response) => {
+    getAllSubscriptionCoupon().subscribe((response) => {
       setCoupons(response.response.data);
     });
   };
@@ -483,47 +451,41 @@ const SubscriptionCoupons = () => {
 
     {
       name: "Expiry",
-      selector: "expiry",
+      selector: "expirydate",
+      sortable: false,
+      className: "header-col",
+      format: (d) => {
+        return moment(d.expirydate).format("MMM Do, YYYY");
+      },
+    },
+    {
+      name: "Limit",
+      selector: "usagelimit",
       sortable: false,
       className: "header-col",
     },
     {
-      name: "Usage / Limit",
-      selector: "maxusagecount",
-      sortable: false,
-      className: "header-col",
-      format: (d) => `${d.usedtimes}/${d.maxusagecount}`,
-    },
-    {
-      name: "Discount Amount / % ",
-      selector: "maxusagecount",
+      name: "Discount % ",
+      selector: "discountpercentage",
       sortable: false,
       className: "header-col",
       format: (d) => {
         return (
           <>
-            {d.offpercentage ? (
-              <span>{d.offpercentage}%</span>
-            ) : (
-              <span>${d.subtractfixedamount}</span>
-            )}
+            <span>{d.discountpercentage}%</span>
           </>
         );
       },
     },
     {
-      name: "Nof of Months",
-      selector: "maxusagecount",
+      name: "No of Months",
+      selector: "duration",
       sortable: false,
       className: "header-col",
       format: (d) => {
         return (
           <>
-            {d.offpercentage ? (
-              <span>{d.offpercentage}%</span>
-            ) : (
-              <span>${d.subtractfixedamount}</span>
-            )}
+            <span>{d.duration} month(s)</span>
           </>
         );
       },
@@ -534,7 +496,7 @@ const SubscriptionCoupons = () => {
       sortable: false,
       className: "header-col",
       format: (d) => (
-        <Link to={`/coupons-details/${d.id}`}>
+        <Link to={`/subscription-coupons-details/${d.id}`}>
           <img src={viewicon} alt="" />
         </Link>
       ),

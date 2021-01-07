@@ -83,7 +83,7 @@ const OrderDetails = (props) => {
 
   useEffect(() => {
     getMyInfo();
-  });
+  }, []);
   console.log("info", myInfo);
   useEffect(() => {
     if (props.order) {
