@@ -1,5 +1,5 @@
 {
-    "stripe" : "pk_test_qtQYQAflfKikPJB9y8Y1H8fY00dcOIegPx",
+    "stripe" : "pk_test_8u4vpxmqR9efr2eJ4LwCXNSY00VhmyO9LG",
     "API" : "//dev.mpartial.io:8080",
     "captchaKey": "6Lc46PQUAAAAAMEJkx-a4pfm2t5DMXhlV0Xaaix2",
     "sentryDSN" : "https://771b82fc8ec64d94a3df537ea64334ea@o387595.ingest.sentry.io/5223106",

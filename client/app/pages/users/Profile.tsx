@@ -1,8 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
+import { Badge } from "react-bootstrap";
+import moment from "moment";
+
 import Header from "app/components/Header";
 import userProfile from "../../../assets/userProfile.svg";
 import visa from "../../../assets/visa.png";
+import check from "../../../assets/chat.png";
+import chat from "../../../assets/checkBig.png";
+
+import loader from "../../../assets/loader.gif";
 import mastercard from "../../../assets/mastercard.png";
 import AmericanExpress from "../../../assets/American-Express.png";
 import discover from "../../../assets/discover.png";
@@ -28,13 +35,19 @@ import queryString from "query-string";
 import {
   profileUpdate,
   getPIC,
+  getSubscriptionPlans,
   changePassword,
+  cancelSubscription,
+  subscriptionHistory,
 } from "utils/api-routes/api-routes.util";
+import history from "../../../utils/history";
+
 import BankCard from "app/components/BankCard";
 import Loader from "app/components/Loader";
 import { AppAlertsContext } from "contexts/appAlertsContext";
 import { EditProfile } from "./_components/EditProfile";
 import ReactIsCapsLockActive from "@matsun/reactiscapslockactive";
+import TransactionHistory from "./_components/TranscationHistory";
 const createOptions = (fontSize: string, padding?: string) => {
   return {
     style: {
@@ -69,6 +82,8 @@ const FormElement = (props) => {
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     showLoader();
+
+    console.log("PI", props.PI);
 
     const result = await stripe.confirmCardSetup(props.PI, {
       payment_method: {
@@ -117,7 +132,7 @@ const FormElement = (props) => {
           <> </>
         )}
         <button type="submit" className="btn btn-lg">
-          <Loader text="Save"></Loader>
+          Save
         </button>
       </form>
     </>
@@ -163,7 +178,11 @@ const EditPassword = (props) => {
   });
   const [validPassword, setValidPassword] = React.useState(true);
   const [isCapsOn, setIsCapsOn] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
 
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+  const [errorMessage, setErrorMessage] = useState(false);
   const confirmPassword = (cp) => {
     setValidPassword(cp == passwords.newPassword);
   };
@@ -174,13 +193,18 @@ const EditPassword = (props) => {
 
     changePassword(stringified).subscribe((response) => {
       if (response.response.Requested_Action) {
+        props.setMessage("Password Updated");
         props.onEditPasswordSuccess();
+        handleShowModal();
         setPasswords({
           oldPassword: "",
           newPassword: "",
           confirm: "",
           thetoken: localStorage.token,
         });
+        props.handleShow();
+      } else {
+        setErrorMessage(response.response.Message);
       }
     });
   };
@@ -296,6 +320,21 @@ const EditPassword = (props) => {
               ) : (
                 ""
               )}
+
+              {errorMessage ? (
+                <div>
+                  {" "}
+                  <i className="red">
+                    <span className="password_not_matched">
+                      <b>
+                        <i>{errorMessage}</i>
+                      </b>
+                    </span>
+                  </i>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
 
             <div className="form-group text-center">
@@ -315,26 +354,60 @@ const EditPassword = (props) => {
   );
 };
 
-const Profile = () => {
-  const { getMyInfo, myInfo } = useContext(AppContext);
+const Profile = (props) => {
+  const {
+    getMyInfo,
+    myInfo,
+    myPlans,
+    getMyPlans,
+    getHistory,
+    histories,
+  } = useContext(AppContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
 
   const [info, setInfo] = useState(false);
+  const [spinner, setSpinner] = useState(true);
   const [PI, setPI] = useState(false);
+  const [plans, setPlans] = useState([]);
+  const [filteredPlan, setFilteredPlan] = useState([]);
+  const [show, setShow] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
   const pmicons = {
     mastercard: mastercard,
     visa: visa,
     discover: discover,
     amex: AmericanExpress,
   };
+
+  console.log(props);
   useEffect(() => {
     showLoader();
     getMyInfo();
+    getMyPlans();
+    getHistory();
+    if (props.location.state) {
+      props.location.state.flag ? setToggleMembership(true) : "";
+    }
+
+    setTimeout(() => {
+      setSpinner(false);
+    }, 2500);
   }, []);
+
+  console.log("MUINFO", myInfo);
+
+  useEffect(() => {}, []);
 
   const getPI = () => {
     getPIC().subscribe((response) => {
-      setPI(response.response.Message);
+      console.log(response, "REPONSE");
+      setPI(response.response.data);
     });
   };
 
@@ -342,12 +415,31 @@ const Profile = () => {
     if (myInfo) {
       hideLoader();
       setInfo(myInfo);
+      if (myPlans) {
+        const x = myPlans.filter(
+          (plan) => plan.name === myInfo.subscriptionplanname
+        );
+
+        setFilteredPlan(x);
+      }
     }
   }, [myInfo]);
 
+  console.log("PLANS, ", myInfo.stripeCustomerCard == 0);
+
+  const cancelPlan = () => {
+    showLoader();
+    cancelSubscription().subscribe((response) => {
+      console.log(response);
+      getMyInfo();
+    });
+  };
+
+  console.log(filteredPlan);
   const [addcardpopupshow, setaddcardpopupshow] = useState(false);
   const [editProfileShow, setEditProfileShow] = useState(false);
   const [editPasswordShow, setEditPasswordShow] = useState(false);
+  const [toggleMembership, setToggleMembership] = useState(false);
 
   const handleEditProfileclose = () => setEditProfileShow(false);
   const handleEditProfileShow = () => setEditProfileShow(true);
@@ -364,6 +456,8 @@ const Profile = () => {
     setaddcardpopupshow(true);
   };
 
+  useEffect(() => {});
+
   const onSubmitSuccess = () => {
     getMyInfo();
     handleEditProfileclose();
@@ -373,8 +467,71 @@ const Profile = () => {
     handleEditPasswordclose();
   };
 
+  const onToggleMembership = () => {
+    setToggleMembership(!toggleMembership);
+  };
+
   return (
     <>
+      <Modal show={show} onHide={handleClose} className="cancel_subscription">
+        <Modal.Header closeButton>
+          <Modal.Title>Cancel Subscription</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to cancel your subscription? Your subscription
+          will be canceled immediately.
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="btn" onClick={handleClose}>
+            Cancel
+          </button>
+          <button
+            className="btn"
+            onClick={() => {
+              cancelPlan();
+
+              handleClose();
+            }}
+          >
+            Confirm
+          </button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showModal}
+        onHide={handleCloseModal}
+        className="cancel_subscription"
+      >
+        <Modal.Body style={{ margin: "0 auto" }}>
+          <div
+            className="d-flex align-items-center justify-content-center mt-3"
+            style={{ margin: "0 auto" }}
+          >
+            {message ? (
+              <img src={chat} width="60px" />
+            ) : (
+              <img src={check} width="60px" />
+            )}
+          </div>
+          {message ? (
+            <div className="mt-4">{message}</div>
+          ) : (
+            <div className="mt-4">Please add a payment method.</div>
+          )}
+        </Modal.Body>
+        <Modal.Footer style={{ borderTop: "none", margin: "0 auto" }}>
+          <button
+            className="btn"
+            onClick={() => {
+              handleCloseModal();
+              setMessage(false);
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            Close
+          </button>
+        </Modal.Footer>
+      </Modal>
       <Header isFixedColor={true}></Header>
       <div className="other_pages_container">
         <h1 className="title text-center">My Account</h1>
@@ -422,7 +579,15 @@ const Profile = () => {
                     <div className="col">Cell</div>
                     <div className="col text-right">{info.phone}</div>
                   </div>
-
+                  {info.subscriptionstatus === "NotActive" ||
+                  info.ischildaccount ? (
+                    ""
+                  ) : (
+                    <div className="row">
+                      <div className="col">Company</div>
+                      <div className="col text-right">{info.companyname}</div>
+                    </div>
+                  )}
                   <div className="row">
                     <div className="col text-center">
                       <button className="btn" onClick={handleEditPasswordShow}>
@@ -433,41 +598,408 @@ const Profile = () => {
                 </div>
               </div>
             </div>
+
             <div className="col-md-8 col-sm-12 col-xs-12">
-              <div className="profile_right_section">
-                <div className="row">
-                  <div className="col">
-                    <div className="profile_title">Payment Options</div>
-                  </div>
-                  <div className="col text-right">
-                    <button className="btn" onClick={handlecardshow}>
-                      ADD
-                    </button>
-                  </div>
+              {spinner ? (
+                <div
+                  style={{ margin: "0 auto", marginTop: "100px" }}
+                  className="d-flex align-items-center justify-content-center"
+                >
+                  <img src={loader} />
                 </div>
-                <div className="divider"></div>
-                <Loader></Loader>
-                <div className="cards">
-                  {info
-                    ? info.stripeCustomerCard.map((card, index) => {
-                        return (
-                          // <tr>
-                          //   <td key={index}><img src={pmicons[card.brand]} className="brand_icon" alt="" /></td>
-                          //   <td>XXXX XXXX XXXX {card.last4}</td>
-                          //   <td>
-                          //     {card.exp_month}/{card.exp_year}
-                          //   </td>
-                          //   {/* <td>
-                          //         <i>a</i>
-                          //         <i>b</i>
-                          //       </td> */}
-                          // </tr>
-                          <BankCard card={card} />
-                        );
-                      })
-                    : ""}
+              ) : (
+                <div className="profile_right_section">
+                  {info.ischildaccount ? (
+                    <div>
+                      <h4
+                        className="text-left"
+                        style={{
+                          fontFamily: "Gilroy",
+                          fontSize: "16px",
+                          fontWeight: "600px",
+                        }}
+                      >
+                        <b>Connected Account</b>
+                      </h4>
+                      <hr />
+                      <div className="row mt-4">
+                        <div className="col-lg-4 col-xs-12 mb-3">
+                          <h4
+                            className="faded text-left"
+                            style={{
+                              fontFamily: "Gilroy",
+                              fontSize: "16px",
+                              fontWeight: "600px",
+                            }}
+                          >
+                            <b>Company</b>
+                          </h4>
+                          <h4
+                            className="text-left"
+                            style={{
+                              fontFamily: "Gilroy",
+                              fontSize: "16px",
+                              fontWeight: "600px",
+                            }}
+                          >
+                            <b>{info.companyname}</b>
+                          </h4>
+                        </div>
+                        <div
+                          className="col-lg-4 col-xs-12 mb-3 "
+                          style={{ marginRight: "0px" }}
+                        >
+                          <h4
+                            className="faded text-left"
+                            style={{
+                              fontFamily: "Gilroy",
+                              fontSize: "16px",
+                              fontWeight: "600px",
+                            }}
+                          >
+                            <b>Company Email</b>
+                          </h4>
+                          <h4
+                            className="text-left"
+                            style={{
+                              fontFamily: "Gilroy",
+                              fontSize: "16px",
+                              fontWeight: "600px",
+                            }}
+                          >
+                            <b>{info.companyemail}</b>
+                          </h4>
+                        </div>
+                        <div className="col-lg-4  col-xs-12 mb-3 text-left">
+                          <h4
+                            className="faded "
+                            style={{
+                              fontFamily: "Gilroy",
+                              fontSize: "16px",
+                              fontWeight: "600px",
+                            }}
+                          >
+                            <b>Subscription Status</b>
+                          </h4>
+                          <h4
+                            className=""
+                            style={{
+                              fontFamily: "Gilroy",
+                              fontSize: "16px",
+                              fontWeight: "600px",
+                            }}
+                          >
+                            <b>{info.subscriptionstatus}</b>
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="row align-items-center">
+                        <div
+                          className="col-lg-4  col-xs-6  "
+                          onClick={onToggleMembership}
+                        >
+                          <div
+                            className={
+                              !toggleMembership
+                                ? "profile_title green"
+                                : "profile_title faded"
+                            }
+                            style={{ cursor: "pointer" }}
+                          >
+                            Payment Options{" "}
+                          </div>
+                        </div>{" "}
+                        <div className="col-lg-8 ">
+                          <div className="row align-items-center">
+                            <div
+                              className={
+                                !toggleMembership
+                                  ? "profile_title faded col-lg-8"
+                                  : "profile_title green col-lg-8"
+                              }
+                              onClick={onToggleMembership}
+                              style={{ cursor: "pointer" }}
+                            >
+                              Membership{" "}
+                            </div>
+                            <div className="text-right col-lg-4 ">
+                              {toggleMembership ? (
+                                <Link
+                                  className={
+                                    info.subscriptionstatus === "Active"
+                                      ? "btn"
+                                      : "btn disabled"
+                                  }
+                                  to="/manage_users"
+                                >
+                                  Manage Users
+                                </Link>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="divider"></div>
+                      <Loader></Loader>
+                      {!toggleMembership ? (
+                        <div className="cards">
+                          {info && info.stripeCustomerCard.length > 0 ? (
+                            info.stripeCustomerCard.map((card, index) => {
+                              return <BankCard card={card} />;
+                            })
+                          ) : (
+                            <div className="text-left">
+                              <b>No Payment method found! </b>
+                            </div>
+                          )}
+                          <div className="divider"></div>
+                          <div className="col text-left">
+                            <button className="btn" onClick={handlecardshow}>
+                              ADD
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          {(filteredPlan.length &&
+                            filteredPlan.length > 0 &&
+                            info.subscriptionstatus === "Active") ||
+                          info.subscriptionstatus === "Cancelled" ||
+                          info.subscriptionstatus ===
+                            "PausedDueToPaymentFailure" ? (
+                            <div className="packages">
+                              <div className="row align-items-center">
+                                <div className="col-lg-8 col-xs-12 text-left d-flex align-items-center">
+                                  <span
+                                    className="h3"
+                                    style={{
+                                      fontStyle: "bold",
+                                      paddingRight: "5px",
+                                    }}
+                                  >
+                                    {filteredPlan[0].name}
+                                  </span>
+                                  {info.subscriptionstatus === "Cancelled" ? (
+                                    <Badge className="cancelled_badge">
+                                      <p>Cancelled</p>
+                                    </Badge>
+                                  ) : info.subscriptionstatus === "Active" ? (
+                                    <Badge className="active_badge">
+                                      <p>Active</p>
+                                    </Badge>
+                                  ) : info.subscriptionstatus ===
+                                    "PausedDueToPaymentFailure" ? (
+                                    <Badge className="paused_badge">
+                                      <p>Paused</p>
+                                    </Badge>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                                <div className="col-lg-4 col-xs-12 text-right d-flex align-items-center justify-content-end">
+                                  <h3> ${filteredPlan[0].price}</h3>
+                                  <span className="interval">
+                                    /{filteredPlan[0].intervalUnit}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div
+                                  className="col-lg-8 d-flex"
+                                  style={{ paddingLeft: "0" }}
+                                >
+                                  <div className="col-lg-6 text-left d-flex flex-column mt-2 justify-content-end">
+                                    <p
+                                      style={{ marginBottom: "0" }}
+                                      className="faded"
+                                    >
+                                      Subscription Date
+                                    </p>
+
+                                    <p
+                                      style={{
+                                        marginBottom: "0",
+                                        fontWeight: "600",
+                                      }}
+                                    >
+                                      {moment(histories[0].createdAt).format(
+                                        "MMM DD - YYYY"
+                                      )}
+                                    </p>
+                                  </div>
+                                  <div className="col-lg-6 text-left d-flex flex-column mt-2 justify-content-end">
+                                    <p
+                                      style={{ marginBottom: "0" }}
+                                      className="faded"
+                                    >
+                                      Next Billing Date
+                                    </p>
+                                    {info.subscriptionstatus === "Active" ? (
+                                      <p
+                                        style={{
+                                          marginBottom: "0",
+                                          fontWeight: "600",
+                                        }}
+                                      >
+                                        {moment(
+                                          histories[0].nextbillingdate
+                                        ).format("MMM DD - YYYY")}
+                                      </p>
+                                    ) : (
+                                      <p
+                                        style={{
+                                          marginBottom: "0",
+                                          fontWeight: "600",
+                                        }}
+                                      >
+                                        NA
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="col-lg-4 d-flex mt-2 align-items-end justify-content-end">
+                                  {info.subscriptionstatus === "Active" ? (
+                                    <button
+                                      className="btn"
+                                      onClick={handleShow}
+                                    >
+                                      <Loader text="Cancel Subscription"></Loader>
+                                    </button>
+                                  ) : (
+                                    <button
+                                      className="btn"
+                                      onClick={() => {
+                                        myInfo.stripeCustomerCard == 0
+                                          ? handleShowModal()
+                                          : history.push(
+                                              `/subscriptioncheckout/${filteredPlan[0].name}`
+                                            );
+                                      }}
+                                    >
+                                      Renew Subscription
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ) : myPlans.length && myPlans.length > 0 ? (
+                            myPlans.map((plan) => (
+                              <div className="packages">
+                                <div className="row align-items-center">
+                                  <div className="col-lg-8 col-xs-12 text-left d-flex align-items-center">
+                                    <span
+                                      className="h3"
+                                      style={{
+                                        fontStyle: "bold",
+                                        paddingRight: "5px",
+                                      }}
+                                    >
+                                      {plan.name}
+                                    </span>
+
+                                    <Badge className="pause_badge">
+                                      <p>Inactive</p>
+                                    </Badge>
+                                  </div>
+                                  <div className="col-lg-4 col-xs-12 text-right d-flex align-items-center justify-content-end">
+                                    <h3> ${plan.price}</h3>
+                                    <span className="interval">
+                                      /{plan.intervalUnit}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="d-flex flex-column mt-2 align-items-end justify-content-end">
+                                  <div>
+                                    <button
+                                      className="btn"
+                                      onClick={() => {
+                                        myInfo.stripeCustomerCard == 0
+                                          ? handleShowModal()
+                                          : history.push(
+                                              `/subscriptioncheckout/${plan.name}`
+                                            );
+                                      }}
+                                    >
+                                      Buy Subscription
+                                    </button>
+                                    <Link to="/#Contact-US">
+                                      <p className="mt-2 text-center demo">
+                                        Request demo
+                                      </p>
+                                    </Link>
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            ""
+                          )}
+                          {info.subscriptionstatus === "NotActive" ? (
+                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. The pricing down by 57%"
+                          ) : (
+                            <div className="row mt-4">
+                              <div className="col-lg-12">
+                                <div className="payment_section">
+                                  <div className="payment_section_header">
+                                    <div className="row">
+                                      <div className="col text-left">
+                                        <div className="payment_header_title">
+                                          Subscription Transaction History
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="payment_section_body transaction_history">
+                                    <TransactionHistory />
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-lg-12">
+                                <div className="payment_section">
+                                  <div className="payment_section_header">
+                                    <div className="row">
+                                      <div className="col text-left">
+                                        <div className="payment_header_title">
+                                          Payment Method
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="payment_section_body cards subscription_cards">
+                                    {info &&
+                                      info.stripeCustomerCard.map((card) => {
+                                        if (card.isDefault) {
+                                          return <BankCard card={card} />;
+                                        }
+                                      })}
+                                    <hr />
+                                    <div className="row'">
+                                      <div
+                                        className="col text-right"
+                                        onClick={onToggleMembership}
+                                      >
+                                        <Link className="btn mb-2">
+                                          Manage Payments
+                                        </Link>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -490,11 +1022,13 @@ const Profile = () => {
           info={info}
         />
       )}
-
+      {console.log("Profile", info)}
       {editPasswordShow && (
         <EditPassword
           value={""}
           onEditPasswordSuccess={onSubmitPasswordSuccess}
+          setMessage={setMessage}
+          handleShow={handleShowModal}
           show={editPasswordShow}
           handleClose={handleEditPasswordclose}
           info={info}

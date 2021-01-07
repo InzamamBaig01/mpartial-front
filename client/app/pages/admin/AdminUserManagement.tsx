@@ -11,6 +11,7 @@ import viewicon from "../../../assets/view.svg";
 import { AppContext } from "contexts/appContext";
 import AdminSidebar from "./_components/AdminSidebar";
 import AdminSearch from "./_components/AdminSearch";
+import Loader from "app/components/Loader";
 
 const AdminUserManagement = () => {
   const { getallADUsers, AllUsers } = useContext(AppContext);
@@ -31,6 +32,19 @@ const AdminUserManagement = () => {
       selector: "emailAddress",
       sortable: true,
       className: "header-col",
+    },
+    {
+      name: "Account Type",
+      selector: "ischildaccount",
+
+      sortable: false,
+      className: "header-col",
+      format: (d) =>
+        d.ischildaccount === true
+          ? "Child"
+          : d.subscriptionstatus === "NotActive"
+          ? "Orphan"
+          : "Enterprise",
     },
     {
       name: "No. of Orders",
@@ -66,14 +80,13 @@ const AdminUserManagement = () => {
 
   //Runing loader for 2 secs only
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    setTimeout(() => {}, 1000);
   }, []);
 
   useEffect(() => {
-    if (AllUsers) {
+    if (AllUsers.length > 0) {
       setUsers(AllUsers);
+      setLoading(false);
     }
   }, [AllUsers]);
 
@@ -95,7 +108,6 @@ const AdminUserManagement = () => {
       <div className="other_pages_container">
         <div className={"admin-order-wrap"}>
           <AdminSidebar></AdminSidebar>
-
           {loading ? (
             <img
               src={require("../../../assets/loader.gif")}

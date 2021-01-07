@@ -4,12 +4,20 @@ import Homepage from "./Homepage/DashboardPage";
 import Signup from "./users/Signup";
 import Profile from "./users/Profile";
 import MyOrders from "./users/MyOrders";
+import ManageUsers from "./users/ManageUsers";
+
 import MyOrderDetails from "./users/MyOrderDetails";
 import UserOrder from "./UserOrder/UserOrder";
 import Checkout from "./Checkout";
+import SubscriptionCheckout from "./subscriptionCheckout";
+
 import Receipt from "./receipt";
+import SubscriptionReceipt from "./subscriptionreceipt";
+
 import AdminLogin from "./admin/AdminLogin";
 import AdminOrders from "./admin/AdminOrders";
+import AllSubscriptions from "./admin/AllSubscriptions";
+
 import AdminUserManagement from "./admin/AdminUserManagement";
 import { ForgotPassword } from "./users/ForgotPassword";
 import TermsCondition from "./TermsCondition";
@@ -19,9 +27,11 @@ import AdminOrderDetails from "./admin/AdminOrderDetails";
 import AdminUserDetails from "./admin/AdminUserDetails";
 import BuildDetails from "./BuildDetails";
 import Coupons from "./admin/Coupons";
+import SubscriptionCoupons from "./admin/subscription_coupons";
 import Committee from "./Committee";
 import PayOrder from "./PayOrder";
 import CouponDetails from "./admin/CouponDetails";
+import SubscriptionCouponDetails from "./admin/SubscriptionCouponDetails";
 
 export const ROUTES = [
   {
@@ -61,7 +71,8 @@ export const ROUTES = [
     path: "/changepasswordwithtoken",
     slug: "changepasswordwithtoken",
     title: "changepasswordwithtoken",
-  }, {
+  },
+  {
     component: ActivateAccount,
     isPublic: true,
     path: "/Client/ConfirmEmail",
@@ -88,6 +99,16 @@ export const ROUTES = [
     redirectTo: "/login",
   },
   {
+    component: ManageUsers,
+    isExact: true,
+    path: "/manage_users",
+    checkLogin: true,
+    slug: "manage_users",
+    title: "Manage Users",
+    isLogin: false,
+    redirectTo: "/login",
+  },
+  {
     component: MyOrderDetails,
     isExact: true,
     path: "/ordersdetails/:orderid",
@@ -106,7 +127,8 @@ export const ROUTES = [
     title: "userorder",
     isLogin: false,
     redirectTo: "/login",
-  }, {
+  },
+  {
     component: UserOrder,
     isExact: true,
     path: "/order/:orderId?",
@@ -115,7 +137,8 @@ export const ROUTES = [
     title: "userorder",
     isLogin: false,
     redirectTo: "/login",
-  }, {
+  },
+  {
     component: PayOrder,
     isExact: true,
     path: "/payorder/:orderId?",
@@ -129,9 +152,20 @@ export const ROUTES = [
     component: Checkout,
     isExact: true,
     path: "/checkout/:orderid",
+    //    path: "/checkout/:orderid?/:packageName?",
     checkLogin: true,
     slug: "checkout",
     title: "checkout",
+    isLogin: false,
+    redirectTo: "/login",
+  },
+  {
+    component: SubscriptionCheckout,
+    isExact: true,
+    path: "/subscriptioncheckout/:planName",
+    checkLogin: true,
+    slug: "subscriptioncheckout",
+    title: "subscriptioncheckout",
     isLogin: false,
     redirectTo: "/login",
   },
@@ -142,6 +176,16 @@ export const ROUTES = [
     checkLogin: true,
     slug: "receipt",
     title: "receipt",
+    isLogin: false,
+    redirectTo: "/login",
+  },
+  {
+    component: SubscriptionReceipt,
+    isExact: true,
+    path: "/subscriptionreceipt",
+    checkLogin: true,
+    slug: "subscriptionreceipt",
+    title: "subscriptionreceipt",
     isLogin: false,
     redirectTo: "/login",
   },
@@ -187,7 +231,6 @@ export const ROUTES = [
     isLogin: true,
     isAD: true,
     redirectTo: "/user-management",
-
   },
   {
     component: AdminOrders,
@@ -197,7 +240,17 @@ export const ROUTES = [
     redirectTo: "/mpartialadmin",
     checkADLogin: true,
     isAD: true,
-  }, {
+  },
+  {
+    component: AllSubscriptions,
+    path: "/allsubscriptions",
+    slug: "admin/allsubscriptions",
+    title: "admin/allsubscriptions",
+    redirectTo: "/mpartialadmin",
+    checkADLogin: true,
+    isAD: true,
+  },
+  {
     component: AdminOrderDetails,
     path: "/details/:orderid",
     slug: "admin/orders/details",
@@ -205,7 +258,8 @@ export const ROUTES = [
     redirectTo: "/mpartialadmin",
     isAD: true,
     checkADLogin: true,
-  }, {
+  },
+  {
     component: AdminUserDetails,
     path: "/usersdetails/:userid",
     slug: "admin/users/details",
@@ -233,6 +287,15 @@ export const ROUTES = [
     checkADLogin: true,
   },
   {
+    component: SubscriptionCoupons,
+    path: "/subscription_coupons",
+    slug: "admin/subscription_coupons",
+    title: "admin/subscription_coupons",
+    redirectTo: "/mpartialadmin",
+    isAD: true,
+    checkADLogin: true,
+  },
+  {
     component: CouponDetails,
     path: "/coupons-details/:couponid",
     slug: "coupons-details",
@@ -241,5 +304,13 @@ export const ROUTES = [
     isAD: true,
     checkADLogin: true,
   },
-
+  {
+    component: SubscriptionCouponDetails,
+    path: "/subscription-coupons-details/:couponid",
+    slug: "subscription-coupons-details",
+    title: "subscription-coupons-details",
+    redirectTo: "/mpartialadmin",
+    isAD: true,
+    checkADLogin: true,
+  },
 ];

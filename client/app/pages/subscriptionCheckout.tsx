@@ -1,15 +1,19 @@
 import React, { useEffect, useContext, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
-import Modal from "react-bootstrap/Modal";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
 import {
   payOrder,
-  getPaymentIntendOfOrder,
+  getSubscriptionPlans,
+  startSubscriptionPlan,
   getPIC,
 } from "utils/api-routes/api-routes.util";
 import history from "utils/history";
 import { loadStripe } from "@stripe/stripe-js/pure";
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-places-autocomplete";
 import {
   CardElement,
   Elements,
@@ -22,140 +26,35 @@ import Loader from "app/components/Loader";
 import appConfig from "../../appconfig.json";
 import visa from "../../assets/visa.png";
 import mastercard from "../../assets/mastercard.png";
+import JCB from "../../assets/jcb.svg";
+
 import AmericanExpress from "../../assets/American-Express.png";
 import discover from "../../assets/discover.png";
 
 import ApplyCoupon from "./UserOrder/_components/ApplyCoupon";
-const FormElement = (props) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const { getMyInfo, myInfo } = useContext(AppContext);
-  const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
-  const [cardError, setCardError] = useState(false);
-  const [name, setName] = useState("");
-
-  const handleSubmitCard = async (ev) => {
-    ev.preventDefault();
-    const result = await stripe.confirmCardSetup(props.PI, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: {
-          name: name,
-        },
-      },
-    });
-
-    if (result.error) {
-      // Display result.error.message in your UI.
-      setCardError(result.error.message);
-      hideLoader();
-    } else {
-      // The setup has succeeded. Display a success message and send
-      // result.setupIntent.payment_method to your server to save the
-      // card to a Customer
-      // hideLoader();
-      getMyInfo(true);
-      setCardError(false);
-      props.handleClose();
-    }
-  };
-
-  return (
-    <>
-      <form>
-        <input
-          type="text"
-          className="form-control"
-          onChange={(e) => setName(e.currentTarget.value)}
-          required
-          placeholder="Name on card"
-        />
-        <CardElement className="card_element_form"></CardElement>
-        {cardError ? (
-          <>
-            <i className="red">
-              <small>{cardError}</small>
-            </i>
-            <br />
-            <br />
-          </>
-        ) : (
-          <> </>
-        )}
-        <button onClick={handleSubmitCard} className="btn btn-lg">
-          Save
-        </button>
-      </form>
-    </>
-  );
-};
-
-const AddNewCard = (props) => {
-  let stripePromise;
-  const getStripe = () => {
-    if (!stripePromise) {
-      stripePromise = loadStripe(appConfig.stripe);
-    }
-    return stripePromise;
-  };
-
-  return (
-    <>
-      <Modal show={props.show} onHide={props.handleClose} className="Add_card">
-        <Modal.Header closeButton>
-          <Modal.Title className="add_card_title">
-            Add Payment Option
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="support_body">
-          <Elements stripe={getStripe()}>
-            <FormElement
-              PI={props.PI}
-              handleClose={props.handleClose}
-            ></FormElement>
-          </Elements>
-        </Modal.Body>
-      </Modal>
-    </>
-  );
-};
 
 const CheckoutForm = (props) => {
   const [error, setError] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
   const { userDetails } = useContext(AuthContext);
-  const [showNewCardForm, setShowNewCardForm] = useState(
-    props.stripeCustomerCard.length == 0
-  );
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
-  useEffect(() => {
-    setShowNewCardForm(props.stripeCustomerCard.length == 0);
-  }, [props.stripeCustomerCard]);
   const pmicons = {
     mastercard: mastercard,
     visa: visa,
     discover: discover,
-    "american express": AmericanExpress,
+    amex: AmericanExpress,
+    jcb: JCB,
   };
-  const [PI, setPI] = useState(false);
-  const [addcardpopupshow, setaddcardpopupshow] = useState(false);
-
-  const handlecardclose = () => setaddcardpopupshow(false);
-  const handlecardshow = () => {
-    getPI();
-    setaddcardpopupshow(true);
-  };
-
-  const getPI = () => {
-    getPIC().subscribe((response) => {
-      console.log(response, "REPONSE");
-      setPI(response.response.data);
-    });
-  };
-
+  const [showNewCardForm, setShowNewCardForm] = useState(
+    props.stripeCustomerCard.length == 0
+  );
+  // console.log(props.stripeCustomerCard.length == 0);
   const [selectedCard, setSelectedCard] = useState(false);
 
+  useEffect(() => {
+    setShowNewCardForm(props.stripeCustomerCard.length == 0);
+  }, [props.stripeCustomerCard]);
   // Handle real-time validation errors from the card Element.
   const handleChange = (event) => {
     if (event.error) {
@@ -179,15 +78,23 @@ const CheckoutForm = (props) => {
   const handleSubmit = async (event) => {
     // event.preventDefault();
     showLoader();
-    console.log(props.stripeCustomerCard);
-    payOrder({
-      orderId: props.orderid,
-      paymentMethodId: !selectedCard ? "" : selectedCard.paymentMethodId,
+    const card = elements.getElement(CardElement);
+
+    startSubscriptionPlan({
+      planName: props.planName,
+      billingaddress: props.checkoutInfo.billingaddress,
+      PAYMENTMETHODID: selectedCard.paymentMethodId,
     }).subscribe((response) => {
+      console.log(response);
       if (response.response.Requested_Action) {
-        localStorage.removeItem("sessipn");
+        history.push({
+          pathname: "/subscriptionreceipt",
+          state: { data: response.response.data },
+        });
         hideLoader();
-        history.push(`/receipt/${props.orderid}`);
+      } else {
+        hideLoader();
+        props.setPaymentError(response.response.Message);
       }
     });
   };
@@ -202,24 +109,13 @@ const CheckoutForm = (props) => {
 
   return (
     <>
-      <AddNewCard
-        value={""}
-        onChange={() => {}}
-        onStackSubmit={() => {}}
-        show={addcardpopupshow}
-        PI={PI}
-        handleClose={handlecardclose}
-      />
       {props.stripeCustomerCard.length ? (
         <>
-          <button
-            className="btn payment_switch"
-            type="button"
-            onClick={handlecardshow}
-          >
-            Add New Card
-          </button>
-
+          <a href="/profile">
+            <button className="btn payment_switch" type="button">
+              Add New Card
+            </button>
+          </a>
           {props.stripeCustomerCard.map((card, index) => {
             return (
               <div className={`form - group col - 12`} key={index}>
@@ -263,15 +159,17 @@ const CheckoutForm = (props) => {
   );
 };
 
-const Checkout = (props) => {
+const SubscriptionCheckout = (props) => {
   const { userDetails } = useContext(AuthContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
-
+  const [plans, setPlans] = useState([]);
   const { getMyInfo, myInfo, price } = useContext(AppContext);
   const [couponApplied, setCouponApplied] = useState(false);
   const [ApplyCouponShow, setApplyCouponShow] = useState(false);
   const [CheckoutError, setCheckoutError] = useState(false);
   const [PIC, setPIC] = useState(false);
+  const [planPrice, setPlanPrice] = useState(0);
+  const [paymentError, setPaymentError] = useState("");
   const [product, setProduct] = React.useState({
     name: "mpartial",
     price: price,
@@ -281,18 +179,27 @@ const Checkout = (props) => {
     orignalprice: "",
     newprice: "",
   });
-  const orderid = props.match.params.orderid;
+
+  const planName = props.match.params.planName;
 
   const [info, setInfo] = useState(false);
   const [validation, setvalidation] = useState({
     fname: userDetails().firstName.length == 0,
     lname: userDetails().lastName.length == 0,
     email: userDetails().emailAddress.length == 0,
+    billingaddress: "",
   });
   const [cardValidation, setCardValidation] = useState(false);
   // console.log("main_rendered");
   useEffect(() => {
     getMyInfo();
+
+    getSubscriptionPlans().subscribe((response) => {
+      const currentPlan = response.response.data.filter(
+        (plan) => plan.name === planName
+      );
+      setPlans(currentPlan);
+    });
   }, []);
 
   useEffect(() => {
@@ -308,9 +215,24 @@ const Checkout = (props) => {
   //   }
   // }, []);
 
-  const getPICO = (isCoupedCode?, isCheckoutFormSubmitted?) => {
-    setCheckoutError(false);
-    setIsFormSubmitted(true);
+  const getPICO = () => {
+    getPIC().subscribe((response) => {
+      if (response.response.Requested_Action) {
+        // console.log(response.response);
+        setPIC(response.response.Message);
+
+        setCheckoutError(false);
+        setIsFormSubmitted(false);
+
+        console.log("hello");
+        setIsFormSubmitted(true);
+        // if (isCheckoutFormSubmitted) setIsFormSubmitted(isCoupedCode);
+      } else {
+        // getPICO(isCoupedCode);
+        setCheckoutError("Server Error");
+        hideLoader();
+      }
+    });
   };
 
   const handleApplyCouponclose = () => setApplyCouponShow(false);
@@ -327,6 +249,10 @@ const Checkout = (props) => {
       orignalprice: couponData.orignalprice,
       newprice: couponData.newprice,
     });
+    // getPICO(true);
+    // setPrice(couponData.price);
+    // getPICO(couponData.coupon);
+    // setCouponApplied(couponData.coupon);
   };
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -335,6 +261,7 @@ const Checkout = (props) => {
     firstName: userDetails().firstName,
     lastName: userDetails().lastName,
     emailAddress: userDetails().emailAddress,
+    billingaddress: "",
   });
 
   useEffect(() => {
@@ -358,6 +285,7 @@ const Checkout = (props) => {
       fname: checkoutInfo.firstName.length == 0,
       lname: checkoutInfo.lastName.length == 0,
       email: checkoutInfo.emailAddress.length == 0,
+      billingaddress: checkoutInfo.billingaddress.length == 0,
     });
   };
 
@@ -377,7 +305,7 @@ const Checkout = (props) => {
             onSubmit={(e) => {
               e.preventDefault();
 
-              getPICO(false, true);
+              getPICO();
             }}
           >
             <div className="row">
@@ -454,6 +382,90 @@ const Checkout = (props) => {
             </div>
 
             <div className="row">
+              <div className={`form - group col - 12`}>
+                <label>
+                  Billing Address <span className="red">*</span>
+                </label>
+                <PlacesAutocomplete
+                  searchOptions={{
+                    componentRestrictions: {
+                      country: "us",
+                    },
+                    country: "us",
+                  }}
+                  value={checkoutInfo.billingaddress}
+                  onChange={(address) => {
+                    setCheckoutInfo({
+                      ...checkoutInfo,
+                      billingaddress: address,
+                    });
+                  }}
+                  onSelect={(address) => {
+                    setCheckoutInfo({
+                      ...checkoutInfo,
+                      billingaddress: address,
+                    });
+                  }}
+                >
+                  {({
+                    getInputProps,
+                    suggestions,
+                    getSuggestionItemProps,
+                    loading,
+                  }) => (
+                    <div>
+                      <input
+                        {...getInputProps({
+                          placeholder: "Billing Address",
+                          className: "form-control",
+                        })}
+                      />
+                      {suggestions.length != 0 && (
+                        <div className="address_dropdown w-90">
+                          {loading && <div>Loading...</div>}
+                          {suggestions.map((suggestion) => {
+                            const className = suggestion.active
+                              ? "suggestion-item active"
+                              : "suggestion-item";
+                            // inline style for demonstration purpose
+                            const style = suggestion.active
+                              ? {
+                                  backgroundColor: "#fafafa",
+                                  cursor: "pointer",
+                                  padding: "20px",
+                                }
+                              : {
+                                  backgroundColor: "#ffffff",
+                                  cursor: "pointer",
+                                  padding: "20px",
+                                };
+                            return (
+                              <div
+                                {...getSuggestionItemProps(suggestion, {
+                                  className,
+                                  style,
+                                })}
+                              >
+                                <span>{suggestion.description}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}{" "}
+                    </div>
+                  )}
+                </PlacesAutocomplete>
+                {validation.billingaddress ? (
+                  <span className="password_not_matched">
+                    Billing Address Is Required.
+                  </span>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+
+            <div className="row">
               <div className="col sub_titles">Payment Method</div>
             </div>
 
@@ -464,14 +476,16 @@ const Checkout = (props) => {
                 <div className={`form - group col - 12`}>
                   <Elements stripe={getStripe()}>
                     <CheckoutForm
-                      orderid={orderid}
+                      //orderid={orderid}
+                      setPaymentError={setPaymentError}
+                      planName={planName}
                       isFormSubmitted={isFormSubmitted}
-                      ischildaccount={info.ischildaccount}
                       setIsFormSubmitted={handleFormSubmittion}
                       stripeCustomerCard={info ? info.stripeCustomerCard : []}
                       setCardValidation={handleCardAction}
                       cardValidation={cardValidation}
                       checkoutInfo={checkoutInfo}
+                      PIC={PIC}
                     />
                   </Elements>
                   {/* <input type="checkbox" /> Card Ending 7878 */}
@@ -503,55 +517,107 @@ const Checkout = (props) => {
               <div className="col sub_titles">Your Order</div>
             </div>
 
-            <div className="order_checkout_details">
-              <div className="col-12">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Product</th>
-                      <th>Price</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Mpartial</td>
-                      <td>${price}</td>
-                    </tr>
-                    {product.coupon && product.coupon.length ? (
-                      <>
-                        <tr>
-                          <td>Coupon Discount ({product.coupon})</td>
-                          <td>
-                            <div>-${product.amountsubtraced / 100}</div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Total</td>
-                          <td>
-                            $
-                            {product.newprice > 0
-                              ? product.newprice / 100
-                              : product.newprice}
-                          </td>
-                        </tr>
-                      </>
-                    ) : (
-                      <>
-                        <tr>
-                          <td>Subtotal</td>
-                          <td>${price}</td>
-                        </tr>
+            {plans.length > 0 ? (
+              <div className="order_checkout_details">
+                <div className="col-12">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{plans[0].name}</td>
+                        <td>${plans[0].price}</td>
+                      </tr>
+                      {product.coupon && product.coupon.length ? (
+                        <>
+                          <tr>
+                            <td>Coupon Discount ({product.coupon})</td>
+                            <td>
+                              <div>-${product.amountsubtraced / 100}</div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Total</td>
+                            <td>
+                              $
+                              {product.newprice > 0
+                                ? product.newprice / 100
+                                : product.newprice}
+                            </td>
+                          </tr>
+                        </>
+                      ) : (
+                        <>
+                          <tr>
+                            <td>Subtotal</td>
+                            <td>${plans[0].price}</td>
+                          </tr>
 
-                        <tr>
-                          <td>Total</td>
-                          <td>${price}</td>
-                        </tr>
-                      </>
-                    )}
-                  </tbody>
-                </table>
+                          <tr>
+                            <td>Total</td>
+                            <td>${plans[0].price}</td>
+                          </tr>
+                        </>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="order_checkout_details">
+                <div className="col-12">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Mpartial</td>
+                        <td>${price}</td>
+                      </tr>
+                      {product.coupon && product.coupon.length ? (
+                        <>
+                          <tr>
+                            <td>Coupon Discount ({product.coupon})</td>
+                            <td>
+                              <div>-${product.amountsubtraced / 100}</div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Total</td>
+                            <td>
+                              $
+                              {product.newprice > 0
+                                ? product.newprice / 100
+                                : product.newprice}
+                            </td>
+                          </tr>
+                        </>
+                      ) : (
+                        <>
+                          <tr>
+                            <td>Subtotal</td>
+                            <td>${price}</td>
+                          </tr>
+
+                          <tr>
+                            <td>Total</td>
+                            <td>${price}</td>
+                          </tr>
+                        </>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
 
             <div className="row">
               {CheckoutError ? (
@@ -563,35 +629,42 @@ const Checkout = (props) => {
               )}
               <div className="col submit_btn_container">
                 {product.coupon && product.newprice == 0 ? (
-                  <button className="btn" type="submit" id="formButton">
-                    <Loader text="Checkout"></Loader>
-                  </button>
-                ) : (
                   <button
                     className="btn"
                     type="submit"
-                    // id="formButton"
-                    onClick={checkValidation}
-                    disabled={
-                      checkoutInfo.firstName == "" ||
-                      checkoutInfo.lastName == "" ||
-                      checkoutInfo.emailAddress == "" ||
-                      (info.ischildaccount
-                        ? ""
-                        : !cardValidation
-                        ? true
-                        : false)
-                    }
+                    id="formButton"
+                    // onClick={saveFreeOrder}
                   >
                     <Loader text="Checkout"></Loader>
                   </button>
+                ) : (
+                  <div>
+                    <span className="password_not_matched">{paymentError}</span>
+                    <button
+                      className="btn"
+                      type="submit"
+                      id="formButton"
+                      onClick={checkValidation}
+                      disabled={
+                        checkoutInfo.firstName == "" ||
+                        checkoutInfo.lastName == "" ||
+                        checkoutInfo.emailAddress == "" ||
+                        checkoutInfo.billingaddress == "" ||
+                        !cardValidation
+                          ? true
+                          : false
+                      }
+                    >
+                      <Loader text="Checkout"></Loader>
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
           </form>
         </div>
       </div>
-      {ApplyCouponShow && (
+      {/* {ApplyCouponShow && (
         <ApplyCoupon
           value={""}
           onSubmitSuccess={onSubmitSuccess}
@@ -601,9 +674,9 @@ const Checkout = (props) => {
             orderId: orderid,
           }}
         />
-      )}
+      )} */}
     </>
   );
 };
 
-export default withRouter(Checkout);
+export default withRouter(SubscriptionCheckout);

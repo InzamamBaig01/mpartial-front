@@ -15,6 +15,7 @@ export const EditProfile: React.FC<any> = (props) => {
     lastName: "",
     phonenumber: "",
     role: "",
+    company: "",
     thetoken: localStorage.token,
   });
   const [profileImage, setProfileImage] = useState<any>({
@@ -85,6 +86,7 @@ export const EditProfile: React.FC<any> = (props) => {
       lastName: props.info.lastName,
       phonenumber: props.info.phone,
       role: props.info.role,
+      company: props.info.companyname,
       // profilepicture: false,
       // profileImage: false,
       thetoken: localStorage.token,
@@ -269,6 +271,26 @@ export const EditProfile: React.FC<any> = (props) => {
                     )}
                   </InputMask>
                 </div>
+                {props.info.subscriptionstatus === "NotActive" ||
+                props.info.ischildaccount ? (
+                  ""
+                ) : (
+                  <div className="form-group">
+                    <label>Company Name</label>
+
+                    <input
+                      type="text"
+                      className="form-control"
+                      onChange={(e) =>
+                        setData({
+                          ...data,
+                          company: e.currentTarget.value,
+                        })
+                      }
+                      value={data.company}
+                    ></input>
+                  </div>
+                )}
               </div>
               <div className="col">
                 <div className="form-group">
