@@ -1,0 +1,18 @@
+<svg width="11.387" height="11.387" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <style>.a,.c{fill:#6ac259;}.b{fill:#fff;}.c{font-size:12px;font-family:Gilroy-Regular, Gilroy;}</style>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="13.387" width="13.387" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g stroke="null" id="svg_1">
+   <g stroke="null" id="svg_2">
+    <circle stroke="null" id="svg_3" r="5.531479" cy="5.693563" cx="5.697691" class="a"/>
+    <path stroke="null" id="svg_4" d="m4.683044,8.534785l-2.435916,-2.435916l0.811972,-0.811972l1.623944,1.623944l3.653229,-3.653229l0.811972,0.811972l-4.465201,4.465201z" class="b"/>
+   </g>
+  </g>
+ </g>
+</svg>
