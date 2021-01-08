@@ -26,7 +26,7 @@ const TransactionHistory = () => {
               return (
                 <tr key={i}>
                   <td>{moment(his.createdAt).format("MMM DD - YYYY")}</td>
-                  <td>${his.amountincents / 100}</td>
+                  <td>${his.chargedamountincents / 100}</td>
                   <td>{his.status == "Succeeded" ? "Paid" : his.status}</td>
                   <td>
                     {his.recipturl != null && (

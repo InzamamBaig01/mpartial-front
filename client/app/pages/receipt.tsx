@@ -33,7 +33,10 @@ const Receipt = (props) => {
         <br />
         <div className="container receipt_details">
           <div className="receipt_info">
-          Thank you for your deposit. Your request is being processed. You can expect the deliverable to arrive in your inbox within the next 4 business days. A receipt for this transaction has been sent to the email associated with your account.
+            Thank you for your deposit. Your request is being processed. You can
+            expect the deliverable to arrive in your inbox within the next 4
+            business days. A receipt for this transaction has been sent to the
+            email associated with your account.
           </div>
           <div className="row order_details_row">
             <div className="col">
@@ -46,13 +49,20 @@ const Receipt = (props) => {
             </div>
             <div className="col">
               <label>Email</label>
-              <div className="receipt_data" title={userDetails().emailAddress}>{userDetails().emailAddress.length > 20 ? userDetails().emailAddress.substring(0, 20) + "..." : userDetails().emailAddress}</div>
+              <div className="receipt_data" title={userDetails().emailAddress}>
+                {userDetails().emailAddress.length > 20
+                  ? userDetails().emailAddress.substring(0, 20) + "..."
+                  : userDetails().emailAddress}
+              </div>
             </div>
             <div className="col">
               <label>Total</label>
-              <div className="receipt_data">${
-                order.couponapplied && order.couponapplied.length ? order.amountInCents / 100 : price
-              }.00</div>
+              <div className="receipt_data">
+                $
+                {order.couponapplied && order.couponapplied.length
+                  ? order.amountInCents / 100
+                  : price}
+              </div>
             </div>
           </div>
           <div className="row">
@@ -68,44 +78,38 @@ const Receipt = (props) => {
                   </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                      <td>Mpartial </td>
-                      <td>${price}</td>
-                    </tr>
-                    {
-                      order.couponapplied && order.couponapplied.length ? (
-                        <>
-                          <tr>
-                            <td>Coupon Discount ({order.couponapplied})</td>
-                            <td>
-                              <div>-${order.amountsubtraced / 100}</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Total</td>
-                            <td>${order.amountInCents / 100}</td>
-                          </tr>
-                        </>
-                      ) : (
-                          <>
-                            <tr>
-                              <td>Subtotal</td>
-                              <td>${price}</td>
-                            </tr>
+                  <tr>
+                    <td>Mpartial </td>
+                    <td>${price}</td>
+                  </tr>
+                  {order.couponapplied && order.couponapplied.length ? (
+                    <>
+                      <tr>
+                        <td>Coupon Discount ({order.couponapplied})</td>
+                        <td>
+                          <div>-${order.amountsubtraced / 100}</div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Total</td>
+                        <td>${order.amountInCents / 100}</td>
+                      </tr>
+                    </>
+                  ) : (
+                    <>
+                      <tr>
+                        <td>Subtotal</td>
+                        <td>${price}</td>
+                      </tr>
 
-
-                            <tr>
-                              <td>Total</td>
-                              <td>${price}</td>
-                            </tr>
-                          </>
-                        )
-                    }
-
-
-
-                  </tbody>
-                </table>
+                      <tr>
+                        <td>Total</td>
+                        <td>${price}</td>
+                      </tr>
+                    </>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
           <div className="row">

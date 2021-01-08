@@ -32,6 +32,7 @@ const SubscriptionReceipt = (props) => {
   return (
     <>
       <Header isFixedColor={true}></Header>
+
       {props.location.state ? (
         <div className="other_pages_container">
           <h1 className="title text-center">Receipt</h1>
@@ -56,9 +57,23 @@ const SubscriptionReceipt = (props) => {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>{props.location.state.data.planname} </td>
-                      <td>${props.location.state.data.amountincents / 100}</td>
+                      <td>{props.location.state.data.planname}</td>
+                      <td>
+                        ${props.location.state.data.orignalpriceincents / 100}
+                      </td>
                     </tr>
+                    {props.location.state.data.couponcode ? (
+                      <tr>
+                        <td>
+                          Coupon Code ({props.location.state.data.couponcode})
+                        </td>
+                        <td>
+                          -${props.location.state.data.amountreduced / 100}
+                        </td>
+                      </tr>
+                    ) : (
+                      ""
+                    )}
                     {/* {order.couponapplied && order.couponapplied.length ? (
                     <>
                       <tr>
@@ -75,12 +90,6 @@ const SubscriptionReceipt = (props) => {
                   ) : ( */}
                     <>
                       <tr>
-                        <td>Subtotal</td>
-                        <td>
-                          ${props.location.state.data.amountincents / 100}
-                        </td>
-                      </tr>
-                      <tr>
                         <td>Payment Method</td>
                         <td>Credit Card</td>
                       </tr>
@@ -88,7 +97,8 @@ const SubscriptionReceipt = (props) => {
                       <tr>
                         <td>Total</td>
                         <td>
-                          ${props.location.state.data.amountincents / 100}
+                          $
+                          {props.location.state.data.chargedamountincents / 100}
                         </td>
                       </tr>
                     </>
@@ -126,7 +136,8 @@ const SubscriptionReceipt = (props) => {
                         ).format("LL")}
                       </td>
                       <td>
-                        ${props.location.state.data.amountincents / 100}/month
+                        ${props.location.state.data.chargedamountincents / 100}
+                        /month
                       </td>
                     </tr>
                   </tbody>

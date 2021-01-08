@@ -3,7 +3,10 @@ import { AppAlertsContext } from "contexts/appAlertsContext";
 import { AppContext } from "contexts/appContext";
 import { Modal } from "react-bootstrap";
 import Loader from "app/components/Loader";
-import { applyCoupons } from "utils/api-routes/api-routes.util";
+import {
+  applyCoupons,
+  applySubscriptionCoupons,
+} from "utils/api-routes/api-routes.util";
 
 const ApplyCoupon = (props) => {
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
@@ -16,19 +19,35 @@ const ApplyCoupon = (props) => {
     showLoader();
     //  price - (price * (discount % / 100))
     const newPrice = price - price * (50 / 100);
-    applyCoupons({
-      orderId: props.info.orderId,
-      coupon: coupon,
-    }).subscribe((response) => {
-      if (response.response.Requested_Action) {
-        // success
-        props.onSubmitSuccess(response.response.data);
-        setCouponError(false);
-      } else {
-        // error
-        setCouponError(response.response.Message);
-      }
-    });
+    if (props.isPlan) {
+      applySubscriptionCoupons({
+        planName: props.planName,
+        coupon: coupon,
+      }).subscribe((response) => {
+        if (response.response.Requested_Action) {
+          // success
+          props.onSubmitSuccess(response.response.data);
+          setCouponError(false);
+        } else {
+          // error
+          setCouponError(response.response.Message);
+        }
+      });
+    } else {
+      applyCoupons({
+        orderId: props.info.orderId,
+        coupon: coupon,
+      }).subscribe((response) => {
+        if (response.response.Requested_Action) {
+          // success
+          props.onSubmitSuccess(response.response.data);
+          setCouponError(false);
+        } else {
+          // error
+          setCouponError(response.response.Message);
+        }
+      });
+    }
 
     hideLoader();
   };

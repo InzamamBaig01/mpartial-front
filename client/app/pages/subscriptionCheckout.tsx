@@ -82,6 +82,7 @@ const CheckoutForm = (props) => {
 
     startSubscriptionPlan({
       planName: props.planName,
+      couponcode: props.couponcode,
       billingaddress: props.checkoutInfo.billingaddress,
       PAYMENTMETHODID: selectedCard.paymentMethodId,
     }).subscribe((response) => {
@@ -167,6 +168,7 @@ const SubscriptionCheckout = (props) => {
   const [couponApplied, setCouponApplied] = useState(false);
   const [ApplyCouponShow, setApplyCouponShow] = useState(false);
   const [CheckoutError, setCheckoutError] = useState(false);
+  const [coupon, setCoupon] = useState("");
   const [PIC, setPIC] = useState(false);
   const [planPrice, setPlanPrice] = useState(0);
   const [paymentError, setPaymentError] = useState("");
@@ -486,6 +488,7 @@ const SubscriptionCheckout = (props) => {
                       cardValidation={cardValidation}
                       checkoutInfo={checkoutInfo}
                       PIC={PIC}
+                      couponcode={coupon}
                     />
                   </Elements>
                   {/* <input type="checkbox" /> Card Ending 7878 */}
@@ -530,7 +533,7 @@ const SubscriptionCheckout = (props) => {
                     <tbody>
                       <tr>
                         <td>{plans[0].name}</td>
-                        <td>${plans[0].price}</td>
+                        <td>${plans[0].price / 100}</td>
                       </tr>
                       {product.coupon && product.coupon.length ? (
                         <>
@@ -554,12 +557,12 @@ const SubscriptionCheckout = (props) => {
                         <>
                           <tr>
                             <td>Subtotal</td>
-                            <td>${plans[0].price}</td>
+                            <td>${plans[0].price / 100}</td>
                           </tr>
 
                           <tr>
                             <td>Total</td>
-                            <td>${plans[0].price}</td>
+                            <td>${plans[0].price / 100}</td>
                           </tr>
                         </>
                       )}
@@ -596,7 +599,7 @@ const SubscriptionCheckout = (props) => {
                               $
                               {product.newprice > 0
                                 ? product.newprice / 100
-                                : product.newprice}
+                                : product.newprice / 100}
                             </td>
                           </tr>
                         </>
@@ -604,12 +607,12 @@ const SubscriptionCheckout = (props) => {
                         <>
                           <tr>
                             <td>Subtotal</td>
-                            <td>${price}</td>
+                            <td>${price / 100}</td>
                           </tr>
 
                           <tr>
                             <td>Total</td>
-                            <td>${price}</td>
+                            <td>${price / 100}</td>
                           </tr>
                         </>
                       )}
@@ -664,17 +667,21 @@ const SubscriptionCheckout = (props) => {
           </form>
         </div>
       </div>
-      {/* {ApplyCouponShow && (
+
+      {ApplyCouponShow && (
         <ApplyCoupon
           value={""}
           onSubmitSuccess={onSubmitSuccess}
           show={ApplyCouponShow}
           handleClose={handleApplyCouponclose}
-          info={{
-            orderId: orderid,
-          }}
+          planName={plans[0].name}
+          setCoupon={setCoupon}
+          isPlan={true}
+          // info={{
+          //   orderId: orderid,
+          // }}
         />
-      )} */}
+      )}
     </>
   );
 };

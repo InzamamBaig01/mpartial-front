@@ -803,7 +803,7 @@ const Profile = (props) => {
                                   )}
                                 </div>
                                 <div className="col-lg-4 col-xs-12 text-right d-flex align-items-center justify-content-end">
-                                  <h3> ${filteredPlan[0].price}</h3>
+                                  <h3> ${filteredPlan[0].price / 100}</h3>
                                   <span className="interval">
                                     /{filteredPlan[0].intervalUnit}
                                   </span>
@@ -908,7 +908,7 @@ const Profile = (props) => {
                                     </Badge>
                                   </div>
                                   <div className="col-lg-4 col-xs-12 text-right d-flex align-items-center justify-content-end">
-                                    <h3> ${plan.price}</h3>
+                                    <h3> ${plan.price / 100}</h3>
                                     <span className="interval">
                                       /{plan.intervalUnit}
                                     </span>
