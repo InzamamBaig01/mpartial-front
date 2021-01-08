@@ -8,102 +8,102 @@ const priceRanges = [
   {
     from: 950001,
     to: 1000000,
-    value: "4.70",
+    value: "3.00",
   },
   {
     from: 900001,
     to: 950000,
-    value: "4.98",
+    value: "3.24",
   },
   {
     from: 850001,
     to: 900000,
-    value: "5.12",
+    value: "3.3",
   },
   {
     from: 800001,
     to: 850000,
-    value: "5.26",
+    value: "3.42",
   },
   {
     from: 750001,
     to: 800000,
-    value: "5.40",
+    value: "3.51",
   },
   {
     from: 700001,
     to: 750000,
-    value: "5.54",
+    value: "3.60",
   },
   {
     from: 650001,
     to: 700000,
-    value: "5.68",
+    value: "3.69",
   },
   {
     from: 600001,
     to: 650000,
-    value: "5.82",
+    value: "3.78",
   },
   {
     from: 550001,
     to: 600000,
-    value: "5.96",
+    value: "3.87",
   },
   {
     from: 500001,
     to: 550000,
-    value: "6.10",
+    value: "3.97",
   },
   {
     from: 450001,
     to: 500000,
-    value: "6.24",
+    value: "4.06",
   },
   {
     from: 400001,
     to: 450000,
-    value: "6.38",
+    value: "4.15",
   },
   {
     from: 350001,
     to: 400000,
-    value: "6.52",
+    value: "4.24",
   },
   {
     from: 300001,
     to: 350000,
-    value: "6.66",
+    value: "4.33",
   },
   {
     from: 250001,
     to: 300000,
-    value: "6.80",
+    value: "4.42",
   },
   {
     from: 200001,
     to: 250000,
-    value: "6.94",
+    value: "4.51",
   },
   {
     from: 150001,
     to: 200000,
-    value: "7.08",
+    value: "4.60",
   },
   {
     from: 100001,
     to: 150000,
-    value: "7.22",
+    value: "4.69",
   },
   {
     from: 50001,
     to: 100000,
-    value: "7.36",
+    value: "4.78",
   },
   {
     from: 0,
     to: 50000,
-    value: "7.50",
+    value: "4.85",
   },
 ];
 
@@ -138,7 +138,7 @@ const WaterFall: React.FC<WaterFallProps> = ({}) => {
       <Popover.Content>
         <p className="popver_text">
           Fee Structure Example: An estimate grand total of $100k will result in
-          a fee of $7,360. The $750 deposit will be collected upon submission
+          a fee of $4,784. The $750 deposit will be collected upon submission
           and applied toward the overarching fee.
         </p>
       </Popover.Content>

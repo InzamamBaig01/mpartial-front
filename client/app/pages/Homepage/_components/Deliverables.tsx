@@ -28,8 +28,7 @@ const Deliverables: React.FC<DeliverablesProps> = ({}) => {
             type="center"
           ></SectionTitle>
           <h3 className={"widget-title sub mt-1"}>
-            Pre-Mitigation Scan + Post-Mitigation Scan = ESX & SKX (TruePlan
-            PLUS)
+            Pre-Mitigation Scan + Post-Mitigation Scan = ESX & SKX (TruePlan)
           </h3>
           <LazyLoad offset={50}>
             <div className={"deliver_widget_container"}>
@@ -59,7 +58,7 @@ const Deliverables: React.FC<DeliverablesProps> = ({}) => {
                 target="_blank"
                 rel="noopener"
               >
-                TruePlan PLUS [SKX]
+                TruePlan [SKX]
               </a>
             </h3>
             <section className={"sketch-container"}>

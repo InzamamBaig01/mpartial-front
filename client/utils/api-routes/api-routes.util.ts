@@ -301,7 +301,7 @@ export const payOrder = (payload) => {
   return ajax({
     headers: requestHeader(),
     method: "POST",
-    url: `${baseURL}/Client/payForOrder?&thetoken=${localStorage.token}&orderId=${payload.orderId}&PaymentMethodID=${payload.paymentMethodId}`,
+    url: `${baseURL}/Client/payForOrder?&thetoken=${localStorage.token}&orderId=${payload.orderId}&couponcode=${payload.couponcode}&PaymentMethodID=${payload.paymentMethodId}`,
   }).pipe(catchError(handleError("tokenCheck")));
 };
 
@@ -309,7 +309,7 @@ export const startSubscriptionPlan = (payload) => {
   return ajax({
     headers: requestHeader(),
     method: "POST",
-    url: `${baseURL}/Client/startSubscriptionPlan?planName=${payload.planName}&billingaddress=${payload.billingaddress}&PAYMENTMETHODID=${payload.PAYMENTMETHODID}&thetoken=${localStorage.token}`,
+    url: `${baseURL}/Client/startSubscriptionPlan?planName=${payload.planName}&billingaddress=${payload.billingaddress}&PAYMENTMETHODID=${payload.PAYMENTMETHODID}&couponcode=${payload.couponcode}&thetoken=${localStorage.token}`,
   }).pipe(catchError(handleError("tokenCheck")));
 };
 
@@ -438,7 +438,15 @@ export const applyCoupons = (payload) => {
   return ajax({
     headers: requestHeader(),
     method: "POST",
-    url: `${baseURL}/Client/applycoupon?thetoken=${localStorage.token}&orderId=${payload.orderId}&couponCode=${payload.coupon}`,
+    url: `${baseURL}/Client/getCouponPreview?thetoken=${localStorage.token}&orderId=${payload.orderId}&couponCode=${payload.coupon}`,
+  }).pipe(catchError(handleError("tokenCheck")));
+};
+
+export const applySubscriptionCoupons = (payload) => {
+  return ajax({
+    headers: requestHeader(),
+    method: "POST",
+    url: `${baseURL}/Client/getSubscriptionCouponPreview?thetoken=${localStorage.token}&planName=${payload.planName}&couponCode=${payload.coupon}`,
   }).pipe(catchError(handleError("tokenCheck")));
 };
 

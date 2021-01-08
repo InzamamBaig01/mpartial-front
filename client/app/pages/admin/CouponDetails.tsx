@@ -44,6 +44,7 @@ const AddCoupons = (props) => {
         duData.forcustomeremail == null ? "Public" : "Customer";
       const currentCouponType =
         duData.offpercentage == null ? "Fixed" : "Percentage";
+      const subtractfixedamount = duData.subtractfixedamount / 100;
       setData({
         couponcode: "",
         activefrom: new Date(duData.activefrom).toISOString(),
@@ -51,7 +52,7 @@ const AddCoupons = (props) => {
         offpercentage:
           currentCouponType == "Percentage" ? duData.offpercentage : "",
         subtractfixedamount:
-          currentCouponType == "Fixed" ? duData.subtractfixedamount : "",
+          currentCouponType == "Fixed" ? subtractfixedamount : "",
         forcustomeremail:
           currentCouponFor == "Customer" ? duData.forcustomeremail : "",
         maxusagecountperuser:
@@ -86,6 +87,13 @@ const AddCoupons = (props) => {
     e.preventDefault();
     data.expiry = moment(data.expiry).format("YYYY-MM-DD");
     data.activefrom = moment(data.activefrom).format("YYYY-MM-DD");
+
+    if (couponType === "Percentage") {
+      data.offpercentage = data.offpercentage;
+    } else {
+      data.subtractfixedamount = data.subtractfixedamount * 100;
+    }
+
     Object.keys(data).map((key) => {
       data[key] =
         typeof data[key] == "string"
@@ -500,7 +508,7 @@ const CouponDetails = (props) => {
                   <div className="col text-left">
                     {coupon.offpercentage != null
                       ? `${coupon.offpercentage}%`
-                      : coupon.subtractfixedamount}
+                      : `$${coupon.subtractfixedamount / 100}`}
                   </div>
                 </div>
                 <div className="row">

@@ -182,6 +182,7 @@ const CheckoutForm = (props) => {
     console.log(props.stripeCustomerCard);
     payOrder({
       orderId: props.orderid,
+      couponcode: props.coupon,
       paymentMethodId: !selectedCard ? "" : selectedCard.paymentMethodId,
     }).subscribe((response) => {
       if (response.response.Requested_Action) {
@@ -266,7 +267,7 @@ const CheckoutForm = (props) => {
 const Checkout = (props) => {
   const { userDetails } = useContext(AuthContext);
   const { showLoader, hideLoader } = useContext(AppAlertsContext);
-
+  const [coupon, setCoupon] = useState("");
   const { getMyInfo, myInfo, price } = useContext(AppContext);
   const [couponApplied, setCouponApplied] = useState(false);
   const [ApplyCouponShow, setApplyCouponShow] = useState(false);
@@ -471,6 +472,7 @@ const Checkout = (props) => {
                       stripeCustomerCard={info ? info.stripeCustomerCard : []}
                       setCardValidation={handleCardAction}
                       cardValidation={cardValidation}
+                      coupon={coupon}
                       checkoutInfo={checkoutInfo}
                     />
                   </Elements>
@@ -596,6 +598,7 @@ const Checkout = (props) => {
           value={""}
           onSubmitSuccess={onSubmitSuccess}
           show={ApplyCouponShow}
+          setCoupon={setCoupon}
           handleClose={handleApplyCouponclose}
           info={{
             orderId: orderid,
