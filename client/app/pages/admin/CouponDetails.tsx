@@ -393,6 +393,7 @@ const CouponDetails = (props) => {
       console.log(coupon);
       couponUsageHistory({
         couponId: coupon.id,
+        isSubscriptionCoupon: false,
       }).subscribe((response) => {
         setCouponHistory(response.response.data);
       });
