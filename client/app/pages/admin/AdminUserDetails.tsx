@@ -285,7 +285,7 @@ const AdminUserDetails = (props) => {
                         <div className="col-md-4 col-sm-6 col-xs-6 label-text">
                           <label>Sub-Accounts</label>
                           <div className="order_details_value">
-                            {user.childs.length}
+                            {user.childs ? user.childs.length : ""}
                           </div>
                         </div>
                       )}
@@ -302,7 +302,7 @@ const AdminUserDetails = (props) => {
                         <div>
                           <DataTable
                             columns={columns}
-                            data={user.childs}
+                            data={user.childs ? user.childs : ""}
                             responsive={true}
                             pagination={true}
                           />

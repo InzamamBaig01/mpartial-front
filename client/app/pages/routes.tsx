@@ -80,6 +80,13 @@ export const ROUTES = [
     title: "emailverification",
   },
   {
+    component: Homepage,
+    isPublic: true,
+    path: "/Client/acceptInvite",
+    // slug: "emailverification",
+    // title: "emailverification",
+  },
+  {
     component: Profile,
     isExact: true,
     checkLogin: true,
