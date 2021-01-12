@@ -1,33 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const AdminSidebar = () => {
+const AdminSidebar = (props) => {
+  console.log("Props", location.pathname);
   return (
     <>
       <aside>
         <ul>
           <li>
-            <Link to="/allorders">
+            <Link
+              className={location.pathname === "/allorders" ? "active" : ""}
+              to="/allorders"
+            >
               <span></span>Orders
             </Link>
           </li>
           <li>
-            <Link to="/user-management">
+            <Link
+              className={
+                location.pathname === "/user-management" ? "active" : ""
+              }
+              to="/user-management"
+            >
               <span></span> Customers
             </Link>
           </li>
           <li>
-            <Link to="/coupons">
+            <Link
+              className={location.pathname === "/coupons" ? "active" : ""}
+              to="/coupons"
+            >
               <span></span>Coupons
             </Link>
           </li>
           <li>
-            <Link to="/subscription_coupons">
+            <Link
+              className={
+                location.pathname === "/subscription_coupons" ? "active" : ""
+              }
+              to="/subscription_coupons"
+            >
               <span></span>Subscription Coupons
             </Link>
           </li>
           <li>
-            <Link to="/allsubscriptions">
+            <Link
+              className={
+                location.pathname === "/allsubscriptions" ? "active" : ""
+              }
+              to="/allsubscriptions"
+            >
               <span></span> Subscriptions
             </Link>
           </li>

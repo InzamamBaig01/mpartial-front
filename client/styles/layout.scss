@@ -10,7 +10,6 @@
 .cpjOdh,
 .hheJEU {
   font-weight: 800;
-  font-size: 14px;
 }
 
 .order_check {
@@ -1705,7 +1704,7 @@ a {
       background: url(../assets/order.svg) no-repeat 10px 8px;
     }
     ul li:first-child:hover {
-      background: url(../assets/order.svg) no-repeat 10px 8px;
+      background: url(../assets/order.svg) no-repeat 10px 8px !important;
     }
     ul li:nth-child(2) {
       background: url(../assets/user-admin.svg) no-repeat 10px 8px;
@@ -1735,7 +1734,7 @@ a {
     }
     ul li:last-child:hover,
     ul li:last-child:active {
-      background: url(../assets/subscription-hover.png) no-repeat 10px 7px;
+      background: url(../assets/subscription.png) no-repeat 10px 7px;
       background-size: 20px;
     }
     ul li a,
@@ -1746,7 +1745,8 @@ a {
       text-decoration: none;
       border-radius: 4px;
     }
-    ul li a:hover {
+    ul li a:hover,
+    .active {
       color: #3ac280;
       background: rgba(58, 194, 128, 0.25);
     }
