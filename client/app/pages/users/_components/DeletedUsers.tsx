@@ -4,6 +4,8 @@ import Modal from "react-bootstrap/Modal";
 import image from "../../../../assets/userProfile.svg";
 import reinvite from "../../../../assets/reinvite.png";
 import check from "../../../../assets/checkBig.png";
+import chat from "../../../../assets/chat.png";
+
 import { inviteUsers } from "utils/api-routes/api-routes.util";
 import { AppContext } from "contexts/appContext";
 
@@ -12,6 +14,7 @@ const DeletedUsers = (props) => {
   const [filteredUsers, setFilteredUser] = useState([]);
   const [toRemove, setEmail] = useState("");
   const [modal, setModal] = useState(false);
+  const [error, setError] = useState(false);
 
   const [formDetails, setFormDetails] = useState({
     toInvite: "",
@@ -22,6 +25,8 @@ const DeletedUsers = (props) => {
     const stringified = queryString.stringify(formDetails);
     inviteUsers(stringified).subscribe((response) => {
       if (response.response.Requested_Action) {
+      } else {
+        setError(response.response.Message);
       }
       getMyInvitedUser();
     });
@@ -55,10 +60,16 @@ const DeletedUsers = (props) => {
             className="d-flex align-items-center justify-content-center mt-3"
             style={{ margin: "0 auto" }}
           >
-            <img src={check} width="60px" />
+            {error ? (
+              <img src={chat} width="60px" />
+            ) : (
+              <img src={check} width="60px" />
+            )}
           </div>
 
-          <div className="mt-4">User Reactivated</div>
+          <div className="mt-4 text-center">
+            {error ? error : "User Reactivated"}
+          </div>
         </Modal.Body>{" "}
         <Modal.Footer style={{ borderTop: "none", margin: "0 auto" }}>
           <button className="btn" onClick={handleClose}>

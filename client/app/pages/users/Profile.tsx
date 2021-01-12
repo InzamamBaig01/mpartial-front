@@ -395,9 +395,7 @@ const Profile = (props) => {
       props.location.state.flag ? setToggleMembership(true) : "";
     }
 
-    setTimeout(() => {
-      setSpinner(false);
-    }, 2500);
+    setTimeout(() => {}, 2500);
   }, []);
 
   console.log("MUINFO", myInfo);
@@ -421,6 +419,7 @@ const Profile = (props) => {
         );
 
         setFilteredPlan(x);
+        setSpinner(false);
       }
     }
   }, [myInfo]);
@@ -435,7 +434,7 @@ const Profile = (props) => {
     });
   };
 
-  console.log(filteredPlan);
+  console.log("NOO", filteredPlan);
   const [addcardpopupshow, setaddcardpopupshow] = useState(false);
   const [editProfileShow, setEditProfileShow] = useState(false);
   const [editPasswordShow, setEditPasswordShow] = useState(false);
@@ -723,7 +722,7 @@ const Profile = (props) => {
                               onClick={onToggleMembership}
                               style={{ cursor: "pointer" }}
                             >
-                              Membership{" "}
+                              Membership
                             </div>
                             <div className="text-right col-lg-4 ">
                               {toggleMembership ? (
@@ -770,9 +769,9 @@ const Profile = (props) => {
                           {(filteredPlan.length &&
                             filteredPlan.length > 0 &&
                             info.subscriptionstatus === "Active") ||
-                          info.subscriptionstatus === "Cancelled" ||
                           info.subscriptionstatus ===
-                            "PausedDueToPaymentFailure" ? (
+                            "PausedDueToPaymentFailure" ||
+                          info.subscriptionstatus === "Cancelled" ? (
                             <div className="packages">
                               <div className="row align-items-center">
                                 <div className="col-lg-8 col-xs-12 text-left d-flex align-items-center">

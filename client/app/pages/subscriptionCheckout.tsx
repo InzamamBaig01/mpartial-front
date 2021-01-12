@@ -471,7 +471,7 @@ const SubscriptionCheckout = (props) => {
               <div className="col sub_titles">Payment Method</div>
             </div>
 
-            {product.coupon && product.newprice == 0 ? (
+            {product.coupon && product.newprice < 0 ? (
               ""
             ) : (
               <div className="row">

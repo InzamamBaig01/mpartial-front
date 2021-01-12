@@ -189,6 +189,8 @@ const CheckoutForm = (props) => {
         localStorage.removeItem("sessipn");
         hideLoader();
         history.push(`/receipt/${props.orderid}`);
+      } else {
+        props.setCheckoutError(response.response.Message);
       }
     });
   };
@@ -458,7 +460,7 @@ const Checkout = (props) => {
               <div className="col sub_titles">Payment Method</div>
             </div>
 
-            {product.coupon && product.newprice == 0 ? (
+            {product.coupon && product.newprice < 0 ? (
               ""
             ) : (
               <div className="row">
@@ -474,6 +476,7 @@ const Checkout = (props) => {
                       cardValidation={cardValidation}
                       coupon={coupon}
                       checkoutInfo={checkoutInfo}
+                      setCheckoutError={setCheckoutError}
                     />
                   </Elements>
                   {/* <input type="checkbox" /> Card Ending 7878 */}
@@ -555,11 +558,9 @@ const Checkout = (props) => {
               </div>
             </div>
 
-            <div className="row">
+            <div className="row ">
               {CheckoutError ? (
-                <span className="password_not_matched">
-                  Server Error! Please try again.
-                </span>
+                <span className="password_not_matched">{CheckoutError} </span>
               ) : (
                 ""
               )}
