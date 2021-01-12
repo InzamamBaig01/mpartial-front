@@ -25,7 +25,6 @@ import moment from "moment";
 
 interface ICoupon {
   couponcode: undefined | String | Number;
-  duration: undefined | String | Number;
   activefrom: undefined | String | Number;
   usagelimit: undefined | String | Number;
   discountpercentage: undefined | String | Number;
@@ -40,7 +39,6 @@ const AddCoupons = (props) => {
     couponcode: "",
     activefrom: new Date().toISOString(),
     usagelimit: "",
-    duration: "",
     description: "",
     discountpercentage: "",
     usagelimitpercustomer: "",
@@ -49,9 +47,7 @@ const AddCoupons = (props) => {
     ).toISOString(),
   });
   const { getallADUsers, AllUsers } = useContext(AppContext);
-
-  const [couponType, setCouponType] = useState("Percentage");
-  const [couponFor, setCouponFor] = useState("public");
+  const [error, setError] = useState(false);
   const [Users, setUsers] = useState([]);
   const [couponError, setCouponError] = useState(false);
 
@@ -66,7 +62,6 @@ const AddCoupons = (props) => {
         couponcode: "",
         activefrom: new Date().toISOString(),
         usagelimit: "",
-        duration: "",
         description: "",
         discountpercentage: "",
         usagelimitpercustomer: "",
@@ -116,23 +111,10 @@ const AddCoupons = (props) => {
       if (response.response.Requested_Action) {
         props.onSubmitSuccess();
         props.handleClose();
+      } else {
+        setError(response.response.Message);
       }
     });
-  };
-
-  const changeCouponType = (e) => {
-    if (e.currentTarget.value == "Fixed") {
-      setData({
-        ...data,
-        offpercentage: "",
-      });
-    } else {
-      setData({
-        ...data,
-        subtractfixedamount: "",
-      });
-    }
-    setCouponType(e.currentTarget.value);
   };
 
   useEffect(() => {
@@ -168,8 +150,8 @@ const AddCoupons = (props) => {
                 }
                 value={data.couponcode}
               />
-              <span>
-                {couponError ? `${data.couponcode} is already existed.` : ""}
+              <span style={{ color: "red", fontWeight: "800" }}>
+                {couponError ? `${data.couponcode} already exists.` : ""}
               </span>
             </div>
 
@@ -188,23 +170,6 @@ const AddCoupons = (props) => {
                 }
                 value={data.description}
                 style={{ resize: "none" }}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Duration</label>
-              <input
-                type="text"
-                placeholder="Coupon Duration"
-                className="form-control"
-                required
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    duration: e.currentTarget.value,
-                  })
-                }
-                value={data.duration}
               />
             </div>
 
@@ -301,9 +266,12 @@ const AddCoupons = (props) => {
                 value={data.usagelimitpercustomer}
               />
             </div>
+            <span className="mb-3" style={{ color: "red", fontWeight: "800" }}>
+              {error ? error : ""}
+            </span>
             <div className="form-group text-center">
               <button
-                className="btn btn-lg"
+                className="btn btn-lg mt-4"
                 type="submit"
                 id="formButton"
                 disabled={couponError}
@@ -459,10 +427,11 @@ const SubscriptionCoupons = () => {
       },
     },
     {
-      name: "Limit",
+      name: "Usage / Limit",
       selector: "usagelimit",
       sortable: false,
       className: "header-col",
+      format: (d) => `${d.nooftimesused}/${d.usagelimit}`,
     },
     {
       name: "Discount % ",

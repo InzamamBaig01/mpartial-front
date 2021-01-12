@@ -4,6 +4,15 @@
   color: #000000;
 }
 
+//admin table th
+
+.kmNxYI,
+.cpjOdh,
+.hheJEU {
+  font-weight: 800;
+  font-size: 14px;
+}
+
 .order_check {
   h3 {
     font-family: "Gilroy";
@@ -1724,7 +1733,8 @@ a {
       background: url(../assets/subscription.png) no-repeat 10px 7px;
       background-size: 20px;
     }
-    ul li:last-child:hover {
+    ul li:last-child:hover,
+    ul li:last-child:active {
       background: url(../assets/subscription-hover.png) no-repeat 10px 7px;
       background-size: 20px;
     }

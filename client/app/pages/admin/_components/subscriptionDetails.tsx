@@ -48,7 +48,7 @@ const SubscriptionDetails = (props) => {
               )}
             </div>
             <div className="col-lg-4 col-xs-12 text-right d-flex align-items-center justify-content-end">
-              <h3> ${histories[0].amountincents}</h3>
+              <h3> ${histories[0].chargedamountincents / 100}</h3>
               {/* <span className="interval">/{filteredPlan[0].intervalUnit}</span> */}
             </div>
           </div>

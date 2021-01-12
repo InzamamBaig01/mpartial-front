@@ -10,7 +10,6 @@ import {
 import ADHeader from "app/components/ADHeader";
 import AdminSidebar from "./_components/AdminSidebar";
 import viewicon from "../../../assets/view.svg";
-import Coupons from "./Coupons";
 import { AppContext } from "contexts/appContext";
 import moment from "moment";
 import { Modal, ButtonGroup, Button } from "react-bootstrap";
@@ -23,7 +22,6 @@ const AddCoupons = (props) => {
     couponcode: "",
     activefrom: new Date().toISOString(),
     usagelimit: "",
-    duration: "",
     description: "",
     discountpercentage: "",
     usagelimitpercustomer: "",
@@ -49,7 +47,6 @@ const AddCoupons = (props) => {
         usagelimit: duData.usagelimit,
         discountpercentage: duData.discountpercentage,
         description: duData.description,
-        duration: duData.duration,
         usagelimitpercustomer: duData.usagelimitpercustomer,
         expirydate: new Date(duData.expirydate).toISOString(),
       });
@@ -163,23 +160,6 @@ const AddCoupons = (props) => {
                 }
                 value={data.description}
                 style={{ resize: "none" }}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Duration</label>
-              <input
-                type="text"
-                placeholder="Coupon Duration"
-                className="form-control"
-                required
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    duration: e.currentTarget.value,
-                  })
-                }
-                value={data.duration}
               />
             </div>
 
@@ -347,6 +327,7 @@ const SubscriptionCouponDetails = (props) => {
       console.log(coupon);
       couponUsageHistory({
         couponId: coupon.id,
+        isSubscriptionCoupon: true,
       }).subscribe((response) => {
         setCouponHistory(response.response.data);
       });
@@ -534,14 +515,13 @@ const SubscriptionCouponDetails = (props) => {
                             return (
                               <tr>
                                 <td>
-                                  <strong>Customer :</strong>{" "}
-                                  {history.customeremail}{" "}
+                                  <strong>Customer :</strong> {history}{" "}
                                 </td>
+
                                 <td>
-                                  <strong>Order :</strong> {history.orderId}{" "}
-                                </td>
-                                <td>
-                                  <Link to={`/details/${history.orderId}`}>
+                                  <Link
+                                    to={`/usersdetails/${window.btoa(history)}`}
+                                  >
                                     <img src={viewicon} alt="" />
                                   </Link>
                                 </td>

@@ -631,7 +631,7 @@ const SubscriptionCheckout = (props) => {
                 ""
               )}
               <div className="col submit_btn_container">
-                {product.coupon && product.newprice == 0 ? (
+                {product.coupon && product.newprice < 0 ? (
                   <button
                     className="btn"
                     type="submit"
