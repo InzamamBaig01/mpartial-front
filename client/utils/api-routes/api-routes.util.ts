@@ -297,6 +297,14 @@ export const ActivateAccountAPI = (payload) => {
   }).pipe(catchError(handleError("")));
 };
 
+export const acceptInvite = (payload) => {
+  return ajax({
+    //headers: requestHeader(),
+    method: "GET",
+    url: `${baseURL}/Client/acceptInvite?${payload}`,
+  }).pipe(catchError(handleError("")));
+};
+
 export const payOrder = (payload) => {
   return ajax({
     headers: requestHeader(),

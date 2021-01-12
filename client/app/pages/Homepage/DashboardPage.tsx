@@ -9,6 +9,8 @@ const ContactUs = React.lazy(() => import("./_components/ContactUs"));
 const Header = React.lazy(() => import("app/components/Header"));
 const HowItWorks = React.lazy(() => import("./_components/HowItWorks"));
 const Footer = React.lazy(() => import("../../components/Footer"));
+import { acceptInvite } from "utils/api-routes/api-routes.util";
+
 import queryString from "query-string";
 
 interface IRef {
@@ -22,6 +24,10 @@ interface IRef {
 }
 export const HomePage: React.FC<any> = React.memo((props) => {
   const values = queryString.parse(props.location.hash);
+
+  const value = queryString.parse(props.location.search);
+
+  console.log("VAL", value);
   const gotoSection = Object.keys(values);
   const sectionMap = {
     Approach: "home",
@@ -65,6 +71,20 @@ export const HomePage: React.FC<any> = React.memo((props) => {
         sectionMap[gotoSection[0]]
       );
     }
+
+    acceptInvite(
+      queryString.stringify({
+        invitedsemail: value.invitedsemail,
+        inviteid: value.inviteid,
+      })
+    ).subscribe((response) => {
+      if (response.response.Requested_Action) {
+        //setSuccess("true");
+      } else {
+        console.log(response.response.Message);
+        //setSuccess(response.response.Message);
+      }
+    });
   }, []);
   return (
     <>
