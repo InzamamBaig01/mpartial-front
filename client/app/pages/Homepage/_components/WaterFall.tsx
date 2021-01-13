@@ -18,7 +18,7 @@ const priceRanges = [
   {
     from: 850001,
     to: 900000,
-    value: "3.3",
+    value: "3.33",
   },
   {
     from: 800001,
