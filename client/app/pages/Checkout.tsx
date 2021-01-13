@@ -136,7 +136,7 @@ const CheckoutForm = (props) => {
     mastercard: mastercard,
     visa: visa,
     discover: discover,
-    "american express": AmericanExpress,
+    amex: AmericanExpress,
   };
   const [PI, setPI] = useState(false);
   const [addcardpopupshow, setaddcardpopupshow] = useState(false);

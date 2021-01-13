@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import MultiSelect from 'react-multi-select-component';
+import React, { useState, useEffect } from "react";
+import MultiSelect from "react-multi-select-component";
 
 const MultipleSelectField = (props) => {
   console.log(props.field);
@@ -17,7 +17,7 @@ const MultipleSelectField = (props) => {
     let sel = [];
     if (props.value) {
       props.value.map((val) => {
-        if (typeof val == 'string') {
+        if (typeof val == "string") {
           console.log(val);
           sel.push({
             label: val,
@@ -37,17 +37,18 @@ const MultipleSelectField = (props) => {
       value={selected}
       required={props.field.required ? true : false}
       className={`valid_${
-        valid != null ? (selected.length != 0 ? 'true' : 'false') : '0'
+        valid != null ? (selected.length != 0 ? "true" : "false") : "0"
       }`}
       hasSelectAll={props.field.hasSelectAll}
       onChange={(value) => {
         console.log(value);
         setSelected(value);
+        props.setX(true);
         setValid(true);
         props.onChange(props.field, value);
         props.field.value = value;
       }}
-      labelledBy={'Select'}
+      labelledBy={"Select"}
     />
   );
 };

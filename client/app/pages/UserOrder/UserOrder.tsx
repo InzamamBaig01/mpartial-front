@@ -38,6 +38,7 @@ import {
   MainButton,
   ChildButton,
 } from "react-floating-button-menu";
+import { fireEvent } from "highcharts";
 
 const UserOrder = (props) => {
   const { userDetails } = useContext(AuthContext);
@@ -76,7 +77,6 @@ const UserOrder = (props) => {
       getMyOrders();
     } else {
       console.clear();
-      console.log("loaded");
       const userOrderFormFeilds = Object.assign([], OrderFields);
       userOrderFormFeilds.map((field) => {
         field.value = "";
@@ -93,13 +93,10 @@ const UserOrder = (props) => {
     }
   }, []);
 
-  console.log("userdetails", myInfo);
-
   useEffect(() => {
     if (orderId) {
       getMyOrders();
     } else {
-      console.log("loaded 2");
       const userOrderFormFeilds = Object.assign([], OrderFields);
       userOrderFormFeilds.map((field) => {
         field.value = "";
@@ -122,12 +119,13 @@ const UserOrder = (props) => {
     if (order) {
       const dataV = {};
       const fields = allFields.map((field) => {
-        field.value = order[field.id] ? order[field.id] : "";
-        field.potentiallyRelevantDigitalAssetsRealNames =
-          order.potentiallyRelevantDigitalAssetsRealNames;
-        dataV[field.id] = order[field.id] ? order[field.id] : "";
+        field.value = order[field.id];
+        field.potentiallyRelevantDigitalAssetsRealNames = dataV[
+          field.id
+        ] = order[field.id] ? order[field.id] : "";
         return field;
       });
+
       setAllFields(fields);
       setDataValues(dataV);
       setSubmitBtnDisabled(true);
@@ -170,7 +168,6 @@ const UserOrder = (props) => {
       });
     } else {
       hideLoader();
-      console.log(isDraft);
       if (isDraft) {
         history.push(`/orders/`);
       } else {
@@ -196,14 +193,21 @@ const UserOrder = (props) => {
       if (key === "potentiallyRelevantDigitalAssets") {
         fileToUpload = dataValues[key];
       } else if (
-        key === "temporaryActivities" &&
-        key === "specialtyTradeSelection"
+        key == "temporaryActivities" ||
+        key == "specialtyTradeSelection"
       ) {
-        apiData[key] = dataValues[key]
-          ? dataValues[key].map((v) => {
+        if (x) {
+          apiData[key] = dataValues[key].map((v) => {
+            if (v.value) {
               return v.value;
-            })
-          : "";
+            }
+            return v;
+          });
+        } else {
+          apiData[key] = dataValues[key].map((v) => {
+            return v;
+          });
+        }
       } else {
         apiData[key] = dataValues[key];
       }
@@ -276,6 +280,7 @@ const UserOrder = (props) => {
 
     setAllFields(fieldsData);
   };
+  const [x, setX] = useState(false);
 
   const saveToDraft = (e) => {
     e.preventDefault();
@@ -297,13 +302,20 @@ const UserOrder = (props) => {
         fileToUpload = dataValues[key];
       } else if (
         key === "temporaryActivities" ||
-        key == "specialtyTradeSelection"
+        key === "specialtyTradeSelection"
       ) {
-        apiData[key] = dataValues[key]
-          ? dataValues[key].map((v) => {
+        if (x) {
+          apiData[key] = dataValues[key].map((v) => {
+            if (v.value) {
               return v.value;
-            })
-          : "";
+            }
+            return v;
+          });
+        } else {
+          apiData[key] = dataValues[key].map((v) => {
+            return v;
+          });
+        }
       } else {
         apiData[key] = dataValues[key];
       }
@@ -402,6 +414,8 @@ const UserOrder = (props) => {
                           </div>
                           <DrawField
                             field={field}
+                            order={order}
+                            setX={setX}
                             onChange={handleChange}
                             matchingUrl={matchingUrl}
                           ></DrawField>

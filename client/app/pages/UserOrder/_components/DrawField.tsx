@@ -13,9 +13,8 @@ const DrawField = (props) => {
       setChanged(true);
     } else {
       setChanged(false);
-      
     }
-  }, [props.field.value])
+  }, [props.field.value]);
 
   const onChange = (e) => {
     if (e.target.files) {
@@ -50,7 +49,7 @@ const DrawField = (props) => {
             required={field.required ? true : false}
             className={`form-control is_required_${
               field.required ? true : false
-              } changed_${changed}`}
+            } changed_${changed}`}
             placeholder={field.placeholder}
             onChange={onChange}
             value={value}
@@ -94,7 +93,15 @@ const DrawField = (props) => {
         );
         break;
       case "multiSelect":
-        return <MultipleSelectField field={field} value={value} onChange={props.onChange} />;
+        return (
+          <MultipleSelectField
+            field={field}
+            value={value}
+            order={props.order}
+            onChange={props.onChange}
+            setX={props.setX}
+          />
+        );
         break;
 
       case "multipleAttachment":
@@ -103,7 +110,7 @@ const DrawField = (props) => {
             <div className="button-wrap">
               <label className="new-button" htmlFor="upload">
                 Choose Files
-                </label>
+              </label>
               <input
                 id="upload"
                 type="file"
@@ -113,29 +120,31 @@ const DrawField = (props) => {
               />
               {files.length
                 ? files.map((file, index) => {
-                  return (
-                    <div className="selected_file_name" key={index}>
-                      <i className="close" onClick={() => removeFile(index)}>
-                        &times;
-                          </i>
+                    return (
+                      <div className="selected_file_name" key={index}>
+                        <i className="close" onClick={() => removeFile(index)}>
+                          &times;
+                        </i>
 
-                      <i className="">
-                        <small>{file.name}</small>
-                      </i>
-                    </div>
-                  );
-                })
+                        <i className="">
+                          <small>{file.name}</small>
+                        </i>
+                      </div>
+                    );
+                  })
                 : ""}
-                 {field.potentiallyRelevantDigitalAssetsRealNames
-                ? field.potentiallyRelevantDigitalAssetsRealNames.map((file, index) => {
-                  return (
-                    <div className="selected_file_name" key={index}>
-                      <i className="">
-                        <small>{file}</small>
-                      </i>
-                    </div>
-                  );
-                })
+              {field.potentiallyRelevantDigitalAssetsRealNames
+                ? field.potentiallyRelevantDigitalAssetsRealNames.map(
+                    (file, index) => {
+                      return (
+                        <div className="selected_file_name" key={index}>
+                          <i className="">
+                            <small>{file}</small>
+                          </i>
+                        </div>
+                      );
+                    }
+                  )
                 : ""}
             </div>
             {/*<input type="file" className="custom-file-input-btn" onChange={(e) => {*/}
@@ -165,7 +174,7 @@ const DrawField = (props) => {
             type="email"
             className={`form-control is_required_${field.required} changed_${
               changed || value.length != 0
-              }`}
+            }`}
             value={value}
             placeholder="Email"
             onChange={onChange}
@@ -210,8 +219,5 @@ const DrawField = (props) => {
   const field = props.field;
   return form(field);
 };
-
-
-
 
 export default DrawField;
