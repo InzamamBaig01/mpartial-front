@@ -21,9 +21,10 @@ const DeletedUsers = (props) => {
     inviteMessage: "",
   });
 
-  const onClick = () => {
+  const onClick = (email) => {
+    alert(email);
     const stringified = queryString.stringify(formDetails);
-    inviteUsers(stringified).subscribe((response) => {
+    inviteUsers(email, formDetails.inviteMessage).subscribe((response) => {
       if (response.response.Requested_Action) {
       } else {
         setError(response.response.Message);
@@ -97,14 +98,9 @@ const DeletedUsers = (props) => {
                     src={reinvite}
                     alt="image"
                     width="38px"
-                    onLoad={() => {
-                      setFormDetails({
-                        ...formDetails,
-                        toInvite: user.email,
-                      });
-                    }}
+                    onLoad={() => {}}
                     onClick={() => {
-                      onClick();
+                      onClick(user.email);
                       handleShow();
                     }}
                     style={{ cursor: "pointer" }}

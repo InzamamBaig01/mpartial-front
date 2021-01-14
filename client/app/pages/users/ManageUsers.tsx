@@ -38,16 +38,18 @@ const ManageUsers = () => {
 
     const stringified = queryString.stringify(formDetails);
 
-    inviteUsers(stringified).subscribe((response) => {
-      setInviteMessage(response.response.Message);
-      if (response.response.Requested_Action) {
-        setFormDetails({
-          toInvite: "",
-          inviteMessage: "",
-        });
-        setPendingCount(0);
+    inviteUsers(formDetails.toInvite, formDetails.inviteMessage).subscribe(
+      (response) => {
+        setInviteMessage(response.response.Message);
+        if (response.response.Requested_Action) {
+          setFormDetails({
+            toInvite: "",
+            inviteMessage: "",
+          });
+          setPendingCount(0);
+        }
       }
-    });
+    );
 
     setTimeout(() => {
       setInviteMessage("");

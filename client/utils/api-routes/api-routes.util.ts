@@ -410,11 +410,11 @@ export const subscriptionHistory = () => {
   }).pipe(catchError(handleError("tokenCheck")));
 };
 
-export const inviteUsers = (payload) => {
+export const inviteUsers = (email, message) => {
   return ajax({
     headers: requestHeader(),
     method: "POST",
-    url: `${baseURL}/Client/inviteAUserAsChild?thetoken=${localStorage.token}&${payload}`,
+    url: `${baseURL}/Client/inviteAUserAsChild?thetoken=${localStorage.token}&inviteMessage=${message}&toInvite=${email}`,
   }).pipe(catchError(handleError("tokenCheck")));
 };
 

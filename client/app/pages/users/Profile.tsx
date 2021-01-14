@@ -75,7 +75,7 @@ const FormElement = (props) => {
   const stripe = useStripe();
   const elements = useElements();
   const { getMyInfo, myInfo } = useContext(AppContext);
-  const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
+  const { showLoader, hideLoader, loader } = React.useContext(AppAlertsContext);
   const [cardError, setCardError] = useState(false);
   const [name, setName] = useState("");
 
@@ -394,11 +394,7 @@ const Profile = (props) => {
     if (props.location.state) {
       props.location.state.flag ? setToggleMembership(true) : "";
     }
-
-    setTimeout(() => {}, 2500);
   }, []);
-
-  console.log("MUINFO", myInfo);
 
   useEffect(() => {}, []);
 
@@ -411,7 +407,6 @@ const Profile = (props) => {
 
   useEffect(() => {
     if (myInfo) {
-      hideLoader();
       setInfo(myInfo);
       if (myPlans) {
         const x = myPlans.filter(
@@ -420,6 +415,7 @@ const Profile = (props) => {
 
         setFilteredPlan(x);
         setSpinner(false);
+        hideLoader();
       }
     }
   }, [myInfo]);
@@ -746,6 +742,7 @@ const Profile = (props) => {
 
                       <div className="divider"></div>
                       <Loader></Loader>
+
                       {!toggleMembership ? (
                         <div className="cards">
                           {info && info.stripeCustomerCard.length > 0 ? (

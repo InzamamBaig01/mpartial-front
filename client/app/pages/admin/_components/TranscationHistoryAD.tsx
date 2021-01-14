@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { subscriptionHistoryAD } from "utils/api-routes/api-routes.util";
-import history from "utils/history";
-import { Badge } from "react-bootstrap";
 import download from "assets/download.svg";
 import moment from "moment";
+import Loader from "app/components/Loader";
 
 const TransactionHistoryAD = (props) => {
   const [histories, setHistory] = useState([]);
@@ -31,7 +30,7 @@ const TransactionHistoryAD = (props) => {
                 return (
                   <tr>
                     <td>{moment(his.createdAt).format("MMM DD - YYYY")}</td>
-                    <td>${his.amountincents / 100}</td>
+                    <td>${his.chargedamountincents / 100}</td>
                     <td>{his.status == "Succeeded" ? "Paid" : his.status}</td>
                     <td>
                       {his.recipturl != null && (
@@ -44,7 +43,7 @@ const TransactionHistoryAD = (props) => {
                 );
               })
             ) : (
-              <h4>No history found</h4>
+              <Loader text="No history found"></Loader>
             )}
             {}
           </tbody>

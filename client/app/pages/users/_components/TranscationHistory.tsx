@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { subscriptionHistory } from "utils/api-routes/api-routes.util";
 import history from "utils/history";
+import { AppAlertsContext } from "contexts/appAlertsContext";
 import download from "assets/download.svg";
 import moment from "moment";
+import Loader from "app/components/Loader";
 
 const TransactionHistory = () => {
   const [histories, setHistory] = useState([]);
+  const { showLoader, hideLoader } = React.useContext(AppAlertsContext);
 
   useEffect(() => {
     getHistory();
   }, []);
 
   const getHistory = () => {
+    showLoader();
     subscriptionHistory().subscribe((res) => {
       setHistory(res.response.data ? res.response.data : []);
+      hideLoader();
     });
   };
 
@@ -39,7 +44,7 @@ const TransactionHistory = () => {
               );
             })
           ) : (
-            <h4>No history found</h4>
+            <Loader text="No transaction history found"></Loader>
           )}
           {}
         </tbody>
