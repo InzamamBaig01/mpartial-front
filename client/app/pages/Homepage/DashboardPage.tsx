@@ -71,20 +71,6 @@ export const HomePage: React.FC<any> = React.memo((props) => {
         sectionMap[gotoSection[0]]
       );
     }
-
-    acceptInvite(
-      queryString.stringify({
-        invitedsemail: value.invitedsemail,
-        inviteid: value.inviteid,
-      })
-    ).subscribe((response) => {
-      if (response.response.Requested_Action) {
-        //setSuccess("true");
-      } else {
-        console.log(response.response.Message);
-        //setSuccess(response.response.Message);
-      }
-    });
   }, []);
   return (
     <>

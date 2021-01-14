@@ -121,6 +121,7 @@ export const EditProfile: React.FC<any> = (props) => {
       data.firstName == props.info.firstName &&
       data.lastName == props.info.lastName &&
       data.phonenumber == props.info.phone &&
+      data.company === props.info.companyname &&
       profileImage.profileImage == false
     );
   };
@@ -178,20 +179,6 @@ export const EditProfile: React.FC<any> = (props) => {
         crop.height
       );
 
-    // return new Promise((resolve, reject) => {
-    //   canvas.toBlob((blob) => {
-    //     if (!blob) {
-    //       //reject(new Error('Canvas is empty'));
-    //       console.error("Canvas is empty");
-    //       return;
-    //     }
-    //     let fileUrl = "";
-    //     blob.name = fileName;
-    //     window.URL.revokeObjectURL(fileUrl);
-    //     fileUrl = window.URL.createObjectURL(blob);
-    //     resolve(fileUrl);
-    //   }, "image/jpeg");
-    // });
     return canvas.toDataURL("image/jpeg");
   };
   const onSelectFile = (e) => {

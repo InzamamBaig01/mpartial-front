@@ -23,6 +23,8 @@ import { ForgotPassword } from "./users/ForgotPassword";
 import TermsCondition from "./TermsCondition";
 import Changepasswordwithtoken from "./Changepasswordwithtoken";
 import ActivateAccount from "./ActivateAccount";
+import AcceptInvite from "./AcceptInvite";
+
 import AdminOrderDetails from "./admin/AdminOrderDetails";
 import AdminUserDetails from "./admin/AdminUserDetails";
 import BuildDetails from "./BuildDetails";
@@ -80,11 +82,11 @@ export const ROUTES = [
     title: "emailverification",
   },
   {
-    component: Homepage,
+    component: AcceptInvite,
     isPublic: true,
     path: "/Client/acceptInvite",
-    // slug: "emailverification",
-    // title: "emailverification",
+    slug: "acceptinvite",
+    title: "acceptinvite",
   },
   {
     component: Profile,

@@ -47,7 +47,10 @@ const ActivateAccount = (props) => {
               ) : success != "false" ? (
                 <>
                   <img src={erroricon} className="verif_image" alt="" />
-                  The Link has expired. Please <Link to="/login">Sign In</Link> to resend the verification email again.
+                  The Link has expired. Please <Link to="/login">
+                    Sign In
+                  </Link>{" "}
+                  to resend the verification email again.
                 </>
               ) : (
                 ""
