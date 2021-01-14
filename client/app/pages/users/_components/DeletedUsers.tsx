@@ -25,6 +25,7 @@ const DeletedUsers = (props) => {
     const stringified = queryString.stringify(formDetails);
     inviteUsers(email, formDetails.inviteMessage).subscribe((response) => {
       if (response.response.Requested_Action) {
+        setError(false);
       } else {
         setError(response.response.Message);
       }
