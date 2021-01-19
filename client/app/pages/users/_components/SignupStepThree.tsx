@@ -49,6 +49,7 @@ export const SignupStepThree: React.FC<StepProps> = (props) => {
       lastname: props.formData.lastname,
       phonenumber: props.formData.phone,
       role: props.formData.role,
+      inviteid: props.inviteid ? props.inviteid : "",
     }).subscribe((response) => {
       if (response.response.Requested_Action) {
         props.setStep(6);

@@ -24,6 +24,11 @@ export const Signup: React.FC<IProps> = ({ ...props }) => {
     passwordOnChange,
   } = useContext(AuthContext);
 
+  const queryString = window.location.search;
+  console.log(queryString);
+  const urlParams = new URLSearchParams(queryString);
+  console.log(urlParams.get("invitedsemail"));
+
   const [loginStatus, setLoginStatus] = useState(loginError);
   const handleEmailChange = (e: any) => emailOnChange(e.target.value);
   const handlePasswordChange = (e: any) => passwordOnChange(e.target.value);
@@ -38,11 +43,11 @@ export const Signup: React.FC<IProps> = ({ ...props }) => {
 
   const [stepVal, setStepVal] = React.useState(1);
   const [formData, setFormData] = React.useState({
-    email: '',
-    firstname: '',
-    lastname: '',
-    role: '',
-    phone: '',
+    email: "",
+    firstname: "",
+    lastname: "",
+    role: "",
+    phone: "",
   });
   const changeValue = (val) => {
     setStepVal(val);
@@ -72,22 +77,53 @@ export const Signup: React.FC<IProps> = ({ ...props }) => {
         <div className="container">
           <div className="signup_holder">
             {stepVal === 1 && (
-              <SignupStepOne step={stepVal} setStep={changeValue} formData={formData} setFormData={setFormData} />
+              <SignupStepOne
+                step={stepVal}
+                setStep={changeValue}
+                formData={formData}
+                setFormData={setFormData}
+                inviteEmail={urlParams.get("invitedsemail")}
+              />
             )}
             {stepVal === 2 && (
-              <SignupStepTwo setStep={changeValue} step={stepVal} formData={formData} setFormData={setFormData} />
+              <SignupStepTwo
+                setStep={changeValue}
+                step={stepVal}
+                formData={formData}
+                setFormData={setFormData}
+              />
             )}
             {stepVal === 3 && (
-              <SignupStepMobile setStep={changeValue} step={stepVal} formData={formData} setFormData={setFormData} />
+              <SignupStepMobile
+                setStep={changeValue}
+                step={stepVal}
+                formData={formData}
+                setFormData={setFormData}
+              />
             )}
             {stepVal === 4 && (
-              <SignupStepRole setStep={changeValue} step={stepVal} formData={formData} setFormData={setFormData} />
+              <SignupStepRole
+                setStep={changeValue}
+                step={stepVal}
+                formData={formData}
+                setFormData={setFormData}
+              />
             )}
             {stepVal === 5 && (
-              <SignupStepThree setStep={changeValue} step={stepVal} formData={formData} setFormData={setFormData} />
+              <SignupStepThree
+                setStep={changeValue}
+                step={stepVal}
+                formData={formData}
+                setFormData={setFormData}
+                inviteid={urlParams.get("inviteid")}
+              />
             )}
             {stepVal === 6 && (
-              <SignupStepFour setStep={changeValue} step={stepVal} />
+              <SignupStepFour
+                setStep={changeValue}
+                step={stepVal}
+                inviteid={urlParams.get("inviteid")}
+              />
             )}
           </div>
         </div>
