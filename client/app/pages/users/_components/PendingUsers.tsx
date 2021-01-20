@@ -58,6 +58,8 @@ const PendingUsers = (props) => {
     );
     setFilteredUser(filter);
 
+    console.log(filter);
+
     props.setPendingCount(filter.length);
   }, [invitedUsers]);
 
@@ -135,7 +137,7 @@ const PendingUsers = (props) => {
                     width="38px"
                     alt="image"
                     onClick={() => {
-                      InviteUser(user.email);
+                      InviteUser(user.inviteid);
                     }}
                     style={{ cursor: "pointer", marginRight: "10px" }}
                   />

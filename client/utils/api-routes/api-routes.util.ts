@@ -430,7 +430,7 @@ export const resendInvite = (payload) => {
   return ajax({
     headers: requestHeader(),
     method: "POST",
-    url: `${baseURL}/Client/resendInvite?thetoken=${localStorage.token}&toInvite=${payload}`,
+    url: `${baseURL}/Client/resendInvite?thetoken=${localStorage.token}&inviteid=${payload}`,
   }).pipe(catchError(handleError("tokenCheck")));
 };
 
