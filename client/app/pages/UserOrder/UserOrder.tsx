@@ -426,7 +426,7 @@ const UserOrder = (props) => {
                   <div className="form-group">
                     <label>Price</label>
                     <div className="row">
-                      <div className="col-3">
+                      <div className="col-6 text-left">
                         {couponApplied.length ? (
                           <>
                             <div className=" main_price">

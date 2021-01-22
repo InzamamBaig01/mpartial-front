@@ -909,7 +909,7 @@ input:-moz-placeholder {
     }
   }
   .main_price {
-    text-align: left;
+    text-align: left !important;
     font-weight: normal;
     font-size: 40px;
     line-height: 48px;

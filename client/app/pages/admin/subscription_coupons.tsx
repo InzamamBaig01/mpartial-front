@@ -472,12 +472,12 @@ const SubscriptionCoupons = () => {
     },
   ];
 
-  const onRowClicked = (data) => {
-    console.log(data);
-    setSelectedCoupon(data);
-    // handleViewCouponsShow();
-    history.push(`/coupons-details/${data.id}`);
-  };
+  // const onRowClicked = (data) => {
+  //   console.log(data);
+  //   setSelectedCoupon(data);
+  //   // handleViewCouponsShow();
+  //   history.push(`/coupons-details/${data.id}`);
+  // };
 
   const onDplicateClick = () => {
     setISDuplicating(true);
@@ -524,7 +524,7 @@ const SubscriptionCoupons = () => {
                 data={Coupons}
                 responsive={true}
                 pagination={true}
-                onRowClicked={onRowClicked}
+                // onRowClicked={onRowClicked}
                 noDataComponent
               />
             </section>
