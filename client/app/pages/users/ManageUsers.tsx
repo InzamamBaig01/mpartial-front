@@ -41,24 +41,23 @@ const ManageUsers = () => {
     e.preventDefault();
 
     const stringified = queryString.stringify(formDetails);
+    console.log(stringified, "asd");
 
-    inviteUsers(formDetails.toInvite, formDetails.inviteMessage).subscribe(
-      (response) => {
-        setInviteMessage(response.response.Message);
-        setShow(true);
+    inviteUsers(stringified).subscribe((response) => {
+      setInviteMessage(response.response.Message);
+      setShow(true);
 
-        if (response.response.Requested_Action) {
-          setFormDetails({
-            toInvite: "",
-            inviteMessage: "",
-          });
-          getMyInvitedUser();
-          setVariant(true);
-        } else {
-          setVariant(false);
-        }
+      if (response.response.Requested_Action) {
+        setFormDetails({
+          toInvite: "",
+          inviteMessage: "",
+        });
+        getMyInvitedUser();
+        setVariant(true);
+      } else {
+        setVariant(false);
       }
-    );
+    });
     if (invitedUsers) {
       const filter = invitedUsers.filter(
         (user) => user.invitestatus === "Pending"

@@ -6,7 +6,7 @@ import reinvite from "../../../../assets/reinvite.png";
 import check from "../../../../assets/checkBig.png";
 import chat from "../../../../assets/chat.png";
 
-import { inviteUsers } from "utils/api-routes/api-routes.util";
+import { inviteDeletedUsers } from "utils/api-routes/api-routes.util";
 import { AppContext } from "contexts/appContext";
 
 const DeletedUsers = (props) => {
@@ -23,16 +23,23 @@ const DeletedUsers = (props) => {
 
   const onClick = (email) => {
     const stringified = queryString.stringify(formDetails);
-    inviteUsers(email, formDetails.inviteMessage).subscribe((response) => {
-      if (response.response.Requested_Action) {
-        setError(false);
-      } else {
-        setError(response.response.Message);
+    inviteDeletedUsers(email, formDetails.inviteMessage).subscribe(
+      (response) => {
+        if (response.response.Requested_Action) {
+          setError(false);
+          handleShow();
+        } else {
+          setError(response.response.Message);
+          handleShow();
+        }
+        getMyInvitedUser();
       }
-      getMyInvitedUser();
-    });
+    );
   };
-  const handleClose = () => setModal(false);
+  const handleClose = () => {
+    setError(false);
+    setModal(false);
+  };
   const handleShow = () => setModal(true);
 
   useEffect(() => {
@@ -101,7 +108,6 @@ const DeletedUsers = (props) => {
                     onLoad={() => {}}
                     onClick={() => {
                       onClick(user.email);
-                      handleShow();
                     }}
                     style={{ cursor: "pointer" }}
                   />

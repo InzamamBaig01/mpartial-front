@@ -410,11 +410,19 @@ export const subscriptionHistory = () => {
   }).pipe(catchError(handleError("tokenCheck")));
 };
 
-export const inviteUsers = (email, message) => {
+export const inviteDeletedUsers = (email, message) => {
   return ajax({
     headers: requestHeader(),
     method: "POST",
     url: `${baseURL}/Client/inviteAUserAsChild?thetoken=${localStorage.token}&inviteMessage=${message}&toInvite=${email}`,
+  }).pipe(catchError(handleError("tokenCheck")));
+};
+
+export const inviteUsers = (payload) => {
+  return ajax({
+    headers: requestHeader(),
+    method: "POST",
+    url: `${baseURL}/Client/inviteAUserAsChild?thetoken=${localStorage.token}&${payload}`,
   }).pipe(catchError(handleError("tokenCheck")));
 };
 
