@@ -455,10 +455,13 @@ const Checkout = (props) => {
                 )}
               </div>
             </div>
-
-            <div className="row">
-              <div className="col sub_titles">Payment Method</div>
-            </div>
+            {info && info.stripeCustomerCard.length ? (
+              <div className="row">
+                <div className="col sub_titles">Payment Method</div>
+              </div>
+            ) : (
+              ""
+            )}
 
             {product.coupon && product.newprice < 0 ? (
               ""

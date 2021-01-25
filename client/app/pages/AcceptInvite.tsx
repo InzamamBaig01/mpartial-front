@@ -31,7 +31,7 @@ const AcceptInvite = (props) => {
     <>
       <Header isFixedColor={true}></Header>
       <div className="other_pages_container full_height">
-        <h1 className="title text-center">Company's Invitation</h1>
+        <h1 className="title text-center">Invitation</h1>
         <div className="container">
           <div className="signup_holder">
             <h4>

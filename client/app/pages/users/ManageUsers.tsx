@@ -4,7 +4,7 @@ import Header from "app/components/Header";
 import ActiveUsers from "./_components/ActiveUsers";
 import DeletedUsers from "./_components/DeletedUsers";
 import history from "utils/history";
-
+import Alert from "react-bootstrap/Alert";
 import { inviteUsers } from "utils/api-routes/api-routes.util";
 import { AppContext } from "contexts/appContext";
 
@@ -12,7 +12,9 @@ import queryString from "query-string";
 import PendingUsers from "./_components/PendingUsers";
 
 const ManageUsers = () => {
-  const { getMyInfo, myInfo } = useContext(AppContext);
+  const { getMyInfo, myInfo, getMyInvitedUser, invitedUsers } = useContext(
+    AppContext
+  );
   const [activeTab, setActiveTab] = useState({
     active: true,
     pending: false,
@@ -30,8 +32,10 @@ const ManageUsers = () => {
 
   const [inviteMessage, setInviteMessage] = useState("");
   const [activeCount, setActiveCount] = useState(0);
+  const [variant, setVariant] = useState(true);
   const [pendingCount, setPendingCount] = useState(0);
   const [deleteCount, setDeleteCount] = useState(0);
+  const [show, setShow] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,23 +45,26 @@ const ManageUsers = () => {
     inviteUsers(formDetails.toInvite, formDetails.inviteMessage).subscribe(
       (response) => {
         setInviteMessage(response.response.Message);
+        setShow(true);
+
         if (response.response.Requested_Action) {
           setFormDetails({
             toInvite: "",
             inviteMessage: "",
           });
-          setPendingCount(0);
+          getMyInvitedUser();
+          setVariant(true);
+        } else {
+          setVariant(false);
         }
       }
     );
-
-    setTimeout(() => {
-      setInviteMessage("");
-      setFormDetails({
-        toInvite: "",
-        inviteMessage: "",
-      });
-    }, 5000);
+    if (invitedUsers) {
+      const filter = invitedUsers.filter(
+        (user) => user.invitestatus === "Pending"
+      );
+      setPendingCount(filter.length);
+    }
   };
   return (
     <>
@@ -155,8 +162,20 @@ const ManageUsers = () => {
                     </div>
                   </div>
                   <div className="payment_section_body cards subscription_cards">
-                    {inviteMessage ? (
-                      inviteMessage
+                    {show ? (
+                      <Alert
+                        variant={variant ? "success" : "danger"}
+                        onClose={() => setShow(false)}
+                        dismissible
+                      >
+                        <Alert.Heading></Alert.Heading>
+
+                        <p
+                          style={{ alignItems: "center", padding: "60px 0px" }}
+                        >
+                          {inviteMessage}
+                        </p>
+                      </Alert>
                     ) : (
                       <form onSubmit={handleSubmit}>
                         <div className="row mt-5 pl-2 pr-2">

@@ -107,6 +107,7 @@ const FormElement = (props) => {
       setCardError(false);
       props.handleClose();
     }
+    props.setToggleMembership(false);
   };
 
   return (
@@ -161,6 +162,7 @@ const AddNewCard = (props) => {
             <FormElement
               PI={props.PI}
               handleClose={props.handleClose}
+              setToggleMembership={props.setToggleMembership}
             ></FormElement>
           </Elements>
         </Modal.Body>
@@ -391,12 +393,12 @@ const Profile = (props) => {
     getMyInfo();
     getMyPlans();
     getHistory();
+    setToggleMembership(true);
+
     if (props.location.state) {
       props.location.state.flag ? setToggleMembership(true) : "";
     }
   }, []);
-
-  useEffect(() => {}, []);
 
   const getPI = () => {
     getPIC().subscribe((response) => {
@@ -406,7 +408,9 @@ const Profile = (props) => {
   };
 
   useEffect(() => {
-    if (myInfo) {
+    setSpinner(true);
+
+    if (myInfo && histories) {
       setInfo(myInfo);
       if (myPlans) {
         const x = myPlans.filter(
@@ -414,13 +418,24 @@ const Profile = (props) => {
         );
 
         setFilteredPlan(x);
-        setSpinner(false);
         hideLoader();
+        setSpinner(false);
+        // setTimeout(() => {
+        //   setSpinner(false);
+        // }, 1500);
       }
+
+      // if (
+      //   info.subscriptionstatus === "PausedDueToPaymentFailure" ||
+      //   info.subscriptionstatus === "Cancelled" ||
+      //   info.subscriptionstatus === "Active"
+      // ) {
+      //   setToggleMembership(true);
+      // } else {
+      //   setToggleMembership(false);
+      // }
     }
   }, [myInfo]);
-
-  console.log("PLANS, ", myInfo.stripeCustomerCard == 0);
 
   const cancelPlan = () => {
     showLoader();
@@ -430,7 +445,6 @@ const Profile = (props) => {
     });
   };
 
-  console.log("NOO", filteredPlan);
   const [addcardpopupshow, setaddcardpopupshow] = useState(false);
   const [editProfileShow, setEditProfileShow] = useState(false);
   const [editPasswordShow, setEditPasswordShow] = useState(false);
@@ -741,10 +755,11 @@ const Profile = (props) => {
                       </div>
 
                       <div className="divider"></div>
-                      <Loader></Loader>
 
                       {!toggleMembership ? (
                         <div className="cards">
+                          <Loader></Loader>
+
                           {info && info.stripeCustomerCard.length > 0 ? (
                             info.stripeCustomerCard.map((card, index) => {
                               return <BankCard card={card} />;
@@ -824,9 +839,11 @@ const Profile = (props) => {
                                         fontWeight: "600",
                                       }}
                                     >
-                                      {moment(histories[0].createdAt).format(
-                                        "MMM DD - YYYY"
-                                      )}
+                                      {histories.length > 0
+                                        ? moment(histories[0].createdAt).format(
+                                            "MMM DD - YYYY"
+                                          )
+                                        : ""}
                                     </p>
                                   </div>
                                   <div className="col-lg-6 text-left d-flex flex-column mt-2 justify-content-end">
@@ -843,9 +860,11 @@ const Profile = (props) => {
                                           fontWeight: "600",
                                         }}
                                       >
-                                        {moment(
-                                          histories[0].nextbillingdate
-                                        ).format("MMM DD - YYYY")}
+                                        {histories.length > 0
+                                          ? moment(
+                                              histories[0].nextbillingdate
+                                            ).format("MMM DD - YYYY")
+                                          : ""}
                                       </p>
                                     ) : (
                                       <p
@@ -937,7 +956,7 @@ const Profile = (props) => {
                             ""
                           )}
                           {info.subscriptionstatus === "NotActive" ? (
-                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. The pricing down by 57%"
+                            "The all you can eat plan - unlimited requests, unlimited users, unlimited rewards. You will be assigned a dedicated Client Success Manager that will ensure your company gets the most out of the mpartial platform."
                           ) : (
                             <div className="row mt-4">
                               <div className="col-lg-12">
@@ -1007,6 +1026,7 @@ const Profile = (props) => {
         show={addcardpopupshow}
         PI={PI}
         handleClose={handlecardclose}
+        setToggleMembership={setToggleMembership}
       />
 
       {editProfileShow && (
