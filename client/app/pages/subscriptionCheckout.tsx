@@ -88,7 +88,7 @@ const CheckoutForm = (props) => {
     }).subscribe((response) => {
       console.log(response);
       if (response.response.Requested_Action) {
-        history.push({
+        history.replace({
           pathname: "/subscriptionreceipt",
           state: { data: response.response.data },
         });
@@ -201,6 +201,8 @@ const SubscriptionCheckout = (props) => {
         (plan) => plan.name === planName
       );
       setPlans(currentPlan);
+
+      //
     });
   }, []);
 
@@ -210,12 +212,6 @@ const SubscriptionCheckout = (props) => {
     }
     return () => {};
   }, [myInfo]);
-
-  // useEffect(() => {
-  //   if (props.PIC == null) {
-  //     history.push("/orders");
-  //   }
-  // }, []);
 
   const getPICO = () => {
     getPIC().subscribe((response) => {

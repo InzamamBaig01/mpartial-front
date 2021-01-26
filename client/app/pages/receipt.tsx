@@ -3,6 +3,7 @@ import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
 import { AppContext } from "contexts/appContext";
+import history from "utils/history";
 
 const Receipt = (props) => {
   const orderid = props.match.params.orderid;

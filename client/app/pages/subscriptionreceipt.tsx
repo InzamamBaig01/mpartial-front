@@ -27,7 +27,7 @@ const SubscriptionReceipt = (props) => {
   }, [singleOrderDetails]);
 
   useEffect(() => {
-    localStorage.removeItem("sessipn");
+    localStorage.removeItem("checkout");
   }, []);
   return (
     <>

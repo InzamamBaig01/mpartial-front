@@ -188,7 +188,7 @@ const CheckoutForm = (props) => {
       if (response.response.Requested_Action) {
         localStorage.removeItem("sessipn");
         hideLoader();
-        history.push(`/receipt/${props.orderid}`);
+        history.replace(`/receipt/${props.orderid}`);
       } else {
         props.setCheckoutError(response.response.Message);
       }
@@ -286,6 +286,8 @@ const Checkout = (props) => {
   });
   const orderid = props.match.params.orderid;
 
+  console.log("PROPASD", props);
+
   const [info, setInfo] = useState(false);
   const [validation, setvalidation] = useState({
     fname: userDetails().firstName.length == 0,
@@ -296,6 +298,11 @@ const Checkout = (props) => {
   // console.log("main_rendered");
   useEffect(() => {
     getMyInfo();
+
+    // if (localStorage.getItem("sessipn")) {
+    // } else {
+    //   history.push({ pathname: `/receipt/${orderid}` });
+    // }
   }, []);
 
   useEffect(() => {
