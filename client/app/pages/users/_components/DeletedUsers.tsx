@@ -105,6 +105,7 @@ const DeletedUsers = (props) => {
                     src={reinvite}
                     alt="image"
                     width="38px"
+                    className="image-icon"
                     onLoad={() => {}}
                     onClick={() => {
                       onClick(user.email);

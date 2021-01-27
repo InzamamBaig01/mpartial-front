@@ -134,6 +134,7 @@ const PendingUsers = (props) => {
                     data-tip
                     data-for={"registerTip" + i}
                     src={resend}
+                    className="image-icon"
                     width="38px"
                     alt="image"
                     onClick={() => {
@@ -153,6 +154,7 @@ const PendingUsers = (props) => {
                     src={trash}
                     alt="image"
                     width="38px"
+                    className="image-icon"
                     onClick={() => {
                       handleShow();
                       setEmail(user.email);

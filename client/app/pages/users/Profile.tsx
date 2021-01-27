@@ -705,53 +705,67 @@ const Profile = (props) => {
                     </div>
                   ) : (
                     <div>
-                      <div className="row align-items-center">
+                      <div className="tabs-profile ">
                         <div
-                          className="col-lg-4  col-xs-6  "
+                          className=" payment-tab   "
                           onClick={onToggleMembership}
                         >
                           <div
                             className={
                               !toggleMembership
-                                ? "profile_title green"
+                                ? "profile_title green "
                                 : "profile_title faded"
                             }
                             style={{ cursor: "pointer" }}
                           >
-                            Payment Options{" "}
+                            <p>Payment Options</p>
                           </div>
                         </div>{" "}
-                        <div className="col-lg-8 ">
-                          <div className="row align-items-center">
-                            <div
-                              className={
-                                !toggleMembership
-                                  ? "profile_title faded col-lg-8"
-                                  : "profile_title green col-lg-8"
-                              }
-                              onClick={onToggleMembership}
-                              style={{ cursor: "pointer" }}
-                            >
-                              Membership
-                            </div>
-                            <div className="text-right col-lg-4 ">
-                              {toggleMembership ? (
-                                <Link
-                                  className={
-                                    info.subscriptionstatus === "Active"
-                                      ? "btn"
-                                      : "btn disabled"
-                                  }
-                                  to="/manage_users"
-                                >
-                                  Manage Users
-                                </Link>
-                              ) : (
-                                ""
-                              )}
-                            </div>
+                        <div className="membership-tab">
+                          <div
+                            className={
+                              !toggleMembership
+                                ? "profile_title faded "
+                                : "profile_title green"
+                            }
+                            onClick={onToggleMembership}
+                            style={{ cursor: "pointer" }}
+                          >
+                            <p> Membership</p>
+                          </div>
+                          <div className="manage-users">
+                            {toggleMembership ? (
+                              <Link
+                                className={
+                                  info.subscriptionstatus === "Active"
+                                    ? "btn"
+                                    : "btn disabled"
+                                }
+                                to="/manage_users"
+                              >
+                                Manage Users
+                              </Link>
+                            ) : (
+                              ""
+                            )}
                           </div>
                         </div>
+                        {/* <div className="text-right col-11 mt-3 mobile">
+                          {toggleMembership ? (
+                            <Link
+                              className={
+                                info.subscriptionstatus === "Active"
+                                  ? "btn"
+                                  : "btn disabled"
+                              }
+                              to="/manage_users"
+                            >
+                              Manage Users
+                            </Link>
+                          ) : (
+                            ""
+                          )}
+                        </div> */}
                       </div>
 
                       <div className="divider"></div>
@@ -838,6 +852,7 @@ const Profile = (props) => {
                                         marginBottom: "0",
                                         fontWeight: "600",
                                       }}
+                                      className="mobile-font"
                                     >
                                       {histories.length > 0
                                         ? moment(histories[0].createdAt).format(
@@ -859,6 +874,7 @@ const Profile = (props) => {
                                           marginBottom: "0",
                                           fontWeight: "600",
                                         }}
+                                        className="mobile-font"
                                       >
                                         {histories.length > 0
                                           ? moment(
@@ -872,6 +888,7 @@ const Profile = (props) => {
                                           marginBottom: "0",
                                           fontWeight: "600",
                                         }}
+                                        className="mobile-font"
                                       >
                                         NA
                                       </p>

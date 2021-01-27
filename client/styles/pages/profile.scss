@@ -142,6 +142,30 @@
 
 .green {
   color: #3ac280 !important;
+  p {
+    padding-bottom: 5px;
+    border-bottom: 5px solid #3ac280;
+    width: fit-content;
+  }
+}
+
+.nopadding {
+  padding-right: 15px !important;
+}
+.tabs-profile {
+  display: flex;
+  justify-content: space-between;
+}
+.payment-tab {
+  width: 250px;
+  flex: 0 0 250px;
+}
+.tabs-profile .membership-tab {
+  flex: 2;
+}
+.membership-tab {
+  display: flex;
+  justify-content: space-between;
 }
 .packages {
   background: #ffffff 0% 0% no-repeat padding-box;
@@ -452,5 +476,69 @@
   text-align: center;
   .btn {
     min-width: 80px !important;
+  }
+}
+
+@media screen and (max-width: 772px) {
+  .profile_title {
+    font-size: 16px !important;
+  }
+  .h3 {
+    font-size: 28px !important;
+  }
+  .large {
+    display: none;
+  }
+  .mobile {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .membership-tab {
+    flex-direction: column !important;
+  }
+  .manage-users {
+    margin-top: 10px;
+    align-self: flex-start;
+  }
+}
+@media screen and (max-width: 414px) {
+  .payment-tab {
+    width: 220px;
+
+    flex: 0 0 220px;
+  }
+}
+
+@media screen and (max-width: 395px) {
+  .payment-tab {
+    width: 180px;
+
+    flex: 0 0 180px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .profile_title {
+    font-size: 14px !important;
+  }
+  .manage-users a {
+    font-size: 12px;
+  }
+  .manage-users .btn {
+    padding: 5px;
+  }
+  .payment-tab {
+    width: 150px;
+
+    flex: 0 0 150px;
+  }
+  .cards .card_item {
+    width: 240px;
+    margin-right: 0px;
+  }
+  .mobile-font {
+    font-size: 14px;
   }
 }

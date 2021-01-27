@@ -93,6 +93,7 @@ const ActiveUsers = (props) => {
                     src={trash}
                     alt="image"
                     width="38px"
+                    className="image-icon"
                     onClick={() => {
                       handleShow();
                       setEmail(user.email);

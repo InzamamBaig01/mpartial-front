@@ -20,6 +20,7 @@
 .faded p {
   cursor: pointer;
   font-weight: 600;
+  text-transform: uppercase;
 }
 .label-text {
   font-size: 18px !important;
@@ -49,9 +50,9 @@
   .email {
     font-family: "Gilroy";
     font-weight: 400;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+
     letter-spacing: 0px;
+    max-width: 500px;
     color: #000000;
     opacity: 0.5;
   }
@@ -69,5 +70,12 @@
   .email {
     max-width: 150px !important;
     margin-bottom: 10px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .image-icon {
+    width: 25px !important;
+    text-align: right !important;
   }
 }
