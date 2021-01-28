@@ -39,7 +39,7 @@ const AcceptInvite = (props) => {
                 ? success
                 : myInfo
                 ? `You have accepted Invitation from ${myInfo.companyemail}`
-                : ""}
+                : "You have accepted invitation."}
             </h4>
           </div>
         </div>
