@@ -535,7 +535,7 @@ const Checkout = (props) => {
                     {product.coupon && product.coupon.length ? (
                       <>
                         <tr>
-                          <td>Coupon Discount ({product.coupon})</td>
+                          <td>Coupon Adjustment: ({product.coupon})</td>
                           <td>
                             <div>-${product.amountsubtraced / 100}</div>
                           </td>

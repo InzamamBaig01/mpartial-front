@@ -83,7 +83,6 @@ const CheckoutForm = (props) => {
     startSubscriptionPlan({
       planName: props.planName,
       couponcode: props.couponcode,
-      billingaddress: props.checkoutInfo.billingaddress,
       PAYMENTMETHODID: selectedCard.paymentMethodId,
     }).subscribe((response) => {
       console.log(response);
@@ -189,7 +188,6 @@ const SubscriptionCheckout = (props) => {
     fname: userDetails().firstName.length == 0,
     lname: userDetails().lastName.length == 0,
     email: userDetails().emailAddress.length == 0,
-    billingaddress: "",
   });
   const [cardValidation, setCardValidation] = useState(false);
   // console.log("main_rendered");
@@ -259,7 +257,6 @@ const SubscriptionCheckout = (props) => {
     firstName: userDetails().firstName,
     lastName: userDetails().lastName,
     emailAddress: userDetails().emailAddress,
-    billingaddress: "",
   });
 
   useEffect(() => {
@@ -283,7 +280,6 @@ const SubscriptionCheckout = (props) => {
       fname: checkoutInfo.firstName.length == 0,
       lname: checkoutInfo.lastName.length == 0,
       email: checkoutInfo.emailAddress.length == 0,
-      billingaddress: checkoutInfo.billingaddress.length == 0,
     });
   };
 
@@ -380,90 +376,6 @@ const SubscriptionCheckout = (props) => {
             </div>
 
             <div className="row">
-              <div className={`form - group col - 12`}>
-                <label>
-                  Billing Address <span className="red">*</span>
-                </label>
-                <PlacesAutocomplete
-                  searchOptions={{
-                    componentRestrictions: {
-                      country: "us",
-                    },
-                    country: "us",
-                  }}
-                  value={checkoutInfo.billingaddress}
-                  onChange={(address) => {
-                    setCheckoutInfo({
-                      ...checkoutInfo,
-                      billingaddress: address,
-                    });
-                  }}
-                  onSelect={(address) => {
-                    setCheckoutInfo({
-                      ...checkoutInfo,
-                      billingaddress: address,
-                    });
-                  }}
-                >
-                  {({
-                    getInputProps,
-                    suggestions,
-                    getSuggestionItemProps,
-                    loading,
-                  }) => (
-                    <div>
-                      <input
-                        {...getInputProps({
-                          placeholder: "Billing Address",
-                          className: "form-control",
-                        })}
-                      />
-                      {suggestions.length != 0 && (
-                        <div className="address_dropdown w-90">
-                          {loading && <div>Loading...</div>}
-                          {suggestions.map((suggestion) => {
-                            const className = suggestion.active
-                              ? "suggestion-item active"
-                              : "suggestion-item";
-                            // inline style for demonstration purpose
-                            const style = suggestion.active
-                              ? {
-                                  backgroundColor: "#fafafa",
-                                  cursor: "pointer",
-                                  padding: "20px",
-                                }
-                              : {
-                                  backgroundColor: "#ffffff",
-                                  cursor: "pointer",
-                                  padding: "20px",
-                                };
-                            return (
-                              <div
-                                {...getSuggestionItemProps(suggestion, {
-                                  className,
-                                  style,
-                                })}
-                              >
-                                <span>{suggestion.description}</span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}{" "}
-                    </div>
-                  )}
-                </PlacesAutocomplete>
-                {validation.billingaddress ? (
-                  <span className="password_not_matched">
-                    Billing Address Is Required.
-                  </span>
-                ) : (
-                  ""
-                )}
-              </div>
-            </div>
-
-            <div className="row">
               <div className="col sub_titles">Payment Method</div>
             </div>
 
@@ -534,7 +446,7 @@ const SubscriptionCheckout = (props) => {
                       {product.coupon && product.coupon.length ? (
                         <>
                           <tr>
-                            <td>Coupon Discount ({product.coupon})</td>
+                            <td>Coupon Adjustment: ({product.coupon})</td>
                             <td>
                               <div>-${product.amountsubtraced / 100}</div>
                             </td>
@@ -584,7 +496,7 @@ const SubscriptionCheckout = (props) => {
                       {product.coupon && product.coupon.length ? (
                         <>
                           <tr>
-                            <td>Coupon Discount ({product.coupon})</td>
+                            <td>Coupon Adjustment: ({product.coupon})</td>
                             <td>
                               <div>-${product.amountsubtraced / 100}</div>
                             </td>
@@ -648,7 +560,6 @@ const SubscriptionCheckout = (props) => {
                         checkoutInfo.firstName == "" ||
                         checkoutInfo.lastName == "" ||
                         checkoutInfo.emailAddress == "" ||
-                        checkoutInfo.billingaddress == "" ||
                         !cardValidation
                           ? true
                           : false

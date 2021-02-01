@@ -116,7 +116,7 @@
   }
 }
 .transaction_history {
-  height: 321px;
+  max-height: 321px;
   overflow: auto;
 }
 ::-webkit-scrollbar {

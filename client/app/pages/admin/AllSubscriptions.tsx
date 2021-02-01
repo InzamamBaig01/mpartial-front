@@ -30,7 +30,7 @@ const AllSubscriptions = () => {
       sortable: true,
       className: "header-col",
       format: (d) => {
-        return <>{d.companyname ? d.companyname : "NA"}</>;
+        return <>{d.companyname ? d.companyname : "N/A"}</>;
       },
     },
     {
@@ -67,7 +67,7 @@ const AllSubscriptions = () => {
           <>
             {d.subscriptionnextbillingdate
               ? d.subscriptionnextbillingdate
-              : "NA"}
+              : "N/A"}
           </>
         );
       },

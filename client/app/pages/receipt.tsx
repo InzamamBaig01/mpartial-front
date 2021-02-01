@@ -86,7 +86,7 @@ const Receipt = (props) => {
                   {order.couponapplied && order.couponapplied.length ? (
                     <>
                       <tr>
-                        <td>Coupon Discount ({order.couponapplied})</td>
+                        <td>Coupon Adjustment: ({order.couponapplied})</td>
                         <td>
                           <div>-${order.amountsubtraced / 100}</div>
                         </td>

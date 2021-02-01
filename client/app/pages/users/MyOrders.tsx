@@ -32,7 +32,7 @@ const MyOrders = () => {
             <thead>
               <tr>
                 <th>Project Name</th>
-                <th>Delivery Email</th>
+                <th>Ordered By</th>
                 <th>Order Date</th>
                 <th>Total</th>
                 <th>Status</th>

@@ -206,7 +206,7 @@ const AddCoupons = (props) => {
             </div>
 
             <div className="form-group">
-              <label>Coupon Expiry Date</label>
+              <label>Coupon Expiration Date</label>
               <DatePicker
                 id="example-datepickers"
                 className="form-control"
@@ -214,7 +214,7 @@ const AddCoupons = (props) => {
                 value={data.expirydate}
                 minDate={data.activefrom}
                 showClearButton={false}
-                placeholder="Coupon Expiry Date"
+                placeholder="Coupon Expiration Date"
                 onChange={(v, f) =>
                   setData({
                     ...data,

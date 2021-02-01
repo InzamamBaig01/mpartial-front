@@ -90,7 +90,7 @@ const SubscriptionDetails = (props) => {
                       fontWeight: "600",
                     }}
                   >
-                    NA
+                    N/A
                   </p>
                 )}
               </div>

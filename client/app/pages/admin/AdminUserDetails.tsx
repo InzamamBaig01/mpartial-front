@@ -264,7 +264,7 @@ const AdminUserDetails = (props) => {
                         <div className="col-md-4 col-sm-6 col-xs-6 label-text">
                           <label>Company</label>
                           <div className="order_details_value">
-                            {user.companyname ? user.companyname : "NA"}
+                            {user.companyname ? user.companyname : "N/A"}
                           </div>
                         </div>
                       )}

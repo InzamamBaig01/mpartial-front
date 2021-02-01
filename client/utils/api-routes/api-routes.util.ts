@@ -317,7 +317,7 @@ export const startSubscriptionPlan = (payload) => {
   return ajax({
     headers: requestHeader(),
     method: "POST",
-    url: `${baseURL}/Client/startSubscriptionPlan?planName=${payload.planName}&billingaddress=${payload.billingaddress}&PAYMENTMETHODID=${payload.PAYMENTMETHODID}&couponcode=${payload.couponcode}&thetoken=${localStorage.token}`,
+    url: `${baseURL}/Client/startSubscriptionPlan?planName=${payload.planName}&PAYMENTMETHODID=${payload.PAYMENTMETHODID}&couponcode=${payload.couponcode}&thetoken=${localStorage.token}`,
   }).pipe(catchError(handleError("tokenCheck")));
 };
 

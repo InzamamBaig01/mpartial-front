@@ -224,7 +224,7 @@ const OrderDetails = (props) => {
                     {order.couponapplied ? (
                       <>
                         <tr>
-                          <td>Coupon Discount ({order.couponapplied}) </td>
+                          <td>Coupon Adjustment: ({order.couponapplied}) </td>
                           <td className="text-center">
                             -${order.amountsubtraced / 100}
                           </td>

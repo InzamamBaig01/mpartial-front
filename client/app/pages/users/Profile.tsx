@@ -133,7 +133,7 @@ const FormElement = (props) => {
           <> </>
         )}
         <button type="submit" className="btn btn-lg">
-          Save
+          <Loader text="Save"></Loader>
         </button>
       </form>
     </>
@@ -488,7 +488,7 @@ const Profile = (props) => {
         </Modal.Header>
         <Modal.Body>
           Are you sure you want to cancel your subscription? Your subscription
-          will be canceled immediately.
+          will be cancelled immediately.
         </Modal.Body>
         <Modal.Footer>
           <button className="btn" onClick={handleClose}>
@@ -890,7 +890,7 @@ const Profile = (props) => {
                                         }}
                                         className="mobile-font"
                                       >
-                                        NA
+                                        N/A
                                       </p>
                                     )}
                                   </div>

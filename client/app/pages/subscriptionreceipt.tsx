@@ -39,8 +39,8 @@ const SubscriptionReceipt = (props) => {
           <br />
           <div className="container receipt_details">
             <div className="receipt_info">
-              Thank you for your payment. An automated payment receipt will be
-              sent to your registered email.
+              Thank you for your payment. A receipt has been issued to your
+              verified email which is associated with your account.
             </div>
 
             <div className="row">
@@ -74,20 +74,7 @@ const SubscriptionReceipt = (props) => {
                     ) : (
                       ""
                     )}
-                    {/* {order.couponapplied && order.couponapplied.length ? (
-                    <>
-                      <tr>
-                        <td>Coupon Discount ({order.couponapplied})</td>
-                        <td>
-                          <div>-${order.amountsubtraced / 100}</div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Total</td>
-                        <td>${order.amountInCents / 100}</td>
-                      </tr>
-                    </>
-                  ) : ( */}
+
                     <>
                       <tr>
                         <td>Payment Method</td>
@@ -144,14 +131,14 @@ const SubscriptionReceipt = (props) => {
                 </table>
               </div>
             </div>
-            <div className="row">
+            {/* <div className="row">
               <div className="col receipt_heading">Billing Details</div>
             </div>
             <div className="row mb-5">
               <div className="col-12">
                 {props.location.state.data.billingaddress}
               </div>
-            </div>
+            </div> */}
             <div className="row">
               <div className="col text-center">
                 <button
