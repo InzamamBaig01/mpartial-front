@@ -2,11 +2,13 @@ import React, { useEffect, useContext, useState } from "react";
 import { withRouter, Link } from "react-router-dom";
 import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
+import queryString from "query-string";
 import {
   payOrder,
   getSubscriptionPlans,
   startSubscriptionPlan,
   getPIC,
+  profileUpdate,
 } from "utils/api-routes/api-routes.util";
 import history from "utils/history";
 import { loadStripe } from "@stripe/stripe-js/pure";
@@ -79,14 +81,24 @@ const CheckoutForm = (props) => {
     // event.preventDefault();
     showLoader();
     const card = elements.getElement(CardElement);
+    const stringify = queryString.stringify(props.companyname);
 
     startSubscriptionPlan({
       planName: props.planName,
       couponcode: props.couponcode,
       PAYMENTMETHODID: selectedCard.paymentMethodId,
     }).subscribe((response) => {
-      console.log(response);
       if (response.response.Requested_Action) {
+        if (
+          props.myInfo.companyname == null ||
+          props.myInfo.companyname == ""
+        ) {
+          profileUpdate(stringify, props.profilePic).subscribe((response) => {
+            console.log(response);
+            if (response.response.Requested_Action) {
+            }
+          });
+        }
         history.replace({
           pathname: "/subscriptionreceipt",
           state: { data: response.response.data },
@@ -207,10 +219,12 @@ const SubscriptionCheckout = (props) => {
   useEffect(() => {
     if (myInfo) {
       setInfo(myInfo);
+      setCompanyName({ ...companyname, company: myInfo.companyname });
     }
     return () => {};
   }, [myInfo]);
 
+  console.log(myInfo);
   const getPICO = () => {
     getPIC().subscribe((response) => {
       if (response.response.Requested_Action) {
@@ -241,6 +255,8 @@ const SubscriptionCheckout = (props) => {
       price: couponData.newprice,
       description: "",
       coupon: couponData.code,
+      reducedpercentage: couponData.reducedpercentage,
+      duration: couponData.duration,
       amountsubtraced: couponData.amountreducned,
       orignalprice: couponData.orignalprice,
       newprice: couponData.newprice,
@@ -252,6 +268,10 @@ const SubscriptionCheckout = (props) => {
   };
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [companyname, setCompanyName] = useState({
+    company: "",
+    thetoken: localStorage.token,
+  });
 
   const [checkoutInfo, setCheckoutInfo] = useState({
     firstName: userDetails().firstName,
@@ -374,6 +394,27 @@ const SubscriptionCheckout = (props) => {
                 )}
               </div>
             </div>
+            <div className="row">
+              <div className={`form - group col - 12`}>
+                <label>
+                  Company Name <span className="red">*</span>
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={companyname.company}
+                  required
+                  onChange={(e) =>
+                    setCompanyName({
+                      ...companyname,
+                      company: e.currentTarget.value,
+                    })
+                  }
+                  readOnly={myInfo.companyname ? true : false}
+                  required
+                />
+              </div>
+            </div>
 
             <div className="row">
               <div className="col sub_titles">Payment Method</div>
@@ -397,6 +438,9 @@ const SubscriptionCheckout = (props) => {
                       checkoutInfo={checkoutInfo}
                       PIC={PIC}
                       couponcode={coupon}
+                      companyname={companyname}
+                      profilePic={myInfo.profilePicture}
+                      myInfo={myInfo}
                     />
                   </Elements>
                   {/* <input type="checkbox" /> Card Ending 7878 */}
@@ -407,8 +451,12 @@ const SubscriptionCheckout = (props) => {
               <div className="col">
                 {product.coupon && product.coupon.length ? (
                   <>
-                    <span className="coupon_success">
-                      Coupon Applied: {product.coupon}
+                    <span className="coupon_success text-left">
+                      Coupon Applied: <b>{product.coupon}</b>
+                      <br />
+                      Percentage OFF: <b>{product.reducedpercentage}%</b>
+                      <br />
+                      Duration: <b>{product.duration} Months</b>
                     </span>
                   </>
                 ) : (
@@ -560,6 +608,8 @@ const SubscriptionCheckout = (props) => {
                         checkoutInfo.firstName == "" ||
                         checkoutInfo.lastName == "" ||
                         checkoutInfo.emailAddress == "" ||
+                        companyname === null ||
+                        companyname == "" ||
                         !cardValidation
                           ? true
                           : false

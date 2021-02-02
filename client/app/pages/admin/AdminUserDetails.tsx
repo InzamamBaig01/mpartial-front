@@ -161,24 +161,26 @@ const AdminUserDetails = (props) => {
                   <div className="order_details">
                     <div className="order_details_header">
                       <div className="row">
-                        <div className="col-8">Email: {user.emailAddress}</div>
+                        <div className="col-6">Email: {user.emailAddress}</div>
                         {user.ischildaccount ? (
                           ""
                         ) : user.subscriptionstatus === "NotActive" ? (
-                          <button
-                            className="btn ml-4"
-                            onClick={() => {
-                              setActiveTab({
-                                all: false,
-                                sub: false,
-                                pay: true,
-                              });
-                            }}
-                          >
-                            View Payments
-                          </button>
+                          <div className="col-6 text-right">
+                            <button
+                              className="btn ml-4"
+                              onClick={() => {
+                                setActiveTab({
+                                  all: false,
+                                  sub: false,
+                                  pay: true,
+                                });
+                              }}
+                            >
+                              View Payments
+                            </button>
+                          </div>
                         ) : (
-                          <div className="col-4">
+                          <div className="col-6 text-right">
                             <button
                               className="btn mr-3"
                               onClick={() => {
@@ -252,10 +254,10 @@ const AdminUserDetails = (props) => {
                         <label>Account Type</label>
                         <div className="order_details_value">
                           {user.ischildaccount
-                            ? "Child"
+                            ? "Enterprise Collaborator"
                             : user.subscriptionstatus === "NotActive"
                             ? "Orphan"
-                            : "Enterprise"}
+                            : "Enterprise Admin"}
                         </div>
                       </div>
                       {user.subscriptionstatus === "NotActive" ? (

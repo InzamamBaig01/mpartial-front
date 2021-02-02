@@ -23,6 +23,7 @@ const AddCoupons = (props) => {
     activefrom: new Date().toISOString(),
     usagelimit: "",
     description: "",
+    duration: "",
     discountpercentage: "",
     usagelimitpercustomer: "",
     expirydate: new Date(
@@ -45,6 +46,7 @@ const AddCoupons = (props) => {
         couponcode: "",
         activefrom: new Date(duData.activefrom).toISOString(),
         usagelimit: duData.usagelimit,
+        duration: duData.duration,
         discountpercentage: duData.discountpercentage,
         description: duData.description,
         usagelimitpercustomer: duData.usagelimitpercustomer,
@@ -182,6 +184,22 @@ const AddCoupons = (props) => {
                 min="0"
                 max="100"
                 step="0.10"
+              />
+            </div>
+            <div className="form-group">
+              <label>Duration</label>
+              <input
+                type="text"
+                placeholder="Coupon Description"
+                className="form-control"
+                required
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    duration: e.currentTarget.value,
+                  })
+                }
+                value={data.duration}
               />
             </div>
 

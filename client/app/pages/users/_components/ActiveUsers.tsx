@@ -85,7 +85,7 @@ const ActiveUsers = (props) => {
                       {user.firstname + " " + user.lastname}
                     </div>
                     <div className="email">{user.email}</div>
-                    <div className="email">Child</div>
+                    <div className="email">Enterprise Collaborator</div>
                   </div>
                 </div>
                 <div className="col-2 col-sm-4 d-flex align-items-center justify-content-end">

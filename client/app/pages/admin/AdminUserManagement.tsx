@@ -41,10 +41,10 @@ const AdminUserManagement = () => {
       className: "header-col",
       format: (d) =>
         d.ischildaccount === true
-          ? "Child"
+          ? "Enterprise Collaborator"
           : d.subscriptionstatus === "NotActive"
           ? "Orphan"
-          : "Enterprise",
+          : "Enterprise Admin",
     },
     {
       name: "No. of Orders",

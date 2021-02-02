@@ -27,6 +27,7 @@ interface ICoupon {
   couponcode: undefined | String | Number;
   activefrom: undefined | String | Number;
   usagelimit: undefined | String | Number;
+  duration: undefined | String | Number;
   discountpercentage: undefined | String | Number;
   description: undefined | String | Number;
   forcustomeremail: undefined | String | Number;
@@ -39,6 +40,7 @@ const AddCoupons = (props) => {
     couponcode: "",
     activefrom: new Date().toISOString(),
     usagelimit: "",
+    duration: "",
     description: "",
     discountpercentage: "",
     usagelimitpercustomer: "",
@@ -51,8 +53,6 @@ const AddCoupons = (props) => {
   const [Users, setUsers] = useState([]);
   const [couponError, setCouponError] = useState(false);
 
-  console.log(props);
-
   useEffect(() => {
     getallADUsers();
 
@@ -63,6 +63,7 @@ const AddCoupons = (props) => {
         activefrom: new Date().toISOString(),
         usagelimit: "",
         description: "",
+        duration: "",
         discountpercentage: "",
         usagelimitpercustomer: "",
         expirydate: new Date(
@@ -192,6 +193,22 @@ const AddCoupons = (props) => {
                 min="0"
                 max="100"
                 step="0.10"
+              />
+            </div>
+            <div className="form-group">
+              <label>Duration</label>
+              <input
+                type="text"
+                placeholder="Coupon Description"
+                className="form-control"
+                required
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    duration: e.currentTarget.value,
+                  })
+                }
+                value={data.duration}
               />
             </div>
 
