@@ -26,7 +26,7 @@ import moment from "moment";
 interface ICoupon {
   couponcode: undefined | String | Number;
   activefrom: undefined | String | Number;
-  usagelimit: undefined | String | Number;
+  noofcustomers: undefined | String | Number;
   duration: undefined | String | Number;
   discountpercentage: undefined | String | Number;
   description: undefined | String | Number;
@@ -39,7 +39,7 @@ const AddCoupons = (props) => {
   const [data, setData] = useState<ICoupon>({
     couponcode: "",
     activefrom: new Date().toISOString(),
-    usagelimit: "",
+    noofcustomers: "",
     duration: "",
     description: "",
     discountpercentage: "",
@@ -61,7 +61,7 @@ const AddCoupons = (props) => {
       setData({
         couponcode: "",
         activefrom: new Date().toISOString(),
-        usagelimit: "",
+        noofcustomers: "",
         description: "",
         duration: "",
         discountpercentage: "",
@@ -213,7 +213,7 @@ const AddCoupons = (props) => {
             </div>
 
             <div className="form-group">
-              <label>Coupon Active From</label>
+              <label>Application Active</label>
               <DatePicker
                 id="example-datepicker"
                 className="form-control"
@@ -233,7 +233,7 @@ const AddCoupons = (props) => {
             </div>
 
             <div className="form-group">
-              <label>Coupon Expiration Date</label>
+              <label>Application Expiration</label>
               <DatePicker
                 id="example-datepickers"
                 className="form-control"
@@ -251,7 +251,7 @@ const AddCoupons = (props) => {
               />
             </div>
             <div className="form-group">
-              <label>Usage limit</label>
+              <label>Number of Customers</label>
               <input
                 type="number"
                 placeholder="Usage limit"
@@ -260,15 +260,15 @@ const AddCoupons = (props) => {
                 onChange={(e) =>
                   setData({
                     ...data,
-                    usagelimit: e.currentTarget.value,
+                    noofcustomers: e.currentTarget.value,
                   })
                 }
-                value={data.usagelimit}
+                value={data.noofcustomers}
               />
             </div>
 
             <div className="form-group">
-              <label>Usage limit per user</label>
+              <label>Application limit per user</label>
               <input
                 type="number"
                 placeholder="Usage limit per user"
@@ -435,7 +435,7 @@ const SubscriptionCoupons = () => {
     },
 
     {
-      name: "Expiry",
+      name: "Application Expiry",
       selector: "expirydate",
       sortable: false,
       className: "header-col",
@@ -444,12 +444,13 @@ const SubscriptionCoupons = () => {
       },
     },
     {
-      name: "Usage / Limit",
-      selector: "usagelimit",
+      name: "Used/Total Customers",
+      selector: "noofcustomers",
       sortable: false,
       className: "header-col",
-      format: (d) => `${d.nooftimesused}/${d.usagelimit}`,
+      format: (d) => `${d.countofdistinctusers}/${d.noofcustomers}`,
     },
+
     {
       name: "Discount % ",
       selector: "discountpercentage",
@@ -464,7 +465,7 @@ const SubscriptionCoupons = () => {
       },
     },
     {
-      name: "No of Months",
+      name: "Duration",
       selector: "duration",
       sortable: false,
       className: "header-col",

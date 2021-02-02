@@ -21,7 +21,7 @@ const AddCoupons = (props) => {
   const [data, setData] = useState<ICoupon>({
     couponcode: "",
     activefrom: new Date().toISOString(),
-    usagelimit: "",
+    noofcustomers: "",
     description: "",
     duration: "",
     discountpercentage: "",
@@ -45,7 +45,7 @@ const AddCoupons = (props) => {
       setData({
         couponcode: "",
         activefrom: new Date(duData.activefrom).toISOString(),
-        usagelimit: duData.usagelimit,
+        noofcustomers: duData.noofcustomers,
         duration: duData.duration,
         discountpercentage: duData.discountpercentage,
         description: duData.description,
@@ -204,7 +204,7 @@ const AddCoupons = (props) => {
             </div>
 
             <div className="form-group">
-              <label>Coupon Active From</label>
+              <label>Application Active </label>
               <DatePicker
                 id="example-datepicker"
                 className="form-control"
@@ -224,7 +224,7 @@ const AddCoupons = (props) => {
             </div>
 
             <div className="form-group">
-              <label>Coupon Expiration Date</label>
+              <label>Application Expiration</label>
               <DatePicker
                 id="example-datepickers"
                 className="form-control"
@@ -242,7 +242,7 @@ const AddCoupons = (props) => {
               />
             </div>
             <div className="form-group">
-              <label>Usage limit</label>
+              <label>Number of Customers</label>
               <input
                 type="number"
                 placeholder="Usage limit"
@@ -251,15 +251,15 @@ const AddCoupons = (props) => {
                 onChange={(e) =>
                   setData({
                     ...data,
-                    usagelimit: e.currentTarget.value,
+                    noofcustomers: e.currentTarget.value,
                   })
                 }
-                value={data.usagelimit}
+                value={data.noofcustomers}
               />
             </div>
 
             <div className="form-group">
-              <label>Usage limit per user</label>
+              <label>Application limit per user</label>
               <input
                 type="number"
                 placeholder="Usage limit per user"
@@ -447,7 +447,7 @@ const SubscriptionCouponDetails = (props) => {
                 <div className=" order_details_info">
                   <div className="row">
                     <div className="col text-left">
-                      <b>Active From:</b>
+                      <b>Application Active:</b>
                     </div>
                     <div className="col text-left">
                       {moment(coupon.activefrom).format("MMM Do, YYYY")}
@@ -455,7 +455,7 @@ const SubscriptionCouponDetails = (props) => {
                   </div>
                   <div className="row ">
                     <div className="col text-left mt-3">
-                      <b>Expiry:</b>
+                      <b>Application Expiration:</b>
                     </div>
                     <div className="col text-left mt-3">
                       {moment(coupon.expirydate).format("MMM Do, YYYY")}
@@ -463,15 +463,15 @@ const SubscriptionCouponDetails = (props) => {
                   </div>
                   <div className="row">
                     <div className="col text-left mt-3">
-                      <b>Usage Limit:</b>
+                      <b>Number of Customers:</b>
                     </div>
                     <div className="col text-left mt-3">
-                      {coupon.usagelimit}
+                      {coupon.noofcustomers}
                     </div>
                   </div>
                   <div className="row">
                     <div className="col text-left mt-3">
-                      <b> User limit per customer: </b>
+                      <b> Application limit per customer: </b>
                     </div>
                     <div className="col text-left mt-3">
                       {coupon.usagelimitpercustomer}

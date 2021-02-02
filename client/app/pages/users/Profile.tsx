@@ -437,6 +437,8 @@ const Profile = (props) => {
     }
   }, [myInfo]);
 
+  console.log(filteredPlan);
+
   const cancelPlan = () => {
     showLoader();
     cancelSubscription().subscribe((response) => {

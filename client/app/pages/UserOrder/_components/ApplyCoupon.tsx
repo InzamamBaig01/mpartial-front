@@ -15,8 +15,9 @@ const ApplyCoupon = (props) => {
   const [coupon, setCoupon] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     showLoader();
+
+    e.preventDefault();
     //  price - (price * (discount % / 100))
     const newPrice = price - price * (50 / 100);
     if (props.isPlan) {
