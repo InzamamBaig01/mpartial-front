@@ -483,7 +483,7 @@ const CouponDetails = (props) => {
                   <div className="col text-left">{coupon.activefrom}</div>
                 </div>
                 <div className="row ">
-                  <div className="col text-left">Expiry:</div>
+                  <div className="col text-left">Expiration Date:</div>
                   <div className="col text-left">{coupon.expiry}</div>
                 </div>
                 <div className="row">
@@ -551,7 +551,7 @@ const CouponDetails = (props) => {
                 <div className="row">
                   <div className="col text-left">
                     <table className="table">
-                      {couponHistory.length ? (
+                      {couponHistory ? (
                         couponHistory.map((history) => {
                           return (
                             <tr>

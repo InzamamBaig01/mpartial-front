@@ -382,7 +382,7 @@ const ViewCoupon = (props) => {
             <div className="col text-left">{props.info.activefrom}</div>
           </div>
           <div className="row">
-            <div className="col text-left">Expiry:</div>
+            <div className="col text-left">Expiration Date:</div>
             <div className="col text-left">{props.info.expiry}</div>
           </div>
           <div className="row">
@@ -489,7 +489,7 @@ const Coupons = () => {
     },
 
     {
-      name: "Expiry",
+      name: "Expiration Date",
       selector: "expiry",
       sortable: false,
       className: "header-col",
