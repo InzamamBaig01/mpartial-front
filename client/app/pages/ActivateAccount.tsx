@@ -5,8 +5,8 @@ import Header from "app/components/Header";
 import { AuthContext } from "contexts/authContext";
 
 import history from "../../utils/history";
-import successicon from "../../assets/success_icon.png";
-import erroricon from "../../assets/error_icon.png";
+import successicon from "../../assets/checkBig.png";
+import erroricon from "../../assets/chat.png";
 import { ActivateAccountAPI } from "utils/api-routes/api-routes.util";
 
 const ActivateAccount = (props) => {
@@ -33,29 +33,67 @@ const ActivateAccount = (props) => {
   return (
     <>
       <Header isFixedColor={true}></Header>
-      <div className="other_pages_container full_height">
-        <h1 className="title text-center">Email Verification</h1>
-        <div className="container">
-          <div className="signup_holder">
-            <h4>
-              {success == "true" ? (
-                <>
+      <div className="">
+        <div className="signup_holder ">
+          <div className="container " style={{ height: "100vh" }}>
+            {success == "true" ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: "0 auto",
+                  height: "100%",
+                }}
+              >
+                <div className="mb-4">
                   <img src={successicon} className="verif_image" alt="" />
-                  Your email address is confirmed.&nbsp;
-                  <a href="/login">Click here</a> to Sign In
-                </>
-              ) : success != "false" ? (
-                <>
+                </div>
+                <div className="mb-4">
+                  <h4>
+                    {" "}
+                    <b> Your email address is verified</b>{" "}
+                  </h4>
+                </div>
+                <div>
+                  <a className="btn" href="/login">
+                    Proceed
+                  </a>
+                </div>
+              </div>
+            ) : success != "false" ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: "0 auto",
+                  height: "100%",
+                }}
+              >
+                <div className="mb-4">
                   <img src={erroricon} className="verif_image" alt="" />
-                  The Link has expired. Please <Link to="/login">
-                    Sign In
-                  </Link>{" "}
-                  to resend the verification email again.
-                </>
-              ) : (
-                ""
-              )}
-            </h4>
+                </div>
+                <div className="mb-4">
+                  <h4>
+                    <b>
+                      {" "}
+                      Verification link has expired. Please Sign In <br /> to
+                      resend the verification email again.{" "}
+                    </b>
+                  </h4>
+                </div>
+                <div>
+                  <a className="btn" href="/login">
+                    Signin
+                  </a>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
