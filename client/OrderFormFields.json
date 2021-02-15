@@ -289,6 +289,42 @@
     "value": ""
   },
   {
+    "id": "flooringActivities",
+    "name": "Flooring Activities",
+    "description": "Please describe the type of flooring/Subfloor is being replaced - in what room / Ex: Laminate Wood Flooring - Living Room; (if non-applicable write 'n/a')",
+    "placeholder": "",
+    "type": "text",
+    "value": "",
+    "required": true
+  },
+  {
+    "id": "cabinetryActivities",
+    "name": "Cabinetry Activities",
+    "description": "Please describe if the cabinets are being detached/reset or removed/replaced (if non-applicable write 'n/a')",
+    "placeholder": "",
+    "type": "text",
+    "value": "",
+    "required": true
+  },
+  {
+    "id": "countertopActivities",
+    "name": "Countertop Activities",
+    "description": "Please describe if the countertops are being detached/reset or removed/replaced (if non-applicable write 'n/a')",
+    "placeholder": "",
+    "type": "text",
+    "value": "",
+    "required": true
+  },
+  {
+    "id": "applianceActivities",
+    "name": "Appliance Activities",
+    "description": "Please describe if the appliances are being detached/reset or removed/replaced (if non-applicable write 'n/a')",
+    "placeholder": "",
+    "type": "text",
+    "value": "",
+    "required": true
+  },
+  {
     "id": "pPEsConcessions",
     "name": "PPEs Concessions",
     "description": "Please describe the PPE concessions required EX.,: 3 Technician(s) x 2 Day(s); (if non-applicable write \"n/a\")",
