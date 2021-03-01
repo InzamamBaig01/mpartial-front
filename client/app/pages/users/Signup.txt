@@ -1,0 +1,135 @@
+import React, { useContext, useState, useEffect } from "react";
+
+import { AuthContext } from "../../../contexts/authContext";
+import { withRouter, Link } from "react-router-dom";
+import Header from "app/components/Header";
+import { SignupStepOne } from "./_components/SignupStepOne";
+import { SignupStepTwo } from "./_components/SignupStepTwo";
+import { SignupStepThree } from "./_components/SignupStepThree";
+import { SignupStepFour } from "./_components/SignupStepFour";
+import { SignupStepMobile } from "./_components/SignupStepMobile";
+import { SignupStepRole } from "./_components/SignupStepRole";
+import Mail from "../../../assets/email.svg";
+import Lock from "../../../assets/lock.svg";
+import question from "../../../assets/question.svg";
+import left from "../../../assets/left.svg";
+
+interface IProps {}
+export const Signup: React.FC<IProps> = ({ ...props }) => {
+  const {
+    loginError,
+    status,
+    dispatchLogin,
+    emailOnChange,
+    passwordOnChange,
+  } = useContext(AuthContext);
+
+  const queryString = window.location.search;
+  console.log(queryString);
+  const urlParams = new URLSearchParams(queryString);
+  console.log(urlParams.get("invitedsemail"));
+
+  const [loginStatus, setLoginStatus] = useState(loginError);
+  const handleEmailChange = (e: any) => emailOnChange(e.target.value);
+  const handlePasswordChange = (e: any) => passwordOnChange(e.target.value);
+  const handleSubmitForm = (e: any) => {
+    e.preventDefault();
+    dispatchLogin();
+  };
+
+  useEffect(() => {
+    setLoginStatus(loginError);
+  }, [status, loginError]);
+
+  const [stepVal, setStepVal] = React.useState(1);
+  const [formData, setFormData] = React.useState({
+    email: "",
+    firstname: "",
+    lastname: "",
+    role: "",
+    phone: "",
+  });
+  const changeValue = (val) => {
+    setStepVal(val);
+  };
+  return (
+    <>
+      <Header isFixedColor={true}></Header>
+      <div className="login_page ">
+        <div className={"signup_header"}>
+          <div className={"container"}>
+            <div className="signUp_actions">
+              <ul>
+                {stepVal != 1 && stepVal != 6 ? (
+                  <li onClick={() => setStepVal(stepVal - 1)}>
+                    <img src={left} />
+                  </li>
+                ) : (
+                  ""
+                )}
+
+                {/* <li><a href={'#'}><img src={question} /></a></li> */}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="container">
+          <div className="signup_holder">
+            {stepVal === 1 && (
+              <SignupStepOne
+                step={stepVal}
+                setStep={changeValue}
+                formData={formData}
+                setFormData={setFormData}
+                inviteEmail={urlParams.get("invitedsemail")}
+              />
+            )}
+            {stepVal === 2 && (
+              <SignupStepTwo
+                setStep={changeValue}
+                step={stepVal}
+                formData={formData}
+                setFormData={setFormData}
+              />
+            )}
+            {stepVal === 3 && (
+              <SignupStepMobile
+                setStep={changeValue}
+                step={stepVal}
+                formData={formData}
+                setFormData={setFormData}
+              />
+            )}
+            {stepVal === 4 && (
+              <SignupStepRole
+                setStep={changeValue}
+                step={stepVal}
+                formData={formData}
+                setFormData={setFormData}
+              />
+            )}
+            {stepVal === 5 && (
+              <SignupStepThree
+                setStep={changeValue}
+                step={stepVal}
+                formData={formData}
+                setFormData={setFormData}
+                inviteid={urlParams.get("inviteid")}
+              />
+            )}
+            {stepVal === 6 && (
+              <SignupStepFour
+                setStep={changeValue}
+                step={stepVal}
+                inviteid={urlParams.get("inviteid")}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default withRouter(Signup);

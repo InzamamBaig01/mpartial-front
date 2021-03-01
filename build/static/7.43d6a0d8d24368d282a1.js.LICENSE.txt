@@ -1,0 +1,11 @@
+/* WEBPACK VAR INJECTION */
+
+/* harmony default export */
+
+/* harmony import */
+
+/*#__PURE__*/
+
+/***/
+
+// console.log("Captcha value:", value);
