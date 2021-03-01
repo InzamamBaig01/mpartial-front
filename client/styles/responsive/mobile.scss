@@ -1,3 +1,6 @@
+@media (max-width) {
+}
+
 @media (max-width: 500px) {
   .select_box_field {
     .description {
@@ -238,18 +241,80 @@
   }
 }
 
+@media screen and (max-width: 360px) {
+  .mobile-heading-one {
+    font-size: 17px;
+    line-height: 30px;
+  }
+
+  .col-two {
+    padding-left: 0px;
+  }
+
+  .line-heading.mobile-heading-two {
+    padding-left: 0px!important;
+  }
+}
+
 @media screen and (min-width: 365px) and (max-width: 385px) {
   .home_video_background {
     height: 248px !important;
   }
 }
 
+@media screen and (max-width: 425px) {
+  .line-heading.mobile-heading-two {
+    padding-left: 20px!important;
+  }
+}
+@media screen and (max-width: 402px) {
+  .line-heading.mobile-heading-two {
+    padding-left: 35px;
+  }
+}
+@media screen and (max-width: 402px) {
+  .line {
+    border: none;
+  }
+  .container {
+    margin-top: auto !important;
+    width: auto !important;
+  }
+
+  .line-heading.mobile-heading-two {
+    padding-left: 7px!important;
+  }
+}
 @media screen and (max-width: 400px) {
   .modals .modal-dialog {
     max-width: 300px;
   }
   .modals .modal-dialog {
     padding: 40px 40px;
+  }
+  // .line-heading.mobile-heading-one {
+  //   text-align: center !important;
+  // }
+  .line-heading.mobile-heading-two {
+    padding-left: 0px!important;
+  }
+  .mobile-center {
+    font-size: 11px;
+    line-height: 30px;
+  }
+  .col-two {
+    padding-left: 0px;
+  }
+}
+@media screen and (max-width: 350px) {
+  .mobile-heading-one {
+    // text-align: center;
+    font-size: 17px;
+    line-height: 30px;
+  }
+
+  .mobile-center {
+    font-size: 11px;
   }
 }
 @media screen and (max-width: 350px) {

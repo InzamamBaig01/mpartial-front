@@ -435,7 +435,7 @@ const SubscriptionCoupons = () => {
     },
 
     {
-      name: "Application Expiry",
+      name: "Expiry",
       selector: "expirydate",
       sortable: false,
       className: "header-col",
@@ -444,15 +444,15 @@ const SubscriptionCoupons = () => {
       },
     },
     {
-      name: "Used/Total Customers",
+      name: "Usage Limit",
       selector: "noofcustomers",
       sortable: false,
       className: "header-col",
-      format: (d) => `${d.countofdistinctusers}/${d.noofcustomers}`,
+      format: (d) => eval(`parseInt(${d.noofcustomers})-parseInt(${d.countofdistinctusers})`),
     },
 
     {
-      name: "Discount % ",
+      name: "Discount Percentage ",
       selector: "discountpercentage",
       sortable: false,
       className: "header-col",
@@ -465,7 +465,7 @@ const SubscriptionCoupons = () => {
       },
     },
     {
-      name: "Duration",
+      name: "No. of Months",
       selector: "duration",
       sortable: false,
       className: "header-col",

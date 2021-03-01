@@ -321,7 +321,6 @@ const UserOrder = (props) => {
       }
     });
 
-    // console.log(apiData);
 
     const stringified = queryString.stringify(apiData);
 

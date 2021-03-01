@@ -33,19 +33,19 @@ const AdminUserManagement = () => {
       sortable: true,
       className: "header-col",
     },
-    {
-      name: "Account Type",
-      selector: "ischildaccount",
+    // {
+    //   name: "Account Type",
+    //   selector: "ischildaccount",
 
-      sortable: false,
-      className: "header-col",
-      format: (d) =>
-        d.ischildaccount === true
-          ? "Enterprise Collaborator"
-          : d.subscriptionstatus === "NotActive"
-          ? "Orphan"
-          : "Enterprise Admin",
-    },
+    //   sortable: false,
+    //   className: "header-col",
+    //   format: (d) =>
+    //     d.ischildaccount === true
+    //       ? "Enterprise Collaborator"
+    //       : d.subscriptionstatus === "NotActive"
+    //       ? "Orphan"
+    //       : "Enterprise Admin",
+    // },
     {
       name: "No. of Orders",
       selector: "noOfOrders",
@@ -60,6 +60,9 @@ const AdminUserManagement = () => {
         return +new Date(a.joinedOn) - +new Date(b.joinedOn);
       },
       className: "header-col",
+    },{
+    name: " ",
+    className: "header-col",
     },
     {
       name: "Action",

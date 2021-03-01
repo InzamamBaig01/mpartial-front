@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useMemo } from "react";
 import { withRouter, Link } from "react-router-dom";
 import ADHeader from "app/components/ADHeader";
 import DataTable from "react-data-table-component";
@@ -89,6 +89,156 @@ const AdminUserDetails = (props) => {
 
   console.log(singleUserDetails);
 
+  
+
+  const tablecolumns = React.useMemo(
+    () => [
+      {
+        name: 'Companies',
+        selector: 'col1', // accessor is the "key" in the data
+        width: 90
+      },
+      {
+        name: 'Role',
+        selector: 'col2',
+        width: 50
+      },
+      // },
+      {
+        name: ' ',
+        selector: 'col3',
+        width:150
+      }
+    ],
+    []
+  )
+  // const tablecolumns2 = React.useMemo(
+  //   () => [
+  //   {
+  //       name: ' ',
+  //       selector: 'col3'
+  //     }
+  //   ],
+  //   []
+  // )
+  const tabledata =  React.useMemo(
+      () => [
+        {
+          // change
+          col1: user.companyname ? user.companyname : "N/A",
+          col2: user.role,
+          col3: user.ischildaccount ? (
+            ""
+          ) : user.subscriptionstatus === "NotActive" ? (
+            <div>
+              <button
+                className="btn btn-sm"
+                onClick={() => {
+                  setActiveTab({
+                    all: false,
+                    sub: false,
+                    pay: true,
+                  });
+                }}
+              >
+                View Payments
+              </button>
+            </div>
+          ) : (
+            <div>
+              <button
+                className="btn btn-sm"
+                onClick={() => {
+                  setActiveTab({
+                    all: false,
+                    sub: true,
+                    pay: false,
+                  });
+                }}
+              >
+                View Subscription
+              </button>
+              <button
+                className="btn btn-sm"
+                onClick={() => {
+                  setActiveTab({
+                    all: false,
+                    sub: false,
+                    pay: true,
+                  });
+                }}
+              >
+                View Payments
+              </button>
+            </div>
+          )
+        },
+        {
+          col1: user.companyname ? user.companyname : "N/A",
+          col2: user.role,
+          col3: ""
+        },
+        {
+          col1: user.companyname ? user.companyname : "N/A",
+          col2: user.role,
+          col3: ""
+        },
+      ],
+      [user]
+    )
+  // const tabledata2 =  React.useMemo(
+  //     () => [
+  //       {
+  //         col3: user.ischildaccount ? (
+  //                         ""
+  //                       ) : user.subscriptionstatus === "NotActive" ? (
+  //                         <div>
+  //                           <button
+  //                             className="btn ml-4"
+  //                             onClick={() => {
+  //                               setActiveTab({
+  //                                 all: false,
+  //                                 sub: false,
+  //                                 pay: true,
+  //                               });
+  //                             }}
+  //                           >
+  //                             View Payments
+  //                           </button>
+  //                         </div>
+  //                       ) : (
+  //                         <div>
+  //                           <button
+  //                             className="btn mr-3"
+  //                             onClick={() => {
+  //                               setActiveTab({
+  //                                 all: false,
+  //                                 sub: true,
+  //                                 pay: false,
+  //                               });
+  //                             }}
+  //                           >
+  //                             View Subscription
+  //                           </button>
+  //                           <button
+  //                             className="btn"
+  //                             onClick={() => {
+  //                               setActiveTab({
+  //                                 all: false,
+  //                                 sub: false,
+  //                                 pay: true,
+  //                               });
+  //                             }}
+  //                           >
+  //                             View Payments
+  //                           </button>
+  //                         </div>
+  //                       )
+  //       }
+  //     ],
+  //     [user]
+  //   )
+
   const columns = [
     {
       name: "Name",
@@ -162,51 +312,6 @@ const AdminUserDetails = (props) => {
                     <div className="order_details_header">
                       <div className="row">
                         <div className="col-6">Email: {user.emailAddress}</div>
-                        {user.ischildaccount ? (
-                          ""
-                        ) : user.subscriptionstatus === "NotActive" ? (
-                          <div className="col-6 text-right">
-                            <button
-                              className="btn ml-4"
-                              onClick={() => {
-                                setActiveTab({
-                                  all: false,
-                                  sub: false,
-                                  pay: true,
-                                });
-                              }}
-                            >
-                              View Payments
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="col-6 text-right">
-                            <button
-                              className="btn mr-3"
-                              onClick={() => {
-                                setActiveTab({
-                                  all: false,
-                                  sub: true,
-                                  pay: false,
-                                });
-                              }}
-                            >
-                              View Subscription
-                            </button>
-                            <button
-                              className="btn"
-                              onClick={() => {
-                                setActiveTab({
-                                  all: false,
-                                  sub: false,
-                                  pay: true,
-                                });
-                              }}
-                            >
-                              View Payments
-                            </button>
-                          </div>
-                        )}
                       </div>
                     </div>
                     <div className="row order_details_info">
@@ -229,10 +334,8 @@ const AdminUserDetails = (props) => {
                         </div>
                       </div>
                       <div className="col-md-4 col-sm-6 col-xs-6 label-text">
-                        <label>Total Orders</label>
-                        <div className="order_details_value">
-                          {user.noOfOrders}
-                        </div>
+                        <label>Cell</label>
+                        <div className="order_details_value">{user.phone}</div>
                       </div>
                       <div className="col-md-4 col-sm-6 col-xs-6 label-text">
                         <label>Profile Status</label>
@@ -298,21 +401,36 @@ const AdminUserDetails = (props) => {
                     ) : (
                       <div>
                         <hr />
-                        <div className="order_details_header">
-                          Sub-accounts Information
+                        <div className="container">
+                          <div className="row">
+                            <div className="col-md-12 col-xs-12">
+                              
+                              <DataTable
+                                columns={tablecolumns}
+                                data={tabledata}
+                                responsive={true}
+                                // expanded={true}
+                                // expandableRows = {true}
+                                // pagination={true}
+                                // Code
+                              />
+                            </div>
+                            {/* <div className="col-lg-6 col-xs-12">
+                              
+                              <DataTable
+                                columns={tablecolumns2}
+                                data={tabledata2}
+                                // responsive={true}
+                                // expanded={true}
+                                // expandableRows = {true}
+                                // pagination={true}
+                                // Code
+                              /> */}
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                          <DataTable
-                            columns={columns}
-                            data={user.childs ? user.childs : ""}
-                            responsive={true}
-                            pagination={true}
-                          />
-                        </div>
-                      </div>
                     )}
-
-                    <div className="order_details_footer">
+                    <div className="order_details_footer back-button">
                       <Link to={`/user-management`}>
                         <button className="btn">Back</button>
                       </Link>

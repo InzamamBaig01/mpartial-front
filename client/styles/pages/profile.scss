@@ -1,6 +1,12 @@
 .disabled_link {
   cursor: none;
 }
+
+// Drop Drop
+
+.dropdown-menu.dropdown-menu-right>.dropdown-item{
+  padding-left: 10px;
+}
 .demo {
   font-family: "Gilroy";
   font-size: 12px;
@@ -494,6 +500,18 @@
   }
 }
 
+@media screen and (max-width: 1024px){
+  // ipad
+
+  .other_pages_container > div:first-child{
+    padding-right:0!important;
+  }
+  .dropdown-menu.dropdown-menu-right{
+    top: 42px;
+    padding-right:0;
+  }
+}
+
 @media screen and (max-width: 1000px) {
   .membership-tab {
     flex-direction: column !important;
@@ -502,6 +520,10 @@
     margin-top: 10px;
     align-self: flex-start;
   }
+
+  
+
+
 }
 @media screen and (max-width: 414px) {
   .payment-tab {

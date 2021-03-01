@@ -14,6 +14,33 @@ import mastercard from "../../../assets/mastercard.png";
 import AmericanExpress from "../../../assets/American-Express.png";
 import discover from "../../../assets/discover.png";
 import appConfig from "../../../appconfig.json";
+
+import rightarrow from "../../../assets/right-arrow.svg";
+
+import rightarrowdark from "../../../assets/right-arrow-dark.svg";
+
+import checkicon from "../../../assets/checkmark.svg";
+
+import building from "../../../assets/building.svg";
+
+import buildingtwo from "../../../assets/buildingtwo.svg";
+
+// import checkmark from "../../../assets/checkBig.png";
+
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  NavbarText,
+  Dropdown,
+} from "reactstrap";
 // console.log(stripe);
 
 import {
@@ -380,6 +407,23 @@ const Profile = (props) => {
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
+
+  const [active, setActive] = useState(true);
+  const [inactive, setInactive] = useState(true);
+
+  const toggleClass = () => setActive(false);
+
+  const changeTransparency = () => {
+    if(inactive == false){
+      setInactive(true);
+    }else{
+      setInactive(false);
+    }
+  }
+
+  // State of Icon
+
+
   const pmicons = {
     mastercard: mastercard,
     visa: visa,
@@ -482,6 +526,18 @@ const Profile = (props) => {
     setToggleMembership(!toggleMembership);
   };
 
+  // dropdown
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const dropdowntoggle = () => setDropdownOpen(!dropdownOpen);
+
+  const [userdropdownOpen, setuserDropdownOpen] = useState(false);
+
+  const userdropdowntoggle = () => setuserDropdownOpen(!userdropdownOpen);
+
   return (
     <>
       <Modal show={show} onHide={handleClose} className="cancel_subscription">
@@ -545,6 +601,108 @@ const Profile = (props) => {
       </Modal>
       <Header isFixedColor={true}></Header>
       <div className="other_pages_container">
+        {/* Add Code Here */}
+        {info.subscriptionstatus === "Active" ? (
+          <div
+            style={{
+              textAlign: "right",
+              // paddingTop: "15px",
+              paddingRight: "122px",
+              color: "#fff !imporant",
+              backgroundColor: "#3ac280",
+            }}
+          >
+            <UncontrolledDropdown inNavbar>
+              <DropdownToggle nav caret>
+                <span className="nav-link">
+                  <h4
+                    style={{
+                      textAlign: "right",
+                      fontWeight: "bold",
+                      fontSize: "15px",
+                      lineHeight: "2px",
+                      letterSpacing: "0.03px",
+                      opacity: "1",
+                      color: "#fff",
+                      marginBottom: "-0.5rem",
+                      position: "relative",
+                    }}
+                  >
+                    4D Schematics
+                    {window.innerWidth >= 1030 ? (
+                      <img
+                        style={{ position: "absolute" }}
+                        src={rightarrow}
+                        alt="right arrow"
+                      />
+                    ) : (
+                      <img
+                        style={{
+                          position: "absolute",
+                          top: "0.2rem",
+                          paddingLeft: "0.2rem",
+                        }}
+                        src={rightarrowdark}
+                        alt="dark right arrow"
+                      />
+                    )}
+                  </h4>
+                </span>
+                <p
+                  style={{
+                    fontSize: "12px",
+                    color: "#fff",
+                    marginBottom: "0",
+                    paddingRight: "15px",
+                  }}
+                >
+                  Enterprise Collobrator
+                </p>
+              </DropdownToggle>
+              <DropdownMenu right style={{ top: "40px" }}>
+                <DropdownItem>
+                  <Link to="!">
+                    {/* icon */}
+                    <img src={building} alt="building" />
+                    {/* color: inactive ? "#B2B2B2" : "#000" */}
+                    <span style={{color: "#000", lineHeight: "21px", paddingLeft:"3px", fontWeight:"regular", fontSize:"12px", characterSpacing:"0", lineSpacing:"14"}} onClick={changeTransparency}>
+                      4D Schematics
+                    </span>
+                    <img
+                      src={checkicon}
+                      alt="Check Mark"
+                      style={{
+                        display: active ? "" : "none",
+                        width: "0.8rem",
+                        height: "0.8rem",
+                        marginLeft: "4rem"
+                      }}
+                      onClick={toggleClass}
+                    />
+                  </Link>
+                </DropdownItem>
+                <DropdownItem>
+                  <Link to="!">
+                    <img src={inactive?buildingtwo:building} alt="building" />
+                    <span style={{color: inactive ? "#B2B2B2" : "#000", lineHeight: "21px", paddingLeft:"3px", fontWeight:"regular", fontSize:"12px", characterSpacing:"0", lineSpacing:"14"}} onClick={changeTransparency}>
+                      Emergency Packout Co
+                    </span>
+                  </Link>
+                </DropdownItem>
+                <DropdownItem>
+                  <Link to="!">
+                    <img src={inactive?buildingtwo:building} alt="building" />
+                    <span style={{color: inactive ? "#B2B2B2" : "#000", lineHeight: "21px", paddingLeft:"3px", fontWeight:"regular", fontSize:"12px", characterSpacing:"0", lineSpacing:"14"}} onClick={changeTransparency}>
+                      American technology inc
+                    </span>
+                  </Link>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
+        ) : (
+          ""
+        )}
         <h1 className="title text-center">My Account</h1>
         <div className="container">
           <div className="row">

@@ -489,13 +489,13 @@ const Coupons = () => {
     },
 
     {
-      name: "Expiration Date",
+      name: "Expiry",
       selector: "expiry",
       sortable: false,
       className: "header-col",
     },
     {
-      name: "Usage / Limit",
+      name: "Usage Limit",
       selector: "maxusagecount",
       sortable: false,
       className: "header-col",

@@ -50,7 +50,7 @@ const AdminSidebar = (props) => {
               }
               to="/allsubscriptions"
             >
-              <span></span> Subscriptions
+              <span></span> View All Subscriptions
             </Link>
           </li>
         </ul>

@@ -46,7 +46,7 @@ const AllSubscriptions = () => {
       className: "header-col",
     },
     {
-      name: "Status",
+      name: "Subscription Status",
       selector: "subscriptionstatus",
       sortable: true,
       className: "header-col",
@@ -158,26 +158,9 @@ const AllSubscriptions = () => {
             <section>
               <div className="section-head   row ">
                 <div className=" col-lg-2">
-                  <h2>All Subscriptions</h2>
+                  <h2 className="subscriptions">View All Subscriptions <span className="enterprise">- Enterprise</span></h2> 
                 </div>
-                <div className="statuses  col-lg-10 row">
-                  <div
-                    className={
-                      activeTab.all
-                        ? "col-lg-2 col-sm-6 active_sections "
-                        : "col-lg-2 col-sm-6 faded"
-                    }
-                    onClick={() =>
-                      setActiveTab({
-                        all: true,
-                        active: false,
-                        cancelled: false,
-                        paused: false,
-                      })
-                    }
-                  >
-                    <p>All ({sub.length})</p>
-                  </div>
+                <div className="statuses  col-lg-10 row" style={{justifyContent:"flex-end"}}>
                   <div
                     className={
                       activeTab.active
@@ -192,8 +175,14 @@ const AllSubscriptions = () => {
                         paused: false,
                       })
                     }
+
+                    style={{
+                      fontSize: "12px",
+                      textAlign: "right",
+                      marginTop: "7px",
+                    }}
                   >
-                    <p>Active ({activeSub.length})</p>
+                    <p className="pipe">Active ({activeSub.length})</p>
                   </div>
                   <div
                     className={
@@ -209,8 +198,13 @@ const AllSubscriptions = () => {
                         paused: true,
                       })
                     }
+                    style={{
+                      fontSize: "12px",
+                      textAlign: "right",
+                      marginTop: "7px",
+                    }}
                   >
-                    <p>Paused ({pausedSub.length})</p>
+                    <p className="pipe">Paused ({pausedSub.length}) </p>
                   </div>
                   <div
                     className={
@@ -226,12 +220,17 @@ const AllSubscriptions = () => {
                         paused: false,
                       })
                     }
+                    style={{
+                      fontSize: "12px",
+                      textAlign: "right",
+                      marginTop: "7px",
+                    }}
                   >
                     <p>Cancelled ({cancelledSub.length})</p>
                   </div>
+                  {/* style={{ margin: "0 auto", alignItems: "center" }} */}
                   <div
                     className="col-lg-4 col-sm-12 "
-                    style={{ margin: "0 auto", alignItems: "center" }}
                   >
                     <AdminSearch
                       searchInput={search}

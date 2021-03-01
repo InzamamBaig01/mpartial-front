@@ -17,10 +17,10 @@ const AdminOrders = () => {
   const [loading, setLoading] = useState(true);
   const columns = [
     {
-      name: "Order No",
+      name: "Order No.",
       selector: "id",
       sortable: false,
-      className: "header-col",
+      className: "header-col one",
     },
     {
       name: "Email",

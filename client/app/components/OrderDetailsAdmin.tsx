@@ -44,13 +44,15 @@ const OrderDetailsAdmin = (props) => {
         Data = () => {
           return (
             <>
-              {props.order[props.field.id].map((d, index) => (
-                <a href={d} target="_blank" download>
-                  {props.order.potentiallyRelevantDigitalAssetsRealNames[
-                    index
-                  ].replace(/\.[^/.]+$/, "")}
-                </a>
-              ))}
+              {props.order[props.field.id].length
+                ? props.order[props.field.id].map((d, index) => (
+                    <a href={d} target="_blank" download>
+                      {props.order.potentiallyRelevantDigitalAssetsRealNames[
+                        index
+                      ].replace(/\.[^/.]+$/, "")}
+                    </a>
+                  ))
+                : "Not Available"}
             </>
           );
         };
