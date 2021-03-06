@@ -9,6 +9,8 @@ import AdminSidebar from "./_components/AdminSidebar";
 import OrderDetails from "app/components/OrderDetails";
 import { Dropdown, Modal, Button } from "react-bootstrap";
 import { updateStatus } from "utils/api-routes/api-routes.util";
+
+import { getMyChildAccounts } from "utils/api-routes/api-routes.util";
 import TransactionHistoryAD from "./_components/TranscationHistoryAD";
 import SubscriptionDetails from "./_components/subscriptionDetails";
 import BankCard from "app/components/BankCard";
@@ -66,6 +68,7 @@ const AdminUserDetails = (props) => {
     all: true,
     sub: false,
     pay: false,
+    child:false
   });
 
   const userid = props.match.params.userid
@@ -89,29 +92,27 @@ const AdminUserDetails = (props) => {
 
   console.log(singleUserDetails);
 
-  
-
   const tablecolumns = React.useMemo(
     () => [
       {
-        name: 'Companies',
-        selector: 'col1', // accessor is the "key" in the data
-        width: 90
+        name: "Companies",
+        selector: "col1", // accessor is the "key" in the data
+        width: 90,
       },
       {
-        name: 'Role',
-        selector: 'col2',
-        width: 50
+        name: "Role",
+        selector: "col2",
+        width: 50,
       },
       // },
       {
-        name: ' ',
-        selector: 'col3',
-        width:150
-      }
+        name: " ",
+        selector: "col3",
+        width: 150,
+      },
     ],
     []
-  )
+  );
   // const tablecolumns2 = React.useMemo(
   //   () => [
   //   {
@@ -121,71 +122,94 @@ const AdminUserDetails = (props) => {
   //   ],
   //   []
   // )
-  const tabledata =  React.useMemo(
-      () => [
-        {
-          // change
-          col1: user.companyname ? user.companyname : "N/A",
-          col2: user.role,
-          col3: user.ischildaccount ? (
-            ""
-          ) : user.subscriptionstatus === "NotActive" ? (
-            <div>
+  const tabledata = React.useMemo(
+    () => [
+      {
+        // change
+        col1: user.companyname ? user.companyname : "N/A",
+        col2: user.role,
+        col3: user.ischildaccount ? (
+          ""
+        ) : user.subscriptionstatus === "NotActive" ? (
+          <div>
+            <button
+              className="btn btn-md sub-btn"
+              onClick={() => {
+                setActiveTab({
+                  all: false,
+                  sub: false,
+                  pay: true,
+                });
+              }}
+            >
+              View Payments
+            </button>
+          </div>
+        ) : (
+          <div>
+            <button
+              className="btn btn-md sub-btn"
+              onClick={() => {
+                setActiveTab({
+                  all: false,
+                  sub: true,
+                  pay: false,
+                });
+              }}
+            >
+              View Subscription
+            </button>
+            <button
+              className="btn btn-md sub-btn"
+              onClick={() => {
+                setActiveTab({
+                  all: false,
+                  sub: false,
+                  pay: true,
+                });
+              }}
+            >
+              View Payments
+            </button>
+
+            {user.subscriptionstatus === "NotActive" || user.ischildaccount ? (
+              ""
+            ) : (
+              // <div className="col-md-4 col-sm-6 col-xs-6 label-text">
+              //   <label>Sub-Accounts</label>
+              //   <div className="order_details_value">
+              //     {user.childs ? user.childs.length : ""}
+              //   </div>
               <button
-                className="btn btn-sm"
+                className="btn btn-md sub-btn"
                 onClick={() => {
                   setActiveTab({
-                    all: false,
+                    all: true,
                     sub: false,
-                    pay: true,
-                  });
-                }}
-              >
-                View Payments
-              </button>
-            </div>
-          ) : (
-            <div>
-              <button
-                className="btn btn-sm"
-                onClick={() => {
-                  setActiveTab({
-                    all: false,
-                    sub: true,
                     pay: false,
                   });
                 }}
               >
-                View Subscription
+                Sub Accounts
               </button>
-              <button
-                className="btn btn-sm"
-                onClick={() => {
-                  setActiveTab({
-                    all: false,
-                    sub: false,
-                    pay: true,
-                  });
-                }}
-              >
-                View Payments
-              </button>
-            </div>
-          )
-        },
-        {
-          col1: user.companyname ? user.companyname : "N/A",
-          col2: user.role,
-          col3: ""
-        },
-        {
-          col1: user.companyname ? user.companyname : "N/A",
-          col2: user.role,
-          col3: ""
-        },
-      ],
-      [user]
-    )
+              // </div>
+            )}
+          </div>
+        ),
+      },
+      {
+        col1: user.companyname ? user.companyname : "N/A",
+        col2: user.role,
+        col3: "",
+      },
+      {
+        col1: user.companyname ? user.companyname : "N/A",
+        col2: user.role,
+        col3: "",
+      },
+    ],
+    [user]
+  );
   // const tabledata2 =  React.useMemo(
   //     () => [
   //       {
@@ -404,7 +428,6 @@ const AdminUserDetails = (props) => {
                         <div className="container">
                           <div className="row">
                             <div className="col-md-12 col-xs-12">
-                              
                               <DataTable
                                 columns={tablecolumns}
                                 data={tabledata}
@@ -426,9 +449,9 @@ const AdminUserDetails = (props) => {
                                 // pagination={true}
                                 // Code
                               /> */}
-                            </div>
                           </div>
                         </div>
+                      </div>
                     )}
                     <div className="order_details_footer back-button">
                       <Link to={`/user-management`}>

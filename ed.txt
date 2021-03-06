@@ -1,0 +1,11 @@
+ {user.subscriptionstatus === "NotActive" ||
+                      user.ischildaccount ? (
+                        ""
+                      ) : (
+                        <div className="col-md-4 col-sm-6 col-xs-6 label-text">
+                          <label>Sub-Accounts</label>
+                          <div className="order_details_value">
+                            {user.childs ? user.childs.length : ""}
+                          </div>
+                        </div>
+                      )}

@@ -2331,4 +2331,20 @@ div.col-lg-2.col-sm-6.faded {
   margin-top: 180px;
 }
 
+div.rdt_TableCell:not(:last-child) {
+  max-width: 220px;
+}
+
+div.rdt_TableCol:not(:last-child) {
+  max-width: 220px;
+}
+
+.sub-btn:not(:last-child){
+  margin-right: 10px;
+}
+
+.sub-btn{
+  font-size: 12px;
+}
+
 
